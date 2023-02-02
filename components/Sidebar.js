@@ -89,22 +89,26 @@ export default function Sidebar({ open, onOpen }) {
             <ListItem >
               <b>Explore</b>
             </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <AssessmentIcon />
-                </ListItemIcon>
-                <ListItemText primary="Analytics" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <PersonPinCircleIcon />
-                </ListItemIcon>
-                <ListItemText primary="Map" />
-              </ListItemButton>
-            </ListItem>
+            <Link href = "/analytics">
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <AssessmentIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Analytics" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+            <Link href = "/map">
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <PersonPinCircleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Map" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
           </List>
         </nav>
         <Divider />
@@ -113,14 +117,16 @@ export default function Sidebar({ open, onOpen }) {
             <ListItem >
               <b>Configure</b>
             </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Settings" />
-              </ListItemButton>
-            </ListItem>
+            <Link href = "/settings">
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Settings" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
           </List>
         </nav>
         <Divider />
