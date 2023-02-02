@@ -13,7 +13,7 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   return (
     <ThemeProvider theme={theme}>
-        <Header title = "StockVision - Accounts"/>
+        <Header title = "StockVision - Search"/>
         <Navbar open={open} onOpen={setOpen} />
         <Sidebar open={open} onOpen={setOpen}/>
         <Footer></Footer>
