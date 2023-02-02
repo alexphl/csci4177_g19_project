@@ -1,23 +1,22 @@
 import Head from 'next/head'
 import Header from '@components/Header'
 import Footer from '@components/Footer'
+import Navbar from '@components/Navbar';
+import Sidebar from '@components/Sidebar';
+
+import React, { useState } from "react";
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import theme from 'theme/theme';
 
 export default function Home() {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="container">
-      <Head>
-        <title>Next.js Starter!</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <Header title="Welcome to my app!" />
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-      </main>
-
-      <Footer />
-    </div>
+    <ThemeProvider theme={theme}>
+        <Header title = "home"/>
+        <Navbar open={open} onOpen={setOpen} />
+        <Sidebar open={open} onOpen={setOpen}/>
+        <Footer></Footer>
+    </ThemeProvider>
   )
 }
