@@ -1,5 +1,6 @@
-import * as React from 'react';
+import Link from 'next/link';
 
+import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -24,9 +25,9 @@ export default function Navbar({ open, onOpen }) {
                 <MenuIcon
                 />
                 </IconButton>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    Coffee
-                </Typography>
+                <Link href = "/">
+                    <Button color="inherit" sx={{ flexGrow: 1 }}>StockVision</Button>
+                </Link>
                 <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
