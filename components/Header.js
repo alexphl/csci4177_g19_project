@@ -1,3 +1,9 @@
+import Head from 'next/head'
+
 export default function Header({ title }) {
-  return <h1 className="title">{title}</h1>
+  return (
+    <Head>
+      <title>{title}</title>
+    </Head>
+    )
 }
