@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 
 import CustomerCard from "./CustomerCard";
 
-const baseURL = "https://faithful-cyan-trunks.cyclic.app/customer";
+const baseURL = "http://localhost:3000/customer";
 
 export default function CustomerTable() {
   const [customers, getCustomers] = React.useState(null);
