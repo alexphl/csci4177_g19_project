@@ -17,10 +17,11 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { Css } from '@mui/icons-material';
 
 export default function IndexContent() {
   return (
-    <div>
+    <div color = "primary">
         <h1 align = "middle">Welcome to STOCKVISION!</h1>
         <Divider />
         <h2 align = "middle">Search</h2>
@@ -32,12 +33,21 @@ export default function IndexContent() {
         <h2 align = "middle">Browse</h2>
         <p align = "middle">Browse customers, accounts and transactions: </p>
         <Grid container spacing={2} align = "center">
-            <Grid item xs={4} spacing = {1} >
-                <Link href = "/customers/">
-                    <a>
-                        <Card >
+            <Grid item xs={4}>
+                <Link href = "/customers/" >
+                    <a style={{ textDecoration: 'none' }}>
+                        <Card sx={{
+                                display: 'flex',
+                                width: '100%',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                bgcolor: 'background.primary',
+                                color: 'text.primary',
+                                borderRadius: 1,
+                                p: 3,
+                        }}>
                             <CardContent >
-                                <PeopleAltIcon/>
+                                <PeopleAltIcon />
                                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                     Customers
                                 </Typography>
@@ -46,10 +56,19 @@ export default function IndexContent() {
                     </a>
                 </Link>
             </Grid>
-            <Grid item xs={4} spacing = {1}>
+            <Grid item xs={4}>
                 <Link href = "/accounts/">
-                    <a>
-                        <Card >
+                    <a style={{ textDecoration: 'none' }}>
+                    <Card sx={{
+                                display: 'flex',
+                                width: '100%',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                bgcolor: 'background.primary',
+                                color: 'text.primary',
+                                borderRadius: 1,
+                                p: 3,
+                    }}>
                             <CardContent>
                                 <AccountBalanceWalletIcon />
                                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -60,10 +79,19 @@ export default function IndexContent() {
                     </a>
                 </Link>
             </Grid>
-            <Grid item xs={4} spacing = {1}>
+            <Grid item xs={4}>
                 <Link href = "/transactions">
-                    <a>
-                        <Card >
+                    <a style={{ textDecoration: 'none' }}>
+                    <Card sx={{
+                                display: 'flex',
+                                width: '100%',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                bgcolor: 'background.primary',
+                                color: 'text.primary',
+                                borderRadius: 1,
+                                p: 3,
+                        }}>
                             <CardContent>
                                 <ReceiptIcon />
                                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -80,10 +108,19 @@ export default function IndexContent() {
         <h2 align = "middle">Explore</h2>
         <p align = "middle">View analytic tools like charts, graphs and maps of StockVision's users:</p>
         <Grid container spacing={2} align = "center">
-            <Grid item xs={6} spacing = {1}>
+            <Grid item xs={6}>
                 <Link href = "/analytics/">
-                    <a>
-                        <Card >
+                    <a style={{ textDecoration: 'none' }}>
+                    <Card sx={{
+                                display: 'flex',
+                                width: '100%',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                bgcolor: 'background.primary',
+                                color: 'text.primary',
+                                borderRadius: 1,
+                                p: 3,
+                        }}>
                             <CardContent>
                                 <AssessmentIcon />
                                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -94,10 +131,19 @@ export default function IndexContent() {
                     </a>
                 </Link>
             </Grid>
-            <Grid item xs={6} spacing = {1} >
+            <Grid item xs={6}>
                 <Link href = "/map/">
-                    <a>
-                        <Card >
+                    <a style={{ textDecoration: 'none' }}>
+                    <Card sx={{
+                                display: 'flex',
+                                width: '100%',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                bgcolor: 'background.primary',
+                                color: 'text.primary',
+                                borderRadius: 1,
+                                p: 3,
+                        }}>
                             <CardContent >
                                 <PersonPinCircleIcon />
                                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -114,10 +160,19 @@ export default function IndexContent() {
         <h2 align = "middle">Configure</h2>
         <p align = "middle">View, edit and manage your profile settings:</p>
         <Grid container spacing={2} align = "center">
-            <Grid item xs={12} spacing = {1} >
+            <Grid item xs={12}>
                 <Link href = "/settings/">
-                    <a>
-                        <Card >
+                    <a style={{ textDecoration: 'none' }}>
+                    <Card sx={{
+                                display: 'flex',
+                                width: '100%',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                bgcolor: 'background.primary',
+                                color: 'text.primary',
+                                borderRadius: 1,
+                                p: 3,
+                        }}>
                             <CardContent >
                                 <SettingsIcon />
                                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>

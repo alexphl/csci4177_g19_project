@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from 'next/link'
 
 import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
 
 import Header from '@components/Header'
 import Footer from '@components/Footer'
@@ -17,13 +18,14 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
         <Header title = "StockVision - Home"/>
         <Navbar open={open} onOpen={setOpen} />
         <Sidebar open={open} onOpen={setOpen}/>
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" >
           <IndexContent />
         </Container>
-        <Footer></Footer>
+        <Footer/>
     </ThemeProvider>
   )
 }

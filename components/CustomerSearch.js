@@ -9,7 +9,6 @@ export default function CustomerSearch() {
       noValidate
       autoComplete="off"
       align = "center"
-      spacing = {1}
     >
       <TextField id="standard-basic" variant="outlined" margin="normal" fullWidth />
     </Box>
