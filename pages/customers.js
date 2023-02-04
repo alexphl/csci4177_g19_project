@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
 
 import Header from '@components/Header'
 import Footer from '@components/Footer'
@@ -16,10 +17,11 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   return (
     <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Header title = "StockVision - Customers"/>
         <Navbar open={open} onOpen={setOpen} />
         <Sidebar open={open} onOpen={setOpen}/>
-        <Container maxWidth="sm">
+        <Container >
             <CustomerTable />
         </Container>
         <Footer></Footer>
