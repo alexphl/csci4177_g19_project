@@ -10,6 +10,7 @@ import Sidebar from '@components/Sidebar';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import theme from 'theme/theme';
+import TransactionTable from "@components/TransactionTable";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function Home() {
         <Navbar open={open} onOpen={setOpen} />
         <Sidebar open={open} onOpen={setOpen}/>
         <Container maxWidth="sm" style={{minHeight: '100vh'}} >
+          <TransactionTable/>
         </Container>
         <Footer/>
     </ThemeProvider>
