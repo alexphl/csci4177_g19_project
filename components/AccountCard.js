@@ -10,27 +10,21 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-export default function CustomerCard(customer) {
-    const customerURL = "customers/" + customer.content.username;
+export default function AccountCard(account) {
+    const accountURL = "accounts/" + account.content.account_id;
     return (
         <Card spacing = {1}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {customer.content.username}
+            {account.content.account_id}
           </Typography>
           <Typography variant="h5" component="div">
-            {customer.content.name}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {customer.content.email}
-          </Typography>
-          <Typography variant="body2">
-            {customer.content.address}
+            {account.content.name}
           </Typography>
         </CardContent>
         <CardActions>
-        <Link href={customerURL} passHref>
-          <Button size="small">View Customer</Button>
+        <Link href={accountURL} passHref>
+          <Button size="small">View Account</Button>
         </Link>
         </CardActions>
       </Card>

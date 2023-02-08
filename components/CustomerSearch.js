@@ -2,37 +2,34 @@ import * as React from 'react';
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Typography } from '@mui/material';
 
 import CustomerCard from "./CustomerCard";
 
-const baseURL = "https://faithful-cyan-trunks.cyclic.app/customer/search/";
 
-function query (searchQuery, {customers, setCustomers}) {
-  console.log(baseURL + searchQuery );
-  return axios.get(baseURL + searchQuery).then((response) => {
-    console.log(response.data);
-    return response.data;
-  });
-}
+import apiURL from '../APIurl';
+const baseURL = apiURL + "/customer/search/";
+// const baseURL = "http://localhost:3000/customer/search/";
 
 
 export default function CustomerSearch() {
   const [customers, setCustomers] = React.useState(null);
-
-  const [searchQuery, setQuery] = useState(true);
+  const [searchQuery, setQuery] = useState(null);
+  
   useEffect(() => {
     const timeout = setTimeout(() => {
-      console.log(searchQuery, setCustomers);
-      if(searchQuery !== ""){
-        axios.get(baseURL + searchQuery).then((response) => {
-          setCustomers(response.data);
-          console.log(response.data);
-        });
-      }
+        if (typeof searchQuery === 'string' && searchQuery.trim().length > 0) {
+          axios.get(baseURL + searchQuery.trim()).then((response) => {
+            setCustomers(response.data);
+            console.log(response.data);
+          });
+        }
     }, 500);
     return () => {
       clearTimeout(timeout);
@@ -46,12 +43,17 @@ export default function CustomerSearch() {
         noValidate
         autoComplete="off"
         align = "center"
-        
+        onSubmit={
+          function(e){
+            e.preventDefault()
+          }
+        }
       >
         <TextField 
           id="standard-basic" 
           variant="outlined" 
-          margin="normal" 
+          margin="normal"
+          type="search"
           fullWidth
           onChange={function(e){
             setQuery(e.target.value)
@@ -65,6 +67,18 @@ export default function CustomerSearch() {
             </Grid>
           ))
         }
+        {!customers && searchQuery &&(
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            style={{ minHeight: '20vh' }}
+            >
+            <CircularProgress color="success" />
+          </Grid>
+          )}
         </Grid>
       </Box>
     </div>

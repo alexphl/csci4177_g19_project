@@ -1,5 +1,3 @@
-import Search from '@components/CustomerSearch';
-
 import Link from 'next/link'
 
 import Divider  from '@mui/material/Divider'
@@ -7,7 +5,6 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
@@ -17,7 +14,8 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Css } from '@mui/icons-material';
+
+import Search from '@components/CustomerSearch';
 
 export default function IndexContent() {
   return (

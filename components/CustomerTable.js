@@ -3,10 +3,14 @@ import axios from 'axios';
 
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import CustomerCard from "./CustomerCard";
 
-const baseURL = "https://faithful-cyan-trunks.cyclic.app/customer";
+import apiURL from '../APIurl';
+const baseURL = apiURL + "/customer/";
 
 export default function CustomerTable() {
   const [customers, getCustomers] = React.useState(null);
@@ -28,6 +32,18 @@ export default function CustomerTable() {
             </Grid>
           ))
         }
+        {!customers &&(
+            <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            style={{ minHeight: '100vh' }}
+          >
+            <CircularProgress color="success" />
+          </Grid>
+        )}
         </Grid>
       </pre>
       )
