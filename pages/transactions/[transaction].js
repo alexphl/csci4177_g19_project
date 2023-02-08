@@ -21,19 +21,19 @@ import Navbar from '@components/Navbar';
 import Sidebar from '@components/Sidebar';
 
 import apiURL from '../../APIurl';
-const baseURL = apiURL + "/transaction/id/";
+const baseURL = apiURL + "/transaction/account_id/";
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import theme from 'theme/theme';
 
 export default function Home() {
   const router = useRouter()
-  const { id } = router.query
+  const { account_id } = router.query
   
   const [transaction, getTransaction] = React.useState(null);
 
   React.useEffect(() => {
-    axios.get(baseURL + id).then((response) => {
+    axios.get(baseURL + account_id).then((response) => {
       getTransaction(response.data);
     });
   }, [router]);
@@ -48,6 +48,9 @@ export default function Home() {
         <Container
           style={{ minHeight: '100vh' } }
          >
+            <pre>
+                {JSON.stringify(transaction, null, 2)}
+            </pre>
         </Container>
         <Footer></Footer>
     </ThemeProvider>
