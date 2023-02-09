@@ -2,13 +2,101 @@
 *Author*: Liam Osler 
 *Date*: 2023-02-07
 
-#### Link to Prototype: https://scintillating-toffee-28fea0.netlify.app/
-##### Main Readme: https://git.cs.dal.ca/osler/csci4177-project-readme
+**Link to Prototype: https://scintillating-toffee-28fea0.netlify.app/**
+**Main Readme: https://git.cs.dal.ca/osler/csci4177-project-readme**
 
 # Table of Contents:
+- [MERN Stack Project: Stock Market Accounts](#mern-stack-project-stock-market-accounts)
+- [Table of Contents:](#table-of-contents)
+- [General Overview:](#general-overview)
+  - [Executive Summary:](#executive-summary)
+  - [Purpose:](#purpose)
+  - [Goals:](#goals)
+  - [Features:](#features)
+  - [Target Users:](#target-users)
+  - [Technology Stack:](#technology-stack)
+    - [Client-side Technologies:](#client-side-technologies)
+    - [Server-side Technologies:](#server-side-technologies)
+    - [Database Technologies:](#database-technologies)
+  - [Hosting:](#hosting)
+    - [Back-End:](#back-end)
+    - [Front-end:](#front-end)
+  - [Deployment:](#deployment)
+- [Local Development:](#local-development)
+  - [Setup:](#setup)
+- [Back-End:](#back-end-1)
+  - [Overview:](#overview)
+  - [Dependencies:](#dependencies)
+  - [Installation:](#installation)
+  - [Run the server:](#run-the-server)
+    - [Technologies Used:](#technologies-used)
+    - [Setting up a MongoDB.com account and database:](#setting-up-a-mongodbcom-account-and-database)
+    - [Modifying the connection string:](#modifying-the-connection-string)
+    - [Connecting to the database:](#connecting-to-the-database)
+      - [Add the database URL and credentials to a `.env` file:](#add-the-database-url-and-credentials-to-a-env-file)
+      - [Setup Mongoose:](#setup-mongoose)
+    - [Fetching Data:](#fetching-data)
+      - [Customers:](#customers)
+        - [Customer URLs:](#customer-urls)
+        - [Get all customers:](#get-all-customers)
+        - [Skip and limit:](#skip-and-limit)
+        - [username:](#username)
+        - [Email:](#email)
+        - [Search for user:](#search-for-user)
+      - [Accounts:](#accounts)
+        - [Account URLs:](#account-urls)
+        - [Get all accounts:](#get-all-accounts)
+        - [Get account by account\_id:](#get-account-by-account_id)
+    - [Transactions:](#transactions)
+      - [Transaction URLs:](#transaction-urls)
+        - [Get all transactions:](#get-all-transactions)
+        - [Get transactions by account\_id:](#get-transactions-by-account_id)
+    - [Creating routes with Express:](#creating-routes-with-express)
+    - [Cross-Origin Resource Sharing (CORS):](#cross-origin-resource-sharing-cors)
+- [Front-end:](#front-end-1)
+  - [Getting Started:](#getting-started)
+- [Users Personas, Scenarios, Tasks and Workflows:](#users-personas-scenarios-tasks-and-workflows)
+  - [User Personas:](#user-personas)
+    - [Persona 1: Senior Manager, CEO, or CFO:](#persona-1-senior-manager-ceo-or-cfo)
+      - [Background:](#background)
+      - [Goals:](#goals-1)
+    - [Persona 2: Stock Portfolio Manager:](#persona-2-stock-portfolio-manager)
+      - [Background:](#background-1)
+      - [Goals:](#goals-2)
+    - [Persona 1 and 2 Story:](#persona-1-and-2-story)
+    - [Tasks:](#tasks)
+      - [Task 1. Accessing the Admin/Manager portal:](#task-1-accessing-the-adminmanager-portal)
+          - [Functionality:](#functionality)
+          - [Task-Flow Diagram:](#task-flow-diagram)
+      - [Task 2. Find a customer using the search functionality:](#task-2-find-a-customer-using-the-search-functionality)
+          - [Functionality:](#functionality-1)
+          - [Task-Flow Diagram:](#task-flow-diagram-1)
+- [References](#references)
 
 
 # General Overview:
+## Executive Summary:
+The purpose of this app is to make stock trading easy to understand and accessible for everyone. It provides users with comprehensive guides, tutorials, and resources to help them learn the basics of stock trading and develop more advanced strategies. Additionally, the app offers exclusive tools and resources to help users find the best investments and diversify their portfolios. The app is designed to empower users to take charge of their financial future and make smart investment decisions.
+
+The app can be used by accessing the main website. Once the app is accessed, users can access up-to-date market information and news to help users stay informed about the current state of the market. Finally, users can also set up alerts and notifications to stay up to date with any changes in the stock market.
+
+## Purpose: 
+An easy-to-use stock tracking app for novice traders who are on the go.
+
+## Goals: 
+Fast and up-to-date, logical presentation, straightforward, aesthetically pleasing.
+
+## Features:
+- User Account Creation and Authentication
+- Customizable Dashboards
+- Individualized Portfolio Reports
+- Market Perfomance Tracking 
+- Investment Simulations
+
+## Target Users: 
+Basic users of the app would include novice investors who are looking to learn the basics of stock trading. These users would benefit from the comprehensive guides and tutorials provided on the app. Advanced users of the app would include experienced traders who want to refine their strategies and manage the portfolios of their clients.
+
+
 ## Technology Stack:
 ```text
  ┌────────────┐ ┌────────────┐ ┌────────────┐
@@ -58,18 +146,17 @@
 * **Front-End Deployment URLs**: 
   * Netlify: https://scintillating-toffee-28fea0.netlify.app/
 
-## Local Development:
-* Clone the API repository
-  * Set up the API for local use
-* Clone the website repository
-  * Set up the website for local use
-
 ## Deployment:
 Pipelines are set up for both the front-end of the website (through Netlify) from the front-end repository, and the back-end of the API (through Cyclic) from the back-end repository.
 
 * * * * *
-# Back-End:
+# Local Development:
+## Setup:
+* Clone the API repository and set up the API for local use (see instructions below)
+* Clone the website repository and set up the website for local use (see instructions below)
 
+* * * * *
+# Back-End:
 ## Overview:
 The back-end of this project is a RESTful API built using Node.js, Express, and Mongoose. The live version of the API has been hosted on Azure and Cyclic.
 
@@ -93,7 +180,6 @@ From scratch:
 
 ```bash
 npx express-generator --ejs
-
 npm install mongoose morgan dotenv
 ```
 
@@ -158,9 +244,8 @@ db.once("open", function () {
 
 ```
 
-### Fetching Data
-
-#### Customers
+### Fetching Data:
+#### Customers: 
 Customer schema:
 
 `./models/Customers.js`:
@@ -212,7 +297,7 @@ Example item:
 }
 ```
 
-##### Customer URLs
+##### Customer URLs:
 
 ##### Get all customers:
 **Base URL:** <http://localhost:3000/customer/>
@@ -245,7 +330,7 @@ Example: <http://localhost:3000/customer/email/arroyocolton@gmail.com>
 **Base URL:** customer/search/:query
 Example: <http://localhost:3000/customer/search/miller>
 
-#### Accounts
+#### Accounts:
 Account schema:
 
 `./models/Accounts.js`:
@@ -268,8 +353,7 @@ Example item:
 }
 ```
 
-##### Account URLs
-
+##### Account URLs:
 ##### Get all accounts:
 ****Base URL:**** <http://localhost:3000/account/>
 
@@ -278,8 +362,7 @@ Example item:
 
 Example: <http://localhost:3000/account/account_id/557378>
 
-### Transactions
-
+### Transactions:
 Transaction schema:
 
 `./models/Transactions.js`:
@@ -331,7 +414,7 @@ Example item:
 }
 ```
 
-#### Transaction URLs
+#### Transaction URLs:
 ##### Get all transactions:
 **Base URL:** <http://localhost:3000/transaction/>
 
@@ -341,7 +424,6 @@ Example item:
 Example: <http://localhost:3000/transaction/account_id/557378>
 
 ### Creating routes with Express:
-
 Add the route files to `./app.js`:
 ```js
 var indexRouter = require('./routes/index');
@@ -510,7 +592,7 @@ app.use(function (req, res, next) {
 
 * * * * *
 # Front-end:
-## Getting Started
+## Getting Started:
 
 First, clone the repository:
 ```bash
@@ -562,3 +644,124 @@ You could then access the API URLs like this:
 const const accountBaseURL = process.env.API_URL + "/account/account_id/";
 const tranasctionsBaseURL = process.env.API_URL + "/transaction/account_id/";
 ```
+
+# Users Personas, Scenarios, Tasks and Workflows:
+## User Personas:
+### Persona 1: Senior Manager, CEO, or CFO:
+#### Background: 
+This user is a seasoned executive who has worked in the finance sector for over 25 years. He has held various roles in finances, including accounting, budgeting, and financial analysis. He has a passion for understanding the financial markets, and is always looking for ways to maximize the value of investments.
+#### Goals:
+The goals of the manager are to help their clients meet their financial goals, while also ensuring that their portfolios are diversified and performing as expected. By providing the manager with access to detailed information about their clients and their investments, they can make informed decisions about how to manage their portfolios.
+### Persona 2: Stock Portfolio Manager:
+#### Background: 
+This user is a manager his client's stock portfolios. They are likely to be in their late 30s to early 50s, and have at least a few years of experience in the financial sector. They will likely have a college degree in finance, economics, or accounting. They need to be able to understand the stock market and financial investments in order to be successful in their role. They will have access to a computer and the internet in order to access the stock portfolio management application.
+
+#### Goals:
+The goals of the manager are to help their clients meet their financial goals, while also ensuring that their portfolios are diversified and performing as expected. By providing the manager with access to detailed information about their clients and their investments, they can make informed decisions about how to manage their portfolios.
+
+### Persona 1 and 2 Story:
+As managers of a stock portfolio management application, We need to be able to see detailed information about my clients. We want to get a complete overview of their financial portfolios and investments. This includes the amount of money they have invested in each stock, their gains and losses, and the performance of their investments over time.
+
+We should also be able to see the risk profile of each client, so I can adjust their portfolios accordingly. It would also be helpful if we could see a breakdown of their investments by sector, so we can see if they are diversified or if they are too heavily invested in one sector.
+
+In addition, we need to be able to generate reports that show me the performance of each client's portfolio over time. This would allow us to compare the performance of the portfolios of different clients and make sure that they are meeting their goals.
+
+Finally, We need to be able to access this information in real time. This will allow me to react quickly to changes in the market and make sure that my clients' portfolios are performing as expected.
+
+### Tasks:
+#### Task 1. Accessing the Admin/Manager portal:
+###### Functionality:
+- Users can be made an admin/manger by designating them as such in the user database.
+- The admins can access the admin/manager portal by clicking on the admin link in the navigation bar.
+###### Task-Flow Diagram:
+```text
+
+  ┌─────┐
+  │START│
+  └──┬──┘
+     │
+  ┌──▼────────────┐  ┌────┐
+  │USER LOGGED IN?├──► NO │
+  └──┬────────────┘  └──┬─┘
+     │                  │
+     │            ┌─────▼──────┐
+     │            │LOGIN PROMPT◄─────┐
+     │            └─────┬──────┘     │
+     │                  │            │
+  ┌──▼──┐         ┌─────▼──┐  ┌────┐ │
+  │ YES ◄─────────┤SUCCESS?├──► NO ├─┘
+  └──┬──┘         └────────┘  └────┘
+     │
+  ┌──▼─────────────────────┐  ┌────┐  ┌───────────────────┐
+  │USER PASSES ADMIN CHECK?├──► NO ├──►SEND TO USER PORTAL│
+  └──┬─────────────────────┘  └────┘  └───────────────────┘
+     │
+  ┌──▼──┐                             ┌────────────────────┐
+  │ YES ├─────────────────────────────►SEND TO ADMIN PORTAL│
+  └─────┘                             └────────────────────┘
+
+```
+
+#### Task 2. Find a customer using the search functionality:
+###### Functionality:
+- Manager logs into the stock portfolio management application.
+- Manager types in a keyword to search for a particular client.
+   - The keyword may be the client's name, email address, or street address.
+   - The search results will include all clients that match the keyword.
+   - The search will be fast and efficient, and will show live results as the manager types.
+   - The search results will allow the manager to click on the result and be forwarded t either the client's account overview page or the client's account details page.
+- Manager views a list of clients that match the keyword.
+- Manager selects the desired client from the list.
+- Manager views a detailed overview of the client's financial portfolio and investments.
+
+
+###### Task-Flow Diagram:
+```text
+
+ ┌─────┐
+ │START│
+ └──┬──┘
+    │
+ ┌──▼─────────┐
+ │ADMIN PORTAL│
+ └──┬─────────┘
+    │
+ ┌──▼──────┐
+ │INPUT BOX│
+ └──┬──────┘
+    │
+ ┌──▼────────────┐
+ │INPUT IS BLANK?◄────────────┐
+ └──┬────────────┘            │
+    │                         │
+ ┌──┴─┐                       │
+ │ NO │                       │
+ └──┬─┘                       │
+    │                         │
+ ┌──▼───────────────┐         │
+ │INPUT HAS CHANGED?│         │
+ └──┬───────────────┘         │
+    │                         │
+ ┌──▼──┐                      │
+ │ YES │                      │
+ └──┬──┘                      │
+    │                         │
+ ┌──▼────────┐             ┌──┴─┐
+ │AWAIT 500ms│             │ NO │
+ └──┬────────┘             └──▲─┘
+    │                         │
+ ┌──▼───────────┐  ┌──────────┴────────┐
+ │QUERY DATABASE├──►QUERY RETURNS DATA?│
+ └──────────────┘  └──────────┬────────┘
+                              │
+                           ┌──▼──┐
+                           │ YES │
+                           └──┬──┘
+                              │
+                        ┌─────▼──────┐
+                        │DISPLAY DATA│
+                        └────────────┘
+```
+
+# References
+[ASCIIFLOW - ASCII Diagram Generator](http://asciiflow.com/)
