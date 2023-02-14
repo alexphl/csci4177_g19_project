@@ -47,13 +47,14 @@ export default function Home() {
         <Sidebar open={open} onOpen={setOpen}/>
         <Container
           style={{ minHeight: '100vh' } }
+          
          >
         <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
         <div color = "primary">
           {customer && (
             <div>
 
-              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+              <Typography  color="text.secondary" gutterBottom>
                 {customer.username}
               </Typography>
               <Typography variant="h5" component="div">
@@ -90,7 +91,8 @@ export default function Home() {
           </Typography>
           <div color = "primary">
           {customer && (
-              <Stack spacing={2} direction="row">
+              <Stack   direction={{ xs: 'column', sm: 'row' }}
+              spacing={{ xs: 1, sm: 2, md: 4 }} >
               {customer.accounts.map((account) => (
                   <Link href = {"/accounts/" + account}>
                     <Button variant="outline" color="dark">

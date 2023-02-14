@@ -18,6 +18,8 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
+import DescriptionIcon from '@mui/icons-material/Description';
+
 
 export default function Sidebar({ open, onOpen }) {
   return (
@@ -124,6 +126,16 @@ export default function Sidebar({ open, onOpen }) {
                     <SettingsIcon />
                   </ListItemIcon>
                   <ListItemText primary="Settings" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+            <Link href = "/documentation">
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <DescriptionIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Documentation" />
                 </ListItemButton>
               </ListItem>
             </Link>

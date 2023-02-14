@@ -55,6 +55,7 @@
     - [Cross-Origin Resource Sharing (CORS):](#cross-origin-resource-sharing-cors)
 - [Front-end:](#front-end-1)
   - [Getting Started:](#getting-started)
+    - [File Structure:](#file-structure)
 - [Users Personas, Scenarios, Tasks and Workflows:](#users-personas-scenarios-tasks-and-workflows)
   - [User Personas:](#user-personas)
     - [Persona 1: Senior Manager, CEO, or CFO:](#persona-1-senior-manager-ceo-or-cfo)
@@ -643,6 +644,58 @@ You could then access the API URLs like this:
 ```js
 const const accountBaseURL = process.env.API_URL + "/account/account_id/";
 const tranasctionsBaseURL = process.env.API_URL + "/transaction/account_id/";
+```
+
+### File Structure:
+```
+.
+├── APIurl.js
+├── README.md
+├── components
+│   ├── AccountCard.js
+│   ├── AccountTable.js
+│   ├── CustomerCard.js
+│   ├── CustomerSearch.js
+│   ├── CustomerTable.js
+│   ├── Footer.js
+│   ├── Footer.module.css
+│   ├── Header.js
+│   ├── IndexContent.js
+│   ├── Navbar.js
+│   ├── Sidebar.js
+│   └── TransactionTable.js
+├── cypress
+│   └── e2e
+│       └── basic.cy.js
+├── cypress.config.js
+├── jsconfig.json
+├── netlify.toml
+├── package-lock.json 
+├── package.json
+├── pages
+│   ├── _app.js
+│   ├── accounts
+│   │   └── [account_id].js
+│   ├── accounts.js
+│   ├── analytics.js
+│   ├── customers
+│   │   └── [username].js
+│   ├── customers.js
+│   ├── index.js
+│   ├── map.js
+│   ├── search.js
+│   ├── settings.js
+│   ├── transactions
+│   │   └── [transaction].js
+│   └── transactions.js
+├── public
+│   ├── favicon.ico
+│   └── netliheart.svg
+├── renovate.json
+├── styles
+│   └── globals.css
+└── theme
+    └── theme.js
 ```
 
 # Users Personas, Scenarios, Tasks and Workflows:

@@ -7,7 +7,7 @@ import Header from '@components/Header'
 import Footer from '@components/Footer'
 import Navbar from '@components/Navbar';
 import Sidebar from '@components/Sidebar';
-import IndexContent from '@components/IndexContent';
+import DocumentationContent from '@components/DocumentationContent';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import theme from 'theme/theme';
@@ -21,7 +21,7 @@ export default function Home() {
         <Navbar open={open} onOpen={setOpen} />
         <Sidebar open={open} onOpen={setOpen}/>
         <Container maxWidth="sm" >
-          <IndexContent />
+          <DocumentationContent />
         </Container>
         <Footer/>
     </ThemeProvider>
