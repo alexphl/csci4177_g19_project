@@ -18,7 +18,7 @@ const StockListItem = (props: {
 
   return (
     <li className={props.className}>
-      <Link onClick={props.onClick} href={`/dashboard/${props.stock}`}>
+      <Link onClick={props.onClick} href={`/stocks/${props.stock}`}>
         <div
           className={
             "group grid grid-cols-[2fr_1fr_1fr] items-center gap-1 rounded-lg border border-neutral-900 p-3 transition-all hover:border-transparent hover:bg-white/[0.08] 2xl:p-4" +
