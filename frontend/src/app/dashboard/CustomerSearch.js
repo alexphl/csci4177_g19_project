@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react';
 import { useState, useEffect } from "react";
 import axios from 'axios';
@@ -13,7 +15,7 @@ import { Typography } from '@mui/material';
 import CustomerCard from "./CustomerCard";
 
 
-import apiURL from '../APIurl';
+import apiURL from '../../../APIurl';
 const baseURL = apiURL + "/customer/search/";
 // const baseURL = "http://localhost:3000/customer/search/";
 
