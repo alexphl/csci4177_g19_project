@@ -33,6 +33,7 @@ specifiers:
   react-dom: 18.2.0
   react-remove-scroll: ^2.5.5
   superjson: 1.12.2
+  tailwind-scrollbar-hide: ^1.1.7
   tailwindcss: ^3.2.6
   typescript: ^4.9.5
   use-debounce: ^9.0.3
@@ -60,6 +61,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-remove-scroll: 2.5.5_pmekkgnqduwlme35zpnqhenc34
   superjson: 1.12.2
+  tailwind-scrollbar-hide: 1.1.7
   use-debounce: 9.0.3_react@18.2.0
   use-local-storage-state: 18.1.2_biqbaboplfbrettd7655fr4n2y
   zod: 3.20.6
@@ -3314,6 +3316,10 @@ packages:
 
   /tabbable/6.0.1:
     resolution: {integrity: sha512-SYJSIgeyXW7EuX1ytdneO5e8jip42oHWg9xl/o3oTYhmXusZVgiA+VlPvjIN+kHii9v90AmzTZEBcsEvuAY+TA==}
+    dev: false
+
+  /tailwind-scrollbar-hide/1.1.7:
+    resolution: {integrity: sha512-X324n9OtpTmOMqEgDUEA/RgLrNfBF/jwJdctaPZDzB3mppxJk7TLIDmOreEDm1Bq4R9LSPu4Epf8VSdovNU+iA==}
     dev: false
 
   /tailwindcss/3.2.6_postcss@8.4.21:

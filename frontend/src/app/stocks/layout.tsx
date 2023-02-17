@@ -15,7 +15,7 @@ const StockList = dynamic(() => import("./StockList"));
 Chart.register(...registerables);
 
 const stylePane =
-  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-scroll pb-32 sm:pb-40 transition-all overscroll-contain shadow-inner";
+  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-32 sm:pb-40 transition-all overscroll-contain shadow-inner";
 
 export default function DashboardLayout({
   children, // will be a page or nested layout

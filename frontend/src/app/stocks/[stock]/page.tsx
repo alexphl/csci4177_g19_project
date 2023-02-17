@@ -18,7 +18,7 @@ export default function StockDetails({
 
   return (
     <>
-      <div className="w-full overflow-scroll pb-6 transition-all">
+      <div className="w-full overflow-auto scrollbar-hide pb-6 transition-all">
         <nav className="flex w-full pb-6 sm:hidden">
           <Link href={"/dashboard"}>
             <ArrowLeftIcon className="h-9 w-9 rounded-md bg-white/[0.1] p-2" />
@@ -26,7 +26,7 @@ export default function StockDetails({
         </nav>
 
         <div className="flex w-full justify-between gap-2">
-          <div className="text-scroll overflow-scroll">
+          <div className="text-scroll overflow-auto scrollbar-hide">
             <section className="flex items-end gap-4">
               <h2 className="text-xl font-extrabold">{params.stock}</h2>
               <h2 className="whitespace-nowrap text-neutral-400">
