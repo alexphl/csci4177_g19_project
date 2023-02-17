@@ -9,7 +9,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
-const theme = createTheme({
+const themeMUI = createTheme({
   palette: {
     mode: "dark",
   },
@@ -24,7 +24,7 @@ export default function Home({
 
   return (
     <>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={themeMUI}>
         <CssBaseline />
         <Navbar open={open} onOpen={setOpen} />
         <Sidebar open={open} onOpen={setOpen} />
