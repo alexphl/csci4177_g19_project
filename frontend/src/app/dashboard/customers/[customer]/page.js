@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -14,15 +14,14 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 
-import apiURL from "../../APIurl";
+import apiURL from "../../../../../APIurl";
 const baseURL = apiURL + "/customer/username/";
 
 export default function Home() {
-  const router = useRouter();
+  const router = useSearchParams();
   const { username } = router.query;
 
   const [customer, getCustomer] = useState(null);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     axios.get(baseURL + username).then((response) => {
@@ -74,7 +73,7 @@ export default function Home() {
               spacing={{ xs: 1, sm: 2, md: 4 }}
             >
               {customer.accounts.map((account) => (
-                <Link href={"/accounts/" + account}>
+                <Link href={"/accounts/" + account} key={account}>
                   <Button variant="outline" color="dark">
                     {account}
                   </Button>

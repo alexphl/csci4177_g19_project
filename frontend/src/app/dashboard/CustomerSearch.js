@@ -56,7 +56,7 @@ export default function CustomerSearch() {
         <Grid container spacing={2} align="left">
           {customers &&
             customers.map((customer) => (
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={6} key={customer}>
                 <CustomerCard content={customer} />
               </Grid>
             ))}

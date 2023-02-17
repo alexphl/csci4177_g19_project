@@ -26,7 +26,7 @@ export default function CustomerTable() {
       <Grid container spacing={2}>
         {accounts &&
           accounts.map((account) => (
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={account}>
               <AccountCard content={account} />
             </Grid>
           ))}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import axios from "axios";
 
 import Grid from "@mui/material/Grid";
@@ -17,13 +17,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import apiURL from "../../APIurl";
+import apiURL from "../../../../../APIurl";
 const accountBaseURL = apiURL + "/account/account_id/";
 const tranasctionsBaseURL = apiURL + "/transaction/account_id/";
 
 
 export default function Home() {
-  const router = useRouter();
+  const router = useSearchParams();
   const { account_id } = router.query;
 
   const [account, getAccount] = useState(null);
@@ -60,7 +60,7 @@ export default function Home() {
               </Typography>
               <Typography>Products:</Typography>
               {account.products.map((product) => (
-                <div>
+                <div key={product}>
                   <Typography
                     sx={{ fontSize: 14 }}
                     color="text.secondary"

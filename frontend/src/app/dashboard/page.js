@@ -119,7 +119,7 @@ export default function IndexContent() {
         Explore
       </h2>
       <p align="middle">
-        View analytic tools like charts, graphs and maps of StockVision's users:
+        View analytic tools like charts, graphs and maps of StockVision&apos;s users:
       </p>
       <Grid container spacing={2} align="center">
         <Grid item xs={6}>
