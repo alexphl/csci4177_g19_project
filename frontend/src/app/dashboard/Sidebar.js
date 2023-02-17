@@ -1,41 +1,35 @@
-import Link from 'next/link'
+import Link from "next/link";
 
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import AssessmentIcon from '@mui/icons-material/Assessment';
-import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
-import SettingsIcon from '@mui/icons-material/Settings';
-import DescriptionIcon from '@mui/icons-material/Description';
-
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import PersonPinCircleIcon from "@mui/icons-material/PersonPinCircle";
+import SettingsIcon from "@mui/icons-material/Settings";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 export default function Sidebar({ open, onOpen }) {
   return (
-      <Drawer
-        anchor='left'
-        open={open}
-        onClose={() => onOpen(!open)}
-      >
+    <Drawer anchor="left" open={open} onClose={() => onOpen(!open)}>
       <Box sx={{ width: 250 }}>
-      <Divider />
+        <Divider />
         <nav aria-label="browse">
           <List>
-            <ListItem >
+            <ListItem>
               <b>Find</b>
             </ListItem>
-            <Link href="/search">
+            <Link href="/dashboard/search">
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
@@ -50,10 +44,10 @@ export default function Sidebar({ open, onOpen }) {
         <Divider />
         <nav aria-label="browse">
           <List>
-            <ListItem >
+            <ListItem>
               <b>Browse</b>
             </ListItem>
-            <Link href="/customers">
+            <Link href="/dashboard/customers">
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
@@ -63,7 +57,7 @@ export default function Sidebar({ open, onOpen }) {
                 </ListItemButton>
               </ListItem>
             </Link>
-            <Link href = "/accounts">
+            <Link href="/dashboard/accounts">
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
@@ -73,7 +67,7 @@ export default function Sidebar({ open, onOpen }) {
                 </ListItemButton>
               </ListItem>
             </Link>
-            <Link href = "/transactions">
+            <Link href="/dashboard/transactions">
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
@@ -88,10 +82,10 @@ export default function Sidebar({ open, onOpen }) {
         <Divider />
         <nav aria-label="browse">
           <List>
-            <ListItem >
+            <ListItem>
               <b>Explore</b>
             </ListItem>
-            <Link href = "/analytics">
+            <Link href="/dashboard/analytics">
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
@@ -101,7 +95,7 @@ export default function Sidebar({ open, onOpen }) {
                 </ListItemButton>
               </ListItem>
             </Link>
-            <Link href = "/map">
+            <Link href="/dashboard/map">
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
@@ -116,10 +110,10 @@ export default function Sidebar({ open, onOpen }) {
         <Divider />
         <nav aria-label="browse">
           <List>
-            <ListItem >
+            <ListItem>
               <b>Configure</b>
             </ListItem>
-            <Link href = "/settings">
+            <Link href="/dashboard/settings">
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
@@ -129,7 +123,7 @@ export default function Sidebar({ open, onOpen }) {
                 </ListItemButton>
               </ListItem>
             </Link>
-            <Link href = "/documentation">
+            <Link href="/dashboard/documentation">
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
@@ -144,6 +138,5 @@ export default function Sidebar({ open, onOpen }) {
         <Divider />
       </Box>
     </Drawer>
-    )
-  }
-  
+  );
+}
