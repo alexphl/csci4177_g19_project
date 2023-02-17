@@ -1,14 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import Header from "./Header";
-import Footer from "./Footer";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 export default function Home({
   // Layouts must accept a children prop.
@@ -19,14 +24,12 @@ export default function Home({
 
   return (
     <>
-      <CssBaseline />
-      <Header title="StockVision - Home" />
-      <Navbar open={open} onOpen={setOpen} />
-      <Sidebar open={open} onOpen={setOpen} />
-      <Container maxWidth="sm">
-        {children}
-      </Container>
-      <Footer />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Navbar open={open} onOpen={setOpen} />
+        <Sidebar open={open} onOpen={setOpen} />
+        <Container maxWidth="sm">{children}</Container>
+      </ThemeProvider>
     </>
   );
 }

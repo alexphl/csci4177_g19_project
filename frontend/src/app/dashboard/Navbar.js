@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 
 export default function Navbar({ open, onOpen }) {

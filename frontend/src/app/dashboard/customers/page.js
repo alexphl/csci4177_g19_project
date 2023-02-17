@@ -1,32 +1,47 @@
 'use client'
 
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
+import Grid from "@mui/material/Grid";
+import CircularProgress from "@mui/material/CircularProgress";
 
-import Header from '@components/Header'
-import Footer from '@components/Footer'
-import Navbar from '@components/Navbar';
-import Sidebar from '@components/Sidebar';
+import CustomerCard from "../CustomerCard";
 
-import CustomerTable from '@components/CustomerTable';
+import apiURL from "../../../../APIurl";
+const baseURL = apiURL + "/customer/";
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import theme from 'theme/theme';
+export default function CustomerTable() {
+  const [customers, getCustomers] = useState(null);
 
-export default function Home() {
-  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    axios.get(baseURL).then((response) => {
+      getCustomers(response.data);
+    });
+  }, []);
+
   return (
-    <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Header title = "StockVision - Customers"/>
-        <Navbar open={open} onOpen={setOpen} />
-        <Sidebar open={open} onOpen={setOpen}/>
-        <Container >
-            <CustomerTable />
-        </Container>
-        <Footer></Footer>
-    </ThemeProvider>
-  )
+    <pre>
+      <Grid container spacing={2}>
+        {customers &&
+          customers.map((customer) => (
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <CustomerCard content={customer} />
+            </Grid>
+          ))}
+        {!customers && (
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            style={{ minHeight: "100vh" }}
+          >
+            <CircularProgress color="success" />
+          </Grid>
+        )}
+      </Grid>
+    </pre>
+  );
 }

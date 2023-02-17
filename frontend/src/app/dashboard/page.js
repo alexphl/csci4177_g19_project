@@ -32,7 +32,7 @@ export default function IndexContent() {
         <p align = "middle">Browse customers, accounts and transactions: </p>
         <Grid container spacing={2} align = "center">
             <Grid item xs={4}>
-                <Link href = "/customers/" >
+                <Link href = "/dashboard/customers/" >
                     <div style={{ textDecoration: 'none' }}>
                         <Card sx={{
                                 display: 'flex',
@@ -55,7 +55,7 @@ export default function IndexContent() {
                 </Link>
             </Grid>
             <Grid item xs={4}>
-                <Link href = "/accounts/">
+                <Link href = "/dashboard/accounts/">
                     <div style={{ textDecoration: 'none' }}>
                     <Card sx={{
                                 display: 'flex',
@@ -78,7 +78,7 @@ export default function IndexContent() {
                 </Link>
             </Grid>
             <Grid item xs={4}>
-                <Link href = "/transactions">
+                <Link href = "/dashboard/transactions">
                     <div style={{ textDecoration: 'none' }}>
                     <Card sx={{
                                 display: 'flex',
@@ -107,7 +107,7 @@ export default function IndexContent() {
         <p align = "middle">View analytic tools like charts, graphs and maps of StockVision's users:</p>
         <Grid container spacing={2} align = "center">
             <Grid item xs={6}>
-                <Link href = "/analytics/">
+                <Link href = "/dashboard/analytics/">
                     <div style={{ textDecoration: 'none' }}>
                     <Card sx={{
                                 display: 'flex',
@@ -130,7 +130,7 @@ export default function IndexContent() {
                 </Link>
             </Grid>
             <Grid item xs={6}>
-                <Link href = "/map/">
+                <Link href = "/dashboard/map/">
                     <div style={{ textDecoration: 'none' }}>
                     <Card sx={{
                                 display: 'flex',
@@ -159,7 +159,7 @@ export default function IndexContent() {
         <p align = "middle">View, edit and manage your profile settings:</p>
         <Grid container spacing={2} align = "center">
             <Grid item xs={12}>
-                <Link href = "/settings/">
+                <Link href = "/dashboard/settings/">
                     <div style={{ textDecoration: 'none' }}>
                     <Card sx={{
                                 display: 'flex',

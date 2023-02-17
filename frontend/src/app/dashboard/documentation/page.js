@@ -1,31 +1,7 @@
-'use client'
-
-import React, { useState } from "react";
-
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-
-import Header from '@components/Header'
-import Footer from '@components/Footer'
-import Navbar from '@components/Navbar';
-import Sidebar from '@components/Sidebar';
-import DocumentationContent from '@components/DocumentationContent';
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import theme from 'theme/theme';
-
-export default function Home() {
-  const [open, setOpen] = useState(false);
+export default function IndexContent() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-        <Header title = "StockVision - Home"/>
-        <Navbar open={open} onOpen={setOpen} />
-        <Sidebar open={open} onOpen={setOpen}/>
-        <Container maxWidth="sm" >
-          <DocumentationContent />
-        </Container>
-        <Footer/>
-    </ThemeProvider>
-  )
+    <div color = "primary">
+        <h1 align = "middle">Welcome to STOCKVISION!</h1>
+    </div>
+    )
 }
