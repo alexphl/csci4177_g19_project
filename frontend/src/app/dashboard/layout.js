@@ -28,7 +28,9 @@ export default function Home({
         <CssBaseline />
         <Navbar open={open} onOpen={setOpen} />
         <Sidebar open={open} onOpen={setOpen} />
-        <Container maxWidth="sm">{children}</Container>
+        <div className="bg-neutral-900">
+          <Container maxWidth="md">{children}</Container>
+        </div>
       </ThemeProvider>
     </>
   );

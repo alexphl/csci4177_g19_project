@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 
-import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -15,28 +14,58 @@ import PersonPinCircleIcon from "@mui/icons-material/PersonPinCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 import Search from "./CustomerSearch";
+import { ChartBarIcon } from "@heroicons/react/20/solid";
+
+const h2Style = "mt-6 text-xl font-bold";
+const subheadingStyle = "text-sm font-medium text-neutral-400";
 
 export default function IndexContent() {
   return (
-    <div color="primary">
-      <h1 align="middle" className="py-6 text-2xl font-bold">
-        Welcome to STOCKVISION!
+    <div color="primary" className="mb-12">
+      <h1 className="pt-12 pb-6 text-2xl leading-relaxed text-neutral-400">
+        Welcome to <br/> <strong className="text-white text-4xl">STOCKVISION</strong>
       </h1>
-      <Divider />
-      <h2 align="middle" className="text-lg font-bold">
+
+      <h2 className={h2Style}>
         Search
       </h2>
-      <div align="middle">
-        Search for customers by name, username, email or street address:
+      <div>
+        <p className={subheadingStyle}>Search for customers by name, username, email or street address:</p>
         <Search />
         <br />
       </div>
-      <Divider />
-      <h2 align="middle" className="text-lg font-bold">
+
+      <h2 className={h2Style}>
         Browse
       </h2>
-      <p align="middle">Browse customers, accounts and transactions: </p>
-      <Grid container spacing={2} align="center">
+      <p className={subheadingStyle}>Browse customers, accounts and transactions: </p>
+
+      <Grid container spacing={2} align="center" className="mt-2">
+        <Grid item xs={4}>
+          <Link href="/stocks/">
+            <div style={{ textDecoration: "none" }}>
+              <Card
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  bgcolor: "background.primary",
+                  color: "text.primary",
+                  borderRadius: 1,
+                  p: 3,
+                }}
+              >
+                <CardContent>
+                  <ChartBarIcon className="h-7 w-5 " />
+                  <p sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                    Stocks
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </Link>
+        </Grid>
         <Grid item xs={4}>
           <Link href="/dashboard/customers/">
             <div style={{ textDecoration: "none" }}>
@@ -114,14 +143,13 @@ export default function IndexContent() {
         </Grid>
       </Grid>
       <br />
-      <Divider />
-      <h2 align="middle" className="text-lg font-bold">
+      <h2 className={h2Style}>
         Explore
       </h2>
-      <p align="middle">
+      <p className={subheadingStyle}>
         View analytic tools like charts, graphs and maps of StockVision&apos;s users:
       </p>
-      <Grid container spacing={2} align="center">
+      <Grid container spacing={2} align="center" className="mt-2">
         <Grid item xs={6}>
           <Link href="/dashboard/analytics/">
             <div style={{ textDecoration: "none" }}>
@@ -174,12 +202,11 @@ export default function IndexContent() {
         </Grid>
       </Grid>
       <br />
-      <Divider />
-      <h2 align="middle" className="text-lg font-bold">
+      <h2 className={h2Style}>
         Configure
       </h2>
-      <p align="middle">View, edit and manage your profile settings:</p>
-      <Grid container spacing={2} align="center">
+      <p className={subheadingStyle}>View, edit and manage your profile settings:</p>
+      <Grid container spacing={2} align="center" className="mt-2">
         <Grid item xs={12}>
           <Link href="/dashboard/settings/">
             <div style={{ textDecoration: "none" }}>
