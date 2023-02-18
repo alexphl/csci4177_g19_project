@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 
 const Tabs = dynamic(() => import("./Tabs"));
 
-import data from "../../../dummy_data/prices.json";
+import data from "../../../../dummy_data/prices.json";
 
 let prices = JSON.parse(JSON.stringify(data.prices)).reverse();
 

@@ -19,30 +19,47 @@ import { ChartBarIcon } from "@heroicons/react/20/solid";
 const h2Style = "mt-6 text-xl font-bold";
 const subheadingStyle = "text-sm font-medium text-neutral-400";
 
+// WIP TODO: use array map to render dashboard links
+const contentBrowse = [{
+  heading: "Stocks",
+  link: "/dashboard/stocks",
+  icon: <ChartBarIcon className="h-7 w-5 "/>
+},
+{
+  heading: "Customers",
+  link: "/dashboard/customers",
+  icon: <PeopleAltIcon className="h-7 w-5 "/>
+},
+{
+
+}
+];
+
 export default function IndexContent() {
   return (
-    <div color="primary" className="mb-12">
+    <div color="primary" className="container mx-auto mb-12 max-w-xl">
       <h1 className="pt-12 pb-6 text-2xl leading-relaxed text-neutral-400">
-        Welcome to <br/> <strong className="text-white text-4xl">STOCKVISION</strong>
+        Welcome to <br />{" "}
+        <strong className="text-4xl text-white">STOCKVISION</strong>
       </h1>
 
-      <h2 className={h2Style}>
-        Search
-      </h2>
+      <h2 className={h2Style}>Search</h2>
       <div>
-        <p className={subheadingStyle}>Search for customers by name, username, email or street address:</p>
+        <p className={subheadingStyle}>
+          Search for customers by name, username, email or street address:
+        </p>
         <Search />
         <br />
       </div>
 
-      <h2 className={h2Style}>
-        Browse
-      </h2>
-      <p className={subheadingStyle}>Browse customers, accounts and transactions: </p>
+      <h2 className={h2Style}>Browse</h2>
+      <p className={subheadingStyle}>
+        Browse customers, accounts and transactions:{" "}
+      </p>
 
       <Grid container spacing={2} align="center" className="mt-2">
         <Grid item xs={4}>
-          <Link href="/stocks/">
+          <Link href="/dashboard/stocks/">
             <div style={{ textDecoration: "none" }}>
               <Card
                 sx={{
@@ -57,7 +74,7 @@ export default function IndexContent() {
                 }}
               >
                 <CardContent>
-                  <ChartBarIcon className="h-7 w-5 " />
+                  {contentBrowse[0].icon}
                   <p sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                     Stocks
                   </p>
@@ -143,11 +160,10 @@ export default function IndexContent() {
         </Grid>
       </Grid>
       <br />
-      <h2 className={h2Style}>
-        Explore
-      </h2>
+      <h2 className={h2Style}>Explore</h2>
       <p className={subheadingStyle}>
-        View analytic tools like charts, graphs and maps of StockVision&apos;s users:
+        View analytic tools like charts, graphs and maps of StockVision&apos;s
+        users:
       </p>
       <Grid container spacing={2} align="center" className="mt-2">
         <Grid item xs={6}>
@@ -202,10 +218,10 @@ export default function IndexContent() {
         </Grid>
       </Grid>
       <br />
-      <h2 className={h2Style}>
-        Configure
-      </h2>
-      <p className={subheadingStyle}>View, edit and manage your profile settings:</p>
+      <h2 className={h2Style}>Configure</h2>
+      <p className={subheadingStyle}>
+        View, edit and manage your profile settings:
+      </p>
       <Grid container spacing={2} align="center" className="mt-2">
         <Grid item xs={12}>
           <Link href="/dashboard/settings/">

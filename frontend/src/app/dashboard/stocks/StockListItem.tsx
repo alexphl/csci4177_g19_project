@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { memo } from "react";
-import data from "../../dummy_data/stockData.json";
+import data from "../../../dummy_data/stockData.json";
 //import StockChartXS from "./ChartXS";
 
 // Lazy load charts
@@ -18,7 +18,7 @@ const StockListItem = (props: {
 
   return (
     <li className={props.className}>
-      <Link onClick={props.onClick} href={`/stocks/${props.stock}`}>
+      <Link onClick={props.onClick} href={`/dashboard/stocks/${props.stock}`}>
         <div
           className={
             "group grid grid-cols-[2fr_1fr_1fr] items-center gap-1 rounded-lg border border-neutral-900 p-3 transition-all hover:border-transparent hover:bg-white/[0.08] 2xl:p-4" +

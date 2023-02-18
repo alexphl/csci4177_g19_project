@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
-import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Navbar from "./Navbar";
@@ -25,12 +22,9 @@ export default function Home({
   return (
     <>
       <ThemeProvider theme={themeMUI}>
-        <CssBaseline />
         <Navbar open={open} onOpen={setOpen} />
         <Sidebar open={open} onOpen={setOpen} />
-        <div className="bg-neutral-900">
-          <Container maxWidth="md">{children}</Container>
-        </div>
+        {children}
       </ThemeProvider>
     </>
   );
