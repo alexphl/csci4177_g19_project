@@ -5,6 +5,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import NavDesktop from "./NavDesktop";
 
 const themeMUI = createTheme({
   palette: {
@@ -22,9 +23,14 @@ export default function Home({
   return (
     <>
       <ThemeProvider theme={themeMUI}>
-        <Navbar open={open} onOpen={setOpen} />
-        <Sidebar open={open} onOpen={setOpen} />
-        {children}
+
+        <NavDesktop />
+        {/*<Navbar open={open} onOpen={setOpen} />
+        <Sidebar open={open} onOpen={setOpen} />*/}
+        <div className="sm:ml-20">
+          {children}
+        </div>
+
       </ThemeProvider>
     </>
   );

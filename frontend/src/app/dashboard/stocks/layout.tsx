@@ -39,7 +39,7 @@ export default function DashboardLayout({
       <OverlayComponent controller={[overlayIsOpen, setOverlayIsOpen]} />
       <nav
         className={
-          "mx-auto block grid-cols-[3fr_5fr] items-center gap-2 transition-all lg:container sm:grid sm:h-20 sm:py-0 sm:px-6 md:px-10 lg:h-28 lg:gap-6 lg:px-4 xl:px-24 2xl:h-32 " +
+          "mx-auto block grid-cols-[3fr_5fr] items-center gap-2 transition-all lg:container sm:grid sm:h-20 sm:py-0 sm:px-2 md:px-4 lg:h-28 lg:gap-6 lg:px-4 xl:px-24 2xl:h-32 " +
           (selectedStock ? " p-0" : " p-3")
         }
       >
@@ -54,7 +54,7 @@ export default function DashboardLayout({
         />
       </nav>
 
-      <main className="mx-auto grid-cols-[3fr_5fr] gap-2 transition-all lg:container sm:grid sm:px-6 md:px-10 lg:gap-6 lg:px-4 xl:px-24">
+      <main className="mx-auto grid-cols-[3fr_5fr] gap-2 transition-all lg:container sm:grid sm:px-2 md:px-4 lg:gap-6 lg:px-4 xl:px-24">
         <div /* LEFT pane */
           className={stylePane + (selectedStock ? " hidden sm:block" : "")}
         >
