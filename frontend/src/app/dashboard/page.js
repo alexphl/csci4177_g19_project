@@ -84,6 +84,31 @@ export default function IndexContent() {
           </Link>
         </Grid>
         <Grid item xs={4}>
+          <Link href="/dashboard/simulation/">
+            <div style={{ textDecoration: "none" }}>
+              <Card
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  bgcolor: "background.primary",
+                  color: "text.primary",
+                  borderRadius: 1,
+                  p: 3,
+                }}
+              >
+                <CardContent>
+                  {contentBrowse[0].icon}
+                  <p sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                    Simulation
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </Link>
+        </Grid>
+        <Grid item xs={4}>
           <Link href="/dashboard/customers/">
             <div style={{ textDecoration: "none" }}>
               <Card
