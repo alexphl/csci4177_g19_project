@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import dynamic from "next/dynamic";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
-import NavDesktop from "./NavDesktop";
+const NavDesktop = dynamic(() => import("./NavDesktop"));
 
 const themeMUI = createTheme({
   palette: {
@@ -18,19 +16,12 @@ export default function Home({
   // This will be populated with nested layouts or pages
   children,
 }) {
-  const [open, setOpen] = useState(false);
 
   return (
     <>
       <ThemeProvider theme={themeMUI}>
-
         <NavDesktop />
-        {/*<Navbar open={open} onOpen={setOpen} />
-        <Sidebar open={open} onOpen={setOpen} />*/}
-        <div className="sm:ml-20">
-          {children}
-        </div>
-
+        <div className="text-neutral-100 sm:ml-20 flex justify-center">{children}</div>
       </ThemeProvider>
     </>
   );

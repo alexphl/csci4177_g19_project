@@ -151,7 +151,7 @@ const Portfolio = () => {
                       ? "green"
                       : pastProfitLoss < 0
                       ? "red"
-                      : "white",
+                      : "",
                 }}
               >
                 ${pastProfitLoss.toFixed(2)}
@@ -168,7 +168,7 @@ const Portfolio = () => {
                       ? "green"
                       : netProfitLoss < 0
                       ? "red"
-                      : "white",
+                      : "",
                 }}
               >
                 ${netProfitLoss.toFixed(2)}

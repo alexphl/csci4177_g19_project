@@ -19,15 +19,6 @@ function RootLayout({
     <html lang="en" className={`${font.variable} bg-neutral-900 font-sans`}>
       <body className="font-sans text-neutral-100">
         {children}
-
-        {/*<svg className="absolute top-0 left-0 -z-10 w-full h-full opacity-10 pointer-events-none">
-            <filter id="noise">
-              <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="4" stitchTiles="stitch" />
-              <feColorMatrix type="saturate" values="0" />
-            </filter>
-
-            <rect width="100%" height="100%" filter="url(#noise)" />
-          </svg>*/}
       </body>
     </html>
   );
