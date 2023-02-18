@@ -20,7 +20,7 @@ export default function StockDetails({
     <>
       <div className="w-full overflow-auto scrollbar-hide pb-6 transition-all">
         <nav className="flex w-full pb-6 sm:hidden">
-          <Link href={"/dashboard"}>
+          <Link href={"/dashboard/stocks/"}>
             <ArrowLeftIcon className="h-9 w-9 rounded-md bg-white/[0.1] p-2" />
           </Link>
         </nav>

@@ -31,7 +31,7 @@ export default function DashboardLayout({
   let selectedStock: string | undefined = undefined;
   if (path) {
     const pathBits = path.split("/");
-    if (pathBits.length > 2) selectedStock = pathBits[2];
+    if (pathBits.length > 3) selectedStock = pathBits[3];
   }
 
   return (

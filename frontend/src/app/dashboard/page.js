@@ -37,7 +37,7 @@ const contentBrowse = [{
 
 export default function IndexContent() {
   return (
-    <div color="primary" className="container mx-auto mb-12 max-w-xl">
+    <div color="primary" className="container mx-auto mb-12 max-w-xl px-6">
       <h1 className="pt-12 pb-6 text-2xl leading-relaxed text-neutral-400">
         Welcome to <br />{" "}
         <strong className="text-4xl text-white">STOCKVISION</strong>
