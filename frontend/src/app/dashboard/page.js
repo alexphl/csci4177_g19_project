@@ -8,7 +8,6 @@ const subheadingStyle = "text-sm font-medium text-neutral-400";
 const linkCardStyle =
   "h-32 w-40 flex p-5 flex-auto border border-neutral-800 bg-black rounded-2xl shadow-xl hover:scale-[1.02] active:scale-95 transition-all cursor-pointer ";
 
-// WIP TODO: use array map to render dashboard links
 import { contentBrowse, contentExplore, contentSettings } from "./NavSchema";
 
 export default function IndexContent() {
