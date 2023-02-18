@@ -16,11 +16,6 @@ export const contentBrowse = [
 		icon: <ArrowTrendingUpIcon />,
 	},
 	{
-		heading: "Simulation",
-		link: "/dashboard/simulation",
-		icon: <PresentationChartBarIcon />,
-	},
-	{
 		heading: "Customers",
 		link: "/dashboard/customers",
 		icon: <UsersIcon />,
@@ -48,6 +43,11 @@ export const contentExplore = [
 		link: "/dashboard/map",
 		icon: <MapIcon />,
 	},
+	{
+		heading: "Simulation",
+		link: "/dashboard/simulation",
+		icon: <PresentationChartBarIcon />,
+	}
 ];
 
 export const contentSettings = [
