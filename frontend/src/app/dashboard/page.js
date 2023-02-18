@@ -13,8 +13,7 @@ import { contentBrowse, contentExplore, contentSettings } from "./NavSchema";
 export default function IndexContent() {
   return (
     <div
-      color="primary"
-      className="container mt-20 mb-12 flex max-w-2xl flex-col gap-10 px-6"
+      className="container mb-12 flex max-w-2xl flex-col gap-10 px-6 mx-auto pt-20"
     >
       <h1 className="text-2xl leading-relaxed text-neutral-400">
         Welcome to <br />

@@ -21,7 +21,7 @@ export default function Home({
     <>
       <ThemeProvider theme={themeMUI}>
         <NavDesktop />
-        <div className="text-neutral-100 sm:ml-20 flex justify-center">{children}</div>
+        <div className="text-neutral-100 sm:ml-20">{children}</div>
       </ThemeProvider>
     </>
   );
