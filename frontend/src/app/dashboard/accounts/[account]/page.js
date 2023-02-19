@@ -22,9 +22,10 @@ const accountBaseURL = apiURL + "/account/account_id/";
 const tranasctionsBaseURL = apiURL + "/transaction/account_id/";
 
 
-export default function Home() {
+export default function Home({params}) {
   const router = useSearchParams();
-  const { account_id } = router.query;
+  const account_id = params.account;
+
 
   const [account, getAccount] = useState(null);
   const [transactions, getTransactions] = useState(null);
