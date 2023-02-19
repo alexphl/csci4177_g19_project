@@ -35,7 +35,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <>
+    <div className="flex-auto">
       <OverlayComponent controller={[overlayIsOpen, setOverlayIsOpen]} />
       <nav
         className={
@@ -77,6 +77,6 @@ export default function DashboardLayout({
           {/* STOCK PAGE LAYOUT */ children}
         </div>
       </main>
-    </>
+    </div>
   );
 }
