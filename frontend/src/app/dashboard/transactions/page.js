@@ -19,7 +19,7 @@ export default function TransactionTable() {
   }, []);
 
   return (
-    <div className="container max-w-6xl px-6">
+    <div className="container max-w-6xl px-10 my-20">
       <Grid container spacing={2}>
         {transactions && <pre>{JSON.stringify(transactions, null, 2)}</pre>}
         {!transactions && (

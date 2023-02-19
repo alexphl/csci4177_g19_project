@@ -21,7 +21,7 @@ export default function CustomerTable() {
   }, []);
 
   return (
-    <div className="container max-w-6xl px-6">
+    <div className="container max-w-6xl px-10 my-20">
       <Grid container spacing={2}>
         {customers &&
           customers.map((customer) => (
