@@ -7,7 +7,7 @@ import ModalClose from "@mui/joy/ModalClose";
 import Sheet from "@mui/joy/Sheet";
 import { useEffect, useState, useContext } from "react";
 import LoginOrRegister from "./LoginOrRegister";
-import { userContext } from "../UserContext";
+import { userContext } from "../../UserContext";
 
 function Assignment1() {
   // const [loggedIn, setLoggedIn] = useState(false)

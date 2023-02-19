@@ -1,5 +1,7 @@
 import "../styles/globals.css";
 import localFont from "@next/font/local";
+import UserContextProvider from "./UserContext";
+import ThemeContextProvider from "./ThemeContext";
 
 // If loading a variable font, you don't need to specify the font weight
 const font = localFont({
@@ -16,11 +18,13 @@ function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${font.variable} bg-neutral-900 font-sans`}>
-      <body className="font-sans text-neutral-100">
-        {children}
-      </body>
-    </html>
+    <UserContextProvider>
+      <ThemeContextProvider>
+        <html lang="en" className={`${font.variable} bg-neutral-900 font-sans`}>
+          <body className="font-sans text-neutral-100">{children}</body>
+        </html>
+      </ThemeContextProvider>
+    </UserContextProvider>
   );
 }
 
