@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 export default function CustomerCard(customer) {
-    const customerURL = "customers/" + customer.content.username;
+    const customerURL = "/dashboard/customers/" + customer.content.username;
     return (
         <Card spacing = {1}>
         <CardContent>

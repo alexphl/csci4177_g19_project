@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -17,9 +17,11 @@ import Stack from "@mui/material/Stack";
 import apiURL from "../../../../../APIurl";
 const baseURL = apiURL + "/customer/username/";
 
-export default function Home() {
+export default function Home({params}) {
   const router = useSearchParams();
-  const { username } = router.query;
+  const username = params.customer;
+  const page = params.customer;
+
 
   const [customer, getCustomer] = useState(null);
 
