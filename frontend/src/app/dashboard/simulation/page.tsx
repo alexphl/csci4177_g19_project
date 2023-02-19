@@ -135,7 +135,8 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="px-6">
+    // Wrapped this in a div to add padding - alex
+    <div className="container max-w-5xl px-6 mx-auto">
       <Grid justifyContent="center" style={{ textAlign: "center" }}>
         <Container style={{ padding: 20 }}>
           <Typography align="center" variant="h2">
