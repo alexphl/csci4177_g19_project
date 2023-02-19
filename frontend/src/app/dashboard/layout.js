@@ -27,13 +27,13 @@ const userReducer = (state, action) => {
   }
 };
 
+const userContext = createContext();
+
 export default function Home({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
   children,
 }) {
-  const userContext = createContext();
-
   const [userState, dispatchUser] = useReducer(userReducer, {
     // initial state
     user: { loggedIn: false, email: null },
