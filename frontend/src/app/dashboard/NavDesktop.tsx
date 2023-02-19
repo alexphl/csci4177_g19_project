@@ -1,3 +1,5 @@
+'use client'
+
 import { memo } from "react";
 import Link from "next/link";
 import { UserIcon, RectangleGroupIcon } from "@heroicons/react/24/solid";
@@ -23,7 +25,7 @@ const NavDesktop = () => {
 						(!segment ? " bg-neutral-200/[0.1] text-neutral-100" : "")
 					}
 				>
-					<RectangleGroupIcon className="w-5 shrink-0" />
+					<RectangleGroupIcon className="w-5 shrink-0 ml-0.5" />
 					<h2 className="hidden opacity-0 group-hover:inline-block group-hover:opacity-100">
 						Dashboard
 					</h2>
@@ -42,7 +44,7 @@ const NavDesktop = () => {
 									: "")
 							}
 						>
-							<div className="w-5 shrink-0">{link.icon}</div>
+							<div className="w-5 shrink-0 ml-0.5">{link.icon}</div>
 							<h2 className="hidden opacity-0 group-hover:inline-block group-hover:opacity-100">
 								{link.heading}
 							</h2>
@@ -63,7 +65,7 @@ const NavDesktop = () => {
 									: "")
 							}
 						>
-							<div className="w-5 shrink-0">{link.icon}</div>
+							<div className="w-5 shrink-0 ml-0.5">{link.icon}</div>
 							<h2 className="hidden opacity-0 group-hover:inline-block group-hover:opacity-100">
 								{link.heading}
 							</h2>
@@ -84,7 +86,7 @@ const NavDesktop = () => {
 									: "")
 							}
 						>
-							<div className="w-5 shrink-0">{link.icon}</div>
+							<div className="w-5 shrink-0 ml-0.5">{link.icon}</div>
 							<h2 className="hidden opacity-0 group-hover:inline-block group-hover:opacity-100">
 								{link.heading}
 							</h2>
