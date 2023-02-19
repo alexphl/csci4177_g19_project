@@ -5,9 +5,9 @@ import { createContext, useReducer } from "react";
 // This context is going to hold information about the user in a json format
 // Should be logged in : bool , userkey: hash, email : email, preferences : object
 
-const userContext = createContext(undefined);
+export const userContext = createContext(undefined);
 
-const userReducer = (state: any, action: any) => {
+export const userReducer = (state: any, action: any) => {
   switch (action.type) {
     case "SET_USER":
       return {
