@@ -8,6 +8,8 @@ import Sheet from "@mui/joy/Sheet";
 import { useEffect, useState, useContext } from "react";
 import LoginOrRegister from "./LoginOrRegister";
 import { userContext } from "../../UserContext";
+import Dashboard from './Dashboard';
+import NavBar from './NavBar';
 
 function Assignment1() {
   // const [loggedIn, setLoggedIn] = useState(false)
@@ -23,8 +25,15 @@ function Assignment1() {
     //
   }, [user]);
 
+  if(user.loggedIn){
+        return(
+            <Dashboard setOpen={setOpen}/>
+        )
+    }
+
   return (
     <div aria-label="Login or Register Modal">
+      <NavBar doSomething={setOpen} buttonName="Login/Register"/>
       <Fragment>
         <br />
         <img
@@ -54,17 +63,13 @@ function Assignment1() {
               borderRadius: "md",
               p: 3,
               boxShadow: "lg",
-              bgcolor: "background.body",
             }}
           >
             <ModalClose
               variant="outlined"
               sx={{
-                top: "calc(1/4 * var(--IconButton-size))",
-                right: "calc(1/4 * var(--IconButton-size))",
                 boxShadow: "0 2px 12px 0 rgba(0 0 0 / 0.2)",
                 borderRadius: "50%",
-                bgcolor: "background.body",
               }}
             />
 

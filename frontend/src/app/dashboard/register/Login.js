@@ -4,7 +4,6 @@ import {
   FormGroup,
   Container,
   TextField,
-  Button,
   FormHelperText,
 } from "@mui/material";
 
@@ -100,7 +99,6 @@ function LoginForm() {
               placeholder="Email"
               autoComplete="email"
               label="Email"
-              color="secondary"
               focused
               margin="normal"
               onChange={handleEmailChange}
@@ -110,18 +108,15 @@ function LoginForm() {
               autoComplete="current-password"
               label="Password"
               type="password"
-              color="secondary"
               focused
               margin="normal"
               onChange={handlePasswordChange}
             />
-            <Button
-              variant="contained"
-              color="secondary"
+            <button
               onClick={handleSubmit}
             >
               Login!
-            </Button>
+            </button>
             <FormHelperText error={error.length > 0}>{error}</FormHelperText>
           </FormGroup>
         </form>

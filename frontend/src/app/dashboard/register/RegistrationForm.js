@@ -4,7 +4,6 @@ import {
   FormGroup,
   Container,
   TextField,
-  Button,
   FormHelperText,
 } from "@mui/material";
 
@@ -113,7 +112,6 @@ function RegistrationForm() {
               placeholder="Email"
               autoComplete="email"
               label="Email"
-              color="secondary"
               focused
               margin="normal"
               onChange={handleEmailChange}
@@ -123,7 +121,6 @@ function RegistrationForm() {
               autoComplete="new-password"
               label="Password"
               type="password"
-              color="secondary"
               focused
               margin="normal"
               onChange={handlePasswordChange}
@@ -133,18 +130,15 @@ function RegistrationForm() {
               type="password"
               autoComplete="new-password"
               label="Confirm Password"
-              color="secondary"
               focused
               margin="normal"
               onChange={handleConfirmPasswordChange}
             />
-            <Button
-              variant="contained"
-              color="secondary"
+            <button
               onClick={handleSubmit}
             >
               Register!
-            </Button>
+            </button>
             <FormHelperText error={error.length > 0}>{error}</FormHelperText>
           </FormGroup>
         </form>

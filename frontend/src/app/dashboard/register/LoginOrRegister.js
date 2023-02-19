@@ -50,9 +50,7 @@ export default function LoginOrRegister() {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs 
           value={value} 
-          onChange={handleChange} 
-          textColor="secondary"
-          indicatorColor="secondary"
+          onChange={handleChange}
           aria-label="basic tabs example"
           centered
         >
