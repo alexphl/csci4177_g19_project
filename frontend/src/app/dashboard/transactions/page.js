@@ -19,20 +19,22 @@ export default function TransactionTable() {
   }, []);
 
   return (
-    <Grid container spacing={2}>
-      {transactions && <pre>{JSON.stringify(transactions, null, 2)}</pre>}
-      {!transactions && (
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          style={{ minHeight: "100vh" }}
-        >
-          <CircularProgress color="success" />
-        </Grid>
-      )}
-    </Grid>
+    <div className="container max-w-6xl px-6">
+      <Grid container spacing={2}>
+        {transactions && <pre>{JSON.stringify(transactions, null, 2)}</pre>}
+        {!transactions && (
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            style={{ minHeight: "100vh" }}
+          >
+            <CircularProgress color="success" />
+          </Grid>
+        )}
+      </Grid>
+    </div>
   );
 }

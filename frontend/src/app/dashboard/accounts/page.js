@@ -21,25 +21,27 @@ export default function CustomerTable() {
   }, []);
 
   return (
-    <Grid container spacing={2}>
-      {accounts &&
-        accounts.map((account) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={account}>
-            <AccountCard content={account} />
+    <div className="container max-w-6xl px-6">
+      <Grid container spacing={2}>
+        {accounts &&
+          accounts.map((account) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={account}>
+              <AccountCard content={account} />
+            </Grid>
+          ))}
+        {!accounts && (
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            style={{ minHeight: "100vh" }}
+          >
+            <CircularProgress color="success" />
           </Grid>
-        ))}
-      {!accounts && (
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          style={{ minHeight: "100vh" }}
-        >
-          <CircularProgress color="success" />
-        </Grid>
-      )}
-    </Grid>
+        )}
+      </Grid>
+    </div>
   );
 }

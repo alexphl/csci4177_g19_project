@@ -21,7 +21,7 @@ export default function CustomerTable() {
   }, []);
 
   return (
-    <pre>
+    <div className="container max-w-6xl px-6">
       <Grid container spacing={2}>
         {customers &&
           customers.map((customer) => (
@@ -42,6 +42,6 @@ export default function CustomerTable() {
           </Grid>
         )}
       </Grid>
-    </pre>
+    </div>
   );
 }
