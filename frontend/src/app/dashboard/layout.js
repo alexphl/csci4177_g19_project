@@ -44,7 +44,7 @@ export default function Home({
       <ThemeProvider theme={themeMUI}>
         <userContext.Provider value={{ ...userState, dispatchUser }}>
           <NavDesktop />
-          <div className="text-neutral-100 sm:ml-16 flex justify-center">{children}</div>
+          <div className="text-neutral-100 md:ml-16 flex justify-center">{children}</div>
         </userContext.Provider>
       </ThemeProvider>
     </>

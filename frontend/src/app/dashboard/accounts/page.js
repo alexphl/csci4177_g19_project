@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import AccountCard from "./AccountCard";
@@ -22,27 +21,25 @@ export default function CustomerTable() {
   }, []);
 
   return (
-    <Paper elevation={0} sx={{ p: 2, margin: 2, flexGrow: 1 }}>
-      <Grid container spacing={2}>
-        {accounts &&
-          accounts.map((account) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={account}>
-              <AccountCard content={account} />
-            </Grid>
-          ))}
-        {!accounts && (
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-            style={{ minHeight: "100vh" }}
-          >
-            <CircularProgress color="success" />
+    <Grid container spacing={2}>
+      {accounts &&
+        accounts.map((account) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={account}>
+            <AccountCard content={account} />
           </Grid>
-        )}
-      </Grid>
-    </Paper>
+        ))}
+      {!accounts && (
+        <Grid
+          container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+          style={{ minHeight: "100vh" }}
+        >
+          <CircularProgress color="success" />
+        </Grid>
+      )}
+    </Grid>
   );
 }
