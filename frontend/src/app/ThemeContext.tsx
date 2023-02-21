@@ -1,6 +1,6 @@
 'use client'
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 const themeMUI = createTheme({
   palette: {
@@ -11,7 +11,7 @@ const themeMUI = createTheme({
   },
   typography: {
     fontFamily: "var(--font-custom)" // see root layout.tsx for definition
-  },
+  }
 });
 
 const ThemeContextProvider = ({ children }: { children: React.ReactNode }) => {

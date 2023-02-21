@@ -29,7 +29,7 @@ export const contentBrowse = [
 		heading: "Transactions",
 		link: "/dashboard/transactions",
 		icon: <ReceiptPercentIcon />,
-	},
+	}
 ];
 
 export const contentExplore = [

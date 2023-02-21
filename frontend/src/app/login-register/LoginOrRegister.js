@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './Login';
+import {useState } from "react";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -39,7 +40,7 @@ function a11yProps(index) {
 }
 
 export default function LoginOrRegister() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

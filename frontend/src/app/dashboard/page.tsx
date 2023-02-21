@@ -1,5 +1,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { useContext } from "react";
+import { userContext } from "../UserContext";
 
 // Lazy load components
 const Search = dynamic(() => import("./CustomerSearch"));
@@ -10,7 +12,12 @@ const linkCardStyle =
 
 import { contentBrowse, contentExplore, contentSettings } from "./NavSchema";
 
+
+
 export default function IndexContent() {
+    // user context - has properties: loggedIn, email 
+    const user = useContext(userContext)
+
   return (
     <div
       className="container mb-12 flex max-w-2xl 2xl:max-w-5xl flex-col gap-10 px-6 pt-20 transition-all"

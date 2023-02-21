@@ -16,7 +16,7 @@
     "@material/menu": "^14.0.0",
     "@mui/icons-material": "^5.11.9",
     "@mui/joy": "5.0.0-alpha.67",
-    "@mui/material": "^5.11.9",
+    "@mui/material": "^5.11.10",
     "@next/font": "^13.1.6",
     "@tanstack/react-query": "^4.24.9",
     "axios": "^1.3.3",

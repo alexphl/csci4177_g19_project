@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { userContext } from "../../UserContext"
+import { userContext } from "../UserContext"
 import {
   FormGroup,
   Container,
@@ -45,7 +45,8 @@ function LoginForm() {
     // updateError()
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     let err = checkError();
     // password must be valid regex check
     // passwords must match
