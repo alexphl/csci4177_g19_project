@@ -19,29 +19,14 @@ export default function HomePage() {
         </main>
 
         <div className="mb-8 flex gap-4 font-medium">
-          <Link href="/dashboard">
+          <Link href="/login-register">
             <div className="rounded-lg border border-neutral-600 bg-black px-6 py-2 shadow-lg">
               {" "}
-              Login{" "}
+              Enter{" "}
             </div>
           </Link>
-
-          <button
-            disabled
-            className="rounded-lg bg-neutral-800 px-6 py-2 text-neutral-500"
-          >
-            {" "}
-            Sign Up{" "}
-          </button>
         </div>
 
-        <div className="max-w-md text-sm text-neutral-500">
-          <strong> User registration is disabled in this preview.</strong>{" "}
-          <br />
-          Login will take you to a dashboard for a dummy user. <br />
-          Local storage may be used to simulate select backend features. <br />{" "}
-          <br />I only wrote the landing page as a warmup :)
-        </div>
       </div>
     </div>
   );
