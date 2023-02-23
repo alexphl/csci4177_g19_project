@@ -1,14 +1,15 @@
 "use client";
 
 import { Container } from "@mui/material";
-import { redirect } from 'next/navigation';
-import { useContext, useEffect, useState } from "react";
+// import { redirect } from 'next/navigation';
+import { useContext, useEffect } from "react";
 import { userContext } from "../UserContext";
 import LoginOrRegister from "./LoginOrRegister";
 
 function Assignment1() {
   // user context - has properties: loggedIn, email
   const { user } = useContext(userContext)
+
 
 
   useEffect(() => {
