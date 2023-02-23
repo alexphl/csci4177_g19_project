@@ -75,7 +75,7 @@ export default function Home({params}) {
               spacing={{ xs: 1, sm: 2, md: 4 }}
             >
               {customer.accounts.map((account) => (
-                <Link href={"/accounts/" + account} key={account}>
+                <Link href={"/dashboard/accounts/" + account} key={account}>
                   <Button variant="outline" color="dark">
                     {account}
                   </Button>
