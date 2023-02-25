@@ -21,8 +21,12 @@ export default function HomePage() {
         <div className="mb-8 flex gap-4 font-medium">
           <Link href="/login-register">
             <div className="rounded-lg border border-neutral-600 bg-black px-6 py-2 shadow-lg">
-              {" "}
-              Enter{" "}
+              Login
+            </div>
+          </Link>
+          <Link href="/dashboard">
+            <div className="rounded-lg border border-neutral-600 bg-black px-6 py-2 shadow-lg">
+              Bypass Login
             </div>
           </Link>
         </div>
