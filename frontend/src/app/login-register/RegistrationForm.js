@@ -5,6 +5,7 @@ import {
   Container,
   TextField,
   FormHelperText,
+  Button
 } from "@mui/material";
 
 // Form styled using material UI, referenced the docs : https://mui.com/material-ui/
@@ -134,11 +135,11 @@ function RegistrationForm() {
               margin="normal"
               onChange={handleConfirmPasswordChange}
             />
-            <button
+            <Button variant="outlined"
               onClick={handleSubmit}
             >
               Register!
-            </button>
+            </Button>
             <FormHelperText error={error.length > 0}>{error}</FormHelperText>
           </FormGroup>
         </form>
