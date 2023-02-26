@@ -182,7 +182,7 @@ const Portfolio = () => {
       <div>
         <Box>
           <Box>
-            <Table sx={{ border: 1 }}>
+            <Table>
               <TableHead>
                 <TableRow>
                   <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
