@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -21,7 +21,6 @@ export default function Home({params}) {
   const router = useSearchParams();
   const username = params.customer;
   const page = params.customer;
-
 
   const [customer, getCustomer] = useState(null);
 
