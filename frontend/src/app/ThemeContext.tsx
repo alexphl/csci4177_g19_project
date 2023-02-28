@@ -26,7 +26,7 @@ const themeMUI = createTheme({
           borderRadius: "0.75rem",
           borderColor: "#262626",
           padding: 3,
-        }
+        },
       },
     },
     MuiPaper: {
@@ -39,7 +39,7 @@ const themeMUI = createTheme({
           borderRadius: "0.75rem",
           borderColor: "#262626",
           padding: 6,
-        }
+        },
       },
     },
     MuiTable: {
@@ -51,9 +51,9 @@ const themeMUI = createTheme({
           borderRadius: "0.75rem",
           borderColor: "#262626",
           padding: 6,
-        }
+        },
       },
-    }
+    },
   },
 });
 

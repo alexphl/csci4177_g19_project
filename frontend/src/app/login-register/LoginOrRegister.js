@@ -1,10 +1,12 @@
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import RegistrationForm from './RegistrationForm';
-import LoginForm from './Login';
-import {useState } from "react";
+"use client";
+
+import PropTypes from "prop-types";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import RegistrationForm from "./RegistrationForm";
+import LoginForm from "./LoginForm";
+import { useState } from "react";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -17,11 +19,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -35,7 +33,7 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
@@ -47,10 +45,10 @@ export default function LoginOrRegister() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs 
-          value={value} 
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
           centered
@@ -60,11 +58,11 @@ export default function LoginOrRegister() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-      <LoginForm />
+        <LoginForm />
       </TabPanel>
       <TabPanel value={value} index={1}>
-      <RegistrationForm />
+        <RegistrationForm />
       </TabPanel>
     </Box>
-  )
+  );
 }

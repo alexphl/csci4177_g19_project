@@ -1,11 +1,13 @@
+"use client";
+
 import React, { useEffect, useState, useContext } from "react";
-import { userContext } from "../UserContext"
+import { userContext } from "../UserContext";
 import {
   FormGroup,
   Container,
   TextField,
   FormHelperText,
-  Button
+  Button,
 } from "@mui/material";
 
 // Form styled using material UI, referenced the docs : https://mui.com/material-ui/
@@ -15,7 +17,7 @@ function LoginForm() {
   const [error, setError] = useState("");
 
   // user context - has properties: loggedIn, email
-  const { dispatchUser } = useContext(userContext);
+  const { user, dispatchUser } = useContext(userContext);
 
   // input validation functions
   const isValidEmail = (val) => {
@@ -47,7 +49,7 @@ function LoginForm() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     let err = checkError();
     // password must be valid regex check
     // passwords must match
@@ -114,9 +116,7 @@ function LoginForm() {
               margin="normal"
               onChange={handlePasswordChange}
             />
-            <Button variant="outlined"
-              onClick={handleSubmit}
-            >
+            <Button variant="outlined" className="mt-6" onClick={handleSubmit}>
               Login!
             </Button>
             <FormHelperText error={error.length > 0}>{error}</FormHelperText>

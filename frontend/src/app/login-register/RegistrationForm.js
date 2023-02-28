@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState, useContext } from "react";
 import { userContext } from "../UserContext";
 import {
@@ -5,7 +7,7 @@ import {
   Container,
   TextField,
   FormHelperText,
-  Button
+  Button,
 } from "@mui/material";
 
 // Form styled using material UI, referenced the docs : https://mui.com/material-ui/
@@ -135,9 +137,7 @@ function RegistrationForm() {
               margin="normal"
               onChange={handleConfirmPasswordChange}
             />
-            <Button variant="outlined"
-              onClick={handleSubmit}
-            >
+            <Button variant="outlined" className="mt-6" onClick={handleSubmit}>
               Register!
             </Button>
             <FormHelperText error={error.length > 0}>{error}</FormHelperText>

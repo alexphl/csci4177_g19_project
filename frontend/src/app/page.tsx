@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 
 // This is a Client Component. It receives data as props and

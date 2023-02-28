@@ -1,35 +1,22 @@
 "use client";
 
-import { Container } from "@mui/material";
-// import { redirect } from 'next/navigation';
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { userContext } from "../UserContext";
 import LoginOrRegister from "./LoginOrRegister";
 
-function Assignment1() {
+function Auth() {
   // user context - has properties: loggedIn, email
-  const { user } = useContext(userContext)
+  const { user } = useContext(userContext);
 
-
-
-  useEffect(() => {
-    //
-  }, [user])
-
-  if(user.loggedIn){
-    return(
-      <div>Redirecting... {redirect('/dashboard')}</div>
-    )
+  if (user.loggedIn) {
+    return <div>Redirecting... {redirect("/dashboard")}</div>;
   }
 
   return (
-    <div aria-label="Login or Register">
-            {/* This is the tabs */}
-            <Container maxWidth="sm">
-              <LoginOrRegister />
-            </Container>
+    <div className="container m-auto my-10 max-w-md bg-black border border-neutral-800 pt-1 p-4 shadow-lg rounded-xl" aria-label="Login or Register">
+      <LoginOrRegister />
     </div>
-  )
+  );
 }
 
-export default Assignment1;
+export default Auth;
