@@ -1,9 +1,10 @@
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import News_list from "../../news/news_list";
-// Lazy load charts
+
+// Lazy load
 const Chart = dynamic(() => import("./Chart"));
+const News = dynamic(() => import("../../news/page"));
 
 import data from "@/dummy_data/stockData.json";
 
@@ -59,7 +60,7 @@ export default function StockDetails({
 
       <div className="mt-6 text-neutral-100 transition-all">
         <h1 className="text-xl font-bold">Related News</h1>
-        <News_list />
+        <News />
       </div>
     </>
   );

@@ -3,15 +3,17 @@ import React from "react";
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import News_list from "../news/news_list";
 import Typography from "@mui/material/Typography";
 
 import Image from "next/image";
+import dynamic from "next/dynamic";
 
-import styles from "../../../styles/header.module.css";
-import jsondata from "../../../dummy_data/data.json";
+import styles from "@/styles/header.module.css";
+import jsondata from "@/dummy_data/data.json";
 
 const data = jsondata.news_detail;
+
+const News_list = dynamic(() => import("../news/page"));
 
 export default function page() {
   return (

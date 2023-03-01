@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography";
 import Link from "next/link";
 
 import Image from "next/image";
-import styles from "../../../styles/header.module.css";
-import jsondata from "../../../dummy_data/news_list.json";
+import styles from "@/styles/header.module.css";
+import jsondata from "@/dummy_data/news_list.json";
 
 const data = jsondata.newslist;
 

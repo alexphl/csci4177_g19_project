@@ -1,8 +1,9 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import NewsList from "./news/news_list";
+
 // Lazy load components
 const Search = dynamic(() => import("./CustomerSearch"));
+const NewsList = dynamic(() => import("./news/page"));
 
 const subheadingStyle = "text-sm font-medium text-neutral-400";
 const linkCardStyle =
