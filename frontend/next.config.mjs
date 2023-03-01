@@ -4,6 +4,7 @@
  * This is especially useful for Docker builds.
  */
 
+/** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
   swcMinify: true,
