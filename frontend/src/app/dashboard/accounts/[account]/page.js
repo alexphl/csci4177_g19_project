@@ -22,7 +22,7 @@ const accountBaseURL = apiURL + "/account/account_id/";
 const tranasctionsBaseURL = apiURL + "/transaction/account_id/";
 
 
-export default function Home({params}) {
+export default function Account({params}) {
   const router = useSearchParams();
   const account_id = params.account;
 

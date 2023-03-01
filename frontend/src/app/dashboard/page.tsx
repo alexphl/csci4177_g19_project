@@ -10,7 +10,7 @@ const linkCardStyle =
 
 import { contentBrowse, contentExplore, contentSettings } from "./NavSchema";
 
-export default function IndexContent() {
+export default function Dashboard() {
 
   return (
     <div

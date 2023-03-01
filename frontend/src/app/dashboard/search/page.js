@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 
 import Search from "../CustomerSearch";
 
-export default function Home() {
+export default function SearchPage() {
   return (
     <Container maxWidth="sm">
       <Paper elevation={0} sx={{ p: 2, margin: 2, flexGrow: 1 }}>

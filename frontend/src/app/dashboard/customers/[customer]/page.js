@@ -17,7 +17,7 @@ import Stack from "@mui/material/Stack";
 import apiURL from "../../../../../APIurl";
 const baseURL = apiURL + "/customer/username/";
 
-export default function Home({params}) {
+export default function Customer({params}) {
   const router = useSearchParams();
   const username = params.customer;
   const page = params.customer;

@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 
 const NavDesktop = dynamic(() => import("./NavDesktop"));
 
-export default function Home({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <NavDesktop />

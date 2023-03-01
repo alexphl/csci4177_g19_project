@@ -9,7 +9,7 @@ import Container from "@mui/material/Container";
 import apiURL from "../../../../../APIurl";
 const baseURL = apiURL + "/transaction/account_id/";
 
-export default function Home() {
+export default function Transaction() {
   const router = useSearchParams();
   const { account_id } = router.query;
 
