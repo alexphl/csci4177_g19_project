@@ -1,0 +1,64 @@
+{
+  "newslist": [
+    {
+      "source": { "id": "cnn", "name": "CNN" },
+      "author": "Paul R. La Monica",
+      "title": "Did investors learn nothing from last year's market meltdown?",
+      "description": "Meme stock mania was supposed to be over, right? Guess what: It's not.",
+      "url": "https: //www.cnn.com/2023/02/05/investing/stocks-week-ahead/index.html",
+      "urlToImage": "https: //media.cnn.com/api/v1/images/stellar/prod/230202112337-01-bed-bath-beyond-0904-file.jpg?c=16x9&q=w_800,c_fill",
+      "publishedAt": "2023-02-05T12: 25: 50Z",
+      "content": "A version of this story first appeared in CNN Business Before the Bell newsletter. Not a subscriber? You can sign up right here.\r\n' +'Meme stock mania was supposed to be over, right? Guess what: Its not.…",
+      "relative_stock": {
+        "company": "COMP1",
+        "price": "11621.71",
+        "Change": "0.95"
+      }
+    },
+    {
+      "source": { "id": "engadget", "name": "Engadget" },
+      "author": "Kris Holt",
+      "title": "YouTube CEO Susan Wojcicki is stepping down",
+      "description": "YouTube CEO Susan Wojcicki has announced that she's stepping down from the helm of the streaming video service. Wojcicki, who joined Alphabet nearly 25 years ago, said she's starting 'a new chapter focused on my family, health, and personal projects I'm passi…",
+      "url": "https: //www.engadget.com/youtube-ceo-susan-wojcicki-is-stepping-down-172115390.html",
+      "urlToImage": "https: //s.yimg.com/uu/api/res/1.2/0Zo7muJ6S_vnrJYgPMdycw--~B/Zmk9ZmlsbDtoPTYzMDtweW9mZj0wO3c9MTIwMDthcHBpZD15dGFjaHlvbg--/https://media-mbst-pub-ue1.s3.amazonaws.com/creatr-uploaded-images/2023-02/7c5b0d60-ae1d-11ed-bd6b-875ae2569caf.cf.jpg",
+      "publishedAt": "2023-02-16T17: 21: 15Z",
+      "relative_stock": {
+        "company": "COMP1",
+        "price": "11621.71",
+        "Change": "0.95"
+      },
+      "content": "YouTube CEO Susan Wojcicki has announced that she's stepping down from the helm of the streaming video service. Wojcicki, who joined Alphabet nearly 25 years ago, said she's starting 'a new chapter f… "
+    },
+    {
+      "source": { "id": "engadget", "name": "Engadget" },
+      "author": "Kris Holt",
+      "title": "Apple Watch can now be used by pro surfers during competition",
+      "description": "Pro surfers will soon start using an Apple Watch\r\n' +' during competitions. The World Surf League (WSL) has designated\r\n' +the wearable as official wearable equipment. The organization says it's the first time that Apple Watch is being 'used as official competitor …",
+      "url": "https: //www.engadget.com/apple-watch-world-surf-league-sports-163019770.html",
+      "urlToImage": "https: //s.yimg.com/os/creatr-uploaded-images/2023-01/a1c4ff30-9e5e-11ed-b942-8a6b88c5fdba",
+      "publishedAt": "2023-01-27T16: 30: 19Z",
+      "relative_stock": {
+        "company": "COMP1",
+        "price": "11621.71",
+        "Change": "0.95"
+      },
+      "content": "Pro surfers will soon start using an Apple Watch\r\n' +'during competitions. The World Surf League (WSL) has designated\r\n' +' the wearable as official wearable equipment. The organization says it's the first … [+1681 chars]"
+    },
+    {
+      "source": { "id": "engadget", "name": "Engadget" },
+      "author": "Jon Fingas",
+      "title": "The DOJ is looking into Tesla's Autopilot and Full Self-Driving claims",
+      "description": "The rumors of Tesla facing a Justice Department investigation were true. The EV designer has confirmed in an SEC filing that the DOJ has requested documents linked to Autopilot and Full Self-Driving (FSD) features. Tesla says that no government body has deter…",
+      "url": "https: //www.engadget.com/justice-department-tesla-autopilot-full-self-driving-subpoena-165637940.html",
+      "urlToImage": "https: //s.yimg.com/os/creatr-uploaded-images/2023-01/0a0589c0-a189-11ed-bbfa-f7d1d21bb7f9",
+      "publishedAt": "2023-01-31T16: 56: 37Z",
+      "relative_stock": {
+        "company": "COMP1",
+        "price": "11621.71",
+        "Change": "0.95"
+      },
+      "content": "The rumors of Tesla facing a Justice Department investigation were true. The EV designer has confirmed in an SEC filing that the DOJ has requested documents linked to Autopilot and Full Self-Driving … [+1931 chars]"
+    }
+  ]
+}

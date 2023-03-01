@@ -1,7 +1,7 @@
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-
+import News_list from "../../news/news_list";
 // Lazy load charts
 const Chart = dynamic(() => import("./Chart"));
 
@@ -18,7 +18,7 @@ export default function StockDetails({
 
   return (
     <>
-      <div className="w-full overflow-auto scrollbar-hide pb-6 transition-all">
+      <div className="w-full overflow-auto pb-6 transition-all scrollbar-hide">
         <nav className="flex w-full pb-6 sm:hidden">
           <Link href={"/dashboard/stocks/"}>
             <ArrowLeftIcon className="h-9 w-9 rounded-md bg-white/[0.1] p-2" />
@@ -59,20 +59,7 @@ export default function StockDetails({
 
       <div className="mt-6 text-neutral-100 transition-all">
         <h1 className="text-xl font-bold">Related News</h1>
-        <div className="mt-4 flex flex-col gap-3">
-          {[...Array(4)].map((_x, i) => (
-            <article
-              key={i}
-              className="flex h-28 cursor-pointer items-center gap-4 rounded-xl border border-neutral-800 p-2 hover:border-neutral-700"
-            >
-              <div className="h-full w-32 rounded-lg bg-white/[0.1]" />
-              <div className="flex h-full flex-col py-1">
-                <h2 className="text-lg font-bold">Story Title</h2>
-                <p className="text-sm text-neutral-400">Lorem Ipsum</p>
-              </div>
-            </article>
-          ))}
-        </div>
+        <News_list />
       </div>
     </>
   );
