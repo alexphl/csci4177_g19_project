@@ -6,7 +6,7 @@ import axios from "axios";
 
 import Container from "@mui/material/Container";
 
-import apiURL from "../../../../../APIurl";
+import apiURL from "@/APIurl";
 const baseURL = apiURL + "/transaction/account_id/";
 
 export default function Transaction() {

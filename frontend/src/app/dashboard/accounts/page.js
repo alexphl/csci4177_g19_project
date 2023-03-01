@@ -8,7 +8,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import AccountCard from "./AccountCard";
 
-import apiURL from "../../../../APIurl";
+import apiURL from "@/APIurl";
 const baseURL = apiURL + "/account/";
 
 export default function CustomerTable() {

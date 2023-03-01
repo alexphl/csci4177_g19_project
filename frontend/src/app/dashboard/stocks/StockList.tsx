@@ -10,7 +10,7 @@ import type FuseResult from "fuse.js";
 const StockListItem = dynamic(() => import("./StockListItem"));
 const StockListbox = dynamic(() => import("./Listbox"));
 
-import stockData from "../../../dummy_data/stockData.json";
+import stockData from "@/dummy_data/stockData.json";
 const allStocks = Object.keys(stockData).sort();
 
 interface iSearchResult extends FuseResult<string> {

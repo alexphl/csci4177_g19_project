@@ -5,7 +5,7 @@ import Link from "next/link";
 // Lazy load charts
 const Chart = dynamic(() => import("./Chart"));
 
-import data from "../../../../dummy_data/stockData.json";
+import data from "@/dummy_data/stockData.json";
 
 export default function StockDetails({
   params,

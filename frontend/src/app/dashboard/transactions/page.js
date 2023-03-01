@@ -6,7 +6,7 @@ import axios from "axios";
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import apiURL from "../../../../APIurl";
+import apiURL from "@/APIurl";
 const baseURL = apiURL + "/transaction/";
 
 export default function TransactionTable() {

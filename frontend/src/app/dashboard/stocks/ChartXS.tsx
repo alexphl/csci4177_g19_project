@@ -3,7 +3,7 @@
 import { memo } from "react";
 import { Line } from "react-chartjs-2";
 
-import data from "../../../dummy_data/prices.json";
+import data from "@/dummy_data/prices.json";
 
 const prices = JSON.parse(JSON.stringify(data.prices)).reverse();
 prices.splice(0, 6030);

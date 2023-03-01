@@ -10,7 +10,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import CustomerCard from "./CustomerCard";
 
-import apiURL from "../../../APIurl";
+import apiURL from "@/APIurl";
 const baseURL = apiURL + "/customer/search/";
 // const baseURL = "http://localhost:3000/customer/search/";
 

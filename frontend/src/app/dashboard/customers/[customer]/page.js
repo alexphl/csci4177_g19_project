@@ -14,7 +14,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 
-import apiURL from "../../../../../APIurl";
+import apiURL from "@/APIurl";
 const baseURL = apiURL + "/customer/username/";
 
 export default function Customer({params}) {

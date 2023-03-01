@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { memo } from "react";
-import data from "../../../dummy_data/stockData.json";
+import data from "@/dummy_data/stockData.json";
 //import StockChartXS from "./ChartXS";
 
 // Lazy load charts
