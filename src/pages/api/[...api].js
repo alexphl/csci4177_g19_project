@@ -22,10 +22,10 @@ db.once("open", function () {
   console.log("DB Connected Successfully");
 });
 
-import indexRouter from "./routes/index";
-import accountRouter from "./routes/account";
-import customerRouter from "./routes/customer";
-import transactionRouter from "./routes/transaction";
+import indexRouter from "@/utils/routes/index";
+import accountRouter from "@/utils/routes/account";
+import customerRouter from "@/utils/routes/customer";
+import transactionRouter from "@/utils/routes/transaction";
 
 // view engine setup
 app.set("views", join(__dirname, "views"));
