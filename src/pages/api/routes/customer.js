@@ -1,3 +1,5 @@
+"use strict";
+
 import { Router } from "express";
 import Customers from "../models/Customers";
 var router = Router();

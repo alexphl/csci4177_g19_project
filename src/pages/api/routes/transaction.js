@@ -1,3 +1,5 @@
+"use strict";
+
 import { Router } from "express";
 import Transactions from "../models/Transactions";
 const router = Router();

@@ -1,3 +1,4 @@
+"use strict";
 import { Schema, model, models } from "mongoose";
 
 const Accounts = Schema({
