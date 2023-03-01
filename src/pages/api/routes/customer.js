@@ -44,7 +44,7 @@ router.get("/username/", async function (req, res) {
 
 //Route to get a customer by their specific username
 router.get("/username/:username", async function (req, res) {
-  Customers.findOne({ username: req.params.username })
+  await Customers.findOne({ username: req.params.username })
     .then((docs) => {
       res.send(docs);
     })
@@ -55,7 +55,7 @@ router.get("/username/:username", async function (req, res) {
 
 //Route to get customer usernames
 router.get("/email/", async function (req, res) {
-  Customers.find({})
+  await Customers.find({})
     .then((docs) => {
       res.send(docs);
     })
@@ -67,7 +67,7 @@ router.get("/email/", async function (req, res) {
 
 //Route to get a customer by their specific username
 router.get("/email/:email", async function (req, res) {
-  Customers.findOne({ email: req.params.email })
+  await Customers.findOne({ email: req.params.email })
     .then((docs) => {
       res.send(docs);
     })
@@ -78,7 +78,7 @@ router.get("/email/:email", async function (req, res) {
 
 //Search for a user using their text index
 router.get("/search/:query", async function (req, res) {
-  Customers.find({ $text: { $search: req.params.query } })
+  await Customers.find({ $text: { $search: req.params.query } })
     .then((docs) => {
       res.send(docs);
     })
@@ -90,7 +90,7 @@ router.get("/search/:query", async function (req, res) {
 //Aggregate statistic routes:
 //Route to get total count of customers:
 router.get("/count/", async function (req, res) {
-  Customers.countDocuments({})
+  await Customers.countDocuments({})
     .then((count) => {
       console.log("Count :", count);
       res.json({ count: count });
