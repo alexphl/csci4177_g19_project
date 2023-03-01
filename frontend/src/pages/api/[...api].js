@@ -1,15 +1,13 @@
 "use strict";
 
 import createError from "http-errors";
-import express, { json, urlencoded, static as _static } from "express";
+import express, { json as _json, urlencoded, static as _static } from "express";
 import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import { connect, set, connection } from "mongoose";
-import cors from "cors";
 
 const app = express();
-app.use(cors());
 
 const dbURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_USER_PASSWORD}@${process.env.DB_URL}`;
 connect(dbURI, {
@@ -34,7 +32,7 @@ app.set("views", join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(logger("dev"));
-app.use(json());
+app.use(_json());
 app.use(
   urlencoded({
     extended: false,
@@ -45,17 +43,6 @@ app.use(_static(join(__dirname, "public")));
 
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
-  // // Website you wish to allow to connect
-  const allowedOrigins = [
-    "https://group19project.netlify.app",
-    "https://darling-sunshine-0ef6da.netlify.app",
-    "https://csci4177-group19-project.vercel.app",
-    "https://csci4177-group19-project-ol066m3ep-alexprokh.vercel.app",
-  ];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
   // res.setHeader('Access-Control-Allow-Origin', 'https://scintillating-toffee-28fea0.netlify.app');
   // Request methods you wish to allow
   res.setHeader(
@@ -85,7 +72,7 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
