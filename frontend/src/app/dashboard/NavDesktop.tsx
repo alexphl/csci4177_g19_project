@@ -10,8 +10,6 @@ import { contentBrowse, contentExplore, contentSettings } from "./NavSchema";
 const NavDesktop = () => {
 	const segment = useSelectedLayoutSegment();
 
-	console.log(segment);
-
 	return (
 		<nav className="group z-[90] hidden h-screen w-24 min-w-0 max-w-fit flex-col gap-3 border-r border-neutral-800 bg-black/[0.5] p-3 text-sm font-medium text-neutral-400 shadow-lg saturate-200 backdrop-blur-lg transition-all hover:w-60 hover:max-w-sm hover:text-neutral-200 md:fixed md:flex lg:p-4 2xl:p-5">
 			<button className="mx-auto mb-12 flex aspect-square w-fit flex-none items-center rounded-full border-2 border-neutral-800 p-2 group-hover:mx-0">
