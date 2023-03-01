@@ -11,9 +11,17 @@ const config = {
     appDir: true,
   },
   modularizeImports: {
-    '@heroicons/react/20/solid': {
-      transform: '@heroicons/react/20/solid/{{member}}',
+    "@heroicons/react/20/solid": {
+      transform: "@heroicons/react/20/solid/{{member}}",
     },
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "placehold.it",
+      },
+    ],
   },
 };
 export default config;

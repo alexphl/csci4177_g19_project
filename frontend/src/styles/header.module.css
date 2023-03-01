@@ -1,0 +1,37 @@
+.container {
+    
+    display: flex;
+    justify-content: center;
+    color: var(--text-unfocus-color)
+}
+.mediacardBox{
+    margin-top: 3vh;
+    margin-bottom: 2vh;
+    background-color: var(--background-card-color);
+    border-radius: 1.5ch;
+    padding: 2vh 1vw 1vh 1vw;
+}
+.mediacard:last-of-type{
+    border: 0px ;
+}
+.mediacard{
+    margin: 12px 0px;
+    padding: 12px 0 12px 0;
+    width: 95%;
+    transform: translateX(2.5%);
+    border-bottom: 2px solid var(--text-unfocus-color);
+}
+.newslistBox{
+     margin-top: 2vh;
+    background-color: var(--background-card-color);
+    border-radius: 1.5ch;
+    padding: 2vh 1vw 1vh 1vw;
+
+}
+
+.relative_stock{
+    border-radius: 1.5ch;
+    background-color: var(--background-card-color);
+    margin-top: 3vh;
+    padding: 16px;
+}

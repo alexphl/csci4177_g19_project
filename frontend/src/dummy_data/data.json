@@ -1,0 +1,113 @@
+{
+  "newslist": [
+    {
+      "news_title": "This is a news title. This is a news title",
+      "id": 1,
+      "source": "naschk",
+      "date": "28-Jan-2023",
+      "relative_stock": {
+        "company": "COMP1",
+        "price": "11621.71",
+        "Change": "0.95"
+      }
+    },
+    {
+      "news_title": "This is a news title. This is a news title",
+      "id": 2,
+      "source": "naschk",
+      "date": "28-Jan-2023",
+      "relative_stock": {
+        "company": "COMP1",
+        "price": "11621.71",
+        "Change": "0.95"
+      }
+    },
+    {
+      "news_title": "This is a news title. This is a news title",
+      "id": 4,
+      "source": "naschk",
+      "date": "28-Jan-2023",
+      "relative_stock": {
+        "company": "COMP1",
+        "price": "11621.71",
+        "Change": "0.95"
+      }
+    },
+    {
+      "news_title": "This is a news title. This is a news title",
+      "id": 5,
+      "source": "naschk",
+      "date": "28-Jan-2023",
+      "relative_stock": {
+        "company": "COMP1",
+        "price": "11621.71",
+        "Change": "0.95"
+      }
+    }
+  ],
+  "data": [
+    {
+      "company": "COMP1",
+      "price": "11621.71",
+      "Change": "0.95"
+    },
+    {
+      "company": "COMP2",
+      "price": "11621.71",
+      "Change": "-0.95"
+    },
+    {
+      "company": "COMP3",
+      "price": "11621.71",
+      "Change": "0.95"
+    },
+    {
+      "company": "COMP4",
+      "price": "11621.71",
+      "Change": "-0.95"
+    },
+    {
+      "company": "COMP5",
+      "price": "11621.71",
+      "Change": "0.95"
+    },
+    {
+      "company": "COMP6",
+      "price": "11621.71",
+      "Change": "-0.95"
+    },
+    {
+      "company": "COMP7",
+      "price": "11621.71",
+      "Change": "0.95"
+    },
+    {
+      "company": "COMP8",
+      "price": "11621.71",
+      "Change": "0.95"
+    }
+  ],
+  "Detail": [
+    {
+      "id": 1,
+      "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et tortor consequat id porta nibh. Diam maecenas sed enim ut sem viverra aliquet eget sit. Tellus at urna condimentum mattis. Ut tellus elementum sagittis vitae et leo duis. Dictum non consectetur a erat. Suspendisse potenti nullam ac tortor vitae. Tristique magna sit amet purus gravida quis blandit turpis. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus. Turpis egestas maecenas pharetra convallis posuere morbi leo. Massa tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada proin. Scelerisque eu ultrices vitae auctor eu augue ut. Pretium nibh ipsum consequat nisl."
+    },
+    {
+      "id": 2,
+      "value": "Id nibh tortor id aliquet lectus. Diam maecenas ultricies mi eget mauris pharetra et. Enim sed faucibus turpis in eu. Ipsum nunc aliquet bibendum enim facilisis. Tempor orci eu lobortis elementum nibh. Elit sed vulputate mi sit amet mauris commodo quis. Semper feugiat nibh sed pulvinar proin gravida hendrerit lectus. Nulla aliquet enim tortor at auctor urna nunc. Nulla posuere sollicitudin aliquam ultrices sagittis orci a scelerisque purus. Aliquet enim tortor at auctor urna nunc. Amet facilisis magna etiam tempor orci eu. Tristique senectus et netus et. Quisque non tellus orci ac auctor augue mauris augue neque. Phasellus egestas tellus rutrum tellus pellentesque eu tincidunt tortor aliquam. Ut eu sem integer vitae justo eget magna fermentum. Convallis posuere morbi leo urna molestie at elementum eu facilisis. Sit amet consectetur adipiscing elit ut aliquam purus sit amet. Eget lorem dolor sed viverra ipsum nunc. Tortor consequat id porta nibh venenatis cras."
+    }
+  ],
+  "news_detail": {
+    "Company": "COMP",
+    "Company_Name": "NASDAQ composite index",
+    "Price": "11621.71",
+    "Price_up": "124",
+    "Change": 0.95,
+    "Contributer": " No Name",
+    "Published": "JAN 29, 2023 7:16AM EST",
+    "Previous_Close": "12,051.48",
+    "Day_Range": "11,999.87 - 12,248.15",
+    "News_title": "This is a news title. This is a news title",
+    "Detail": "Those are some random words Those are some random words Those are some random words Those are some random words Those are some random words "
+  }
+}
