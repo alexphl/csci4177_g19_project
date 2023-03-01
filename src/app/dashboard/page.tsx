@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 
 // Lazy load components
 const Search = dynamic(() => import("./CustomerSearch"));
-const NewsList = dynamic(() => import("./news/page"));
 
 const subheadingStyle = "text-sm font-medium text-neutral-400";
 const linkCardStyle =
@@ -76,9 +75,6 @@ export default function Dashboard() {
             </Link>
           ))}
         </div>
-      </section>
-      <section>
-        <NewsList />
       </section>
 
       <section>

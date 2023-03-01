@@ -5,8 +5,8 @@ import {
 	UsersIcon,
 	WalletIcon,
 	ReceiptPercentIcon,
-	MapIcon,
-	CogIcon
+	CogIcon,
+	NewspaperIcon,
 } from "@heroicons/react/20/solid";
 
 export const contentBrowse = [
@@ -29,25 +29,25 @@ export const contentBrowse = [
 		heading: "Transactions",
 		link: "/dashboard/transactions",
 		icon: <ReceiptPercentIcon />,
-	}
+	},
 ];
 
 export const contentExplore = [
+	{
+		heading: "News",
+		link: "/dashboard/news",
+		icon: <NewspaperIcon />,
+	},
 	{
 		heading: "Analytics",
 		link: "/dashboard/analytics",
 		icon: <ChartPieIcon />,
 	},
 	{
-		heading: "Map",
-		link: "/dashboard/map",
-		icon: <MapIcon />,
-	},
-	{
 		heading: "Simulation",
 		link: "/dashboard/simulation",
 		icon: <PresentationChartBarIcon />,
-	}
+	},
 ];
 
 export const contentSettings = [
