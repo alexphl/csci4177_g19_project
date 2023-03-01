@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet"
+    href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+  </head>
+  <body>
+    <div class = "container">
+      <div class = "row">
+        <div class = "col-12">
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <p>Built using the MongoDB.com <a href ="https://www.mongodb.com/docs/atlas/sample-data/sample-analytics/">sample_analytics</a> database.</p>
+    <h2>Data</h2>
+    <h3>Customers</h3>
+    <p>
+    Customer schema:
+    <pre><code class="language-js">const schema = mongoose.Schema({
+  username: String,
+  name: String,
+    address: String,
+    birthdate: Date,
+    email: String,
+    active: Boolean,
+    accounts: [Number],
+    tier_and_details: { 
+      tier: String, 
+      id: String, 
+      active: Boolean, 
+      benefits: [String] 
+    }
+})</code></pre>
+Example item:
+    <pre>
+      <code class="language-js">{
+  "tier_and_details": {
+      "benefits": [],
+      "0df078f33aa74a2e9696e0520c1a828a": {
+          "tier": "Bronze",
+          "id": "0df078f33aa74a2e9696e0520c1a828a",
+          "active": true,
+          "benefits": ["sports tickets"]
+      },
+      "699456451cc24f028d2aa99d7534c219": {
+          "tier": "Bronze",
+          "benefits": ["24 hour dedicated line", "concierge services"],
+          "active": true,
+          "id": "699456451cc24f028d2aa99d7534c219"
+      }
+  },
+  "_id": "5ca4bbcea2dd94ee58162a68",
+  "username": "fmiller",
+  "name": "Elizabeth Ray",
+  "address": "9286 Bethany Glens\nVasqueztown, CO 22939",
+  "birthdate": "1977-03-02T02:20:31.000Z",
+  "email": "arroyocolton@gmail.com",
+  "active": true,
+  "accounts": [371138, 324287, 276528, 332179, 422649, 387979]
+}</code></pre>
+  </p>
+    <h4>Customer URLs</h4>
+
+    <h5>Get all customers:</h5>
+    <p>
+      <p>Base URL:</p>
+      <a class = "pageSlug"><span class = "pageURL"></span>customer/</a>
+    </p>
+    <h5>By skip and limit:</h5>
+    <p>
+      <span class = "pageURL"></span>customer/:n/:k
+    </p>
+    <p>Where <b>n = the starting index</b> and <b>k = the number of items</b></p>
+    <p>Example:</p>
+    <p>
+      <a class = "pageSlug"><span class = "pageURL"></span>customer/10/5</a>
+    </p>
+    <p>Returns items <b>10 through 15</b></p>
+
+    <h5>username:</h5>
+    <p>Base URL:</p>
+    <p>
+      <a class = "pageSlug"><span class = "pageURL"></span>customer/username/</a>
+    </p>
+    <p>(Base URL returns list of usernames)</p>
+
+    <p>Find by username:</p>
+    <p>
+      <span class = "pageURL"></span>customer/username/:username
+    </p>
+    <p>Example:</p>
+    <p>
+      <a class = "pageSlug"><span class = "pageURL"></span>customer/username/fmiller</a>
+    </p>
+
+    <h5>email:</h5>
+    <p>Base URL:</p>
+    <p>
+      <a class = "pageSlug"><span class = "pageURL"></span>customer/email/</a>
+    </p>
+    <p>(Base URL returns list of emails)</p>
+
+    <p>Find by username:</p>
+    <p>
+      <span class = "pageURL"></span>customer/email/:email
+    </p>
+    <p>Example:</p>
+    <p>
+      <a class = "pageSlug"><span class = "pageURL"></span>customer/email/arroyocolton@gmail.com</a>
+    </p>
+    
+
+    <h5>Search user text index fields:</h5>
+    <p>Base URL:</p>
+    <p>
+      <span class = "pageURL"></span>customer/search/:query
+    <p>Example:</p>
+    <p>
+      <a class = "pageSlug"><span class = "pageURL"></span>customer/search/miller</a>
+    </p>
+
+    <hr>
+    <h3>Accounts</h3>
+    <p>Account schema:</p>
+    <pre><code class="language-js">const schema = mongoose.Schema({
+  account_id: Number,
+  limit: Number,
+  products: [String]
+})</code></pre> 
+    <p>Example item:</p>
+<pre><code class="language-js">{
+  "_id": "5ca4bbc7a2dd94ee5816238d", 
+  "account_id": 557378, 
+  "limit": 10000, 
+  "products": ["InvestmentStock", "Commodity", "Brokerage", "CurrencyService"]
+}</code></pre>
+  <h4>Account URLs</h4>
+
+  <h5>Get all accounts:</h5>
+  <p>
+    <p>Base URL:</p>
+    <a class = "pageSlug"><span class = "pageURL"></span>account/</a>
+  </p>
+  <h5>Get account by account_id:</h5>
+  <p>Base URL:</p>
+  <p>
+    <span class = "pageURL"></span>account/account_id/:id
+  <p>Example:</p>
+  <p>
+    <a class = "pageSlug"><span class = "pageURL"></span>account/account_id/557378</a>
+  </p>
+
+  <hr>
+  <h3>Transactions</h3>
+  <p>Transaction schema:</p>
+  <pre><code class="language-js">const schema = mongoose.Schema({
+  account_id: Number,
+  transaction_count: Number,
+  bucket_start_date: Date,
+  bucket_end_date: Date,
+  transactions: [{
+    date: Date, 
+    amount: Number, 
+    transaction_code: String, 
+    description: String, 
+    balance: Number,
+    price: String,
+    total: String
+  }]
+})</code></pre>
+<p>Example item:</p>
+<pre><code class="language-js">{
+  "_id": "5ca4bbc1a2dd94ee58161cb1",
+  "account_id": 443178,
+  "transaction_count": 66,
+  "bucket_start_date": "1969-02-04T00:00:00.000Z",
+  "bucket_end_date": "2017-01-03T00:00:00.000Z",
+  "transactions": [{
+      "_id": "63d9fec316c2d0f2a46058fd",
+      "date": "2003-09-09T00:00:00.000Z",
+      "amount": 7514,
+      "transaction_code": "buy",
+      "symbol": "adbe",
+      "price": "19.1072802650074180519368383102118968963623046875",
+      "total": "143572.1039112657392422534031"
+  }, 
+  ...
+  {
+      "_id": "63d9fec316c2d0f2a460593e",
+      "date": "2005-07-07T00:00:00.000Z",
+      "amount": 2881,
+      "transaction_code": "buy",
+      "symbol": "msft",
+      "price": "20.6769287918292690164889791049063205718994140625",
+      "total": "59570.23184926012403650474880"
+  }]
+}</code></pre>
+  <h4>Transaction URLs</h4>
+  <h5>Get all transactions:</h5>
+  <p>
+    <p>Base URL:</p>
+    <a class = "pageSlug"><span class = "pageURL"></span>transaction/</a>
+  </p>
+  <h5>Get transactions by account_id:</h5>
+  <p>Base URL:</p>
+  <p>
+    <span class = "pageURL"></span>transaction/account_id/:id
+  <p>Example:</p>
+  <p>
+    <a class = "pageSlug"><span class = "pageURL"></span>transaction/account_id/557378</a>
+  </p>
+    </div>
+  </div>
+</div>
+    <script>
+      for (let item of document.getElementsByClassName("pageURL")){
+        item.innerHTML = window.location.href;
+      }
+      for (let item of document.getElementsByClassName("pageSlug")){
+        item.href = item.innerText;
+      }
+    </script>
+  </body>
+</html>
+
