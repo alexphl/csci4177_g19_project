@@ -8,79 +8,96 @@ var router = Router();
 
 //Route to get all customers
 router.get("/", async function (req, res) {
-  Customers.find({}, function (err, docs) {
-    if (err) console.error(err);
-    if (docs) res.json(docs);
-  });
+  await Customers.find({})
+    .then((docs) => {
+      res.send(docs);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
 
 //Route to get a range of the customers
 router.get("/:n(\\d+)/:k(\\d+)", async function (req, res) {
-  Customers.find({}, function (err, docs) {
-    if (err) console.error(err);
-    if (docs) res.json(docs);
-  })
+  await Customers.find({})
+    .then((docs) => {
+      res.send(docs);
+    })
+    .catch((err) => {
+      console.error(err);
+    })
     .skip(parseInt(req.params.n))
     .limit(parseInt(req.params.k));
 });
 
 //Route to get customer usernames
 router.get("/username/", async function (req, res) {
-  Customers.find({}, function (err, docs) {
-    if (err) res.json(err);
-    if (docs) res.json(docs);
-  }).select("username");
+  await Customers.find({})
+    .then((docs) => {
+      res.send(docs);
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .select("username");
 });
 
 //Route to get a customer by their specific username
 router.get("/username/:username", async function (req, res) {
-  Customers.findOne(
-    { username: req.params.username },
-    function (err, docs) {
-      if (err) res.json(err);
-      if (docs) res.json(docs);
-    }
-  );
+  Customers.findOne({ username: req.params.username })
+    .then((docs) => {
+      res.send(docs);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
 
 //Route to get customer usernames
 router.get("/email/", async function (req, res) {
-  Customers.find({}, function (err, docs) {
-    if (err) res.json(err);
-    if (docs) res.json(docs);
-  }).select("email");
+  Customers.find({})
+    .then((docs) => {
+      res.send(docs);
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .select("email");
 });
 
 //Route to get a customer by their specific username
 router.get("/email/:email", async function (req, res) {
-  Customers.findOne({ email: req.params.email }, function (err, docs) {
-    if (err) res.json(err);
-    if (docs) res.json(docs);
-  });
+  Customers.findOne({ email: req.params.email })
+    .then((docs) => {
+      res.send(docs);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
 
 //Search for a user using their text index
 router.get("/search/:query", async function (req, res) {
-  Customers.find(
-    { $text: { $search: req.params.query } },
-    function (err, docs) {
-      if (err) res.json(err);
-      if (docs) res.json(docs);
-    }
-  );
+  Customers.find({ $text: { $search: req.params.query } })
+    .then((docs) => {
+      res.send(docs);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
 
 //Aggregate statistic routes:
 //Route to get total count of customers:
 router.get("/count/", async function (req, res) {
-  Customers.countDocuments({}, function (err, count) {
-    if (err) {
-      console.log(err);
-    } else {
+  Customers.countDocuments({})
+    .then((count) => {
       console.log("Count :", count);
       res.json({ count: count });
-    }
-  });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
 
 export default router;
