@@ -48,7 +48,17 @@ export default function CustomerTable() {
             sx={{ mb: 4, mr: 2}}
           />
           <TextField
+            label="By Name"
+            id="outlined-start-adornment"
+            sx={{ mb: 4, mr: 2}}
+          />
+          <TextField
             label="By Email Address"
+            id="outlined-start-adornment"
+            sx={{ mb: 4, mr: 2}}
+          />
+          <TextField
+            label="By Street Address"
             id="outlined-start-adornment"
             sx={{ mb: 4}}
           />
