@@ -20,10 +20,17 @@ export default function CustomerTable() {
 
   return (
       <Grid container >
-        <Grid item sm = {5} >
-
+        <Grid 
+          item sm = {6} md = {5} 
+          sx = {{
+            color: "white",
+            p: 4,
+            borderRadius: 2,
+            mb: 4,
+          }}
+          >
           <h1 className="text-2xl leading-relaxed text-neutral-400">
-            View our 
+            View your 
             <br />
             <strong className="text-4xl text-white">
               CUSTOMERS
@@ -35,7 +42,7 @@ export default function CustomerTable() {
           </h1>
 
           <Grid container sx = {{mb: 4}}>
-            <Grid item xs = {12} >
+            <Grid item xs = {12} sm={12} md={12} lg={8}>
               <Grid item >
               <TextField
                 fullWidth
@@ -61,18 +68,18 @@ export default function CustomerTable() {
                 margin="dense" 
               />
             </Grid>
-            <Grid item xs = {12}>
-
+            
+            <Grid item xs = {12} sm={12} md={12} lg={8}>
               <Grid item >
                 <TextField
-                  
+                  fullWidth
                   label="Email Address"
                   id="outlined-start-adornment"
                   margin="dense" 
                 />
               </Grid>
             </Grid>
-            <Grid item xs = {12} sm={12} md={12} lg={8} >
+            <Grid item xs = {12} sm={12} md={12} lg={12} >
               <TextField
                 fullWidth
                 label="Street Address"
@@ -83,16 +90,21 @@ export default function CustomerTable() {
           </Grid>
         </Grid>
 
-        <Grid item sm = {7}>
+        <Grid item  sm = {6} md = {7}>
         <Box sx={{ height: '100vh' }}>
           <Grid container
           direction="row"
-          style={{ maxHeight: "100vh", overflowY: "scroll", scrollbar: "none"}}
+          sx={{ maxHeight: "100vh", overflowY: {xs: "show", sm: "scroll"} }}
+
+          // style={{ maxHeight: "100vh", overflowY: "scroll", scrollbar: "none"}}
           >
             {isSuccess &&
               data &&
               data.map((customer) => (
-                <Grid item xs={12} sm={12} md={6} lg={4} >
+                <Grid item 
+                  xs={12} sm={12} md={6} lg={4}
+                  style={{display: 'flex'}}
+                  >
                   <CustomerCard content={customer} />
                 </Grid>
                 )).sort((a, b) => (a.name > b.name) ? 1 : -1)

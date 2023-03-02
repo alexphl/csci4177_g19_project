@@ -9,7 +9,9 @@ import Typography from '@mui/material/Typography';
 export default function CustomerCard(customer) {
     const customerURL = "/dashboard/customers/" + customer.content.username;
     return (
-        <Card spacing = {1}>
+        <Card
+        style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column', flexGrow: 1}}
+        >
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             {customer.content.username}
