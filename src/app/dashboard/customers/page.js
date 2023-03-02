@@ -5,17 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Input from '@mui/material/Input';
-import FilledInput from '@mui/material/FilledInput';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import CustomerCard from "../CustomerCard";
 
@@ -29,63 +19,99 @@ export default function CustomerTable() {
   });
 
   return (
-    <div className="container my-20 max-w-6xl px-10">
-      <h1 className="text-2xl leading-relaxed text-neutral-400">
-        View our <br />
-        <strong className="text-4xl text-white">CUSTOMERS</strong>
-      </h1>
-      
-      <h1 className="text-2xl leading-relaxed text-neutral-400 mt-4 mb-2">
-        Filter:
-      </h1>
+      <Grid container >
+        <Grid item sm = {5} >
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+          <h1 className="text-2xl leading-relaxed text-neutral-400">
+            View our 
+            <br />
+            <strong className="text-4xl text-white">
+              CUSTOMERS
+            </strong>
+          </h1>
+          
+          <h1 className="text-2xl leading-relaxed text-neutral-400 mt-4 mb-2">
+            Filter:
+          </h1>
 
-        <div>
-          <TextField
-            label="By Username"
-            id="outlined-start-adornment"
-            sx={{ mb: 4, mr: 2}}
-          />
-          <TextField
-            label="By Name"
-            id="outlined-start-adornment"
-            sx={{ mb: 4, mr: 2}}
-          />
-          <TextField
-            label="By Email Address"
-            id="outlined-start-adornment"
-            sx={{ mb: 4, mr: 2}}
-          />
-          <TextField
-            label="By Street Address"
-            id="outlined-start-adornment"
-            sx={{ mb: 4}}
-          />
-        </div>
-
-      </Box>
-      <Grid container spacing={2}>
-        {isSuccess &&
-          data &&
-          data.map((customer) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={customer}>
-              <CustomerCard content={customer} />
+          <Grid container sx = {{mb: 4}}>
+            <Grid item xs = {12} >
+              <Grid item >
+              <TextField
+                fullWidth
+                label="Username"
+                id="outlined-start-adornment"
+                margin="dense" 
+              />
+              </Grid>
             </Grid>
-          ))}
-        {isLoading && (
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-            style={{ minHeight: "100vh" }}
-          >
-            <CircularProgress color="success" />
+            <Grid item xs = {12} sm = {6}>
+              <TextField
+                fullWidth 
+                label="First Name"
+                id="outlined-start-adornment"
+                margin="dense" 
+              />
+            </Grid>
+            <Grid item xs = {12} sm = {6}>
+              <TextField
+                fullWidth
+                label="Last Name"
+                id="outlined-start-adornment"
+                margin="dense" 
+              />
+            </Grid>
+            <Grid item xs = {12}>
+
+              <Grid item >
+                <TextField
+                  
+                  label="Email Address"
+                  id="outlined-start-adornment"
+                  margin="dense" 
+                />
+              </Grid>
+            </Grid>
+            <Grid item xs = {12} sm={12} md={12} lg={8} >
+              <TextField
+                fullWidth
+                label="Street Address"
+                id="outlined-start-adornment"
+                margin="dense" 
+              />
+            </Grid>
           </Grid>
-        )}
+        </Grid>
+
+        <Grid item sm = {7}>
+        <Box sx={{ height: '100vh' }}>
+          <Grid container
+          direction="row"
+          style={{ maxHeight: "100vh", overflowY: "scroll", scrollbar: "none"}}
+          >
+            {isSuccess &&
+              data &&
+              data.map((customer) => (
+                <Grid item xs={12} sm={12} md={6} lg={4} >
+                  <CustomerCard content={customer} />
+                </Grid>
+                )).sort((a, b) => (a.name > b.name) ? 1 : -1)
+              }
+            {isLoading && (
+              <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                style={{ minHeight: "100vh" }}
+              >
+                <CircularProgress color="success" />
+              </Grid>
+            )}
+          </Grid>
+          </Box>
+        </Grid>
       </Grid>
-    </div>
   );
 }
