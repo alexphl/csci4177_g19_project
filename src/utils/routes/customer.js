@@ -2,7 +2,7 @@
 
 import { Router } from "express";
 import Customers from "../models/Customers";
-var router = Router();
+const router = Router();
 
 //Data retrieval routes:
 
@@ -20,31 +20,8 @@ router.get("/", async function (req, res) {
 //Route to get a range of the customers
 router.get("/:n(\\d+)/:k(\\d+)", async function (req, res) {
   await Customers.find({})
-    .then((docs) => {
-      res.send(docs);
-    })
-    .catch((err) => {
-      console.error(err);
-    })
     .skip(parseInt(req.params.n))
-    .limit(parseInt(req.params.k));
-});
-
-//Route to get customer usernames
-router.get("/username/", async function (req, res) {
-  await Customers.find({})
-    .then((docs) => {
-      res.send(docs);
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-    .select("username");
-});
-
-//Route to get a customer by their specific username
-router.get("/username/:username", async function (req, res) {
-  await Customers.findOne({ username: req.params.username })
+    .limit(parseInt(req.params.k))
     .then((docs) => {
       res.send(docs);
     })
@@ -54,15 +31,38 @@ router.get("/username/:username", async function (req, res) {
 });
 
 //Route to get customer usernames
-router.get("/email/", async function (req, res) {
+router.get("/username/", async function (req, res) {
   await Customers.find({})
+    .select("username")
     .then((docs) => {
       res.send(docs);
     })
     .catch((err) => {
       console.error(err);
+    });
+});
+
+//Route to get a customer by their specific username
+router.get("/username/:username", async function (req, res) {
+  await Customers.findOne({ username: req.params.username })
+    .then((docs) => {
+      res.send(docs);
     })
-    .select("email");
+    .catch(() => {
+      //
+    });
+});
+
+//Route to get customer usernames
+router.get("/email/", async function (req, res) {
+  await Customers.find({})
+    .select("email")
+    .then((docs) => {
+      res.send(docs);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
 
 //Route to get a customer by their specific username
@@ -71,8 +71,8 @@ router.get("/email/:email", async function (req, res) {
     .then((docs) => {
       res.send(docs);
     })
-    .catch((err) => {
-      console.error(err);
+    .catch(() => {
+      //
     });
 });
 
@@ -82,8 +82,8 @@ router.get("/search/:query", async function (req, res) {
     .then((docs) => {
       res.send(docs);
     })
-    .catch((err) => {
-      console.error(err);
+    .catch(() => {
+      //
     });
 });
 
