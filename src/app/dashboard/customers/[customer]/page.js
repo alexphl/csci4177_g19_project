@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -17,40 +16,37 @@ import Stack from "@mui/material/Stack";
 import apiURL from "@/APIurl";
 const baseURL = apiURL + "/customer/username/";
 
-export default function Customer({params}) {
+export default function Customer({ params }) {
   const router = useSearchParams();
   const username = params.customer;
   const page = params.customer;
 
-  const [customer, getCustomer] = useState(null);
-
-  useEffect(() => {
-    axios.get(baseURL + username).then((response) => {
-      getCustomer(response.data);
-    });
-  }, [router]);
+  const { isSuccess, isLoading, data } = useQuery({
+    queryKey: [`customer:${params.customer}`], // for caching, must be unique
+    queryFn: () => fetch(baseURL + username).then((res) => res.json()),
+  });
 
   return (
     <Container style={{ minHeight: "100vh" }}>
       <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
         <div color="primary">
-          {customer && (
+          {isSuccess && (
             <div>
               <Typography color="text.secondary" gutterBottom>
-                {customer.username}
+                {data.username}
               </Typography>
               <Typography variant="h5" component="div">
-                {customer.name}
+                {data.name}
               </Typography>
               <Link href="mailto: {customer.email}">
                 <Typography sx={{ mb: 1.5, textDecoration: "underline" }}>
-                  {customer.email}
+                  {data.email}
                 </Typography>
               </Link>
-              <Typography variant="body2">{customer.address}</Typography>
+              <Typography variant="body2">{data.address}</Typography>
             </div>
           )}
-          {!customer && (
+          {isLoading && (
             <Grid
               container
               spacing={0}
@@ -68,12 +64,12 @@ export default function Customer({params}) {
           Accounts
         </Typography>
         <div color="primary">
-          {customer && (
+          {isSuccess && (
             <Stack
               direction={{ xs: "column", sm: "row" }}
               spacing={{ xs: 1, sm: 2, md: 4 }}
             >
-              {customer.accounts.map((account) => (
+              {data.accounts.map((account) => (
                 <Link href={"/dashboard/accounts/" + account} key={account}>
                   <Button variant="outline" color="dark">
                     {account}
@@ -82,7 +78,7 @@ export default function Customer({params}) {
               ))}
             </Stack>
           )}
-          {!customer && (
+          {isLoading && (
             <Grid
               container
               spacing={0}

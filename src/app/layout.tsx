@@ -1,12 +1,13 @@
 import "../styles/globals.css";
 import UserContextProvider from "./UserContext";
 import ThemeContextProvider from "./ThemeContext";
+import QueryProvider from "./QueryProvider";
 
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'StockVision',
-  description: 'Welcome to StockVision',
+  title: "StockVision",
+  description: "Welcome to StockVision",
 };
 
 import localFont from "next/font/local";
@@ -27,11 +28,16 @@ function RootLayout({
 }) {
   return (
     <UserContextProvider>
-      <ThemeContextProvider>
-        <html lang="en" className={`${font.variable} bg-neutral-900 font-sans`}>
-          <body className="font-sans text-neutral-100">{children}</body>
-        </html>
-      </ThemeContextProvider>
+      <QueryProvider>
+        <ThemeContextProvider>
+          <html
+            lang="en"
+            className={`${font.variable} bg-neutral-900 font-sans`}
+          >
+            <body className="font-sans text-neutral-100">{children}</body>
+          </html>
+        </ThemeContextProvider>
+      </QueryProvider>
     </UserContextProvider>
   );
 }

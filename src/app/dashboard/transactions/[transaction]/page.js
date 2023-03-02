@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
 import { useSearchParams } from "next/navigation";
-import axios from "axios";
 
 import Container from "@mui/material/Container";
 
@@ -13,17 +13,14 @@ export default function Transaction() {
   const router = useSearchParams();
   const { account_id } = router.query;
 
-  const [transaction, getTransaction] = useState(null);
-
-  useEffect(() => {
-    axios.get(baseURL + account_id).then((response) => {
-      getTransaction(response.data);
-    });
-  }, [router]);
+  const { data } = useQuery({
+    queryKey: [`transactions:${account_id}`], // for caching, must be unique
+    queryFn: () => fetch(baseURL + account_id).then((res) => res.json()),
+  });
 
   return (
     <Container style={{ minHeight: "100vh" }}>
-      <pre>{JSON.stringify(transaction, null, 2)}</pre>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </Container>
   );
 }

@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-import axios from "axios";
 
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
@@ -21,46 +20,38 @@ import apiURL from "@/APIurl";
 const accountBaseURL = apiURL + "/account/account_id/";
 const tranasctionsBaseURL = apiURL + "/transaction/account_id/";
 
-
 export default function Account({params}) {
   const router = useSearchParams();
   const account_id = params.account;
 
+  const account = useQuery({
+    queryKey: [`account:${account_id}`], // for caching, must be unique
+    queryFn: () => fetch(accountBaseURL + account_id).then((res) => res.json()),
+  });
 
-  const [account, getAccount] = useState(null);
-  const [transactions, getTransactions] = useState(null);
-
-  useEffect(() => {
-    axios.get(accountBaseURL + account_id).then((response) => {
-      getAccount(response.data);
-    });
-  }, [router]);
-
-  useEffect(() => {
-    axios.get(tranasctionsBaseURL + account_id).then((response) => {
-      getTransactions(response.data);
-    });
-  }, [router]);
-
+  const transactions = useQuery({
+    queryKey: [`transactions:${account_id}`],
+    queryFn: () => fetch(tranasctionsBaseURL + account_id).then((res) => res.json()),
+  });
 
   return (
     <Container style={{ minHeight: "100vh" }}>
       <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
         <div color="primary">
-          {account && (
+          {account.isSuccess && (
             <div>
               <Typography variant="h5" component="div">
-                Account Number: {account.account_id}
+                Account Number: {account.data.account_id}
               </Typography>
               <Typography
                 sx={{ fontSize: 14 }}
                 color="text.secondary"
                 gutterBottom
               >
-                Limit: ${account.limit}
+                Limit: ${account.data.limit}
               </Typography>
               <Typography>Products:</Typography>
-              {account.products.map((product) => (
+              {account.data.products.map((product) => (
                 <div key={product}>
                   <Typography
                     sx={{ fontSize: 14 }}
@@ -73,7 +64,7 @@ export default function Account({params}) {
               ))}
             </div>
           )}
-          {!account && (
+          {account.isLoading && (
             <Grid
               container
               spacing={0}
@@ -88,7 +79,7 @@ export default function Account({params}) {
       </Paper>
       <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
         <div color="primary">
-          {transactions && (
+          {transactions.isSuccess && (
             <div>
               <TableContainer component={Paper} sx={{ fontSize: 4 }}>
                 <Table aria-label="simple table">
@@ -103,7 +94,7 @@ export default function Account({params}) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {transactions.transactions.map((row) => (
+                    {transactions.data.transactions.map((row) => (
                       <TableRow
                         key={row.name}
                         sx={{
@@ -131,7 +122,7 @@ export default function Account({params}) {
               </TableContainer>
             </div>
           )}
-          {!account && (
+          {account.isLoading && (
             <Grid
               container
               spacing={0}

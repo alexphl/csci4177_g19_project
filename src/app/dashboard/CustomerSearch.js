@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { useState, useDeferredValue } from "react";
+import { useDebounce } from "use-debounce";
 
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -12,25 +13,16 @@ import CustomerCard from "./CustomerCard";
 
 import apiURL from "@/APIurl";
 const baseURL = apiURL + "/customer/search/";
-// const baseURL = "http://localhost:3000/customer/search/";
 
 export default function CustomerSearch() {
-  const [customers, setCustomers] = useState(null);
   const [searchQuery, setQuery] = useState(null);
+  const [debouncedQuery] = useDebounce(searchQuery, 500); // Debounce query with a delay
+  const deferredSearchQuery = useDeferredValue(debouncedQuery);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (typeof searchQuery === "string" && searchQuery.trim().length > 0) {
-        axios.get(baseURL + searchQuery.trim()).then((response) => {
-          setCustomers(response.data);
-          console.log(response.data);
-        });
-      }
-    }, 500);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [searchQuery]);
+  const customers = useQuery({
+    queryKey: [`customerSearch:${deferredSearchQuery}`], // for caching, must be unique
+    queryFn: () => fetch(baseURL + deferredSearchQuery.trim()).then((res) => res.json()),
+  });
 
   return (
     <div>
@@ -54,13 +46,13 @@ export default function CustomerSearch() {
           }}
         />
         <Grid container spacing={2} align="left">
-          {customers &&
-            customers.map((customer) => (
+          {customers.isSuccess &&
+            customers.data.map((customer) => (
               <Grid item xs={12} sm={6} key={customer.username}>
                 <CustomerCard content={customer} />
               </Grid>
             ))}
-          {!customers && searchQuery && (
+          {customers.isLoading && searchQuery && (
             <Grid
               container
               spacing={0}
