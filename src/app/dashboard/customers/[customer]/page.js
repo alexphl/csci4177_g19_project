@@ -21,10 +21,7 @@ export default function Customer({ params }) {
   const username = params.customer;
   const page = params.customer;
 
-  const { isSuccess, isLoading, data } = useQuery({
-    queryKey: [`customer:${params.customer}`], // for caching, must be unique
-    queryFn: () => fetch(baseURL + username).then((res) => res.json()),
-  });
+  const { isSuccess, isLoading, data } = useQuery({ queryKey: [baseURL, username] });
 
   return (
     <Container style={{ minHeight: "100vh" }}>

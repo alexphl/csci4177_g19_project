@@ -20,8 +20,7 @@ export default function CustomerSearch() {
   const deferredSearchQuery = useDeferredValue(debouncedQuery);
 
   const customers = useQuery({
-    queryKey: [`customerSearch:${deferredSearchQuery}`], // for caching, must be unique
-    queryFn: () => fetch(baseURL + deferredSearchQuery.trim()).then((res) => res.json()),
+    queryKey: [deferredSearchQuery && baseURL + deferredSearchQuery.trim()],
   });
 
   return (

@@ -11,10 +11,7 @@ import apiURL from "@/APIurl";
 const baseURL = apiURL + "/account/";
 
 export default function CustomerTable() {
-  const { isSuccess, isLoading, data } = useQuery({
-    queryKey: ["accounts"], // for caching, must be unique
-    queryFn: () => fetch(baseURL).then((res) => res.json()),
-  });
+  const { isSuccess, isLoading, data } = useQuery({ queryKey: [baseURL] });
 
   return (
     <div className="container max-w-6xl px-10 my-20">

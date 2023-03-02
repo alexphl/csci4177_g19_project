@@ -13,14 +13,11 @@ export default function Transaction() {
   const router = useSearchParams();
   const { account_id } = router.query;
 
-  const { data } = useQuery({
-    queryKey: [`transactions:${account_id}`], // for caching, must be unique
-    queryFn: () => fetch(baseURL + account_id).then((res) => res.json()),
-  });
+  const transaction = useQuery({ queryKey: [baseURL, account_id] });
 
   return (
     <Container style={{ minHeight: "100vh" }}>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <pre>{JSON.stringify(transaction.data, null, 2)}</pre>
     </Container>
   );
 }

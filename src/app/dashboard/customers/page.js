@@ -13,10 +13,7 @@ import apiURL from "@/APIurl";
 const baseURL = apiURL + "/customer/";
 
 export default function CustomerTable() {
-  const { isSuccess, isLoading, data } = useQuery({
-    queryKey: ["customers"], // for caching, must be unique
-    queryFn: () => fetch(baseURL).then((res) => res.json()),
-  });
+  const { isSuccess, isLoading, data } = useQuery({ queryKey: [baseURL] });
 
   return (
     <Grid container>

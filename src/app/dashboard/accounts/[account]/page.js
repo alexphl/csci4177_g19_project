@@ -24,15 +24,8 @@ export default function Account({params}) {
   const router = useSearchParams();
   const account_id = params.account;
 
-  const account = useQuery({
-    queryKey: [`account:${account_id}`], // for caching, must be unique
-    queryFn: () => fetch(accountBaseURL + account_id).then((res) => res.json()),
-  });
-
-  const transactions = useQuery({
-    queryKey: [`transactions:${account_id}`],
-    queryFn: () => fetch(tranasctionsBaseURL + account_id).then((res) => res.json()),
-  });
+  const account = useQuery({ queryKey: [accountBaseURL, account_id] });
+  const transactions = useQuery({ queryKey: [tranasctionsBaseURL, account_id] });
 
   return (
     <Container style={{ minHeight: "100vh" }}>
