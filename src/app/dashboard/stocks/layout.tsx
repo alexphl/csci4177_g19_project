@@ -5,10 +5,8 @@ import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Chart, registerables } from "chart.js";
 import Searchbox from "./Searchbox";
-import Menubar from "./MenubarDesktop";
 
 // Lazy load components
-const OverlayComponent = dynamic(() => import("./OverlayComponent"));
 const StockList = dynamic(() => import("./StockList"));
 
 // Necessary for charts to render
@@ -22,7 +20,6 @@ export default function StocksLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [overlayIsOpen, setOverlayIsOpen] = useState(false);
   const [searchIsActive, setSearchIsActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -36,7 +33,6 @@ export default function StocksLayout({
 
   return (
     <div className="flex-auto">
-      <OverlayComponent controller={[overlayIsOpen, setOverlayIsOpen]} />
       <nav
         className={
           "mx-auto block grid-cols-[3fr_5fr] items-center gap-2 transition-all lg:container sm:grid sm:h-20 sm:py-0 sm:px-2 md:px-4 lg:h-28 lg:gap-6 lg:px-4 xl:px-24 2xl:h-32 " +
@@ -47,10 +43,6 @@ export default function StocksLayout({
           controller={[searchIsActive, setSearchIsActive]}
           query={[searchQuery, setSearchQuery]}
           className={selectedStock ? " hidden sm:flex" : " flex"}
-        />
-        <Menubar
-          controller={[overlayIsOpen, setOverlayIsOpen]}
-          className="hidden sm:block"
         />
       </nav>
 
