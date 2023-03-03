@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { useSelectedLayoutSegment } from "next/navigation";
 
 const variants = {
-  hidden: { opacity: 0, scale:0.95 },
-  enter: { opacity: 1, scale:1 },
+  hidden: { opacity: 0, transform: "translateY(25px)" },
+  enter: { opacity: 1, transform: "translateY(0px)" },
 };
 
 const TransitionWrap = ({ children }: { children: React.ReactNode }) => {
@@ -20,8 +20,8 @@ const TransitionWrap = ({ children }: { children: React.ReactNode }) => {
       animate="enter" // Animated state to variants.enter
       transition={{
         type: "spring",
-        damping: 25,
-        stiffness: 350,
+        damping: 30,
+        stiffness: 500,
       }}
     >
       {children}
