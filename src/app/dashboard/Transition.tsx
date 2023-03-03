@@ -1,18 +1,30 @@
 "use client";
-import { Transition } from "@headlessui/react";
+
+import { motion } from "framer-motion";
+import { useSelectedLayoutSegment } from "next/navigation";
+
+const variants = {
+  hidden: { opacity: 0, scale:0.95 },
+  enter: { opacity: 1, scale:1 },
+};
 
 const TransitionWrap = ({ children }: { children: React.ReactNode }) => {
+  const page = useSelectedLayoutSegment();
+
   return (
-    <Transition
-      appear={true}
-      show={true}
-      unmount={false}
-      enter="transition duration-300 ease-out"
-      enterFrom="transform blur-sm scale-95 opacity-50"
-      enterTo="transform scale-100 opacity-100"
+    <motion.div
+      key={page}
+      variants={variants} // Pass the variant object into Framer Motion
+      initial="hidden" // Set the initial state to variants.hidden
+      animate="enter" // Animated state to variants.enter
+      transition={{
+        type: "spring",
+        damping: 25,
+        stiffness: 350,
+      }}
     >
       {children}
-    </Transition>
+    </motion.div>
   );
 };
 
