@@ -7,13 +7,13 @@ export default function NotFound() {
   const router = useRouter();
 
   return (
-    <div className="container flex flex-col h-screen items-center justify-center gap-16">
-      <div className="flex items-center justify-center gap-8 text-neutral-400">
+    <div className="container flex flex-col h-screen items-center justify-center gap-16 px-8">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-neutral-400">
         <DocumentMagnifyingGlassIcon className="w-36 text-neutral-700/[0.8]" />
-        <section className="flex flex-col gap-4 drop-shadow-lg">
+        <section className="flex max-w-prose text-center sm:text-left flex-col gap-4">
           <h1 className="text-5xl font-extrabold text-orange-200">404</h1>
           <p className="font-medium">
-            Page does not exist <br /> or is under construction.
+            Page does not exist or is under construction.
           </p>
         </section>
       </div>
