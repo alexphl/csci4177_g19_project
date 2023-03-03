@@ -35,7 +35,7 @@ export default function StocksLayout({
     <div className="flex-auto">
       <nav
         className={
-          "mx-auto block grid-cols-[3fr_5fr] items-center gap-2 transition-all lg:container sm:grid sm:h-20 sm:py-0 sm:px-2 md:px-4 lg:h-28 lg:gap-6 lg:px-4 xl:px-24 2xl:h-32 " +
+          "mx-auto block grid-cols-[3fr_5fr] items-center gap-2 transition-all lg:container sm:grid sm:h-20 sm:py-0 sm:px-2 md:px-4 lg:gap-4 lg:px-6 xl:gap-5 xl:h-28 xl:px-20 2xl:h-32 " +
           (selectedStock ? " p-0" : " p-3")
         }
       >
@@ -46,7 +46,7 @@ export default function StocksLayout({
         />
       </nav>
 
-      <main className="mx-auto grid-cols-[3fr_5fr] gap-2 transition-all lg:container sm:grid sm:px-2 md:px-4 lg:gap-6 lg:px-4 xl:px-24">
+      <main className="mx-auto grid-cols-[3fr_5fr] gap-2 transition-all lg:container sm:grid sm:px-2 md:px-4 lg:gap-3 xl:gap-5 lg:px-6 xl:px-20">
         <div /* LEFT pane */
           className={stylePane + (selectedStock ? " hidden sm:block" : "")}
         >

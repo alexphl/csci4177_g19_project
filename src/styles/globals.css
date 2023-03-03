@@ -4,27 +4,30 @@
 
 html,
 body {
-	padding: 0;
-	margin: 0;
+  padding: 0;
+  margin: 0;
 
-	/* Fallback colors, custom font is declared in root layout.tsx	*/
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  /* Fallback colors, custom font is declared in root layout.tsx  */
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 
-	color-scheme: dark;
-	--callout-rgb: 238, 240, 241;
+  color-scheme: dark;
+
+  /*  Please move these elsewhere, like a css module
+      They shouldn't be global  */
+  --callout-rgb: 238, 240, 241;
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
 
-    --background-card-color: rgb(36,37,38);
-    --background-color: rgb(28, 30, 33);
-    --text-focus-color:rgb(228,230,235);
-    --text-unfocus-color:rgb(176,179,184);
+  --background-card-color: rgb(36, 37, 38);
+  --background-color: rgb(28, 30, 33);
+  --text-focus-color: rgb(228, 230, 235);
+  --text-unfocus-color: rgb(176, 179, 184);
 
-    --theme-color: #f5dc56;
-    --color-up:#63DD61;
-    --color-down:#DD6161;
+  --theme-color: #f5dc56;
+  --color-up: #63dd61;
+  --color-down: #dd6161;
 
-    --menu-color:#18191A;
+  --menu-color: #18191a;
 }
