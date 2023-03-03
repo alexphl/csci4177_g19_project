@@ -11,7 +11,7 @@ export default function DashboardLayout({
   return (
     <>
       <NavDesktop />
-      <div className="flex justify-center text-neutral-100 md:ml-16">
+      <div className="text-neutral-100 md:ml-16">
         <Transition>{children}</Transition>
       </div>
     </>

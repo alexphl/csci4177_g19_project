@@ -13,6 +13,7 @@ const TransitionWrap = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <motion.div
+      className="flex justify-center"
       key={page}
       variants={variants} // Pass the variant object into Framer Motion
       initial="hidden" // Set the initial state to variants.hidden
