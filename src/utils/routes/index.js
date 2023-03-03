@@ -3,9 +3,10 @@
 import { Router } from "express";
 const router = Router();
 
-/* GET home page. */
+// Unused route, redirects the user back to the website.
+// Redirects can be used instead of EJS views now that everything is under the same domain.
 router.get("/", function (req, res) {
-  res.render("index", { title: "API Documentation" });
+  res.redirect("/");
 });
 
 export default router;

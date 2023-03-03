@@ -27,10 +27,6 @@ import accountRouter from "@/utils/routes/account";
 import customerRouter from "@/utils/routes/customer";
 import transactionRouter from "@/utils/routes/transaction";
 
-// view engine setup
-app.set("views", join(__dirname, "views"));
-app.set("view engine", "ejs");
-
 app.use(logger("dev"));
 app.use(_json());
 app.use(
@@ -77,9 +73,8 @@ app.use(function (err, req, res) {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  // render the error page
+  // send error status
   res.status(err.status || 500);
-  res.render("error");
 });
 
 export default app;
