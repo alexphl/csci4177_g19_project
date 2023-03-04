@@ -41,7 +41,7 @@ export default function StockDetails({
               <h2 className="text-xl font-extrabold">{params.stock}</h2>
               {profile.isSuccess && (
                 <h2 className="whitespace-nowrap text-neutral-400">
-                  {profile.data.exchange.split(" ")[0]} · {profile.data.currency}
+                  {profile.data.exchange && profile.data.exchange.split(" ")[0]} · {profile.data.currency}
                 </h2>
               )}
             </section>

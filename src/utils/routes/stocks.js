@@ -45,7 +45,7 @@ router.get("/quote/:symbol", async function (req, res) {
     });
 });
 
-// Get quote for a stock
+// Get company description for a stock
 router.get("/profile/:symbol", async function (req, res) {
   const cached = cache.get(req.url);
   if (cached) {
@@ -55,6 +55,25 @@ router.get("/profile/:symbol", async function (req, res) {
 
   fetch(
     `https://finnhub.io/api/v1/stock/profile2?symbol=${req.params.symbol}&token=${process.env.FINNHUB_API_KEY}`
+  )
+    .then((res) => res.json())
+    .then((json) => {
+      cache.set(req.url, json);
+      res.send(json);
+    });
+});
+
+
+// Search for a stock symbol
+router.get("/search/:q", async function (req, res) {
+  const cached = cache.get(req.url);
+  if (cached) {
+    res.send(cached);
+    return;
+  }
+
+  fetch(
+    `https://finnhub.io/api/v1/search?q=${req.params.q}&token=${process.env.FINNHUB_API_KEY}`
   )
     .then((res) => res.json())
     .then((json) => {

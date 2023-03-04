@@ -3,22 +3,12 @@ import dynamic from "next/dynamic";
 import { useDebounce } from "use-debounce";
 import { Transition } from "@headlessui/react";
 import { FaceFrownIcon } from "@heroicons/react/24/solid";
-import Fuse from "fuse.js";
-import type FuseResult from "fuse.js";
+import { useQuery } from "@tanstack/react-query";
 
 // Lazy-load components
 const StockListItem = dynamic(() => import("./StockListItem"));
 const StockListbox = dynamic(() => import("./Listbox"));
 
-import stockData from "@/dummy_data/stockData.json";
-const allStocks = Object.keys(stockData).sort();
-
-interface iSearchResult extends FuseResult<string> {
-	item: string;
-	redIndex: number;
-}
-
-const fuse = new Fuse(allStocks); // Search library
 const listStyle = "flex flex-col gap-2.5 transition";
 
 const StockList = (props: {
@@ -32,18 +22,13 @@ const StockList = (props: {
 	// Search state with debouncing and deferred value
 	const [searchIsActive, setSearchIsActive] = props.searchIsActive;
 	const [searchQuery] = props.searchQuery;
-	const [debouncedQuery] = useDebounce(searchQuery, 300); // Debounce query with a delay
-	const deferredSearchQuery = useDeferredValue(debouncedQuery);
-	const [searchResult, setSearchResult] = useState<iSearchResult[]>();
+	const [debouncedQuery] = useDebounce(searchQuery, 600); // Debounce query with a delay
+	const searchResult = useQuery<any>({queryKey: [`/api/stocks/search/`, debouncedQuery.trim()], enabled: !!debouncedQuery});
+	const deferredSearchResult = useDeferredValue(searchResult.data);
 
-	// Update search results
 	useEffect(() => {
-		const result = fuse.search<iSearchResult[]>(deferredSearchQuery);
-
-		// @ts-ignore THIS WORKS as intended
-		if (result) setSearchResult(result);
-		if (deferredSearchQuery === "") setSearchResult(undefined); // Will display all stocks instead
-	}, [deferredSearchQuery]);
+		console.log(searchResult);
+	}, [searchResult]);
 
 	return (
 		<>
@@ -86,15 +71,15 @@ const StockList = (props: {
 						<ul
 							className={
 								listStyle +
-								(searchQuery !== deferredSearchQuery
+								(searchQuery !== debouncedQuery || searchResult.isFetching
 									? " scale-[0.98] blur-sm saturate-0"
 									: "")
 							}
 						>
 							{
 								/* SHOW ALL STOCKS */
-								!searchResult &&
-									allStocks.map((result) => (
+								!searchResult.isFetching && !deferredSearchResult &&
+									userStocks.map((result: any) => (
 										<StockListItem
 											key={result}
 											stock={result}
@@ -106,13 +91,13 @@ const StockList = (props: {
 
 							{
 								/* SHOW SEARCH RESULTS */
-								searchResult &&
-									searchResult.length > 0 &&
-									searchResult.map((result: iSearchResult) => (
+								searchResult.isSuccess && deferredSearchResult &&
+									deferredSearchResult.result.map((result: any) => (
+										!result.symbol.includes('.') && !result.symbol.includes(':') &&
 										<StockListItem
-											key={result.item}
-											stock={result.item}
-											selected={result.item === selectedStock}
+											key={result.symbol}
+											stock={result.symbol}
+											selected={result.symbol === selectedStock}
 											onClick={() => setSearchIsActive(true)}
 										/>
 									))
@@ -120,7 +105,7 @@ const StockList = (props: {
 
 							{
 								/* NOT FOUND MESSAGE */
-								searchResult && searchResult.length === 0 && (
+								searchResult.isSuccess && deferredSearchResult && deferredSearchResult.count === 0 && (
 									<div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
 										<div className="w-16 ">
 											<FaceFrownIcon />
