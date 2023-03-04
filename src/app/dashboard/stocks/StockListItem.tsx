@@ -5,8 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 //import StockChartXS from "./ChartXS";
 
 interface iQuote {
-  c: number, // current price
-  d: number, // change
+  c: number; // current price
+  d: number; // change
 }
 
 // Lazy load charts
@@ -18,8 +18,13 @@ const StockListItem = (props: {
   onClick?: any;
   className?: string;
 }) => {
-  const quote = useQuery<iQuote>({ queryKey: [`/api/stocks/quote/`, props.stock] });
-  const profile = useQuery<any>({ queryKey: [`/api/stocks/profile/`, props.stock] });
+  const quote = useQuery<iQuote>({
+    queryKey: [`/api/stocks/quote/`, props.stock],
+  });
+  const profile = useQuery<any>({
+    queryKey: [`/api/stocks/profile/`, props.stock],
+    staleTime: Infinity,
+  });
 
   return (
     <li className={props.className}>
@@ -37,7 +42,7 @@ const StockListItem = (props: {
               {props.stock}
             </h1>
             <p className="whitespace-nowrap text-xs font-medium text-neutral-400">
-              {profile.isSuccess && profile.data.name || <br/>}
+              {(profile.isSuccess && profile.data.name) || <br />}
             </p>
           </div>
 

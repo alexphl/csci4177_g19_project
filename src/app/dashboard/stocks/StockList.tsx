@@ -23,7 +23,11 @@ const StockList = (props: {
 	const [searchIsActive, setSearchIsActive] = props.searchIsActive;
 	const [searchQuery] = props.searchQuery;
 	const [debouncedQuery] = useDebounce(searchQuery, 600); // Debounce query with a delay
-	const searchResult = useQuery<any>({queryKey: [`/api/stocks/search/`, escape(debouncedQuery.trim())], enabled: !!debouncedQuery});
+	const searchResult = useQuery<any>({
+		queryKey: [`/api/stocks/search/`, escape(debouncedQuery.trim())],
+		enabled: !!debouncedQuery,
+		staleTime: Infinity,
+	});
 
 	return (
 		<>
@@ -73,7 +77,8 @@ const StockList = (props: {
 						>
 							{
 								/* SHOW ALL STOCKS */
-								!searchResult.isFetching && !searchResult.data &&
+								!searchResult.isFetching &&
+									!searchResult.data &&
 									userStocks.map((result: any) => (
 										<StockListItem
 											key={result}
@@ -86,16 +91,24 @@ const StockList = (props: {
 
 							{
 								/* SHOW SEARCH RESULTS */
-								searchResult.isSuccess && searchResult.data.result &&
-									searchResult.data.result.slice(0, 8).map((result: any) => (
-										!result.symbol.includes('.') && !result.symbol.includes(':') && (result.type === "Common Stock" || result.type === "ADR") &&
-										<StockListItem
-											key={result.symbol}
-											stock={result.symbol}
-											selected={result.symbol === selectedStock}
-											onClick={() => setSearchIsActive(true)}
-										/>
-									))
+								searchResult.isSuccess &&
+									searchResult.data.result &&
+									searchResult.data.result
+										.slice(0, 8)
+										.map(
+											(result: any) =>
+												!result.symbol.includes(".") &&
+												!result.symbol.includes(":") &&
+												(result.type === "Common Stock" ||
+													result.type === "ADR") && (
+													<StockListItem
+														key={result.symbol}
+														stock={result.symbol}
+														selected={result.symbol === selectedStock}
+														onClick={() => setSearchIsActive(true)}
+													/>
+												)
+										)
 							}
 
 							{

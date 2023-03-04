@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { useQuery } from "@tanstack/react-query";
@@ -23,6 +23,7 @@ export default function StockDetails({
   });
   const profile = useQuery<any>({
     queryKey: [`/api/stocks/profile/`, params.stock],
+    staleTime: Infinity,
   });
 
   return (
@@ -40,30 +41,31 @@ export default function StockDetails({
               <h2 className="text-xl font-extrabold">{params.stock}</h2>
               {profile.isSuccess && (
                 <h2 className="whitespace-nowrap text-neutral-400">
-                  {profile.data.exchange && profile.data.exchange.split(" ")[0]} · {profile.data.currency}
+                  {profile.data.exchange && profile.data.exchange.split(" ")[0]}{" "}
+                  · {profile.data.currency}
                 </h2>
               )}
             </section>
 
-            <h1 className="whitespace-nowrap text-3xl max-w-[300px] sm:max-w-full">{profile.isSuccess && profile.data.name || <br/>}</h1>
+            <h1 className="max-w-[300px] whitespace-nowrap text-3xl sm:max-w-full">
+              {(profile.isSuccess && profile.data.name) || <br />}
+            </h1>
           </div>
 
           <div className="text-end">
             <h1 className="text-xl font-extrabold leading-8 group-hover:text-neutral-50">
               {quote.isSuccess && quote.data.c}
             </h1>
-            {quote.isSuccess &&
-            <p
-              className={
-                "text-lg font-medium " +
-                (quote.data.d > 0 ? "text-green-400" : "text-red-400")
-              }
-            >
-              {quote.data.d > 0
-                ? `+${quote.data.d}`
-                : `${quote.data.d}`}
-            </p>
-          }
+            {quote.isSuccess && (
+              <p
+                className={
+                  "text-lg font-medium " +
+                  (quote.data.d > 0 ? "text-green-400" : "text-red-400")
+                }
+              >
+                {quote.data.d > 0 ? `+${quote.data.d}` : `${quote.data.d}`}
+              </p>
+            )}
           </div>
         </div>
       </div>
