@@ -11,6 +11,15 @@ const StockListbox = dynamic(() => import("./Listbox"));
 
 const listStyle = "flex flex-col gap-2.5 transition";
 
+function filterResults(array: any) {
+	return array.filter((item: any) => {
+		if (item.symbol.includes(".") || item.symbol.includes(":")) return false;
+		if (item.type === "Common Stock" || item.type === "ADR") return true;
+
+		return false;
+	});
+}
+
 const StockList = (props: {
 	searchIsActive: any;
 	searchQuery: any;
@@ -93,27 +102,21 @@ const StockList = (props: {
 								/* SHOW SEARCH RESULTS */
 								searchResult.isSuccess &&
 									searchResult.data.result &&
-									searchResult.data.result
+									filterResults(searchResult.data.result)
 										.slice(0, 6)
-										.map(
-											(result: any) =>
-												!result.symbol.includes(".") &&
-												!result.symbol.includes(":") &&
-												(result.type === "Common Stock" ||
-													result.type === "ADR") && (
-													<StockListItem
-														key={result.symbol}
-														stock={result.symbol}
-														selected={result.symbol === selectedStock}
-														onClick={() => setSearchIsActive(true)}
-													/>
-												)
-										)
+										.map((result: any) => (
+											<StockListItem
+												key={result.symbol}
+												stock={result.symbol}
+												selected={result.symbol === selectedStock}
+												onClick={() => setSearchIsActive(true)}
+											/>
+										))
 							}
 
 							{
 								/* NOT FOUND MESSAGE */
-								searchResult.isSuccess && searchResult.data.count === 0 && (
+								searchResult.isSuccess && filterResults(searchResult.data.result).length === 0 && (
 									<div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
 										<div className="w-16 ">
 											<FaceFrownIcon />
