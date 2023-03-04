@@ -7,6 +7,7 @@ import Link from "next/link";
 
 // Lazy load
 const Chart = dynamic(() => import("./Chart"));
+const NotFound = dynamic(() => import("../../[404]/page"));
 
 interface iQuote {
   c: number; // current price
@@ -25,6 +26,12 @@ export default function StockDetails({
     queryKey: [`/api/stocks/profile/`, params.stock],
     staleTime: Infinity,
   });
+
+  if (quote.isSuccess && quote.data.c === 0 && quote.data.d === null) {
+    return (
+      <NotFound />
+    );
+  }
 
   return (
     <>
