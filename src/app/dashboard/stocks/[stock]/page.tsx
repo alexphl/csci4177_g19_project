@@ -1,4 +1,7 @@
+'use client'
+
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
+import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -6,16 +9,22 @@ import Link from "next/link";
 const Chart = dynamic(() => import("./Chart"));
 const News = dynamic(() => import("../../news/page"));
 
-import data from "@/dummy_data/stockData.json";
+interface iQuote {
+  c: number; // current price
+  d: number; // change
+}
 
 export default function StockDetails({
   params,
 }: {
   params: { stock: string };
 }) {
-  // @ts-ignore i dont care for now, this is fake data
-  const stockData: any = data[params.stock];
-  if (!stockData) return;
+  const quote = useQuery<iQuote>({
+    queryKey: [`/api/stocks/quote/`, params.stock],
+  });
+  const profile = useQuery<any>({
+    queryKey: [`/api/stocks/profile/`, params.stock],
+  });
 
   return (
     <>
@@ -30,28 +39,32 @@ export default function StockDetails({
           <div className="text-scroll overflow-auto scrollbar-hide">
             <section className="flex items-end gap-4">
               <h2 className="text-xl font-extrabold">{params.stock}</h2>
-              <h2 className="whitespace-nowrap text-neutral-400">
-                {stockData.exchange} · {stockData.currency}
-              </h2>
+              {profile.isSuccess && (
+                <h2 className="whitespace-nowrap text-neutral-400">
+                  {profile.data.exchange} · {profile.data.currency}
+                </h2>
+              )}
             </section>
 
-            <h1 className="whitespace-nowrap text-3xl">{stockData.name}</h1>
+            <h1 className="whitespace-nowrap text-3xl">{profile.isSuccess && profile.data.name}</h1>
           </div>
 
           <div className="text-end">
             <h1 className="text-xl font-extrabold leading-8 group-hover:text-neutral-50">
-              {stockData.close}
+              {quote.isSuccess && quote.data.c}
             </h1>
+            {quote.isSuccess &&
             <p
               className={
                 "text-lg font-medium " +
-                (stockData.change > 0 ? "text-green-400" : "text-red-400")
+                (quote.data.d > 0 ? "text-green-400" : "text-red-400")
               }
             >
-              {stockData.change > 0
-                ? `+${stockData.change}`
-                : `${stockData.change}`}
+              {quote.data.d > 0
+                ? `+${quote.data.d}`
+                : `${quote.data.d}`}
             </p>
+          }
           </div>
         </div>
       </div>

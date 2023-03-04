@@ -26,6 +26,7 @@ import indexRouter from "@/utils/routes/index";
 import accountRouter from "@/utils/routes/account";
 import customerRouter from "@/utils/routes/customer";
 import transactionRouter from "@/utils/routes/transaction";
+import stocksRouter from "@/utils/routes/stocks";
 
 app.use(logger("dev"));
 app.use(_json());
@@ -61,6 +62,7 @@ app.use("/api/", indexRouter);
 app.use("/api/account", accountRouter);
 app.use("/api/customer", customerRouter);
 app.use("/api/transaction", transactionRouter);
+app.use("/api/stocks/", stocksRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,8 +1,13 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { memo } from "react";
-import data from "@/dummy_data/stockData.json";
+import { useQuery } from "@tanstack/react-query";
 //import StockChartXS from "./ChartXS";
+
+interface iQuote {
+  c: number, // current price
+  d: number, // change
+}
 
 // Lazy load charts
 const StockChartXS = dynamic(() => import("./ChartXS"));
@@ -13,8 +18,8 @@ const StockListItem = (props: {
   onClick?: any;
   className?: string;
 }) => {
-  // @ts-ignore i dont care for now, this is fake data
-  const stockData: any = data[props.stock];
+  const quote = useQuery<iQuote>({ queryKey: [`/api/stocks/quote/`, props.stock] });
+  const profile = useQuery<any>({ queryKey: [`/api/stocks/profile/`, props.stock] });
 
   return (
     <li className={props.className}>
@@ -32,7 +37,7 @@ const StockListItem = (props: {
               {props.stock}
             </h1>
             <p className="whitespace-nowrap text-xs font-medium text-neutral-400">
-              {stockData.name}
+              {profile.isSuccess && profile.data.name || <br/>}
             </p>
           </div>
 
@@ -42,18 +47,18 @@ const StockListItem = (props: {
 
           <div className="col-start-3 text-end">
             <h1 className="text-lg font-bold group-hover:text-neutral-50">
-              {stockData.close}
+              {quote.data && quote.data.c}
             </h1>
-            <p
-              className={
-                "text-xs font-medium " +
-                (stockData.change > 0 ? "text-green-400" : "text-red-400")
-              }
-            >
-              {stockData.change > 0
-                ? `+${stockData.change}`
-                : `${stockData.change}`}
-            </p>
+            {quote.isSuccess && (
+              <p
+                className={
+                  "text-xs font-medium " +
+                  (quote.data!.d > 0 ? "text-green-400" : "text-red-400")
+                }
+              >
+                {quote.data!.d > 0 ? `+${quote.data!.d}` : `${quote.data!.d}`}
+              </p>
+            )}
           </div>
         </div>
       </Link>

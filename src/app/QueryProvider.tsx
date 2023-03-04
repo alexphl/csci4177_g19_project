@@ -3,7 +3,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const defaultQueryFn = async ({ queryKey }: any) => {
-  const response = await fetch(queryKey.join(''));
+  const response:any = await fetch(queryKey.join(''));
 
   if (!response.ok) {
     throw new Error("Network response was not ok");
