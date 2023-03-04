@@ -41,12 +41,12 @@ export default function StockDetails({
               <h2 className="text-xl font-extrabold">{params.stock}</h2>
               {profile.isSuccess && (
                 <h2 className="whitespace-nowrap text-neutral-400">
-                  {profile.data.exchange} · {profile.data.currency}
+                  {profile.data.exchange.split(" ")[0]} · {profile.data.currency}
                 </h2>
               )}
             </section>
 
-            <h1 className="whitespace-nowrap text-3xl">{profile.isSuccess && profile.data.name}</h1>
+            <h1 className="whitespace-nowrap text-3xl">{profile.isSuccess && profile.data.name || <br/>}</h1>
           </div>
 
           <div className="text-end">
