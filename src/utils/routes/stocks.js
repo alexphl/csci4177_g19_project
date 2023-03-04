@@ -6,7 +6,7 @@ const router = Router();
 
 const cache = new LRU({
   max: 200, // max number of cached responses
-  ttl: 600000, // Response's Time to Live (ms)
+  ttl: 1000 * 60 * 25, // Response's Time to Live (ms)
 });
 
 // Get all stocks
