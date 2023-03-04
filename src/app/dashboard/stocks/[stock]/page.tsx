@@ -46,7 +46,7 @@ export default function StockDetails({
               )}
             </section>
 
-            <h1 className="whitespace-nowrap text-3xl">{profile.isSuccess && profile.data.name || <br/>}</h1>
+            <h1 className="whitespace-nowrap text-3xl max-w-sm">{profile.isSuccess && profile.data.name || <br/>}</h1>
           </div>
 
           <div className="text-end">

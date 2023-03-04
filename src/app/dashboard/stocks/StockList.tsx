@@ -1,4 +1,4 @@
-import { memo, useDeferredValue, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useDebounce } from "use-debounce";
 import { Transition } from "@headlessui/react";
@@ -23,12 +23,7 @@ const StockList = (props: {
 	const [searchIsActive, setSearchIsActive] = props.searchIsActive;
 	const [searchQuery] = props.searchQuery;
 	const [debouncedQuery] = useDebounce(searchQuery, 600); // Debounce query with a delay
-	const searchResult = useQuery<any>({queryKey: [`/api/stocks/search/`, debouncedQuery.trim()], enabled: !!debouncedQuery});
-	const deferredSearchResult = useDeferredValue(searchResult.data);
-
-	useEffect(() => {
-		console.log(searchResult);
-	}, [searchResult]);
+	const searchResult = useQuery<any>({queryKey: [`/api/stocks/search/`, escape(debouncedQuery.trim())], enabled: !!debouncedQuery});
 
 	return (
 		<>
@@ -78,7 +73,7 @@ const StockList = (props: {
 						>
 							{
 								/* SHOW ALL STOCKS */
-								!searchResult.isFetching && !deferredSearchResult &&
+								!searchResult.isFetching && !searchResult.data &&
 									userStocks.map((result: any) => (
 										<StockListItem
 											key={result}
@@ -91,8 +86,8 @@ const StockList = (props: {
 
 							{
 								/* SHOW SEARCH RESULTS */
-								searchResult.isSuccess && deferredSearchResult &&
-									deferredSearchResult.result.map((result: any) => (
+								searchResult.isSuccess && searchResult.data.result &&
+									searchResult.data.result.map((result: any) => (
 										!result.symbol.includes('.') && !result.symbol.includes(':') &&
 										<StockListItem
 											key={result.symbol}
@@ -105,7 +100,7 @@ const StockList = (props: {
 
 							{
 								/* NOT FOUND MESSAGE */
-								searchResult.isSuccess && deferredSearchResult && deferredSearchResult.count === 0 && (
+								searchResult.isSuccess && searchResult.data.count === 0 && (
 									<div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
 										<div className="w-16 ">
 											<FaceFrownIcon />
