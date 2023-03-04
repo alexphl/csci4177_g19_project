@@ -94,7 +94,7 @@ const StockList = (props: {
 								searchResult.isSuccess &&
 									searchResult.data.result &&
 									searchResult.data.result
-										.slice(0, 8)
+										.slice(0, 6)
 										.map(
 											(result: any) =>
 												!result.symbol.includes(".") &&
