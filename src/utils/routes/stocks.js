@@ -6,7 +6,7 @@ const router = Router();
 // Get all stocks
 router.get("/", _json(), async function (req, res) {
   fetch(
-    `https://finnhub.io/api/v1/stock?exchange=US&token=${process.env.FINNHUB_API_KEY}`
+    `https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${process.env.FINNHUB_API_KEY}`
   )
     .then((res) => res.json())
     .then((json) => res.send(json));
