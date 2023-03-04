@@ -87,7 +87,7 @@ const StockList = (props: {
 							{
 								/* SHOW SEARCH RESULTS */
 								searchResult.isSuccess && searchResult.data.result &&
-									searchResult.data.result.map((result: any) => (
+									searchResult.data.result.slice(0, 8).map((result: any) => (
 										!result.symbol.includes('.') && !result.symbol.includes(':') &&
 										<StockListItem
 											key={result.symbol}

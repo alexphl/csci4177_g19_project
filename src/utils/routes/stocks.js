@@ -22,7 +22,7 @@ router.get("/", async function (req, res) {
   )
     .then((res) => res.json())
     .then((json) => {
-      cache.set(req.url, json);
+      cache.set(req.url, json, [{ttl:1000*60*60*48}]);
       res.send(json);
     });
 });
@@ -58,7 +58,7 @@ router.get("/profile/:symbol", async function (req, res) {
   )
     .then((res) => res.json())
     .then((json) => {
-      cache.set(req.url, json);
+      cache.set(req.url, json, [{ttl:1000*60*60*48}]);
       res.send(json);
     });
 });
@@ -77,7 +77,7 @@ router.get("/search/:q", async function (req, res) {
   )
     .then((res) => res.json())
     .then((json) => {
-      cache.set(req.url, json);
+      cache.set(req.url, json, [{ttl:1000*60*60*48}]);
       res.send(json);
     });
 });
