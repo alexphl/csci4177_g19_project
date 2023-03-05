@@ -9,6 +9,8 @@ interface iQuote {
   d: number; // change
 }
 
+const loading ="animate-pulse bg-neutral-800 w-4/6";
+
 // Lazy load charts
 const StockChartXS = dynamic(() => import("./ChartXS"));
 
@@ -41,7 +43,7 @@ const StockListItem = (props: {
             <h1 className="text-lg font-extrabold group-hover:text-neutral-50">
               {props.stock}
             </h1>
-            <p className="whitespace-nowrap text-xs font-medium text-neutral-400">
+            <p className={"whitespace-nowrap text-xs font-medium text-neutral-400 " + (profile.isLoading && loading)}>
               {(profile.isSuccess && profile.data.name) || <br />}
             </p>
           </div>
@@ -51,19 +53,19 @@ const StockListItem = (props: {
           </div>
 
           <div className="col-start-3 text-end">
-            <h1 className="text-lg font-bold group-hover:text-neutral-50">
-              {quote.data && quote.data.c}
+            <h1 className={"text-lg font-bold ml-auto group-hover:text-neutral-50 " + (quote.isLoading && loading)}>
+              {quote.data && quote.data.c || <br/>}
             </h1>
             {quote.isSuccess && (
               <p
                 className={
                   "text-xs font-medium " +
-                  (quote.data!.d > 0 ? "text-green-400" : "text-red-400")
+                  (quote.data!.d > 0 ? " text-green-400" : " text-red-400")
                 }
               >
                 {quote.data!.d > 0 ? `+${quote.data!.d}` : `${quote.data!.d}`}
               </p>
-            )}
+            ) || <p className={"text-xs ml-auto font-medium " + loading}><br/></p>}
           </div>
         </div>
       </Link>
