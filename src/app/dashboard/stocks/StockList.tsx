@@ -85,7 +85,7 @@ const StockList = (props: {
 							}
 						>
 							{
-								/* SHOW ALL STOCKS */
+								/* SHOW USER STOCKS */
 								!searchResult.isFetching &&
 									!searchResult.data &&
 									userStocks.map((result: any) => (
@@ -93,7 +93,6 @@ const StockList = (props: {
 											key={result}
 											stock={result}
 											selected={result === selectedStock}
-											onClick={() => setSearchIsActive(true)}
 										/>
 									))
 							}
@@ -109,28 +108,44 @@ const StockList = (props: {
 												key={result.symbol}
 												stock={result.symbol}
 												selected={result.symbol === selectedStock}
-												onClick={() => setSearchIsActive(true)}
 											/>
 										))
 							}
 
 							{
+								/* SHOW LOADING PLACEHOLDER */
+								debouncedQuery &&
+									!searchResult.data &&
+									[...Array(3)].map((_x, i) => (
+										<StockListItem
+											key={i}
+											stock={""}
+											selected={false}
+											className={
+												"animate-pulse rounded-lg bg-neutral-900 text-transparent"
+											}
+										/>
+									))
+							}
+
+							{
 								/* NOT FOUND MESSAGE */
-								searchResult.isSuccess && filterResults(searchResult.data.result).length === 0 && (
-									<div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
-										<div className="w-16 ">
-											<FaceFrownIcon />
+								searchResult.isSuccess &&
+									filterResults(searchResult.data.result).length === 0 && (
+										<div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
+											<div className="w-16 ">
+												<FaceFrownIcon />
+											</div>
+											<div className="flex flex-col items-center">
+												<h1 className="text-lg font-bold">
+													Sorry, we found nothing
+												</h1>
+												<h2 className="text-sm font-medium">
+													Try a different search query
+												</h2>
+											</div>
 										</div>
-										<div className="flex flex-col items-center">
-											<h1 className="text-lg font-bold">
-												Sorry, we found nothing
-											</h1>
-											<h2 className="text-sm font-medium">
-												Try a different search query
-											</h2>
-										</div>
-									</div>
-								)
+									)
 							}
 						</ul>
 					</>
