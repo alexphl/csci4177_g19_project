@@ -1,8 +1,8 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useDebounce } from "use-debounce";
 import { Transition } from "@headlessui/react";
-import { FaceFrownIcon } from "@heroicons/react/24/solid";
+import { FaceFrownIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
 
 // Lazy-load components
@@ -12,12 +12,15 @@ const StockListbox = dynamic(() => import("./Listbox"));
 const listStyle = "flex flex-col gap-2.5 transition";
 
 function filterResults(array: any) {
-	return array.filter((item: any) => {
-		if (item.symbol.includes(".") || item.symbol.includes(":")) return false;
-		if (item.type === "Common Stock" || item.type === "ADR") return true;
+	return (
+		array &&
+		array.filter((item: any) => {
+			if (item.symbol.includes(".") || item.symbol.includes(":")) return false;
+			if (item.type === "Common Stock" || item.type === "ADR") return true;
 
-		return false;
-	});
+			return false;
+		})
+	);
 }
 
 const StockList = (props: {
@@ -29,14 +32,29 @@ const StockList = (props: {
 	const selectedStock = props.selectedStock;
 
 	// Search state with debouncing and deferred value
-	const [searchIsActive, setSearchIsActive] = props.searchIsActive;
+	const [searchIsActive] = props.searchIsActive;
 	const [searchQuery] = props.searchQuery;
 	const [debouncedQuery] = useDebounce(searchQuery, 600); // Debounce query with a delay
+	const [resultLimit, setResultLimit] = useState(5);
 	const searchResult = useQuery<any>({
 		queryKey: [`/api/stocks/search/`, escape(debouncedQuery.trim())],
 		enabled: !!debouncedQuery,
 		staleTime: Infinity,
 	});
+	const filtered = useMemo(
+		() =>
+			filterResults(
+				searchResult.isSuccess &&
+					searchResult.data.result &&
+					searchResult.data.result
+			),
+		[searchResult]
+	);
+
+	// Reset search result limit between searches
+	useEffect(() => {
+		setResultLimit(5);
+	}, [debouncedQuery]);
 
 	return (
 		<>
@@ -86,23 +104,21 @@ const StockList = (props: {
 						>
 							{
 								/* SHOW USER STOCKS */
-								!searchResult.isFetching &&
-									!searchResult.data &&
-									userStocks.map((result: any) => (
-										<StockListItem
-											key={result}
-											stock={result}
-											selected={result === selectedStock}
-										/>
-									))
+								!searchResult.isFetching && !searchResult.data && (
+									<div className="flex w-full flex-col items-center justify-center py-20 text-lg text-neutral-800">
+										<div className="w-20 ">
+											<MagnifyingGlassIcon />
+										</div>
+									</div>
+								)
 							}
 
 							{
 								/* SHOW SEARCH RESULTS */
 								searchResult.isSuccess &&
 									searchResult.data.result &&
-									filterResults(searchResult.data.result)
-										.slice(0, 6)
+									filtered
+										.slice(0, resultLimit)
 										.map((result: any) => (
 											<StockListItem
 												key={result.symbol}
@@ -131,7 +147,8 @@ const StockList = (props: {
 							{
 								/* NOT FOUND MESSAGE */
 								searchResult.isSuccess &&
-									filterResults(searchResult.data.result).length === 0 && (
+									searchResult.data.result &&
+									filtered.length === 0 && (
 										<div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
 											<div className="w-16 ">
 												<FaceFrownIcon />
@@ -145,6 +162,20 @@ const StockList = (props: {
 												</h2>
 											</div>
 										</div>
+									)
+							}
+
+							{
+								/* SHOW MORE BUTTON */
+								searchResult.isSuccess &&
+									searchResult.data.result &&
+									filtered.length > resultLimit && (
+										<button
+											className="mx-auto mt-4 rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-2 text-sm font-medium active:opacity-70"
+											onClick={() => setResultLimit(resultLimit + 3)}
+										>
+											Show more
+										</button>
 									)
 							}
 						</ul>
