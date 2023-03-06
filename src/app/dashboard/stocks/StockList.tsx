@@ -76,7 +76,7 @@ const StockList = (props: {
 							enterFrom="transform blur-sm scale-95 opacity-50"
 							enterTo="transform scale-100 opacity-100"
 						>
-							<ul className={listStyle}>
+							<ol className={listStyle}>
 								{userStocks.map((stock: string) => (
 									<StockListItem
 										key={stock}
@@ -84,7 +84,7 @@ const StockList = (props: {
 										selected={stock === selectedStock}
 									/>
 								))}
-							</ul>
+							</ol>
 						</Transition>
 					</>
 				)
@@ -102,7 +102,7 @@ const StockList = (props: {
 							className={
 								listStyle +
 								(searchQuery !== debouncedQuery || searchResult.isFetching
-									? " scale-[0.98] blur-sm saturate-0"
+									? " scale-[0.98] blur-sm saturate-0 pointer-events-none"
 									: "")
 							}
 						>
@@ -139,7 +139,6 @@ const StockList = (props: {
 											key={i}
 											stock={null}
 											selected={false}
-											className="pointer-events-none"
 										/>
 									))
 							}
