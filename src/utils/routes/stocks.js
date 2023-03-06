@@ -101,7 +101,7 @@ router.get("/user", async function (req, res) {
 });
 
 // Set user stocks
-router.post("/user", function (req, res) {
+router.post("/user", async function (req, res) {
   const newList = req.body;
   if (newList) userStocks.list = newList;
   res.status(200);

@@ -3,10 +3,11 @@
 import { memo, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useDebounce } from "use-debounce";
-import { FaceFrownIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { FaceFrownIcon, MagnifyingGlassIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
+import { CubeTransparentIcon, PencilIcon } from "@heroicons/react/20/solid";
 
 // Lazy-load components
 const StockListItem = dynamic(() => import("./StockListItem"));
@@ -76,6 +77,7 @@ const StockList = (props: {
 
 	// Search state with debouncing and deferred value
 	const [searchIsActive] = props.searchIsActive;
+	const [isEditMode, setEditMode] = useState(false);
 	const [searchQuery] = props.searchQuery;
 	const [debouncedQuery] = useDebounce(searchQuery, 600); // Debounce query with a delay
 	const [resultLimit, setResultLimit] = useState(5);
@@ -107,7 +109,10 @@ const StockList = (props: {
 				/* SHOW USER STOCKS */
 				!searchIsActive && userStocks.isSuccess && (
 					<>
-						<StockListbox />
+						<div className="flex w-full items-center justify-between">
+							<StockListbox />
+							<button className={"rounded-md transition p-2 " + (isEditMode ? " bg-white/[0.8] text-black" : " bg-white/[0.1]")} onClick={() => setEditMode(!isEditMode)}><CubeTransparentIcon className="w-3"/></button>
+						</div>
 						<hr className="my-4 mx-auto w-10 rounded-full border-neutral-600 2xl:my-6" />
 
 						<Reorder.Group
@@ -121,6 +126,7 @@ const StockList = (props: {
 								<Reorder.Item
 									key={stock}
 									value={stock}
+									dragListener={isEditMode || stock === selectedStock}
 									initial={{ opacity: 0.5, scale: 0.95, filter: "blur(4px)" }}
 									animate={{ opacity: 1, scale: 1, filter: "none" }}
 									transition={{
@@ -132,6 +138,7 @@ const StockList = (props: {
 								>
 									<StockListItem
 										stock={stock}
+										isEditMode={isEditMode}
 										userStocks={[userStocks.data, userStocksMut]}
 										selected={stock === selectedStock}
 										searchIsActive={searchIsActive}
@@ -139,6 +146,20 @@ const StockList = (props: {
 								</Reorder.Item>
 							))}
 						</Reorder.Group>
+
+						{userStocks.data.length === 0 && (
+							<div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
+								<div className="w-16 ">
+									<SparklesIcon />
+								</div>
+								<div className="flex flex-col items-center">
+									<h1 className="text-lg font-bold">Your list is empty</h1>
+									<h2 className="text-sm font-medium">
+										You can add stocks using search
+									</h2>
+								</div>
+							</div>
+						)}
 					</>
 				)
 			}

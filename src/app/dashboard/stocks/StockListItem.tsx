@@ -19,6 +19,7 @@ const StockChartXS = dynamic(() => import("./ChartXS"));
 const StockListItem = (props: {
   stock: string | null;
   selected: boolean;
+  isEditMode?: boolean,
   searchIsActive: boolean,
   userStocks: any;
   onClick?: any;
@@ -46,10 +47,11 @@ const StockListItem = (props: {
     >
       <div
         className={
-          "group grid grid-cols-[2fr_1fr_1fr] backdrop-blur-xl items-center gap-1 rounded-lg border border-neutral-900 p-3 transition-all hover:border-transparent hover:bg-white/[0.08] 2xl:p-4" +
-          (props.selected
+          "group grid grid-cols-[2fr_1fr_1fr] hover:backdrop-blur-xl items-center gap-1 rounded-lg border border-neutral-900 p-3 transition-all hover:border-transparent hover:bg-white/[0.08] 2xl:p-4" +
+          ((props.selected || props.isEditMode)
             ? " border-transparent bg-white/[0.12] py-4 pr-5 text-neutral-50 2xl:py-5"
             : " bg-transparent")
+          + (props.isEditMode && " animate-wiggle")
         }
       >
         <div className="overflow-hidden text-clip">
@@ -66,7 +68,7 @@ const StockListItem = (props: {
           </p>
         </div>
 
-        {!props.selected && (
+        {!props.selected && !props.isEditMode && (
           <>
             <div className="h-8 w-16 justify-self-center sm:w-10 md:w-12 lg:w-16 xl:w-20">
               <StockChartXS />
@@ -99,7 +101,7 @@ const StockListItem = (props: {
           </>
         )}
 
-        {props.selected && (
+        {(props.selected || props.isEditMode) && (
           <motion.div
             className="col-span-2 ml-auto flex items-center gap-2"
             initial={{ opacity: 0, x: 60 }}

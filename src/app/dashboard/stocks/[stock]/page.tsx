@@ -1,7 +1,9 @@
 "use client";
 
+import { queryClient } from "@/app/QueryProvider";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { TrashIcon, PlusIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -26,20 +28,82 @@ export default function StockDetails({
     queryKey: [`/api/stocks/profile/`, params.stock],
     staleTime: Infinity,
   });
+  const userStocks = useQuery<string[]>({
+    queryKey: [`/api/stocks/user`],
+  });
+  const isAdded =
+    userStocks.isSuccess && userStocks.data.includes(params.stock);
+
+  // Function to update user stock list
+  // Implements optimistic updates
+  const userStocksMut = useMutation({
+    mutationFn: (newList: string[]) =>
+      fetch(`/api/stocks/user`, {
+        method: "POST",
+        body: JSON.stringify(newList),
+        headers: { "Content-Type": "application/json" },
+      }),
+    // When mutate is called:
+    onMutate: async (newList) => {
+      // Cancel any outgoing refetches
+      // (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({ queryKey: ["/api/stocks/user"] });
+
+      // Snapshot the previous value
+      const previousList = queryClient.getQueryData(["/api/stocks/user"]);
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(["/api/stocks/user"], () => newList);
+
+      // Return a context object with the snapshotted value
+      return { previousList };
+    },
+    // If the mutation fails,
+    // use the context returned from onMutate to roll back
+    onError: (err, newTodo, context) => {
+      queryClient.setQueryData(["/api/stocks/user"], context!.previousList);
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/stocks/user"] });
+    },
+  });
 
   if (quote.isSuccess && quote.data.c === 0 && quote.data.d === null) {
-    return (
-      <NotFound />
-    );
+    return <NotFound />;
   }
 
   return (
     <>
       <div className="w-full overflow-auto pb-6 transition-all scrollbar-hide">
-        <nav className="flex w-full pb-6 sm:hidden">
+        <nav className="flex w-full items-center justify-between pb-6 sm:hidden">
           <Link href={"/dashboard/stocks/"}>
             <ArrowLeftIcon className="h-9 w-9 rounded-md bg-white/[0.1] p-2" />
           </Link>
+          {userStocks.isSuccess && isAdded && (
+            <button
+              className="rounded-md bg-white/[0.1] p-2 hover:bg-rose-400 hover:text-black"
+              onClick={() =>
+                userStocksMut.mutate([
+                  ...userStocks.data.filter((item: string) => {
+                    return item !== params.stock;
+                  }),
+                ])
+              }
+            >
+              <TrashIcon className="w-4" />
+            </button>
+          )}
+          {userStocks.isSuccess && !isAdded && (
+            <button
+              className="rounded-md bg-white/[0.1] p-2 hover:bg-green-400 hover:text-black"
+              onClick={() =>
+                userStocksMut.mutate([...userStocks.data.concat(params.stock)])
+              }
+            >
+              <PlusIcon className="w-4" />
+            </button>
+          )}
         </nav>
 
         <div className="flex w-full justify-between gap-2">
