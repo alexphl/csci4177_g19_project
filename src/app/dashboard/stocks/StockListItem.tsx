@@ -114,7 +114,7 @@ const StockListItem = (props: {
               <button
                 className="rounded-lg border-[0.5px] border-black/[0.5] bg-neutral-100/[0.1] p-1.5 shadow-sm hover:bg-rose-400 hover:text-black"
                 onClick={() =>
-                  setUserStocks.mutateAsync([
+                  setUserStocks.mutate([
                     ...userStocks.filter((item: string) => {
                       return item !== props.stock;
                     }),
@@ -128,7 +128,7 @@ const StockListItem = (props: {
               <button
                 className="rounded-lg border-[0.5px] border-black/[0.5] bg-neutral-100/[0.1] p-1.5 shadow-sm hover:bg-green-400 hover:text-black"
                 onClick={() =>
-                  setUserStocks.mutateAsync([...userStocks.concat(props.stock)])
+                  setUserStocks.mutate([...userStocks.concat(props.stock)])
                 }
               >
                 <PlusIcon className="w-4" />

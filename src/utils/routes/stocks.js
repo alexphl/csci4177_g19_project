@@ -9,7 +9,7 @@ const cache = new LRU({
   ttl: 1000 * 60 * 25, // Response's Time to Live (ms)
 });
 
-let userStocks = ["AAPL", "MSFT", "GOOG"]
+let userStocks = {list: ["AAPL", "MSFT", "GOOG"]}
 
 // Get all stocks
 router.get("/", async function (req, res) {
@@ -97,13 +97,13 @@ router.get("/search/:q", async function (req, res, next) {
 
 // Get user stocks
 router.get("/user", async function (req, res) {
-  res.send(userStocks);
+  res.send(userStocks.list);
 });
 
 // Set user stocks
 router.post("/user", function (req, res) {
   const newList = req.body;
-  if (newList) userStocks = newList;
+  if (newList) userStocks.list = newList;
   res.status(200);
 });
 

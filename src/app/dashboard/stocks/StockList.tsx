@@ -113,7 +113,7 @@ const StockList = (props: {
 						<Reorder.Group
 							axis="y"
 							values={userStocks.data}
-							onReorder={(newOrder: string[]) => userStocksMut.mutateAsync(newOrder)}
+							onReorder={(newOrder: string[]) => userStocksMut.mutate(newOrder)}
 							as="ol"
 							className={listStyle}
 						>
