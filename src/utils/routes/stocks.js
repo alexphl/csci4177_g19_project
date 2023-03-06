@@ -104,7 +104,7 @@ router.get("/user", async function (req, res) {
 router.post("/user", async function (req, res) {
   const newList = req.body;
   if (newList) userStocks.list = newList;
-  res.status(200);
+  res.sendStatus(200);
 });
 
 export default router;

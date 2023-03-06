@@ -42,7 +42,7 @@ const StockListItem = (props: {
     <Link
       className={props.className}
       onClick={props.onClick}
-      draggable="false"
+      draggable={!props.isEditMode && !props.selected}
       href={`/dashboard/stocks/${props.stock}`}
     >
       <div
