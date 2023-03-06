@@ -40,6 +40,7 @@ const StockListItem = (props: {
     <Link
       className={props.className}
       onClick={props.onClick}
+      draggable="false"
       href={`/dashboard/stocks/${props.stock}`}
     >
       <div
