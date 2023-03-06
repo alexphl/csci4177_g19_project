@@ -9,6 +9,8 @@ const cache = new LRU({
   ttl: 1000 * 60 * 25, // Response's Time to Live (ms)
 });
 
+let userStocks = ["AAPL", "MSFT", "GOOG"]
+
 // Get all stocks
 router.get("/", async function (req, res) {
   const cached = cache.get(req.url);
@@ -22,13 +24,13 @@ router.get("/", async function (req, res) {
   )
     .then((res) => res.json())
     .then((json) => {
-      cache.set(req.url, json, [{ttl:1000*60*60*48}]);
+      cache.set(req.url, json, [{ ttl: 1000 * 60 * 60 * 48 }]);
       res.send(json);
     });
 });
 
 // Get quote for a stock
-router.get("/quote/:symbol", async function (req, res) {
+router.get("/quote/:symbol", async function (req, res, next) {
   const cached = cache.get(req.url);
   if (cached) {
     res.send(cached);
@@ -42,11 +44,15 @@ router.get("/quote/:symbol", async function (req, res) {
     .then((json) => {
       cache.set(req.url, json);
       res.send(json);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      next(error);
     });
 });
 
 // Get company description for a stock
-router.get("/profile/:symbol", async function (req, res) {
+router.get("/profile/:symbol", async function (req, res, next) {
   const cached = cache.get(req.url);
   if (cached) {
     res.send(cached);
@@ -58,14 +64,17 @@ router.get("/profile/:symbol", async function (req, res) {
   )
     .then((res) => res.json())
     .then((json) => {
-      cache.set(req.url, json, [{ttl:1000*60*60*48}]);
+      cache.set(req.url, json, [{ ttl: 1000 * 60 * 60 * 48 }]);
       res.send(json);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      next(error);
     });
 });
 
-
 // Search for a stock symbol
-router.get("/search/:q", async function (req, res) {
+router.get("/search/:q", async function (req, res, next) {
   const cached = cache.get(req.url);
   if (cached) {
     res.send(cached);
@@ -77,9 +86,25 @@ router.get("/search/:q", async function (req, res) {
   )
     .then((res) => res.json())
     .then((json) => {
-      cache.set(req.url, json, [{ttl:1000*60*60*48}]);
+      cache.set(req.url, json, [{ ttl: 1000 * 60 * 60 * 48 }]);
       res.send(json);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      next(error);
     });
+});
+
+// Get user stocks
+router.get("/user", async function (req, res) {
+  res.send(userStocks);
+});
+
+// Set user stocks
+router.post("/user", function (req, res) {
+  const newList = req.body;
+  if (newList) userStocks = newList;
+  res.status(200);
 });
 
 export default router;

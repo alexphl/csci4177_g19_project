@@ -4,9 +4,9 @@ import { memo, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useDebounce } from "use-debounce";
 import { FaceFrownIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import { useQuery } from "@tanstack/react-query";
-import useLocalStorageState from "use-local-storage-state";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Reorder } from "framer-motion";
+import { queryClient } from "@/app/QueryProvider";
 
 // Lazy-load components
 const StockListItem = dynamic(() => import("./StockListItem"));
@@ -33,9 +33,45 @@ const StockList = (props: {
 	searchQuery: any;
 	selectedStock: string | undefined;
 }) => {
-	const [userStocks, setUserStocks] = useLocalStorageState("userStocks", {
-		defaultValue: ["AAPL", "MSFT", "NVDA"],
+	const userStocks = useQuery<string[]>({
+		queryKey: [`/api/stocks/user`],
 	});
+
+	// Function to update user stock list
+	// Implements optimistic updates
+	const userStocksMut = useMutation({
+		mutationFn: (newList: string[]) =>
+			fetch(`/api/stocks/user`, {
+				method: "POST",
+				body: JSON.stringify(newList),
+				headers: { "Content-Type": "application/json" },
+			}),
+		// When mutate is called:
+		onMutate: async (newList) => {
+			// Cancel any outgoing refetches
+			// (so they don't overwrite our optimistic update)
+			await queryClient.cancelQueries({ queryKey: ["/api/stocks/user"] });
+
+			// Snapshot the previous value
+			const previousList = queryClient.getQueryData(["/api/stocks/user"]);
+
+			// Optimistically update to the new value
+			queryClient.setQueryData(["/api/stocks/user"], () => newList);
+
+			// Return a context object with the snapshotted value
+			return { previousList };
+		},
+		// If the mutation fails,
+		// use the context returned from onMutate to roll back
+		onError: (err, newTodo, context) => {
+			queryClient.setQueryData(["/api/stocks/user"], context!.previousList);
+		},
+		// Always refetch after error or success:
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: ["/api/stocks/user"] });
+		},
+	});
+
 	const selectedStock = props.selectedStock;
 
 	// Search state with debouncing and deferred value
@@ -69,19 +105,19 @@ const StockList = (props: {
 		<>
 			{
 				/* SHOW USER STOCKS */
-				!searchIsActive && (
+				!searchIsActive && userStocks.isSuccess && (
 					<>
 						<StockListbox />
 						<hr className="my-4 mx-auto w-10 rounded-full border-neutral-600 2xl:my-6" />
 
 						<Reorder.Group
 							axis="y"
-							values={userStocks}
-							onReorder={setUserStocks}
+							values={userStocks.data}
+							onReorder={(newOrder: string[]) => userStocksMut.mutateAsync(newOrder)}
 							as="ol"
 							className={listStyle}
 						>
-							{userStocks.map((stock: string, i) => (
+							{userStocks.data.map((stock: string, i) => (
 								<Reorder.Item
 									key={stock}
 									value={stock}
@@ -96,7 +132,7 @@ const StockList = (props: {
 								>
 									<StockListItem
 										stock={stock}
-										userStocks={[userStocks, setUserStocks]}
+										userStocks={[userStocks.data, userStocksMut]}
 										selected={stock === selectedStock}
 										searchIsActive={searchIsActive}
 									/>
@@ -143,7 +179,7 @@ const StockList = (props: {
 										.map((result: any) => (
 											<StockListItem
 												key={result.symbol}
-												userStocks={[userStocks, setUserStocks]}
+												userStocks={[userStocks.data, userStocksMut]}
 												stock={result.symbol}
 												searchIsActive={searchIsActive}
 												selected={result.symbol === selectedStock}
@@ -156,7 +192,7 @@ const StockList = (props: {
 								searchResult.isFetching &&
 									[...Array(3)].map((_x, i) => (
 										<StockListItem
-											userStocks={[userStocks, setUserStocks]}
+											userStocks={[userStocks.data, userStocksMut]}
 											key={i}
 											searchIsActive={searchIsActive}
 											stock={null}

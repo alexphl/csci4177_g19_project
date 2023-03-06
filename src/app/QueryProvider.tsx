@@ -12,7 +12,7 @@ const defaultQueryFn = async ({ queryKey }: any) => {
   return response.json();
 };
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       queryFn: defaultQueryFn,

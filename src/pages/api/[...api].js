@@ -1,7 +1,7 @@
 "use strict";
 
 import createError from "http-errors";
-import express, { json as _json, urlencoded, static as _static } from "express";
+import express, { urlencoded, static as _static } from "express";
 import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
@@ -29,7 +29,6 @@ import transactionRouter from "@/utils/routes/transaction";
 import stocksRouter from "@/utils/routes/stocks";
 
 app.use(logger("dev"));
-app.use(_json());
 app.use(
   urlencoded({
     extended: false,
