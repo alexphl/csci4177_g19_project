@@ -11,6 +11,8 @@ const StockListbox = dynamic(() => import("./Listbox"));
 
 const listStyle = "flex flex-col gap-2.5 transition";
 
+// Filters search results to hide stock subvariants
+// This logic will likely be moved to backend
 function filterResults(array: any) {
 	return (
 		array &&
@@ -41,6 +43,8 @@ const StockList = (props: {
 		enabled: !!debouncedQuery,
 		staleTime: Infinity,
 	});
+
+	// Filter search results
 	const filtered = useMemo(
 		() =>
 			filterResults(
@@ -103,10 +107,10 @@ const StockList = (props: {
 							}
 						>
 							{
-								/* SHOW USER STOCKS */
+								/* SHOW SEARCH ICON BG */
 								!searchResult.isFetching && !searchResult.data && (
-									<div className="flex w-full flex-col items-center justify-center py-20 text-lg text-neutral-800">
-										<div className="w-20 ">
+									<div className="flex w-full flex-col items-center justify-center py-20 text-lg text-neutral-900">
+										<div className="w-24 ">
 											<MagnifyingGlassIcon />
 										</div>
 									</div>
@@ -116,7 +120,6 @@ const StockList = (props: {
 							{
 								/* SHOW SEARCH RESULTS */
 								searchResult.isSuccess &&
-									searchResult.data.result &&
 									filtered
 										.slice(0, resultLimit)
 										.map((result: any) => (
@@ -130,39 +133,34 @@ const StockList = (props: {
 
 							{
 								/* SHOW LOADING PLACEHOLDER */
-								debouncedQuery &&
-									!searchResult.data &&
+								searchResult.isFetching &&
 									[...Array(3)].map((_x, i) => (
 										<StockListItem
 											key={i}
-											stock={""}
+											stock={null}
 											selected={false}
-											className={
-												"animate-pulse rounded-lg bg-neutral-900 text-transparent"
-											}
+											className="pointer-events-none"
 										/>
 									))
 							}
 
 							{
 								/* NOT FOUND MESSAGE */
-								searchResult.isSuccess &&
-									searchResult.data.result &&
-									filtered.length === 0 && (
-										<div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
-											<div className="w-16 ">
-												<FaceFrownIcon />
-											</div>
-											<div className="flex flex-col items-center">
-												<h1 className="text-lg font-bold">
-													Sorry, we found nothing
-												</h1>
-												<h2 className="text-sm font-medium">
-													Try a different search query
-												</h2>
-											</div>
+								searchResult.isSuccess && filtered.length === 0 && (
+									<div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
+										<div className="w-16 ">
+											<FaceFrownIcon />
 										</div>
-									)
+										<div className="flex flex-col items-center">
+											<h1 className="text-lg font-bold">
+												Sorry, we found nothing
+											</h1>
+											<h2 className="text-sm font-medium">
+												Try a different search query
+											</h2>
+										</div>
+									</div>
+								)
 							}
 
 							{

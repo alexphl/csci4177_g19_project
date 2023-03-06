@@ -15,17 +15,19 @@ const loading ="animate-pulse bg-neutral-800 w-4/6";
 const StockChartXS = dynamic(() => import("./ChartXS"));
 
 const StockListItem = (props: {
-  stock: string;
+  stock: string | null;
   selected: boolean;
   onClick?: any;
   className?: string;
 }) => {
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, props.stock],
+    enabled: !!props.stock
   });
   const profile = useQuery<any>({
     queryKey: [`/api/stocks/profile/`, props.stock],
     staleTime: Infinity,
+    enabled: !!props.stock
   });
 
   return (
@@ -41,7 +43,7 @@ const StockListItem = (props: {
         >
           <div className="overflow-hidden text-clip">
             <h1 className="text-lg font-extrabold group-hover:text-neutral-50">
-              {props.stock}
+              {props.stock || <br/>}
             </h1>
             <p className={"whitespace-nowrap text-xs font-medium text-neutral-400 " + (profile.isLoading && loading)}>
               {(profile.isSuccess && profile.data.name) || <br />}
