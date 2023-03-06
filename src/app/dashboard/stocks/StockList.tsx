@@ -1,9 +1,12 @@
+"use client";
+
 import { memo, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useDebounce } from "use-debounce";
-import { Transition } from "@headlessui/react";
 import { FaceFrownIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
+import useLocalStorageState from "use-local-storage-state";
+import { Reorder } from "framer-motion";
 
 // Lazy-load components
 const StockListItem = dynamic(() => import("./StockListItem"));
@@ -30,7 +33,9 @@ const StockList = (props: {
 	searchQuery: any;
 	selectedStock: string | undefined;
 }) => {
-	const [userStocks] = useState(["AAPL", "MSFT", "NVDA"]);
+	const [userStocks, setUserStocks] = useLocalStorageState("userStocks", {
+		defaultValue: ["AAPL", "MSFT", "NVDA"],
+	});
 	const selectedStock = props.selectedStock;
 
 	// Search state with debouncing and deferred value
@@ -69,23 +74,33 @@ const StockList = (props: {
 						<StockListbox />
 						<hr className="my-4 mx-auto w-10 rounded-full border-neutral-600 2xl:my-6" />
 
-						<Transition
-							appear={true}
-							show={!searchIsActive}
-							enter="transition duration-300 ease-out"
-							enterFrom="transform blur-sm scale-95 opacity-50"
-							enterTo="transform scale-100 opacity-100"
+						<Reorder.Group
+							axis="y"
+							values={userStocks}
+							onReorder={setUserStocks}
+							as="ol"
+							className={listStyle}
 						>
-							<ol className={listStyle}>
-								{userStocks.map((stock: string) => (
+							{userStocks.map((stock: string, i) => (
+								<Reorder.Item
+									key={stock}
+									value={stock}
+									initial={{ opacity: 0.5, scale: 0.95, filter: "blur(4px)" }}
+									animate={{ opacity: 1, scale: 1, filter: "none" }}
+									transition={{
+										type: "spring",
+										damping: 25,
+										stiffness: 400,
+										delay: i / 18,
+									}}
+								>
 									<StockListItem
-										key={stock}
 										stock={stock}
 										selected={stock === selectedStock}
 									/>
-								))}
-							</ol>
-						</Transition>
+								</Reorder.Item>
+							))}
+						</Reorder.Group>
 					</>
 				)
 			}
@@ -102,7 +117,7 @@ const StockList = (props: {
 							className={
 								listStyle +
 								(searchQuery !== debouncedQuery || searchResult.isFetching
-									? " scale-[0.98] blur-sm saturate-0 pointer-events-none"
+									? " pointer-events-none scale-[0.98] blur-sm saturate-0"
 									: "")
 							}
 						>
@@ -135,11 +150,7 @@ const StockList = (props: {
 								/* SHOW LOADING PLACEHOLDER */
 								searchResult.isFetching &&
 									[...Array(3)].map((_x, i) => (
-										<StockListItem
-											key={i}
-											stock={null}
-											selected={false}
-										/>
+										<StockListItem key={i} stock={null} selected={false} />
 									))
 							}
 
