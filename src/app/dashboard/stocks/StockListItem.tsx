@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { memo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { TrashIcon, Bars2Icon, PlusIcon } from "@heroicons/react/24/solid";
+import { Bars2Icon, BookmarkIcon, BookmarkSlashIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 //import StockChartXS from "./ChartXS";
 
@@ -140,7 +140,7 @@ const StockListItem = (props: {
                   ]);
                 }}
               >
-                <TrashIcon className="w-4" />
+                <BookmarkSlashIcon className="w-4" />
               </button>
             )}
             {!isAdded && (
@@ -152,7 +152,7 @@ const StockListItem = (props: {
                   setUserStocks.mutate([...userStocks.concat(props.stock)]);
                 }}
               >
-                <PlusIcon className="w-4" />
+                <BookmarkIcon className="w-4" />
               </button>
             )}
             {!props.searchIsActive && (
