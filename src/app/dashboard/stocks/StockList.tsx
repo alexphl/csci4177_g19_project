@@ -109,9 +109,9 @@ const StockList = (props: {
 				/* SHOW USER STOCKS */
 				!searchIsActive && userStocks.isSuccess && (
 					<>
-						<div className="flex w-[calc(100%) + 0.5rem] z-50 items-center justify-between sticky top-0 -mx-4 p-4 2xl:p-6 pb-0 bg-gradient-to-b from-black to-transparent -translate-y-4 rounded-xl">
+						<div className="flex w-[calc(100%) + 0.5rem] z-50 items-center justify-between sticky top-0 -mx-4 p-4 2xl:p-6 pb-0 bg-gradient-to-b from-black to-transparent -translate-y-4 rounded-2xl">
 							<StockListbox />
-							<button className={"rounded-md backdrop-blur-md transition p-1.5 " + (isEditMode ? " bg-white/[0.8] text-black" : " bg-white/[0.1]")} onClick={() => setEditMode(!isEditMode)}><CubeTransparentIcon className="w-4"/></button>
+							<button className={"rounded-md border border-neutral-800 backdrop-blur-md transition p-1.5 " + (isEditMode ? " bg-white/[0.8] text-black" : " bg-white/[0.1]")} onClick={() => setEditMode(!isEditMode)}><CubeTransparentIcon className="w-4"/></button>
 						</div>
 						<hr className="mb-4 mx-auto w-10 rounded-full border-neutral-600 2xl:my-6" />
 

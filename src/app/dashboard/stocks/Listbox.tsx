@@ -19,7 +19,7 @@ const StockListbox = () => {
     <div className="w-max text-sm font-medium text-neutral-300">
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative">
-          <Listbox.Button className="relative w-full cursor-pointer backdrop-blur-md rounded-md bg-white/[0.1] py-1 pl-3 pr-9 text-left hover:bg-white/[0.15] focus:outline-none focus-visible:border-orange-200">
+          <Listbox.Button className="relative w-full border border-neutral-800 cursor-pointer backdrop-blur-md rounded-md bg-white/[0.1] py-1 pl-3 pr-9 text-left hover:bg-white/[0.15] focus:outline-none focus-visible:border-orange-200">
             <span className="block truncate">{selected}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1">
               <ArrowsUpDownIcon
