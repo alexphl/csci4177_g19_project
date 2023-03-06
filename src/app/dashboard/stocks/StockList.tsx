@@ -3,7 +3,11 @@
 import { memo, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useDebounce } from "use-debounce";
-import { FaceFrownIcon, MagnifyingGlassIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import {
+	FaceFrownIcon,
+	MagnifyingGlassIcon,
+	SparklesIcon,
+} from "@heroicons/react/24/solid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
@@ -109,11 +113,21 @@ const StockList = (props: {
 				/* SHOW USER STOCKS */
 				!searchIsActive && userStocks.isSuccess && (
 					<>
-						<div className="flex w-[calc(100%) + 0.5rem] z-50 items-center justify-between sticky top-0 -mx-4 p-4 2xl:p-6 pb-0 bg-gradient-to-b from-black to-transparent -translate-y-4 rounded-2xl">
+						<div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-4 flex -translate-y-4 items-center rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0 2xl:p-6">
 							<StockListbox />
-							<button className={"rounded-md border border-neutral-800 backdrop-blur-md transition p-1.5 " + (isEditMode ? " bg-white/[0.8] text-black" : " bg-white/[0.1]")} onClick={() => setEditMode(!isEditMode)}><CubeTransparentIcon className="w-4"/></button>
+							<button
+								className={
+									"ml-auto rounded-md border border-neutral-800 p-1.5 backdrop-blur-md transition " +
+									(isEditMode
+										? " bg-white/[0.8] text-black"
+										: " bg-white/[0.1]")
+								}
+								onClick={() => setEditMode(!isEditMode)}
+							>
+								<CubeTransparentIcon className="w-4" />
+							</button>
 						</div>
-						<hr className="mb-4 mx-auto w-10 rounded-full border-neutral-600 2xl:my-6" />
+						<hr className="mx-auto mb-4 w-10 rounded-full border-neutral-600 2xl:my-6" />
 
 						<Reorder.Group
 							axis="y"

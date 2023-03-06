@@ -107,7 +107,7 @@ export default function StockDetails({
         </nav>
 
         <div className="flex w-full justify-between gap-2">
-          <div className="text-scroll overflow-auto scrollbar-hide">
+          <div className="text-scroll flex-auto overflow-auto scrollbar-hide">
             <section className="flex items-end gap-4">
               <h2 className="text-xl font-extrabold">{params.stock}</h2>
               {profile.isSuccess && (
@@ -118,7 +118,7 @@ export default function StockDetails({
               )}
             </section>
 
-            <h1 className="max-w-[300px] whitespace-nowrap text-3xl sm:max-w-full">
+            <h1 className="max-w-[200px] whitespace-nowrap text-3xl sm:max-w-full">
               {(profile.isSuccess && profile.data.name) || <br />}
             </h1>
           </div>

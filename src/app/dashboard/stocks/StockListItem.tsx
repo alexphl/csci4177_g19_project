@@ -129,7 +129,7 @@ const StockListItem = (props: {
           >
             {isAdded && (
               <button
-                className="rounded-lg border-[0.5px] border-black/[0.5] bg-neutral-100/[0.1] p-1.5 shadow-sm hover:bg-rose-400 hover:text-black"
+                className="rounded-xl border border-white/[0.2] bg-black/[0.5] p-2 shadow-sm hover:bg-rose-400 hover:text-black"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -145,7 +145,7 @@ const StockListItem = (props: {
             )}
             {!isAdded && (
               <button
-                className="rounded-lg border-[0.5px] border-black/[0.5] bg-neutral-100/[0.1] p-1.5 shadow-sm hover:bg-green-400 hover:text-black"
+                className="rounded-xl border border-white/[0.2] bg-black/[0.5] p-2 shadow-sm hover:bg-green-400 hover:text-black"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -156,7 +156,7 @@ const StockListItem = (props: {
               </button>
             )}
             {!props.searchIsActive && (
-              <Bars2Icon className="relative z-50 ml-2 w-6 cursor-grab text-neutral-400 active:text-neutral-100" />
+              <Bars2Icon className="relative z-50 ml-2 w-6 cursor-grab text-neutral-500 active:text-neutral-100" />
             )}
           </motion.div>
         )}
