@@ -117,7 +117,7 @@ const StockListItem = (props: {
               "col-span-2 ml-auto flex items-center gap-2 " +
               (props.searchIsActive &&
                 !props.selected &&
-                " col-start-2 row-start-1 hidden group-hover:block")
+                " col-start-2 row-start-1 hidden group-hover:block mx-2")
             }
             initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0 }}
