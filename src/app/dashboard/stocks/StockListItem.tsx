@@ -19,6 +19,7 @@ const StockChartXS = dynamic(() => import("./ChartXS"));
 const StockListItem = (props: {
   stock: string | null;
   selected: boolean;
+  searchIsActive: boolean,
   userStocks: any;
   onClick?: any;
   className?: string;
@@ -45,9 +46,9 @@ const StockListItem = (props: {
     >
       <div
         className={
-          "group grid grid-cols-[2fr_1fr_1fr] items-center gap-1 rounded-lg border border-neutral-900 p-3 transition-all hover:border-transparent hover:bg-white/[0.08] 2xl:p-4" +
+          "group grid grid-cols-[2fr_1fr_1fr] backdrop-blur-xl items-center gap-1 rounded-lg border border-neutral-900 p-3 transition-all hover:border-transparent hover:bg-white/[0.08] 2xl:p-4" +
           (props.selected
-            ? " border-transparent bg-white/[0.12] py-4 text-neutral-50 2xl:py-5"
+            ? " border-transparent bg-white/[0.12] py-4 pr-5 text-neutral-50 2xl:py-5"
             : " bg-transparent")
         }
       >
@@ -133,7 +134,7 @@ const StockListItem = (props: {
                 <PlusIcon className="w-4" />
               </button>
             )}
-            <Bars2Icon className="relative z-50 mr-1.5 ml-2 w-6 cursor-grab text-neutral-400 active:text-neutral-100" />
+            {!props.searchIsActive && <Bars2Icon className="relative z-50 ml-2 w-6 cursor-grab text-neutral-400 active:text-neutral-100" />}
           </motion.div>
         )}
       </div>

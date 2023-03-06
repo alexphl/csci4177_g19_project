@@ -98,6 +98,7 @@ const StockList = (props: {
 										stock={stock}
 										userStocks={[userStocks, setUserStocks]}
 										selected={stock === selectedStock}
+										searchIsActive={searchIsActive}
 									/>
 								</Reorder.Item>
 							))}
@@ -144,6 +145,7 @@ const StockList = (props: {
 												key={result.symbol}
 												userStocks={[userStocks, setUserStocks]}
 												stock={result.symbol}
+												searchIsActive={searchIsActive}
 												selected={result.symbol === selectedStock}
 											/>
 										))
@@ -156,6 +158,7 @@ const StockList = (props: {
 										<StockListItem
 											userStocks={[userStocks, setUserStocks]}
 											key={i}
+											searchIsActive={searchIsActive}
 											stock={null}
 											selected={false}
 										/>
