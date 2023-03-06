@@ -7,7 +7,7 @@ import { FaceFrownIcon, MagnifyingGlassIcon, SparklesIcon } from "@heroicons/rea
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
-import { CubeTransparentIcon, PencilIcon } from "@heroicons/react/20/solid";
+import { CubeTransparentIcon } from "@heroicons/react/20/solid";
 
 // Lazy-load components
 const StockListItem = dynamic(() => import("./StockListItem"));
@@ -109,11 +109,11 @@ const StockList = (props: {
 				/* SHOW USER STOCKS */
 				!searchIsActive && userStocks.isSuccess && (
 					<>
-						<div className="flex w-full items-center justify-between">
+						<div className="flex w-[calc(100%) + 0.5rem] z-50 items-center justify-between sticky top-0 -mx-4 p-4 2xl:p-6 pb-0 bg-gradient-to-b from-black to-transparent -translate-y-4 rounded-xl">
 							<StockListbox />
-							<button className={"rounded-md transition p-2 " + (isEditMode ? " bg-white/[0.8] text-black" : " bg-white/[0.1]")} onClick={() => setEditMode(!isEditMode)}><CubeTransparentIcon className="w-3"/></button>
+							<button className={"rounded-md backdrop-blur-md transition p-1.5 " + (isEditMode ? " bg-white/[0.8] text-black" : " bg-white/[0.1]")} onClick={() => setEditMode(!isEditMode)}><CubeTransparentIcon className="w-4"/></button>
 						</div>
-						<hr className="my-4 mx-auto w-10 rounded-full border-neutral-600 2xl:my-6" />
+						<hr className="mb-4 mx-auto w-10 rounded-full border-neutral-600 2xl:my-6" />
 
 						<Reorder.Group
 							axis="y"

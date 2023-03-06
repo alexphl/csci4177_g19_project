@@ -13,7 +13,7 @@ const StockList = dynamic(() => import("./StockList"));
 Chart.register(...registerables);
 
 const stylePane =
-  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-32 sm:pb-40 transition-all overscroll-contain shadow-inner";
+  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";
 
 export default function StocksLayout({
   children, // will be a page or nested layout
@@ -56,7 +56,6 @@ export default function StocksLayout({
             selectedStock={selectedStock}
           />
         </div>
-
         <div /* RIGHT pane */
           className={
             stylePane +
