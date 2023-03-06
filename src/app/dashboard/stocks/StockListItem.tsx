@@ -2,6 +2,8 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { memo } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { TrashIcon, Bars2Icon, PlusIcon } from "@heroicons/react/24/solid";
+import { motion } from "framer-motion";
 //import StockChartXS from "./ChartXS";
 
 interface iQuote {
@@ -17,6 +19,7 @@ const StockChartXS = dynamic(() => import("./ChartXS"));
 const StockListItem = (props: {
   stock: string | null;
   selected: boolean;
+  userStocks: any;
   onClick?: any;
   className?: string;
 }) => {
@@ -29,6 +32,9 @@ const StockListItem = (props: {
     staleTime: Infinity,
     enabled: !!props.stock,
   });
+
+  const [userStocks, setUserStocks] = props.userStocks;
+  const isAdded = userStocks.includes(props.stock);
 
   return (
     <Link
@@ -58,34 +64,77 @@ const StockListItem = (props: {
           </p>
         </div>
 
-        <div className="h-8 w-16 justify-self-center sm:w-10 md:w-12 lg:w-16 xl:w-20">
-          <StockChartXS />
-        </div>
+        {!props.selected && (
+          <>
+            <div className="h-8 w-16 justify-self-center sm:w-10 md:w-12 lg:w-16 xl:w-20">
+              <StockChartXS />
+            </div>
 
-        <div className="col-start-3 text-end">
-          <h1
-            className={
-              "ml-auto text-lg font-bold group-hover:text-neutral-50 " +
-              (quote.isLoading && loading)
-            }
+            <div className="col-start-3 text-end">
+              <h1
+                className={
+                  "ml-auto text-lg font-bold group-hover:text-neutral-50 " +
+                  (quote.isLoading && loading)
+                }
+              >
+                {(quote.data && quote.data.c) || <br />}
+              </h1>
+              {(quote.isSuccess && (
+                <p
+                  className={
+                    "text-xs font-medium " +
+                    (quote.data!.d > 0 ? " text-green-400" : " text-red-400")
+                  }
+                >
+                  {quote.data!.d > 0 ? `+${quote.data!.d}` : `${quote.data!.d}`}
+                </p>
+              )) || (
+                <p className={"ml-auto text-xs font-medium " + loading}>
+                  <br />
+                </p>
+              )}
+            </div>
+          </>
+        )}
+
+        {props.selected && (
+          <motion.div
+            className="col-span-2 ml-auto flex items-center gap-2"
+            initial={{ opacity: 0, x: 60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              type: "spring",
+              damping: 25,
+              stiffness: 300,
+            }}
           >
-            {(quote.data && quote.data.c) || <br />}
-          </h1>
-          {(quote.isSuccess && (
-            <p
-              className={
-                "text-xs font-medium " +
-                (quote.data!.d > 0 ? " text-green-400" : " text-red-400")
-              }
-            >
-              {quote.data!.d > 0 ? `+${quote.data!.d}` : `${quote.data!.d}`}
-            </p>
-          )) || (
-            <p className={"ml-auto text-xs font-medium " + loading}>
-              <br />
-            </p>
-          )}
-        </div>
+            {isAdded && (
+              <button
+                className="rounded-lg border-[0.5px] border-black/[0.5] bg-neutral-100/[0.1] p-1.5 shadow-sm hover:bg-rose-400 hover:text-black"
+                onClick={() =>
+                  setUserStocks([
+                    ...userStocks.filter((item: string) => {
+                      return item !== props.stock;
+                    }),
+                  ])
+                }
+              >
+                <TrashIcon className="w-4" />
+              </button>
+            )}
+            {!isAdded && (
+              <button
+                className="rounded-lg border-[0.5px] border-black/[0.5] bg-neutral-100/[0.1] p-1.5 shadow-sm hover:bg-green-400 hover:text-black"
+                onClick={() =>
+                  setUserStocks([...userStocks.concat(props.stock)])
+                }
+              >
+                <PlusIcon className="w-4" />
+              </button>
+            )}
+            <Bars2Icon className="relative z-50 mr-1.5 ml-2 w-6 cursor-grab text-neutral-400 active:text-neutral-100" />
+          </motion.div>
+        )}
       </div>
     </Link>
   );

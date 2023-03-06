@@ -96,6 +96,7 @@ const StockList = (props: {
 								>
 									<StockListItem
 										stock={stock}
+										userStocks={[userStocks, setUserStocks]}
 										selected={stock === selectedStock}
 									/>
 								</Reorder.Item>
@@ -135,11 +136,13 @@ const StockList = (props: {
 							{
 								/* SHOW SEARCH RESULTS */
 								searchResult.isSuccess &&
+									filtered &&
 									filtered
 										.slice(0, resultLimit)
 										.map((result: any) => (
 											<StockListItem
 												key={result.symbol}
+												userStocks={[userStocks, setUserStocks]}
 												stock={result.symbol}
 												selected={result.symbol === selectedStock}
 											/>
@@ -150,13 +153,18 @@ const StockList = (props: {
 								/* SHOW LOADING PLACEHOLDER */
 								searchResult.isFetching &&
 									[...Array(3)].map((_x, i) => (
-										<StockListItem key={i} stock={null} selected={false} />
+										<StockListItem
+											userStocks={[userStocks, setUserStocks]}
+											key={i}
+											stock={null}
+											selected={false}
+										/>
 									))
 							}
 
 							{
 								/* NOT FOUND MESSAGE */
-								searchResult.isSuccess && filtered.length === 0 && (
+								searchResult.isSuccess && filtered && filtered.length === 0 && (
 									<div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
 										<div className="w-16 ">
 											<FaceFrownIcon />
@@ -176,7 +184,7 @@ const StockList = (props: {
 							{
 								/* SHOW MORE BUTTON */
 								searchResult.isSuccess &&
-									searchResult.data.result &&
+									filtered &&
 									filtered.length > resultLimit && (
 										<button
 											className="mx-auto mt-4 rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-2 text-sm font-medium active:opacity-70"
