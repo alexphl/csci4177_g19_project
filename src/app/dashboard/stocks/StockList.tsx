@@ -113,7 +113,7 @@ const StockList = (props: {
 				/* SHOW USER STOCKS */
 				!searchIsActive && userStocks.isSuccess && (
 					<>
-						<div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-4 flex -translate-y-4 items-center rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0 2xl:p-6">
+						<div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-4 flex -translate-y-4 items-center rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0">
 							<StockListbox />
 							<button
 								className={
@@ -127,7 +127,7 @@ const StockList = (props: {
 								<CubeTransparentIcon className="w-4" />
 							</button>
 						</div>
-						<hr className="mx-auto mb-4 w-10 rounded-full border-neutral-600 2xl:my-6" />
+						<hr className="mx-auto mb-4 w-10 rounded-full border-neutral-600 2xl:mb-6" />
 
 						<Reorder.Group
 							axis="y"
@@ -151,6 +151,7 @@ const StockList = (props: {
 									}}
 								>
 									<StockListItem
+										key={stock}
 										stock={stock}
 										isEditMode={isEditMode}
 										userStocks={[userStocks.data, userStocksMut]}

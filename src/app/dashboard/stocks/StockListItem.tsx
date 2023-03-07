@@ -2,7 +2,11 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { memo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Bars2Icon, BookmarkIcon, BookmarkSlashIcon } from "@heroicons/react/24/outline";
+import {
+  Bars2Icon,
+  BookmarkIcon,
+  BookmarkSlashIcon,
+} from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 //import StockChartXS from "./ChartXS";
 
@@ -11,16 +15,22 @@ interface iQuote {
   d: number; // change
 }
 
-const loading = "animate-pulse bg-neutral-800 w-4/6";
+const loadingVariants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+}
+
+const loading = "animate-pulse bg-neutral-900 w-4/6";
 
 // Lazy load charts
 const StockChartXS = dynamic(() => import("./ChartXS"));
 
 const StockListItem = (props: {
   stock: string | null;
-  selected: boolean;
+  selected?: boolean;
   isEditMode?: boolean;
-  searchIsActive: boolean;
+  searchIsActive?: boolean;
   userStocks: any;
   onClick?: any;
   className?: string;
@@ -47,7 +57,7 @@ const StockListItem = (props: {
     >
       <div
         className={
-          "group grid grid-cols-[2fr_1fr_1fr] items-center gap-1 rounded-lg border border-neutral-900 p-3 transition-all hover:border-transparent hover:bg-white/[0.08] hover:backdrop-blur-xl 2xl:p-4" +
+          "group grid grid-cols-[2fr_1fr_1fr] items-center gap-1 rounded-lg border border-neutral-900 p-3 transition-[padding] ease-out hover:bg-white/[0.08] active:backdrop-blur-xl 2xl:p-4" +
           (props.selected || props.isEditMode
             ? " border-transparent bg-white/[0.12] py-4 pr-5 text-neutral-50 2xl:py-5"
             : " bg-transparent") +
@@ -58,14 +68,18 @@ const StockListItem = (props: {
           <h1 className="text-lg font-extrabold group-hover:text-neutral-50">
             {props.stock || <br />}
           </h1>
-          <p
+          <div
             className={
               "whitespace-nowrap text-xs font-medium text-neutral-400 " +
               (profile.isLoading && loading)
             }
           >
-            {(profile.isSuccess && profile.data.name) || <br />}
-          </p>
+            {(profile.isSuccess && (
+              <motion.p variants={loadingVariants} initial="initial" animate="animate">
+                {profile.data.name}
+              </motion.p>
+            )) || <br />}
+          </div>
         </div>
 
         {!props.selected && !props.isEditMode && (
@@ -85,23 +99,28 @@ const StockListItem = (props: {
                 (props.searchIsActive && " group-hover:hidden")
               }
             >
-              <h1
+              <div
                 className={
                   "ml-auto text-lg font-bold group-hover:text-neutral-50 " +
                   (quote.isLoading && loading)
                 }
               >
-                {(quote.data && quote.data.c) || <br />}
-              </h1>
+                {(quote.data && (
+                  <motion.h1 variants={loadingVariants} initial="initial" animate="animate">
+                    {quote.data.c.toFixed(2)}
+                  </motion.h1>
+                )) || <br />}
+              </div>
               {(quote.isSuccess && (
-                <p
+                <motion.p
+                  variants={loadingVariants} initial="initial" animate="animate"
                   className={
                     "text-xs font-medium " +
                     (quote.data!.d > 0 ? " text-green-400" : " text-red-400")
                   }
                 >
-                  {quote.data!.d > 0 ? `+${quote.data!.d}` : `${quote.data!.d}`}
-                </p>
+                  {quote.data!.d > 0 ? `+${quote.data!.d.toFixed(2)}` : `${quote.data!.d.toFixed(2)}`}
+                </motion.p>
               )) || (
                 <p className={"ml-auto text-xs font-medium " + loading}>
                   <br />
@@ -117,7 +136,7 @@ const StockListItem = (props: {
               "col-span-2 ml-auto flex items-center gap-2 " +
               (props.searchIsActive &&
                 !props.selected &&
-                " col-start-2 row-start-1 hidden group-hover:block mx-2")
+                " col-start-2 row-start-1 mx-2 hidden group-hover:block")
             }
             initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0 }}
