@@ -21,10 +21,10 @@
     "cookie-parser": "^1.4.6",
     "express": "^4.18.2",
     "focus-trap-react": "^10.1.0",
-    "framer-motion": "^10.1.0",
+    "framer-motion": "^10.2.3",
     "fuse.js": "^6.6.2",
     "lru-cache": "^7.18.3",
-    "mongoose": "7.0.0",
+    "mongoose": "7.0.1",
     "morgan": "^1.10.0",
     "next": "13.2.3",
     "prop-types": "^15.8.1",
@@ -35,7 +35,7 @@
     "superjson": "1.12.2",
     "tailwind-scrollbar-hide": "^1.1.7",
     "use-debounce": "^9.0.3",
-    "zod": "^3.21.2"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
@@ -43,8 +43,8 @@
     "@types/prettier": "^2.7.2",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
-    "@typescript-eslint/eslint-plugin": "^5.54.0",
-    "@typescript-eslint/parser": "^5.54.0",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "@typescript-eslint/parser": "^5.54.1",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.35.0",
     "eslint-config-next": "13.2.3",
