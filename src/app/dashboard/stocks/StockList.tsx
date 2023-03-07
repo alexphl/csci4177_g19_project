@@ -9,7 +9,7 @@ import {
 	SparklesIcon,
 } from "@heroicons/react/24/solid";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Reorder } from "framer-motion";
+import { motion, Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
 import { CubeTransparentIcon } from "@heroicons/react/20/solid";
 
@@ -225,16 +225,19 @@ const StockList = (props: {
 
 							{
 								/* SHOW LOADING PLACEHOLDER */
-								searchResult.isFetching &&
-									[...Array(3)].map((_x, i) => (
-										<StockListItem
-											userStocks={[userStocks.data, userStocksMut]}
-											key={i}
-											searchIsActive={searchIsActive}
-											stock={null}
-											selected={false}
-										/>
-									))
+								searchResult.isFetching && (
+									<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+										{[...Array(3)].map((_x, i) => (
+											<StockListItem
+												userStocks={[userStocks.data, userStocksMut]}
+												key={i}
+												searchIsActive={searchIsActive}
+												stock={null}
+												selected={false}
+											/>
+										))}
+									</motion.div>
+								)
 							}
 
 							{

@@ -107,7 +107,7 @@ const StockListItem = (props: {
               >
                 {(quote.data && (
                   <motion.h1 variants={loadingVariants} initial="initial" animate="animate">
-                    {quote.data.c.toFixed(2)}
+                    {quote.data.c && quote.data.c.toFixed(2)}
                   </motion.h1>
                 )) || <br />}
               </div>
@@ -119,7 +119,7 @@ const StockListItem = (props: {
                     (quote.data!.d > 0 ? " text-green-400" : " text-red-400")
                   }
                 >
-                  {quote.data!.d > 0 ? `+${quote.data!.d.toFixed(2)}` : `${quote.data!.d.toFixed(2)}`}
+                  {quote.data.d && (quote.data!.d > 0 ? `+${quote.data!.d.toFixed(2)}` : `${quote.data!.d.toFixed(2)}`)}
                 </motion.p>
               )) || (
                 <p className={"ml-auto text-xs font-medium " + loading}>
