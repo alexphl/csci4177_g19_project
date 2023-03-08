@@ -6,15 +6,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { TrashIcon, PlusIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import type { iQuote } from "../StockListItem";
 
 // Lazy load
 const Chart = dynamic(() => import("./Chart"));
 const NotFound = dynamic(() => import("../../[404]/page"));
-
-interface iQuote {
-  c: number; // current price
-  d: number; // change
-}
 
 export default function StockDetails({
   params,
@@ -60,7 +56,7 @@ export default function StockDetails({
     },
     // If the mutation fails,
     // use the context returned from onMutate to roll back
-    onError: (err, newTodo, context) => {
+    onError: (err, _newTodo, context) => {
       queryClient.setQueryData(["/api/stocks/user"], context!.previousList);
     },
     // Always refetch after error or success:
@@ -73,7 +69,7 @@ export default function StockDetails({
     return <NotFound />;
   }
 
-  return (
+  return ( quote.isSuccess &&
     <>
       <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-8 -my-5 hidden h-10 -translate-y-8 rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0 sm:block" />
       <div className="w-full overflow-auto pb-6 transition-all scrollbar-hide">
@@ -142,7 +138,9 @@ export default function StockDetails({
         </section>
       </div>
 
-      <Chart />
+      {params.stock && quote.isSuccess && (
+        <Chart symbol={params.stock} quote={quote.data} />
+      )}
 
       <section className="mt-6 text-neutral-100 transition-all">
         <h1 className="text-xl font-bold">Related News</h1>
