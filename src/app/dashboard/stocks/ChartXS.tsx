@@ -3,82 +3,92 @@
 import { memo } from "react";
 import { Line } from "react-chartjs-2";
 
-import data from "@/dummy_data/prices.json";
+import { useQuery } from "@tanstack/react-query";
 
-const prices = JSON.parse(JSON.stringify(data.prices)).reverse();
-prices.splice(0, 6030);
+const StockChartXS = (props: { symbol: string; open: number, change: number }) => {
+  const points = useQuery<any>({
+    queryKey: ["/api/stocks/hist/today/", props.symbol],
+  });
 
-//@ts-ignore
-const isPositive = prices[0]?.close - prices[prices.length - 1]?.close < 0;
-const lineColor = isPositive
-  ? "rgba(74, 222, 128, 0.9)"
-  : "rgba(248, 113, 113, 0.9)";
+  const isPositive = props.change > 0;
 
-const StockChartXS = () => {
+  const lineColor = isPositive
+    ? "rgba(74, 222, 128, 1)"
+    : "rgba(248, 113, 113, 1)";
+
   return (
-    <>
-      <Line
-        data={{
-          labels: [],
-          datasets: [
-            {
-              label: "Price",
-              data: prices,
-              backgroundColor: "transparent",
-              borderColor: [lineColor],
-              borderWidth: 3,
-              spanGaps: true,
-              normalized: true,
-              tension: 0.05,
+    points.isSuccess &&
+    points.data.c && (
+      <>
+        <Line
+          data={{
+            labels: points.data.t,
+            datasets: [
+              {
+                label: "Price",
+                data: points.data.c,
+                backgroundColor: "transparent",
+                borderColor: [lineColor],
+                borderWidth: 2.5,
+                spanGaps: true,
+                normalized: true,
+                tension: 0.3,
+              },
+            ],
+          }}
+          options={{
+            maintainAspectRatio: false,
+            layout: {
+              autoPadding: false,
             },
-          ],
-        }}
-        options={{
-          maintainAspectRatio: false,
-          parsing: {
-            xAxisKey: "date",
-            yAxisKey: "close",
-          },
-          layout: {
-            autoPadding: false,
-          },
-          elements: {
-            point: {
-              radius: 0,
-              hitRadius: 40,
+            elements: {
+              point: {
+                radius: 0,
+                hitRadius: 40,
+              },
             },
-          },
-          plugins: {
-            legend: {
-              display: false,
-            },
-            tooltip: {
-              enabled: false,
-            },
-          },
-          scales: {
-            y: {
-              display: false,
-              grid: { lineWidth: 2 },
-              beginAtZero: false,
-              ticks: {
+            plugins: {
+              legend: {
                 display: false,
               },
-              offset: false,
-            },
-            x: {
-              display: false,
-              ticks: {
-                // maxTicksLimit: 2,
-                display: false,
+              tooltip: {
+                enabled: false,
               },
-              grid: { lineWidth: 2 },
-              offset: false,
+              annotation: {
+                annotations: {
+                  line1: {
+                    type: "line",
+                    yMin: props.open,
+                    yMax: props.open,
+                    borderColor: lineColor,
+                    borderWidth: 1,
+                    borderDash: [5, 5],
+                  },
+                },
+              },
             },
-          },
-        }}
-      />
-    </>
+            scales: {
+              y: {
+                display: false,
+                beginAtZero: false,
+                ticks: {
+                  display: false,
+                },
+                offset: false,
+              },
+              x: {
+                display: false,
+                ticks: {
+                  // maxTicksLimit: 2,
+                  display: false,
+                },
+                offset: false,
+              },
+            },
+          }}
+        />
+      </>
+    )
   );
 };
 

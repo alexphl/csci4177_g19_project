@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 interface iQuote {
   c: number; // current price
   d: number; // change
+  o: number;
 }
 
 const loadingVariants = {
@@ -90,7 +91,7 @@ const StockListItem = (props: {
                 (props.searchIsActive && " group-hover:hidden")
               }
             >
-              <StockChartXS />
+              {(props.stock && quote.isSuccess) && <StockChartXS symbol={props.stock} open={quote.data.o} change={quote.data.d} />}
             </div>
 
             <div

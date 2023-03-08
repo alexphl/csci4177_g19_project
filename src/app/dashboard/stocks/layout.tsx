@@ -11,6 +11,8 @@ const StockList = dynamic(() => import("./StockList"));
 
 // Necessary for charts to render
 Chart.register(...registerables);
+import annotationPlugin from 'chartjs-plugin-annotation';
+Chart.register(annotationPlugin);
 
 const stylePane =
   "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";

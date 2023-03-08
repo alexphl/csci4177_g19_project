@@ -75,7 +75,7 @@ export default function StockDetails({
 
   return (
     <>
-    <div className="hidden sm:block w-[calc(100%) + 0.5rem] h-10 sticky top-0 z-50 -mx-8 -my-5 -translate-y-8 rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0"/>
+      <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-8 -my-5 hidden h-10 -translate-y-8 rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0 sm:block" />
       <div className="w-full overflow-auto pb-6 transition-all scrollbar-hide">
         <nav className="flex w-full items-center justify-between pb-6 sm:hidden">
           <Link href={"/dashboard/stocks/"}>
@@ -107,7 +107,7 @@ export default function StockDetails({
           )}
         </nav>
 
-        <div className="flex w-full justify-between gap-2">
+        <section className="flex w-full justify-between gap-2">
           <div className="text-scroll flex-auto overflow-auto scrollbar-hide">
             <section className="flex items-end gap-4">
               <h2 className="text-xl font-extrabold">{params.stock}</h2>
@@ -139,12 +139,12 @@ export default function StockDetails({
               </p>
             )}
           </div>
-        </div>
+        </section>
       </div>
 
       <Chart />
 
-      <div className="mt-6 text-neutral-100 transition-all">
+      <section className="mt-6 text-neutral-100 transition-all">
         <h1 className="text-xl font-bold">Related News</h1>
         <div className="mt-4 flex flex-col gap-3">
           {[...Array(4)].map((_x, i) => (
@@ -160,7 +160,7 @@ export default function StockDetails({
             </article>
           ))}
         </div>
-      </div>
+      </section>
     </>
   );
 }
