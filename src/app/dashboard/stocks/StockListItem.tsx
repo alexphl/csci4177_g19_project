@@ -10,17 +10,18 @@ import {
 import { motion } from "framer-motion";
 //import StockChartXS from "./ChartXS";
 
-interface iQuote {
+export interface iQuote {
   c: number; // current price
   d: number; // change
-  o: number;
+  o: number; // open price
+  t: number; // UNIX timestamp
 }
 
 const loadingVariants = {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    exit: { opacity: 0 },
-}
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+};
 
 const loading = "animate-pulse bg-neutral-900 w-4/6";
 
@@ -76,7 +77,11 @@ const StockListItem = (props: {
             }
           >
             {(profile.isSuccess && (
-              <motion.p variants={loadingVariants} initial="initial" animate="animate">
+              <motion.p
+                variants={loadingVariants}
+                initial="initial"
+                animate="animate"
+              >
                 {profile.data.name}
               </motion.p>
             )) || <br />}
@@ -91,7 +96,9 @@ const StockListItem = (props: {
                 (props.searchIsActive && " group-hover:hidden")
               }
             >
-              {(props.stock && quote.isSuccess) && <StockChartXS symbol={props.stock} open={quote.data.o} change={quote.data.d} />}
+              {props.stock && quote.isSuccess && (
+                <StockChartXS symbol={props.stock} quote={quote.data} />
+              )}
             </div>
 
             <div
@@ -107,20 +114,29 @@ const StockListItem = (props: {
                 }
               >
                 {(quote.data && (
-                  <motion.h1 variants={loadingVariants} initial="initial" animate="animate">
+                  <motion.h1
+                    variants={loadingVariants}
+                    initial="initial"
+                    animate="animate"
+                  >
                     {quote.data.c && quote.data.c.toFixed(2)}
                   </motion.h1>
                 )) || <br />}
               </div>
               {(quote.isSuccess && (
                 <motion.p
-                  variants={loadingVariants} initial="initial" animate="animate"
+                  variants={loadingVariants}
+                  initial="initial"
+                  animate="animate"
                   className={
                     "text-xs font-medium " +
                     (quote.data!.d > 0 ? " text-green-400" : " text-red-400")
                   }
                 >
-                  {quote.data.d && (quote.data!.d > 0 ? `+${quote.data!.d.toFixed(2)}` : `${quote.data!.d.toFixed(2)}`)}
+                  {quote.data.d &&
+                    (quote.data!.d > 0
+                      ? `+${quote.data!.d.toFixed(2)}`
+                      : `${quote.data!.d.toFixed(2)}`)}
                 </motion.p>
               )) || (
                 <p className={"ml-auto text-xs font-medium " + loading}>

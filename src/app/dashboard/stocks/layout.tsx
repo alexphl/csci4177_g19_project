@@ -4,6 +4,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Chart, registerables } from "chart.js";
+import annotationPlugin from "chartjs-plugin-annotation";
 import Searchbox from "./Searchbox";
 
 // Lazy load components
@@ -11,7 +12,6 @@ const StockList = dynamic(() => import("./StockList"));
 
 // Necessary for charts to render
 Chart.register(...registerables);
-import annotationPlugin from 'chartjs-plugin-annotation';
 Chart.register(annotationPlugin);
 
 const stylePane =
@@ -37,7 +37,7 @@ export default function StocksLayout({
     <div className="flex-auto">
       <nav
         className={
-          "mx-auto block grid-cols-[3fr_5fr] items-center gap-2 transition-all lg:container sm:grid sm:h-20 sm:py-0 sm:px-2 md:px-4 lg:gap-4 lg:px-6 xl:gap-5 xl:h-28 xl:px-20 2xl:h-32 " +
+          "mx-auto block grid-cols-[3fr_5fr] items-center gap-2 transition-all lg:container sm:grid sm:h-20 sm:py-0 sm:px-2 md:px-4 lg:gap-4 lg:px-6 xl:h-28 xl:gap-5 xl:px-20 2xl:h-32 " +
           (selectedStock ? " p-0" : " p-3")
         }
       >
@@ -48,7 +48,7 @@ export default function StocksLayout({
         />
       </nav>
 
-      <main className="mx-auto grid-cols-[3fr_5fr] gap-2 transition-all lg:container sm:grid sm:px-2 md:px-4 lg:gap-3 xl:gap-5 lg:px-6 xl:px-20">
+      <main className="mx-auto grid-cols-[3fr_5fr] gap-2 transition-all lg:container sm:grid sm:px-2 md:px-4 lg:gap-3 lg:px-6 xl:gap-5 xl:px-20">
         <div /* LEFT pane */
           className={stylePane + (selectedStock ? " hidden sm:block" : "")}
         >

@@ -5,16 +5,15 @@ import { Line } from "react-chartjs-2";
 
 import { useQuery } from "@tanstack/react-query";
 
-const StockChartXS = (props: { symbol: string; open: number, change: number }) => {
+import type { iQuote } from "./StockListItem";
+
+const StockChartXS = (props: { symbol: string; quote: iQuote }) => {
   const points = useQuery<any>({
     queryKey: ["/api/stocks/hist/today/", props.symbol],
   });
 
-  const isPositive = props.change > 0;
-
-  const lineColor = isPositive
-    ? "rgba(74, 222, 128, 1)"
-    : "rgba(248, 113, 113, 1)";
+  const lineColor =
+    props.quote.d > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)";
 
   return (
     points.isSuccess &&
@@ -22,11 +21,11 @@ const StockChartXS = (props: { symbol: string; open: number, change: number }) =
       <>
         <Line
           data={{
-            labels: points.data.t,
+            labels: points.data.t.concat(props.quote.t),
             datasets: [
               {
                 label: "Price",
-                data: points.data.c,
+                data: points.data.c.concat(props.quote.c),
                 backgroundColor: "transparent",
                 borderColor: [lineColor],
                 borderWidth: 2.5,
@@ -39,7 +38,7 @@ const StockChartXS = (props: { symbol: string; open: number, change: number }) =
           options={{
             maintainAspectRatio: false,
             layout: {
-              autoPadding: false,
+              autoPadding: true,
             },
             elements: {
               point: {
@@ -55,11 +54,14 @@ const StockChartXS = (props: { symbol: string; open: number, change: number }) =
                 enabled: false,
               },
               annotation: {
+                common: {
+                  drawTime: "beforeDatasetsDraw",
+                },
                 annotations: {
                   line1: {
                     type: "line",
-                    yMin: props.open,
-                    yMax: props.open,
+                    yMin: props.quote.o,
+                    yMax: props.quote.o,
                     borderColor: lineColor,
                     borderWidth: 1,
                     borderDash: [5, 5],
@@ -79,7 +81,6 @@ const StockChartXS = (props: { symbol: string; open: number, change: number }) =
               x: {
                 display: false,
                 ticks: {
-                  // maxTicksLimit: 2,
                   display: false,
                 },
                 offset: false,
