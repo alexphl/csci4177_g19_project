@@ -9,7 +9,7 @@ const cache = new LRU({
   ttl: 1000 * 60 * 25, // Response's Time to Live (ms)
 });
 
-let userStocks = {list: ["AAPL", "MSFT", "GOOG"]}
+let userStocks = { list: ["AAPL", "MSFT", "GOOG"] };
 
 // Get all stocks
 router.get("/", async function (req, res) {
@@ -22,7 +22,13 @@ router.get("/", async function (req, res) {
   fetch(
     `https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${process.env.FINNHUB_API_KEY}`
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) {
+        res.sendStatus(res.status);
+        throw new Error(`Server responded with ${res.status}`);
+      }
+      return res.json();
+    })
     .then((json) => {
       cache.set(req.url, json, [{ ttl: 1000 * 60 * 60 * 48 }]);
       res.send(json);
@@ -40,7 +46,13 @@ router.get("/quote/:symbol", async function (req, res, next) {
   fetch(
     `https://finnhub.io/api/v1/quote?symbol=${req.params.symbol}&token=${process.env.FINNHUB_API_KEY}`
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) {
+        res.sendStatus(res.status);
+        throw new Error(`Server responded with ${res.status}`);
+      }
+      return res.json();
+    })
     .then((json) => {
       cache.set(req.url, json);
       res.send(json);
@@ -62,7 +74,13 @@ router.get("/profile/:symbol", async function (req, res, next) {
   fetch(
     `https://finnhub.io/api/v1/stock/profile2?symbol=${req.params.symbol}&token=${process.env.FINNHUB_API_KEY}`
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) {
+        res.sendStatus(res.status);
+        throw new Error(`Server responded with ${res.status}`);
+      }
+      return res.json();
+    })
     .then((json) => {
       cache.set(req.url, json, [{ ttl: 1000 * 60 * 60 * 48 }]);
       res.send(json);
@@ -84,7 +102,13 @@ router.get("/search/:q", async function (req, res, next) {
   fetch(
     `https://finnhub.io/api/v1/search?q=${req.params.q}&token=${process.env.FINNHUB_API_KEY}`
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) {
+        res.sendStatus(res.status);
+        throw new Error(`Server responded with ${res.status}`);
+      }
+      return res.json();
+    })
     .then((json) => {
       cache.set(req.url, json, [{ ttl: 1000 * 60 * 60 * 48 }]);
       res.send(json);
@@ -104,16 +128,22 @@ router.get("/hist/today/:symbol", async function (req, res, next) {
   }
 
   const timeStamp = new Date();
-  const yesterdayDate = new Date(timeStamp.getTime() - 24*60*60*1000);
+  const yesterdayDate = new Date(timeStamp.getTime() - 24 * 60 * 60 * 1000);
 
-  const from = yesterdayDate.getTime()/1000|0;
-  const to = Date.now()/1000|0;
+  const from = (yesterdayDate.getTime() / 1000) | 0;
+  const to = (Date.now() / 1000) | 0;
   const intervalMin = "30";
 
   fetch(
     `https://finnhub.io/api/v1/stock/candle?symbol=${req.params.symbol}&resolution=${intervalMin}&from=${from}&to=${to}&token=${process.env.FINNHUB_API_KEY}`
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) {
+        res.sendStatus(res.status);
+        throw new Error(`Server responded with ${res.status}`);
+      }
+      return res.json();
+    })
     .then((json) => {
       cache.set(req.url, json);
       res.send(json);

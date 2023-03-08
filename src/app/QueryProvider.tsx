@@ -3,13 +3,19 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const defaultQueryFn = async ({ queryKey }: any) => {
-  const response:any = await fetch(queryKey.join(''));
-
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-
-  return response.json();
+  return fetch(queryKey.join(""))
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Server responded with ${res.status}`);
+      }
+      return res.json();
+    })
+    .then((json: any) => {
+      if (json.error) {
+        throw new Error(`Server responded with ${json.error}`);
+      }
+      return json;
+    });
 };
 
 export const queryClient = new QueryClient({
