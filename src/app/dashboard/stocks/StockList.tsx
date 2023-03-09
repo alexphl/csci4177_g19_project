@@ -38,6 +38,7 @@ const StockList = (props: {
 	searchQuery: any;
 	selectedStock: string | undefined;
 }) => {
+	const selectedStock = props.selectedStock;
 	const userStocks = useQuery<string[]>({
 		queryKey: [`/api/stocks/user`],
 	});
@@ -51,10 +52,10 @@ const StockList = (props: {
 				body: JSON.stringify(newList),
 				headers: { "Content-Type": "application/json" },
 			}),
-		// When mutate is called:
+		// Optimistic update when mutate is called
 		onMutate: async (newList) => {
-			// Cancel any outgoing refetches
-			// (so they don't overwrite our optimistic update)
+			// Cancel outgoing refetches
+			// so they don't overwrite our optimistic update
 			await queryClient.cancelQueries({ queryKey: ["/api/stocks/user"] });
 
 			// Snapshot the previous value
@@ -77,7 +78,23 @@ const StockList = (props: {
 		},
 	});
 
-	const selectedStock = props.selectedStock;
+	function removeStock(stock: string) {
+		return (
+			userStocks.isSuccess &&
+			userStocksMut.mutate([
+				...userStocks.data.filter((item: string) => {
+					return item !== stock;
+				}),
+			])
+		);
+	}
+
+	function addStock(stock: string) {
+		return (
+			userStocks.isSuccess &&
+			userStocksMut.mutate([...userStocks.data.concat(stock)])
+		);
+	}
 
 	// Search state with debouncing and deferred value
 	const [searchIsActive] = props.searchIsActive;
@@ -105,7 +122,7 @@ const StockList = (props: {
 	// Reset search result limit between searches
 	useEffect(() => {
 		setResultLimit(5);
-	}, [debouncedQuery]);
+	}, [searchResult.data]);
 
 	return (
 		<>
@@ -154,7 +171,9 @@ const StockList = (props: {
 										key={stock}
 										stock={stock}
 										isEditMode={isEditMode}
-										userStocks={[userStocks.data, userStocksMut]}
+										isAdded={userStocks.data.includes(stock)}
+										addStock={addStock}
+										removeStock={removeStock}
 										selected={stock === selectedStock}
 										searchIsActive={searchIsActive}
 									/>
@@ -215,7 +234,9 @@ const StockList = (props: {
 										.map((result: any) => (
 											<StockListItem
 												key={result.symbol}
-												userStocks={[userStocks.data, userStocksMut]}
+												isAdded={userStocks.data!.includes(result.symbol)}
+												addStock={addStock}
+												removeStock={removeStock}
 												stock={result.symbol}
 												searchIsActive={searchIsActive}
 												selected={result.symbol === selectedStock}
@@ -229,7 +250,9 @@ const StockList = (props: {
 									<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 										{[...Array(3)].map((_x, i) => (
 											<StockListItem
-												userStocks={[userStocks.data, userStocksMut]}
+												isAdded={false}
+												addStock={addStock}
+												removeStock={removeStock}
 												key={i}
 												searchIsActive={searchIsActive}
 												stock={null}

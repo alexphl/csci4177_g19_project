@@ -110,15 +110,6 @@ const StockChart = (props: { symbol: string; quote: iQuote }) => {
               },
             }}
           />
-
-          {/*<svg className="absolute top-0 left-0 rounded-lg w-full h-full opacity-20 contrast-200 brightness-50 pointer-events-none">
-            <filter id="noise">
-              <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="4" stitchTiles="stitch" />
-              <feColorMatrix type="saturate" values="0" />
-            </filter>
-
-            <rect width="100%" height="100%" filter="url(#noise)" />
-          </svg>*/}
         </div>
 
         <Tabs
