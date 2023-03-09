@@ -12,10 +12,10 @@ const cache = new LRU({
 let userStocks = { list: ["AAPL", "MSFT", "GOOG"] };
 
 // Get all stocks
-router.get("/", async function (req, res) {
+router.get("/", async function (req, _res) {
   const cached = cache.get(req.url);
   if (cached) {
-    res.send(cached);
+    _res.send(cached);
     return;
   }
 
@@ -24,22 +24,22 @@ router.get("/", async function (req, res) {
   )
     .then((res) => {
       if (!res.ok) {
-        res.sendStatus(res.status);
-        throw new Error(`Server responded with ${res.status}`);
+        _res.sendStatus(res.status);
+        return;
       }
       return res.json();
     })
     .then((json) => {
       cache.set(req.url, json, [{ ttl: 1000 * 60 * 60 * 48 }]);
-      res.send(json);
+      _res.send(json);
     });
 });
 
 // Get quote for a stock
-router.get("/quote/:symbol", async function (req, res, next) {
+router.get("/quote/:symbol", async function (req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) {
-    res.send(cached);
+    _res.send(cached);
     return;
   }
 
@@ -48,14 +48,14 @@ router.get("/quote/:symbol", async function (req, res, next) {
   )
     .then((res) => {
       if (!res.ok) {
-        res.sendStatus(res.status);
-        throw new Error(`Server responded with ${res.status}`);
+        _res.sendStatus(res.status);
+        return;
       }
       return res.json();
     })
     .then((json) => {
       cache.set(req.url, json);
-      res.send(json);
+      _res.send(json);
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -64,10 +64,10 @@ router.get("/quote/:symbol", async function (req, res, next) {
 });
 
 // Get company description for a stock
-router.get("/profile/:symbol", async function (req, res, next) {
+router.get("/profile/:symbol", async function (req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) {
-    res.send(cached);
+    _res.send(cached);
     return;
   }
 
@@ -76,14 +76,14 @@ router.get("/profile/:symbol", async function (req, res, next) {
   )
     .then((res) => {
       if (!res.ok) {
-        res.sendStatus(res.status);
-        throw new Error(`Server responded with ${res.status}`);
+        _res.sendStatus(res.status);
+        return;
       }
       return res.json();
     })
     .then((json) => {
       cache.set(req.url, json, [{ ttl: 1000 * 60 * 60 * 48 }]);
-      res.send(json);
+      _res.send(json);
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -92,10 +92,10 @@ router.get("/profile/:symbol", async function (req, res, next) {
 });
 
 // Search for a stock symbol
-router.get("/search/:q", async function (req, res, next) {
+router.get("/search/:q", async function (req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) {
-    res.send(cached);
+    _res.send(cached);
     return;
   }
 
@@ -104,14 +104,14 @@ router.get("/search/:q", async function (req, res, next) {
   )
     .then((res) => {
       if (!res.ok) {
-        res.sendStatus(res.status);
-        throw new Error(`Server responded with ${res.status}`);
+        _res.sendStatus(res.status);
+        return;
       }
       return res.json();
     })
     .then((json) => {
       cache.set(req.url, json, [{ ttl: 1000 * 60 * 60 * 48 }]);
-      res.send(json);
+      _res.send(json);
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -120,10 +120,10 @@ router.get("/search/:q", async function (req, res, next) {
 });
 
 // TESTING
-router.get("/hist/today/:symbol", async function (req, res, next) {
+router.get("/hist/today/:symbol", async function (req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) {
-    res.send(cached);
+    _res.send(cached);
     return;
   }
 
@@ -139,14 +139,14 @@ router.get("/hist/today/:symbol", async function (req, res, next) {
   )
     .then((res) => {
       if (!res.ok) {
-        res.sendStatus(res.status);
-        throw new Error(`Server responded with ${res.status}`);
+        _res.sendStatus(res.status);
+        return;
       }
       return res.json();
     })
     .then((json) => {
       cache.set(req.url, json);
-      res.send(json);
+      _res.send(json);
     })
     .catch((error) => {
       console.error("Error:", error);
