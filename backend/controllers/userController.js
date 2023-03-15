@@ -13,16 +13,16 @@ const createUser = async (req, res) => {
     // ToDo - no duplicate emails
     try{
         const user = await User.create({name, password, email})
-        res.status(200).json(user) // return the object
+        return res.status(200).json(user) // return the object
     }catch(error){
-        res.status(400).json({error: error.message})
+        return res.status(400).json({error: error.message})
     }
 }
 
 // get all users
 const getUsers = async (req, res) => {
     const users = await User.find({}).sort({createdAt:-1})
-    res.status(200).json(users)
+    return res.status(200).json(users)
 }
 
 // get a single user by id
@@ -43,15 +43,14 @@ const getUser = async (req, res) =>{
     }
 
     // user found
-    res.status(200).json(user)
+    return res.status(200).json(user)
 }
 
 // findUser - find a user by email
 const findUser = async (req, res)=>{
-    const {email} = req.body
+    const {email} = req.params
     
     // toDo sanitize - check if it's an email
-
     const user = await User.find({email: email})
     // if user not found
     if(!user){
@@ -59,7 +58,7 @@ const findUser = async (req, res)=>{
     } 
 
     // user found
-    res.status(200).json(user)
+    return res.status(200).json(user)
 }
 
 // delete a user

@@ -15,7 +15,7 @@ router.get('/', getUsers)
 
 // get single user by id 
 //  ** Important ** keep this one before the other get or else it will be overwritten
-router.get('/find/', findUser)
+router.get('/find/:email', findUser)
 
 // get single user by id
 router.get('/:id', getUser)
