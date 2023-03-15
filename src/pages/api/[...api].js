@@ -66,7 +66,7 @@ app.use("/api/", indexRouter);
 app.use("/api/account", accountRouter);
 app.use("/api/customer", customerRouter);
 app.use("/api/transaction", transactionRouter);
-app.use("/api/stocks/", stocksRouter);
+app.use("/api/stocks", stocksRouter);
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
 

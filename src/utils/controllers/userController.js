@@ -1,9 +1,9 @@
 // get the model
-const User = require('../models/userModel')
-const mongoose = require('mongoose')
+import User from '../models/userModel';
+import { Types } from "mongoose";
 
 // create new user
-const createUser = async (req, res) => {
+export const createUser = async (req, res) => {
     const {name, password, email} = req.body
 
     // ToDo Hash password before storing in database -> done in auth and called by auth.
@@ -20,17 +20,17 @@ const createUser = async (req, res) => {
 }
 
 // get all users
-const getUsers = async (req, res) => {
+export const getUsers = async (req, res) => {
     const users = await User.find({}).sort({createdAt:-1})
     res.status(200).json(users)
 }
 
 // get a single user by id
-const getUser = async (req, res) =>{
+export const getUser = async (req, res) =>{
     const {id} = req.params
-    
+
     // if id is wrong type
-    if(!mongoose.Types.ObjectId.isValid(id)){
+    if(!Types.ObjectId.isValid(id)){
         return res.status(404).json({error: 'No such user'})
     }
 
@@ -47,26 +47,26 @@ const getUser = async (req, res) =>{
 }
 
 // findUser - find a user by email
-const findUser = async (req, res)=>{
+export const findUser = async (req, res)=>{
     const {email} = req.body
-    
+
     // toDo sanitize - check if it's an email
 
     const user = await User.find({email: email})
     // if user not found
     if(!user){
         return res.status(404).json({error: 'No such user'})
-    } 
+    }
 
     // user found
     res.status(200).json(user)
 }
 
 // delete a user
-const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
     const {id} = req.params
 
-    if(!mongoose.Types.ObjectId.isValid(id)){
+    if(!Types.ObjectId.isValid(id)){
         return res.status(404).json({error: 'No such user'})
     }
 
@@ -80,10 +80,10 @@ const deleteUser = async (req, res) => {
 }
 
 // update a user
-const updateUser = async (req,res) => {
+export const updateUser = async (req,res) => {
     const {id} = req.params
 
-    if(!mongoose.Types.ObjectId.isValid(id)){
+    if(!Types.ObjectId.isValid(id)){
         return res.status(404).json({error: 'No such user'})
     }
 
@@ -96,13 +96,4 @@ const updateUser = async (req,res) => {
     }
 
     res.status(200).json(user)
-}
-
-module.exports = {
-    createUser,
-    getUsers,
-    getUser,
-    deleteUser,
-    updateUser,
-    findUser
 }

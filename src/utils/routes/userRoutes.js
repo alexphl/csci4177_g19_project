@@ -1,12 +1,12 @@
 import { Router } from "express";
-const {
+import  {
     createUser,
     getUsers,
     getUser,
     deleteUser,
     updateUser,
     findUser
-} = require('../controllers/userController')
+} from '../controllers/userController';
 
 const router = Router();
 
