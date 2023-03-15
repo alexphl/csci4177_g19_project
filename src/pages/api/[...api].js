@@ -22,12 +22,6 @@ db.once("open", function () {
   console.log("DB Connected Successfully");
 });
 
-import indexRouter from "@/utils/routes/index";
-import accountRouter from "@/utils/routes/account";
-import customerRouter from "@/utils/routes/customer";
-import transactionRouter from "@/utils/routes/transaction";
-import stocksRouter from "@/utils/routes/stocks";
-
 app.use(logger("dev"));
 app.use(
   urlencoded({
@@ -38,7 +32,7 @@ app.use(cookieParser());
 app.use(_static(join(__dirname, "public")));
 
 // Add headers before the routes are defined
-app.use(function (req, res, next) {
+app.use(function (_req, res, next) {
   // res.setHeader('Access-Control-Allow-Origin', 'https://scintillating-toffee-28fea0.netlify.app');
   // Request methods you wish to allow
   res.setHeader(
@@ -57,14 +51,30 @@ app.use(function (req, res, next) {
   next();
 });
 
+
+// IMPORT ROUTES START ------------------------------
+
+import indexRouter from "@/utils/routes/index";
+import accountRouter from "@/utils/routes/account";
+import customerRouter from "@/utils/routes/customer";
+import transactionRouter from "@/utils/routes/transaction";
+import stocksRouter from "@/utils/routes/stocks";
+import userRouter from "@/utils/routes/userRoutes";
+import authRouter from "@/utils/routes/authRoutes";
+
 app.use("/api/", indexRouter);
 app.use("/api/account", accountRouter);
 app.use("/api/customer", customerRouter);
 app.use("/api/transaction", transactionRouter);
 app.use("/api/stocks/", stocksRouter);
+app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
+
+// IMPORT ROUTES END --------------------------------
+
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function (_req, _res, next) {
   next(createError(404));
 });
 

@@ -1,6 +1,5 @@
-const express = require('express')
-
-const router = express.Router()
+import { Router } from "express";
+const router = Router()
 
 router.post('/login', async (req, res)=>{
     // I should read this: https://blog.logrocket.com/node-js-crypto-module-a-tutorial/
@@ -21,9 +20,9 @@ router.post('/register', async (req, res)=>{
      * ToDo
      * 1. hash the password
      * 2. add a user with that username and password to database
-     * 3. send a welcome email, maybe email verification code 
+     * 3. send a welcome email, maybe email verification code
      * 4. send response saying successful
      */
 })
 
-module.exports = router
+export default router;

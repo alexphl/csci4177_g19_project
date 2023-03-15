@@ -1,4 +1,4 @@
-const express = require('express')
+import { Router } from "express";
 const {
     createUser,
     getUsers,
@@ -8,12 +8,12 @@ const {
     findUser
 } = require('../controllers/userController')
 
-const router = express.Router()
+const router = Router();
 
 // get all users
 router.get('/', getUsers)
 
-// get single user by id 
+// get single user by id
 //  ** Important ** keep this one before the other get or else it will be overwritten
 router.get('/find/', findUser)
 
@@ -29,4 +29,4 @@ router.delete('/:id',deleteUser)
 // update a user by id
 router.patch('/:id', updateUser)
 
-module.exports = router
+export default router;
