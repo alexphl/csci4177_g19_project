@@ -1,28 +1,14 @@
-import { Router } from "express";
+
+import { Router } from "express"
 const router = Router()
 
-router.post('/login', async (req, res)=>{
-    // I should read this: https://blog.logrocket.com/node-js-crypto-module-a-tutorial/
+const {
+    login,
+    register
+} = require('../controllers/authController')
 
-    /** ToDo proper login
-     * 1. hash received password
-     * 2. compare hashed password to database password
-     * 3. send token if correct
-     * 4. send failed if not
-     */
-    res.send({
-        token: 'testing123'
-    })
-})
+router.post('/login',login)
 
-router.post('/register', async (req, res)=>{
-     /**
-     * ToDo
-     * 1. hash the password
-     * 2. add a user with that username and password to database
-     * 3. send a welcome email, maybe email verification code
-     * 4. send response saying successful
-     */
-})
+router.post('/register', register)
 
-export default router;
+export default router
