@@ -1,11 +1,6 @@
-
-import { Router } from "express"
-const router = Router()
-
-const {
-    login,
-    register
-} = require('../controllers/authController')
+import { Router } from "express";
+import { login, register } from '../controllers/authController';
+const router = Router();
 
 router.post('/login',login)
 
