@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { useSelectedLayoutSegment } from "next/navigation";
 
 const variants = {
-  hidden: { opacity: 0, transform: "translateY(25px)" },
-  enter: { opacity: 1, transform: "translateY(0px)" },
+  hidden: { opacity: 0, y: 25 },
+  enter: { opacity: 1, y: 0 },
 };
 
 const TransitionWrap = ({ children }: { children: React.ReactNode }) => {
