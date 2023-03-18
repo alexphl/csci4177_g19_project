@@ -16,6 +16,9 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+
+
 
 const owner_id = "user1";
 // hardcode of stock current price [To be deleted]
@@ -35,42 +38,54 @@ const Portfolio = () => {
   // useStates 
   const [selectedStock, setSelectedStock] = useState(null);
   const [shares, setShares] = useState(0);
-  const [lastId, setLastId] = useState(6);
-  const [purchasedStocks, setPurchasedStocks] = useState([]);
   const [netProfitLoss, setNetProfitLoss] = useState(0);
-  const [pastProfitLoss, setPastProfitLoss] = useState(0);
   const [sharesToSell, setSharesToSell] = useState({});
-  // useEffect for real-time updates
-  useEffect(() => {
-    // fetch user's assets
-    const fetchUserPortfolio = async () => {
-      const response = await fetch(`/api/simulation/portfolio/${owner_id}`);
-      const data = await response.json();
-      const formattedAssets = data.map(asset => {
-        return {
-          id: asset._id,
-          symbol: asset.ticker,
-          name: asset.asset_name,
-          shares: asset.quantity,
-          purchasePrice: asset.purchase_price,
-          purchaseDate: asset.purchase_date,
-        };
-      });
-      setPurchasedStocks(formattedAssets);
-    };
-    // fetch past profit/loss data
-    const fetchPastProfitLoss = async () => {
-      const response = await fetch(`/api/simulation/profit/${owner_id}`);
-      const data = await response.json();
-      console.log(data);
-      setPastProfitLoss(data);
-    };
 
-    // use functions
-    fetchUserPortfolio();
-    fetchPastProfitLoss();
+  const fetchUserPortfolio = async () => {
+    const response = await fetch(`/api/simulation/portfolio/${owner_id}`);
+    const data = await response.json();
+    const formattedAssets = data.map(asset => {
+      return {
+        id: asset._id,
+        symbol: asset.ticker,
+        name: asset.asset_name,
+        shares: asset.quantity,
+        purchasePrice: asset.purchase_price,
+        purchaseDate: asset.purchase_date,
+      };
+    });
+    return formattedAssets;
+  };
+  const {
+    data: purchasedStocks,
+    isLoading: isLoadingPurchasedStocks,
+    isError: isErrorPurchasedStocks,
+    refetch: refetchPurchasedStocks,
+  } = useQuery([], fetchUserPortfolio, {
+    initialData: [],
+    refetchOnWindowFocus: false,
+  });
+  console.log("Portfolio");
+  console.log(purchasedStocks);
 
-  }, [purchasedStocks]);
+  const fetchPastProfitLoss = async () => {
+    const response = await fetch(`/api/simulation/profit/${owner_id}`);
+    const data = await response.json();
+    return data;
+  };
+  
+  const {
+    data: pastProfitLoss,
+    isLoading: isLoadingPastProfitLoss,
+    isError: isErrorPastProfitLoss,
+    refetch: refetchPastProfitLoss,
+  } = useQuery([], fetchPastProfitLoss, {
+    initialData: 0,
+    refetchOnWindowFocus: false,
+  });
+  console.log("Profit");
+  console.log(pastProfitLoss);
+  console.log(isErrorPastProfitLoss);
   const updateNetProfitLoss = () => {
     let net = 0;
     purchasedStocks.forEach(stock => {
@@ -83,10 +98,6 @@ const Portfolio = () => {
 
   };
 
-  const updatePastProfitLoss = (e) => {
-    let past = pastProfitLoss + e;
-    setPastProfitLoss(past);
-  }
   const handleStockSelection = (e) => {
     setSelectedStock(e.target.value);
   };
@@ -107,7 +118,7 @@ const Portfolio = () => {
       asset_type: "Stock",
       asset_name: selectedStock,
       purchase_price: stockInfo.price,
-
+ 
     };
     // Buy function
     const response = await fetch('/api/simulation/buy', {
@@ -120,7 +131,8 @@ const Portfolio = () => {
 
     if (response.ok) {
       const updatedPortfolio = await response.json();
-      setPurchasedStocks(updatedPortfolio.assets);
+      refetchPurchasedStocks();
+      refetchPastProfitLoss();
       setShares(0);
       setSelectedStock(null);
       updateNetProfitLoss();
@@ -130,7 +142,7 @@ const Portfolio = () => {
   };
 
 
-  const handleStockSell = async (stockToSell, sharesToSell) => {
+  const handleStockSell = async (stockToSell:any, sharesToSell:any) => {
     if (!stockToSell || !sharesToSell) {
       console.error('Stock or shares not provided');
       return;
@@ -156,9 +168,9 @@ const Portfolio = () => {
 
     if (response.ok) {
       const updatedPortfolio = await response.json();
-      setPurchasedStocks(updatedPortfolio.assets);
-      setPastProfitLoss(updatedPortfolio.profit);
-      updateNetProfitLoss();
+        refetchPurchasedStocks();
+        refetchPastProfitLoss();
+        updateNetProfitLoss();
     } else {
       console.error('Error selling stock', await response.json());
     }
@@ -175,7 +187,8 @@ const Portfolio = () => {
           <Container style={{ padding: 20 }}>
             <Typography align="center" variant="h2" >Investment Simulation</Typography>
             <div>
-              <Typography variant="h3">Past Profit/Loss: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss.toFixed(2)}</span></Typography>
+            {/* <Typography variant="h3">Past Profit/Loss: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></Typography> */}
+
             </div>
             <div>
               <Typography variant="h3">Net Profit/Loss: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></Typography>
