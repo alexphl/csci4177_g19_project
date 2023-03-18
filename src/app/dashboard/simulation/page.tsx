@@ -35,16 +35,16 @@ const stocks = [
 ];
 // Main Code
 const Portfolio = () => {
-  // useStates 
-  const [selectedStock, setSelectedStock] = useState(null);
+  // useStates
+  const [selectedStock, setSelectedStock] = useState<string | null>();
   const [shares, setShares] = useState(0);
   const [netProfitLoss, setNetProfitLoss] = useState(0);
-  const [sharesToSell, setSharesToSell] = useState({});
+  const [sharesToSell, setSharesToSell] = useState<any>({});
 
   const fetchUserPortfolio = async () => {
     const response = await fetch(`/api/simulation/portfolio/${owner_id}`);
     const data = await response.json();
-    const formattedAssets = data.map(asset => {
+    const formattedAssets = data.map((asset: any) => {
       return {
         id: asset._id,
         symbol: asset.ticker,
@@ -73,7 +73,7 @@ const Portfolio = () => {
     const data = await response.json();
     return data;
   };
-  
+
   const {
     data: pastProfitLoss,
     isLoading: isLoadingPastProfitLoss,
@@ -88,7 +88,7 @@ const Portfolio = () => {
   console.log(isErrorPastProfitLoss);
   const updateNetProfitLoss = () => {
     let net = 0;
-    purchasedStocks.forEach(stock => {
+    purchasedStocks.forEach((stock: any) => {
       const stockInfo = stocks.find(s => s.symbol === stock.symbol);
       if (stockInfo != undefined) {
         net += (stockInfo.price - stock.purchasePrice) * stock.shares;
@@ -98,11 +98,11 @@ const Portfolio = () => {
 
   };
 
-  const handleStockSelection = (e) => {
+  const handleStockSelection = (e: any) => {
     setSelectedStock(e.target.value);
   };
 
-  const handleSharesChange = (e) => {
+  const handleSharesChange = (e: any) => {
     setShares(e.target.value);
   };
 
@@ -114,11 +114,11 @@ const Portfolio = () => {
     const payload = {
       owner_id: owner_id, // Todo
       ticker: selectedStock,
-      quantity: parseInt(shares),
+      quantity: shares,
       asset_type: "Stock",
       asset_name: selectedStock,
-      purchase_price: stockInfo.price,
- 
+      purchase_price: stockInfo!.price,
+
     };
     // Buy function
     const response = await fetch('/api/simulation/buy', {
@@ -142,7 +142,7 @@ const Portfolio = () => {
   };
 
 
-  const handleStockSell = async (stockToSell:any, sharesToSell:any) => {
+  const handleStockSell = async (stockToSell: any, sharesToSell: any) => {
     if (!stockToSell || !sharesToSell) {
       console.error('Stock or shares not provided');
       return;
@@ -152,7 +152,7 @@ const Portfolio = () => {
       owner_id: 'user1', // To do
       ticker: stockToSell.symbol,
       quantity: parseInt(sharesToSell),
-      sell_price: stocks.find((s) => s.symbol === stockToSell.symbol).price,
+      sell_price: stocks.find((s) => s.symbol === stockToSell.symbol)!.price,
       asset_id: stockToSell.id,
     };
 
@@ -168,9 +168,9 @@ const Portfolio = () => {
 
     if (response.ok) {
       const updatedPortfolio = await response.json();
-        refetchPurchasedStocks();
-        refetchPastProfitLoss();
-        updateNetProfitLoss();
+      refetchPurchasedStocks();
+      refetchPastProfitLoss();
+      updateNetProfitLoss();
     } else {
       console.error('Error selling stock', await response.json());
     }
@@ -182,21 +182,21 @@ const Portfolio = () => {
 
 
 
-      <div className="container max-w-5xl px-8 mx-auto">
-        <Grid justifyContent="center" style={{ textAlign: 'center' }}>
-          <Container style={{ padding: 20 }}>
-            <Typography align="center" variant="h2" >Investment Simulation</Typography>
-            <div>
+    <div className="container max-w-5xl px-8 mx-auto">
+      <Grid justifyContent="center" style={{ textAlign: 'center' }}>
+        <Container style={{ padding: 20 }}>
+          <Typography align="center" variant="h2" >Investment Simulation</Typography>
+          <div>
             {/* <Typography variant="h3">Past Profit/Loss: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></Typography> */}
 
-            </div>
-            <div>
-              <Typography variant="h3">Net Profit/Loss: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></Typography>
-            </div>
-          </Container>
-        </Grid>
+          </div>
+          <div>
+            <Typography variant="h3">Net Profit/Loss: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></Typography>
+          </div>
+        </Container>
+      </Grid>
 
-    
+
       <div>
         <Box >
 
@@ -215,7 +215,7 @@ const Portfolio = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {purchasedStocks.map((stock) => {
+                {purchasedStocks.map((stock: any) => {
                   console.log(stock.symbol);
                   const stockInfo = stocks.find(s => s.symbol === stock.symbol);
                   return (
@@ -299,7 +299,7 @@ const Portfolio = () => {
           </div>
         </Grid>
       </div>
-      </div>
+    </div>
 
   );
 
