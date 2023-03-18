@@ -17,12 +17,8 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Link from "next/link";
 
-
-
-
-
-
 const owner_id = "user1";
+// hardcode of stock current price [To be deleted]
 const stocks = [
   { symbol: 'AAPL', name: 'Apple Inc.', price: 140.32 },
   { symbol: 'GOOG', name: 'Alphabet Inc.', price: 2223.54 },
@@ -34,9 +30,9 @@ const stocks = [
   { symbol: 'JNJ', name: 'Johnson & Johnson', price: 160.30 },
   { symbol: 'JPM', name: 'JPMorgan Chase & Co.', price: 157.47 },
 ];
-
+// Main Code
 const Portfolio = () => {
-  //const [stocks, setStocks] = useState([]);
+  // useStates 
   const [selectedStock, setSelectedStock] = useState(null);
   const [shares, setShares] = useState(0);
   const [lastId, setLastId] = useState(6);
@@ -44,8 +40,9 @@ const Portfolio = () => {
   const [netProfitLoss, setNetProfitLoss] = useState(0);
   const [pastProfitLoss, setPastProfitLoss] = useState(0);
   const [sharesToSell, setSharesToSell] = useState({});
-
+  // useEffect for real-time updates
   useEffect(() => {
+    // fetch user's assets
     const fetchUserPortfolio = async () => {
       const response = await fetch(`/api/simulation/portfolio/${owner_id}`);
       const data = await response.json();
@@ -61,15 +58,15 @@ const Portfolio = () => {
       });
       setPurchasedStocks(formattedAssets);
     };
-
+    // fetch past profit/loss data
     const fetchPastProfitLoss = async () => {
-      // Fetch past profit/loss data
       const response = await fetch(`/api/simulation/profit/${owner_id}`);
       const data = await response.json();
       console.log(data);
       setPastProfitLoss(data);
     };
 
+    // use functions
     fetchUserPortfolio();
     fetchPastProfitLoss();
 
@@ -85,6 +82,7 @@ const Portfolio = () => {
     setNetProfitLoss(net);
 
   };
+
   const updatePastProfitLoss = (e) => {
     let past = pastProfitLoss + e;
     setPastProfitLoss(past);
@@ -103,7 +101,7 @@ const Portfolio = () => {
     }
     const stockInfo = stocks.find(s => s.symbol === selectedStock);
     const payload = {
-      owner_id: owner_id, // replace this with the actual owner_id
+      owner_id: owner_id, // Todo
       ticker: selectedStock,
       quantity: parseInt(shares),
       asset_type: "Stock",
@@ -111,7 +109,7 @@ const Portfolio = () => {
       purchase_price: stockInfo.price,
 
     };
-
+    // Buy function
     const response = await fetch('/api/simulation/buy', {
       method: 'POST',
       headers: {
@@ -139,7 +137,7 @@ const Portfolio = () => {
     }
 
     const payload = {
-      owner_id: 'user1', // replace this with the actual owner_id
+      owner_id: 'user1', // To do
       ticker: stockToSell.symbol,
       quantity: parseInt(sharesToSell),
       sell_price: stocks.find((s) => s.symbol === stockToSell.symbol).price,
