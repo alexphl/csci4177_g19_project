@@ -63,7 +63,7 @@ function getnew(input) {
   });
 }
 //for the final news list return back to dashboard page
-async function getnews_list() {
+export const getnews_list =async()=> {
   let promises = [];
   user_stock_list.map((value) => {
     promises.push(getnew(value.name));
@@ -78,6 +78,4 @@ async function getnews_list() {
     console.log(results);
   }
 }
-getnews_list();
 
-module.exports = router;
