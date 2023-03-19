@@ -8,7 +8,7 @@ import {
   BookmarkIcon,
   BookmarkSlashIcon,
 } from "@heroicons/react/24/outline";
-import type { iQuote } from "@/utils/types/iStocks";
+import type { iProfile, iQuote } from "@/utils/types/iStocks";
 
 // Lazy load charts
 const StockChartXS = dynamic(() => import("./ChartXS"));
@@ -35,7 +35,7 @@ const StockListItem = (props: {
     queryKey: [`/api/stocks/quote/`, props.stock],
     enabled: !!props.stock,
   });
-  const profile = useQuery<any>({
+  const profile = useQuery<iProfile>({
     queryKey: [`/api/stocks/profile/`, props.stock],
     staleTime: Infinity,
     enabled: !!props.stock,
@@ -122,13 +122,13 @@ const StockListItem = (props: {
                     animate="animate"
                     className={
                       "text-xs font-medium " +
-                      (quote.data!.d > 0 ? " text-green-400" : " text-red-400")
+                      (quote.data.d > 0 ? " text-green-400" : " text-red-400")
                     }
                   >
                     {quote.data.d &&
-                      (quote.data!.d > 0
-                        ? `+${quote.data!.d.toFixed(2)}`
-                        : `${quote.data!.d.toFixed(2)}`)}
+                      (quote.data.d > 0
+                        ? `+${quote.data.d.toFixed(2)}`
+                        : `${quote.data.d.toFixed(2)}`)}
                   </motion.p>
                 )) || (
                     <p className={"ml-auto text-xs font-medium " + loading}>

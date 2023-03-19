@@ -18,3 +18,15 @@ export type iProfile = {
   exchange: string,
   currency: string;
 }
+
+export type iSearch = {
+  count: number,
+  result: [iSearchItem],
+}
+
+export type iSearchItem = {
+  description: string,
+  displaySymbol: string,
+  symbol: string,
+  type: string
+}

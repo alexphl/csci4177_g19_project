@@ -12,6 +12,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { motion, Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
 import { CubeTransparentIcon } from "@heroicons/react/20/solid";
+import type { iSearch, iSearchItem } from "@/utils/types/iStocks";
 
 // Lazy-load components
 const StockListItem = dynamic(() => import("./StockListItem"));
@@ -21,10 +22,10 @@ const listStyle = "flex flex-col gap-2.5 transition";
 
 // Filters search results to hide stock subvariants
 // This logic will likely be moved to backend
-function filterResults(array: any) {
+function filterResults(results: iSearch | undefined) {
+  if (!results || !results.result) { return null; }
   return (
-    array &&
-    array.filter((item: any) => {
+    results.result.filter((item: iSearchItem) => {
       if (item.symbol.includes(".") || item.symbol.includes(":")) return false;
       if (item.type === "Common Stock" || item.type === "ADR") return true;
 
@@ -34,8 +35,8 @@ function filterResults(array: any) {
 }
 
 const StockList = (props: {
-  searchIsActive: any;
-  searchQuery: any;
+  searchIsActive: boolean;
+  searchQuery: string;
   selectedStock: string | undefined;
 }) => {
   const selectedStock = props.selectedStock;
@@ -46,16 +47,16 @@ const StockList = (props: {
   // Function to update user stock list
   // Implements optimistic updates
   const userStocksMut = useMutation({
-    mutationFn: (newList: string[]) =>
+    mutationFn: ((newList: string[]) =>
       fetch(`/api/stocks/user`, {
         method: "POST",
         body: JSON.stringify(newList),
         headers: { "Content-Type": "application/json" },
-      }),
-    // Optimistic update when mutate is called
+      })),
+    // When mutate is called:
     onMutate: async (newList) => {
-      // Cancel outgoing refetches
-      // so they don't overwrite our optimistic update
+      // Cancel any outgoing refetches
+      // (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries({ queryKey: ["/api/stocks/user"] });
 
       // Snapshot the previous value
@@ -69,8 +70,8 @@ const StockList = (props: {
     },
     // If the mutation fails,
     // use the context returned from onMutate to roll back
-    onError: (err, newTodo, context) => {
-      queryClient.setQueryData(["/api/stocks/user"], context!.previousList);
+    onError: (context: { previousList: string[] }) => {
+      queryClient.setQueryData(["/api/stocks/user"], context.previousList);
     },
     // Always refetch after error or success:
     onSettled: () => {
@@ -97,13 +98,11 @@ const StockList = (props: {
   }
 
   // Search state with debouncing and deferred value
-  const [searchIsActive] = props.searchIsActive;
   const [isEditMode, setEditMode] = useState(false);
-  const [searchQuery] = props.searchQuery;
-  const [debouncedQuery] = useDebounce(searchQuery, 600); // Debounce query with a delay
+  const [debouncedQuery] = useDebounce(props.searchQuery, 600); // Debounce query with a delay
   const [resultLimit, setResultLimit] = useState(5);
-  const searchResult = useQuery<any>({
-    queryKey: [`/api/stocks/search/`, escape(debouncedQuery.trim())],
+  const searchResult = useQuery<iSearch>({
+    queryKey: [`/api/stocks/search/`, encodeURIComponent(debouncedQuery.trim())],
     enabled: !!debouncedQuery,
     staleTime: Infinity,
   });
@@ -112,9 +111,7 @@ const StockList = (props: {
   const filtered = useMemo(
     () =>
       filterResults(
-        searchResult.isSuccess &&
-        searchResult.data.result &&
-        searchResult.data.result
+        searchResult.data
       ),
     [searchResult]
   );
@@ -124,11 +121,13 @@ const StockList = (props: {
     setResultLimit(5);
   }, [searchResult.data]);
 
+  if (!userStocks.isSuccess) { return (<> </>) }
+
   return (
     <>
       {
         /* SHOW USER STOCKS */
-        !searchIsActive && userStocks.isSuccess && (
+        !props.searchIsActive && userStocks.isSuccess && (
           <>
             <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-4 flex -translate-y-4 items-center rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0">
               <StockListbox />
@@ -175,7 +174,7 @@ const StockList = (props: {
                     addStock={addStock}
                     removeStock={removeStock}
                     selected={stock === selectedStock}
-                    searchIsActive={searchIsActive}
+                    searchIsActive={props.searchIsActive}
                   />
                 </Reorder.Item>
               ))}
@@ -200,7 +199,7 @@ const StockList = (props: {
 
       {
         /* SHOW SEARCH RESULTS OR ALL STOCKS */
-        searchIsActive && (
+        props.searchIsActive && (
           <>
             <h1 className="px-2.5 pt-1 pb-6 font-bold text-neutral-300">
               Search Results
@@ -209,7 +208,7 @@ const StockList = (props: {
             <ul
               className={
                 listStyle +
-                (searchQuery !== debouncedQuery || searchResult.isFetching
+                (props.searchQuery !== debouncedQuery || searchResult.isFetching
                   ? " pointer-events-none scale-[0.98] blur-sm saturate-0"
                   : "")
               }
@@ -231,14 +230,14 @@ const StockList = (props: {
                 filtered &&
                 filtered
                   .slice(0, resultLimit)
-                  .map((result: any) => (
+                  .map((result: iSearchItem) => (
                     <StockListItem
                       key={result.symbol}
-                      isAdded={userStocks.data!.includes(result.symbol)}
+                      isAdded={userStocks.data.includes(result.symbol)}
                       addStock={addStock}
                       removeStock={removeStock}
                       stock={result.symbol}
-                      searchIsActive={searchIsActive}
+                      searchIsActive={props.searchIsActive}
                       selected={result.symbol === selectedStock}
                     />
                   ))
@@ -254,7 +253,7 @@ const StockList = (props: {
                         addStock={addStock}
                         removeStock={removeStock}
                         key={i}
-                        searchIsActive={searchIsActive}
+                        searchIsActive={props.searchIsActive}
                         stock={null}
                         selected={false}
                       />

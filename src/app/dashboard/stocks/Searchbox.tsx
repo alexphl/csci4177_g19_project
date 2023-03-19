@@ -1,9 +1,15 @@
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { memo } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
-const Searchbox = (props: { controller: any, query:any, className?: any }) => {
-  const [searchIsActive, setSearchIsActive] = props.controller;
-  const [query, setQuery] = props.query;
+const Searchbox = (
+  props: {
+    searchController: [boolean, Dispatch<SetStateAction<boolean>>],
+    queryController: [string, Dispatch<SetStateAction<string>>],
+    className?: string
+  }) => {
+  const [searchIsActive, setSearchIsActive] = props.searchController;
+  const [query, setQuery] = props.queryController;
 
   function exitSearch() {
     setSearchIsActive(false);
@@ -28,7 +34,7 @@ const Searchbox = (props: { controller: any, query:any, className?: any }) => {
       />
 
       <MagnifyingGlassIcon className={"order-first h-full w-5 transition-all peer-focus:w-0 shrink-0 " + (searchIsActive ? "text-neutral-300" : "text-neutral-400")} />
-      <button className={"order-last h-full w-6 transition-all shrink-0" + (searchIsActive ? " text-neutral-300" : " hidden")} onClick={() => exitSearch()}><XMarkIcon/></button>
+      <button className={"order-last h-full w-6 transition-all shrink-0" + (searchIsActive ? " text-neutral-300" : " hidden")} onClick={() => exitSearch()}><XMarkIcon /></button>
     </div>
   );
 };
