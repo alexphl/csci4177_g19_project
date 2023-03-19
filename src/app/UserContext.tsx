@@ -7,7 +7,7 @@ import { createContext, useReducer } from "react";
 
 export const userContext = createContext({ isLoggedIn: false, email: undefined });
 
-export const userReducer = (state: any, action: any) => {
+export const userReducer = (state: any, action: { type: string, payload: string }) => {
   switch (action.type) {
     case "SET_USER":
       return {
