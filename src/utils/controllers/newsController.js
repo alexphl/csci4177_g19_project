@@ -1,41 +1,12 @@
 import axios from 'axios';
 
-/* GET home page. */
-// router.get("/", function (req, res, next) {
-//   res.send(getnews_list());
-// });
 
-
-
-const user_stock_list = [
-  {
-    ticker_symbol: "TSLA",
-    name: "Tesla",
-    symbol: "Inc",
-  },
-
-  {
-    ticker_symbol: "AAPL",
-    name: "Apple",
-    symbol: "Inc",
-  },
-  {
-    ticker_symbol: "GOOG",
-    name: "Alphabet",
-    symbol: "Inc",
-  },
-  {
-    ticker_symbol: "AFRM",
-    name: "Affirm Holdings",
-    symbol: "Inc",
-  },
-];
 
 //for search the single news
-function getnew(input) {
+const getnew = (input, number) => {
   var q = input;
   var apiKey = `${process.env.Newsapikey}`;
-  var pageSize = 1;
+  var pageSize = number;
   var language = "en";
   // the qury sentence
   var querysentence =
@@ -61,15 +32,15 @@ function getnew(input) {
         reject(error);
       });
   });
-}
+};
 //for the final news list return back to dashboard page
-export const getnews_list =async()=> {
+const getnews_list = async (user_stock_list) => {
   let promises = [];
   user_stock_list.map((value) => {
-    promises.push(getnew(value.name));
+    promises.push(getnew(value.name, 1));
   });
   let results = await Promise.all(promises).catch((error) => {
-    return false;
+    return error;
   });
 
   if (results) {
@@ -77,5 +48,6 @@ export const getnews_list =async()=> {
   } else {
     console.log(results);
   }
-}
+};
 
+export { getnews_list, getnew };
