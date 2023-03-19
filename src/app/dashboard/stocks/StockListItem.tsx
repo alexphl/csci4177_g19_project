@@ -8,16 +8,10 @@ import {
   BookmarkIcon,
   BookmarkSlashIcon,
 } from "@heroicons/react/24/outline";
+import type { iQuote } from "@/utils/types/iStocks";
 
 // Lazy load charts
 const StockChartXS = dynamic(() => import("./ChartXS"));
-
-export interface iQuote {
-  c: number; // current price
-  d: number; // change
-  o: number; // open price
-  t: number; // UNIX timestamp
-}
 
 const loadingVariants = {
   initial: { opacity: 0 },
@@ -33,9 +27,8 @@ const StockListItem = (props: {
   isEditMode?: boolean;
   isAdded: boolean;
   searchIsActive?: boolean;
-  addStock: any;
-  removeStock: any;
-  onClick?: any;
+  addStock: (stock: string) => false | void;
+  removeStock: (stock: string) => false | void;
   className?: string;
 }) => {
   const quote = useQuery<iQuote>({
@@ -51,7 +44,6 @@ const StockListItem = (props: {
   return (
     <Link
       className={props.className}
-      onClick={props.onClick}
       draggable={!props.isEditMode && !props.selected}
       href={`/dashboard/stocks/${props.stock}`}
     >
@@ -139,10 +131,10 @@ const StockListItem = (props: {
                         : `${quote.data!.d.toFixed(2)}`)}
                   </motion.p>
                 )) || (
-                  <p className={"ml-auto text-xs font-medium " + loading}>
-                    <br />
-                  </p>
-                )}
+                    <p className={"ml-auto text-xs font-medium " + loading}>
+                      <br />
+                    </p>
+                  )}
               </div>
             </>
           )
@@ -172,7 +164,7 @@ const StockListItem = (props: {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    props.removeStock(props.stock);
+                    props.removeStock(props.stock || "");
                   }}
                 >
                   <BookmarkSlashIcon className="w-4" />
@@ -184,7 +176,7 @@ const StockListItem = (props: {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    props.addStock(props.stock);
+                    props.addStock(props.stock || "");
                   }}
                 >
                   <BookmarkIcon className="w-4" />

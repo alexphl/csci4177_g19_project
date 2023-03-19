@@ -1,8 +1,9 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { QueryKey } from "@tanstack/react-query";
 
-const defaultQueryFn = async ({ queryKey }: any) => {
+const defaultQueryFn = async ({ queryKey }: { queryKey: QueryKey }) => {
   return fetch(queryKey.join(""))
     .then((res) => {
       if (!res.ok) {
@@ -10,7 +11,7 @@ const defaultQueryFn = async ({ queryKey }: any) => {
       }
       return res.json();
     })
-    .then((json: any) => {
+    .then((json: { error: string }) => {
       if (json.error) {
         throw new Error(`Server responded with ${json.error}`);
       }

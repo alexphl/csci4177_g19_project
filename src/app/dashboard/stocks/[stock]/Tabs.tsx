@@ -1,6 +1,6 @@
 import { Tab } from "@headlessui/react";
 import { memo } from "react";
-
+import type { Dispatch, SetStateAction } from "react";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
@@ -9,7 +9,7 @@ function classNames(...classes: string[]) {
  * Tab navigation panel
  **/
 const Tabs = (props: {
-  selector: [number, any];
+  selector: [number, Dispatch<SetStateAction<number>>];
   components: string[];
   className?: string;
 }) => {
