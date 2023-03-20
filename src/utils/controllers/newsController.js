@@ -26,7 +26,7 @@ const getnew = (input, number) => {
     axios
       .get("https://newsapi.org/v2/everything?" + querysentence)
       .then((response) => {
-        resolve(response.data.articles[0]);
+        resolve(response.data.articles);
       })
       .catch((error) => {
         reject(error);
@@ -42,9 +42,13 @@ const getnews_list = async (user_stock_list) => {
   let results = await Promise.all(promises).catch((error) => {
     return error;
   });
+  let result = [];
 
   if (results) {
-    return results;
+    results.forEach((element) => {
+      result.push(element[0]);
+    });
+    return result;
   } else {
     console.log(results);
   }

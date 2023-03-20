@@ -11,4 +11,5 @@ const News_Subscribe = Schema({
   ],
 });
 
-export default models.News_Subscribe || model("News_Subscribe", News_Subscribe);
+export default models.News_Subscribe ||
+  model("news_subscribes", News_Subscribe);
