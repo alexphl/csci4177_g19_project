@@ -6,7 +6,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { TrashIcon, PlusIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import type { iQuote } from "../StockListItem";
+import type { iQuote, iProfile } from "@/utils/types/iStocks";
 
 // Lazy load
 const Chart = dynamic(() => import("./Chart"));
@@ -20,7 +20,7 @@ export default function StockDetails({
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, params.stock],
   });
-  const profile = useQuery<any>({
+  const profile = useQuery<iProfile>({
     queryKey: [`/api/stocks/profile/`, params.stock],
     staleTime: Infinity,
   });
@@ -33,12 +33,12 @@ export default function StockDetails({
   // Function to update user stock list
   // Implements optimistic updates
   const userStocksMut = useMutation({
-    mutationFn: (newList: string[]) =>
+    mutationFn: ((newList: string[]) =>
       fetch(`/api/stocks/user`, {
         method: "POST",
         body: JSON.stringify(newList),
         headers: { "Content-Type": "application/json" },
-      }),
+      })),
     // When mutate is called:
     onMutate: async (newList) => {
       // Cancel any outgoing refetches
@@ -56,8 +56,8 @@ export default function StockDetails({
     },
     // If the mutation fails,
     // use the context returned from onMutate to roll back
-    onError: (err, _newTodo, context) => {
-      queryClient.setQueryData(["/api/stocks/user"], context!.previousList);
+    onError: (context: { previousList: string[] }) => {
+      queryClient.setQueryData(["/api/stocks/user"], context.previousList);
     },
     // Always refetch after error or success:
     onSettled: () => {
@@ -69,7 +69,7 @@ export default function StockDetails({
     return <NotFound />;
   }
 
-  return ( quote.isSuccess &&
+  return (quote.isSuccess &&
     <>
       <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-8 -my-5 hidden h-10 -translate-y-8 rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0 sm:block" />
       <div className="w-full overflow-auto pb-6 transition-all scrollbar-hide">

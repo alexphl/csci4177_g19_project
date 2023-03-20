@@ -42,8 +42,8 @@ export default function StocksLayout({
         }
       >
         <Searchbox
-          controller={[searchIsActive, setSearchIsActive]}
-          query={[searchQuery, setSearchQuery]}
+          searchController={[searchIsActive, setSearchIsActive]}
+          queryController={[searchQuery, setSearchQuery]}
           className={selectedStock ? " hidden sm:flex" : " flex"}
         />
       </nav>
@@ -53,8 +53,8 @@ export default function StocksLayout({
           className={stylePane + (selectedStock ? " hidden sm:block" : "")}
         >
           <StockList
-            searchIsActive={[searchIsActive, setSearchIsActive]}
-            searchQuery={[searchQuery, setSearchQuery]}
+            searchIsActive={searchIsActive}
+            searchQuery={searchQuery}
             selectedStock={selectedStock}
           />
         </div>

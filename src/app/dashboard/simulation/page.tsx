@@ -104,7 +104,6 @@ const Portfolio = () => {
     return data;
   };
 
-
   const {
     data: pastProfitLoss,
     isLoading: isLoadingPastProfitLoss,
@@ -220,9 +219,9 @@ const Portfolio = () => {
 
     if (response.ok) {
       const updatedPortfolio = await response.json();
-        refetchPurchasedStocks();
-        refetchPastProfitLoss();
-        updateNetProfitLoss();
+      refetchPurchasedStocks();
+      refetchPastProfitLoss();
+      updateNetProfitLoss();
     } else {
       console.error('Error selling stock', await response.json());
     }
@@ -238,14 +237,14 @@ const Portfolio = () => {
             <div>
              <Typography variant="h3">Past Profit/Loss: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></Typography>
 
-            </div>
-            <div>
-              <Typography variant="h3">Net Profit/Loss: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></Typography>
-            </div>
-          </Container>
-        </Grid>
+          </div>
+          <div>
+            <Typography variant="h3">Net Profit/Loss: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></Typography>
+          </div>
+        </Container>
+      </Grid>
 
-    
+
       <div>
         <Box >
 
@@ -346,7 +345,7 @@ const Portfolio = () => {
           </div>
         </Grid>
       </div>
-      </div>
+    </div>
 
   );
 

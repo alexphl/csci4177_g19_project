@@ -18,7 +18,7 @@ const darkTheme = createTheme({
 });
 
 const TransactionHistory = () => {
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState<any[]>([]);
   const owner_id = 'user1';
 
   useEffect(() => {

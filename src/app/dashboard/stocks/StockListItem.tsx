@@ -8,16 +8,10 @@ import {
   BookmarkIcon,
   BookmarkSlashIcon,
 } from "@heroicons/react/24/outline";
+import type { iProfile, iQuote } from "@/utils/types/iStocks";
 
 // Lazy load charts
 const StockChartXS = dynamic(() => import("./ChartXS"));
-
-export interface iQuote {
-  c: number; // current price
-  d: number; // change
-  o: number; // open price
-  t: number; // UNIX timestamp
-}
 
 const loadingVariants = {
   initial: { opacity: 0 },
@@ -33,16 +27,15 @@ const StockListItem = (props: {
   isEditMode?: boolean;
   isAdded: boolean;
   searchIsActive?: boolean;
-  addStock: any;
-  removeStock: any;
-  onClick?: any;
+  addStock: (stock: string) => false | void;
+  removeStock: (stock: string) => false | void;
   className?: string;
 }) => {
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, props.stock],
     enabled: !!props.stock,
   });
-  const profile = useQuery<any>({
+  const profile = useQuery<iProfile>({
     queryKey: [`/api/stocks/profile/`, props.stock],
     staleTime: Infinity,
     enabled: !!props.stock,
@@ -51,7 +44,6 @@ const StockListItem = (props: {
   return (
     <Link
       className={props.className}
-      onClick={props.onClick}
       draggable={!props.isEditMode && !props.selected}
       href={`/dashboard/stocks/${props.stock}`}
     >
@@ -130,19 +122,19 @@ const StockListItem = (props: {
                     animate="animate"
                     className={
                       "text-xs font-medium " +
-                      (quote.data!.d > 0 ? " text-green-400" : " text-red-400")
+                      (quote.data.d > 0 ? " text-green-400" : " text-red-400")
                     }
                   >
                     {quote.data.d &&
-                      (quote.data!.d > 0
-                        ? `+${quote.data!.d.toFixed(2)}`
-                        : `${quote.data!.d.toFixed(2)}`)}
+                      (quote.data.d > 0
+                        ? `+${quote.data.d.toFixed(2)}`
+                        : `${quote.data.d.toFixed(2)}`)}
                   </motion.p>
                 )) || (
-                  <p className={"ml-auto text-xs font-medium " + loading}>
-                    <br />
-                  </p>
-                )}
+                    <p className={"ml-auto text-xs font-medium " + loading}>
+                      <br />
+                    </p>
+                  )}
               </div>
             </>
           )
@@ -172,7 +164,7 @@ const StockListItem = (props: {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    props.removeStock(props.stock);
+                    props.removeStock(props.stock || "");
                   }}
                 >
                   <BookmarkSlashIcon className="w-4" />
@@ -184,7 +176,7 @@ const StockListItem = (props: {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    props.addStock(props.stock);
+                    props.addStock(props.stock || "");
                   }}
                 >
                   <BookmarkIcon className="w-4" />
