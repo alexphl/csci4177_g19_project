@@ -23,28 +23,29 @@ import { useQuery } from "@tanstack/react-query";
 const owner_id = "user1";
 // hardcode of stock current price [To be deleted]
 const stocks = [
-  { symbol: 'AAPL', name: 'Apple Inc.', price: 140.32 },
-  { symbol: 'GOOG', name: 'Alphabet Inc.', price: 2223.54 },
-  { symbol: 'TSL', name: 'Tesla, Inc.', price: 801.83 },
-  { symbol: 'AMZN', name: 'Amazon.com, Inc.', price: 3113.86 },
-  { symbol: 'MSFT', name: 'Microsoft Corporation', price: 232.91 },
-  { symbol: 'FB', name: 'Facebook, Inc.', price: 270.31 },
-  { symbol: 'V', name: 'Visa Inc.', price: 221.75 },
-  { symbol: 'JNJ', name: 'Johnson & Johnson', price: 160.30 },
-  { symbol: 'JPM', name: 'JPMorgan Chase & Co.', price: 157.47 },
+  { symbol: 'AAPL'},
+  { symbol: 'GOOG'},
+  { symbol: 'AMZN'},
+  { symbol: 'MSFT'},
+  { symbol: 'V'},
+  { symbol: 'JNJ'},
+  { symbol: 'JPM'},
 ];
 // Main Code
 const Portfolio = () => {
-  // useStates 
+  // UseStates 
   const [selectedStock, setSelectedStock] = useState(null);
   const [shares, setShares] = useState(0);
   const [netProfitLoss, setNetProfitLoss] = useState(0);
   const [sharesToSell, setSharesToSell] = useState({});
+  const [intervalMs, setIntervalMs] = React.useState(1000);
 
+  // UseQuery() and related functions
+  // UseQuery() function for fetch Portfolio
   const fetchUserPortfolio = async () => {
     const response = await fetch(`/api/simulation/portfolio/${owner_id}`);
     const data = await response.json();
-    const formattedAssets = data.map(asset => {
+    const formattedAssets = data.map((asset: { _id: any; ticker: any; asset_name: any; quantity: any; purchase_price: any; purchase_date: any; }) => {
       return {
         id: asset._id,
         symbol: asset.ticker,
@@ -61,66 +62,114 @@ const Portfolio = () => {
     isLoading: isLoadingPurchasedStocks,
     isError: isErrorPurchasedStocks,
     refetch: refetchPurchasedStocks,
-  } = useQuery([], fetchUserPortfolio, {
+  } = useQuery(["purhcasedStocks"], fetchUserPortfolio, {
     initialData: [],
     refetchOnWindowFocus: false,
   });
-  console.log("Portfolio");
-  console.log(purchasedStocks);
+  // useQuery() function for fetch Quotes
+  const fetchStockPrices = async (purchasedStocks:any[]) =>{
+    const requests = purchasedStocks.map((stock) => {
+      return fetch(`/api/stocks/quote/${stock.symbol}`);
+    });
+  
+    const responses = await Promise.all(requests);
+  
+    const prices = await Promise.all(
+      responses.map((response) => response.json())
+    );
 
+    const result = prices.reduce((accumulator, price, index) => {
+      const symbol = purchasedStocks[index].symbol;
+      accumulator[symbol] = price.c;
+      return accumulator;
+    }, {});
+    return result;
+  }
+
+  const {
+    data : stockPrices,
+    refetch: refetchStockPrices ,
+  } =  useQuery( ["stockPrices", purchasedStocks.map((stock: { symbol: any; }) => stock.symbol)], ()=>fetchStockPrices(purchasedStocks),
+  {
+    refetchInterval: intervalMs,
+    refetchOnWindowFocus: false, 
+  });
+  console.log("Stock prices from useQuery:", stockPrices); 
+
+
+  // UseQuery() function for fetch Profit and Loss
   const fetchPastProfitLoss = async () => {
     const response = await fetch(`/api/simulation/profit/${owner_id}`);
     const data = await response.json();
     return data;
   };
-  
+
+
   const {
     data: pastProfitLoss,
     isLoading: isLoadingPastProfitLoss,
     isError: isErrorPastProfitLoss,
     refetch: refetchPastProfitLoss,
-  } = useQuery([], fetchPastProfitLoss, {
+  } = useQuery(["pastProfitLoss"], fetchPastProfitLoss, {
     initialData: 0,
     refetchOnWindowFocus: false,
   });
-  console.log("Profit");
-  console.log(pastProfitLoss);
-  console.log(isErrorPastProfitLoss);
+  // fetch a single stock price
+  const fetchStockPrice = async (symbol: String) => {
+    try {
+      const response = await fetch(`/api/stocks/quote/${symbol}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch stock price for ${symbol}`);
+      }
+      const data = await response.json();
+      return data.c; 
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+  
+  // updateNetProfitLoss
   const updateNetProfitLoss = () => {
     let net = 0;
-    purchasedStocks.forEach(stock => {
-      const stockInfo = stocks.find(s => s.symbol === stock.symbol);
-      if (stockInfo != undefined) {
-        net += (stockInfo.price - stock.purchasePrice) * stock.shares;
+    purchasedStocks.forEach(async (stock: { symbol: string; purchasePrice: number; shares: number; }) => {
+      const stockPrice = await fetchStockPrice(stock.symbol);
+      // In the case stockInfo is not defined, throw an error
+      if (!stockPrice) {
+        throw new Error(`Stock with symbol ${stock.symbol} not found`);
       }
+      net += (stockPrice - stock.purchasePrice) * stock.shares;
+      
     });
     setNetProfitLoss(net);
-
   };
-
-  const handleStockSelection = (e) => {
+  // handle stock selection for purchase function
+  const handleStockSelection = (e: { target: { value: React.SetStateAction<null>; }; }) => {
     setSelectedStock(e.target.value);
   };
-
-  const handleSharesChange = (e) => {
+  // handle stock share input for purchase function
+  const handleSharesChange = (e: { target: { value: React.SetStateAction<number>; }; }) => {
     setShares(e.target.value);
   };
-
+  // handle purchase
   const handleStockPurchase = async () => {
     if (!selectedStock || !shares) {
       return;
     }
-    const stockInfo = stocks.find(s => s.symbol === selectedStock);
+    const stockPrice = await fetchStockPrice(selectedStock);
+    // In the case stockInfo is not defined, throw an error
+    if (!stockPrice) {
+      throw new Error(`Stock with symbol ${selectedStock} not found`);
+    }
     const payload = {
       owner_id: owner_id, // Todo
       ticker: selectedStock,
-      quantity: parseInt(shares),
+      quantity: shares,
       asset_type: "Stock",
       asset_name: selectedStock,
-      purchase_price: stockInfo.price,
+      purchase_price: stockPrice??0,
  
     };
-    // Buy function
     const response = await fetch('/api/simulation/buy', {
       method: 'POST',
       headers: {
@@ -141,22 +190,25 @@ const Portfolio = () => {
     }
   };
 
-
+  // handle Sell
   const handleStockSell = async (stockToSell:any, sharesToSell:any) => {
     if (!stockToSell || !sharesToSell) {
       console.error('Stock or shares not provided');
       return;
     }
-
+    const stockPrice = await fetchStockPrice(stockToSell.symbol);
+    // In the case stockInfo is not defined, throw an error
+    if (!stockPrice) {
+      throw new Error(`Stock with symbol ${stockToSell.symbol} not found`);
+    }
     const payload = {
       owner_id: 'user1', // To do
       ticker: stockToSell.symbol,
       quantity: parseInt(sharesToSell),
-      sell_price: stocks.find((s) => s.symbol === stockToSell.symbol).price,
+      sell_price: stockPrice,
       asset_id: stockToSell.id,
     };
 
-    console.log('Payload:', payload);
 
     const response = await fetch('/api/simulation/sell', {
       method: 'PUT',
@@ -179,15 +231,12 @@ const Portfolio = () => {
 
 
   return (
-
-
-
       <div className="container max-w-5xl px-8 mx-auto">
         <Grid justifyContent="center" style={{ textAlign: 'center' }}>
           <Container style={{ padding: 20 }}>
             <Typography align="center" variant="h2" >Investment Simulation</Typography>
             <div>
-            {/* <Typography variant="h3">Past Profit/Loss: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></Typography> */}
+             <Typography variant="h3">Past Profit/Loss: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></Typography>
 
             </div>
             <div>
@@ -215,9 +264,9 @@ const Portfolio = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {purchasedStocks.map((stock) => {
-                  console.log(stock.symbol);
-                  const stockInfo = stocks.find(s => s.symbol === stock.symbol);
+                {purchasedStocks.map((stock: { symbol: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; id: boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.Key | null | undefined; purchase_price: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; shares: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; purchasePrice: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; purchaseDate: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => {
+                  const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
+
                   return (
                     <TableRow key={stock.id}>
                       <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.id}</TableCell>
@@ -226,15 +275,13 @@ const Portfolio = () => {
                       <TableCell >{stock.shares}</TableCell>
                       <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>${stock.purchasePrice}</TableCell>
                       <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
-                        {stockInfo ? `$${stockInfo.price}` : 'N/A'}
+                        {stockPrice ? `$${stockPrice}` : 'N/A'}
                       </TableCell>
-
                       <TableCell>
-                        {stockInfo
-                          ? `$${((stockInfo.price - stock.purchasePrice) * stock.shares).toFixed(2)}`
+                        {stockPrice
+                          ? `$${((Number(stockPrice) - Number(stock.purchasePrice)) * Number(stock.shares)).toFixed(2)}`
                           : 'N/A'}
                       </TableCell>
-
                       <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.purchaseDate}</TableCell>
                       <TableCell>
                         <Button onClick={() => handleStockSell(stock, sharesToSell[stock.id])}>
@@ -283,7 +330,7 @@ const Portfolio = () => {
               />
               <br />
               <br />
-              <Button
+              <Button onClick={handleStockPurchase}
                 color="primary"
               >
                 Purchase
