@@ -23,21 +23,21 @@ import { useQuery } from "@tanstack/react-query";
 const owner_id = "user1";
 // hardcode of stock current price [To be deleted]
 const stocks = [
-  { symbol: 'AAPL'},
-  { symbol: 'GOOG'},
-  { symbol: 'AMZN'},
-  { symbol: 'MSFT'},
-  { symbol: 'V'},
-  { symbol: 'JNJ'},
-  { symbol: 'JPM'},
+  { symbol: 'AAPL' },
+  { symbol: 'GOOG' },
+  { symbol: 'AMZN' },
+  { symbol: 'MSFT' },
+  { symbol: 'V' },
+  { symbol: 'JNJ' },
+  { symbol: 'JPM' },
 ];
 // Main Code
 const Portfolio = () => {
-  // UseStates 
+  // UseStates
   const [selectedStock, setSelectedStock] = useState(null);
   const [shares, setShares] = useState(0);
   const [netProfitLoss, setNetProfitLoss] = useState(0);
-  const [sharesToSell, setSharesToSell] = useState({});
+  const [sharesToSell, setSharesToSell] = useState<any>();
   const [intervalMs, setIntervalMs] = React.useState(1000);
 
   // UseQuery() and related functions
@@ -67,13 +67,13 @@ const Portfolio = () => {
     refetchOnWindowFocus: false,
   });
   // useQuery() function for fetch Quotes
-  const fetchStockPrices = async (purchasedStocks:any[]) =>{
+  const fetchStockPrices = async (purchasedStocks: any[]) => {
     const requests = purchasedStocks.map((stock) => {
       return fetch(`/api/stocks/quote/${stock.symbol}`);
     });
-  
+
     const responses = await Promise.all(requests);
-  
+
     const prices = await Promise.all(
       responses.map((response) => response.json())
     );
@@ -87,14 +87,14 @@ const Portfolio = () => {
   }
 
   const {
-    data : stockPrices,
-    refetch: refetchStockPrices ,
-  } =  useQuery( ["stockPrices", purchasedStocks.map((stock: { symbol: any; }) => stock.symbol)], ()=>fetchStockPrices(purchasedStocks),
-  {
-    refetchInterval: intervalMs,
-    refetchOnWindowFocus: false, 
-  });
-  console.log("Stock prices from useQuery:", stockPrices); 
+    data: stockPrices,
+    refetch: refetchStockPrices,
+  } = useQuery(["stockPrices", purchasedStocks.map((stock: { symbol: any; }) => stock.symbol)], () => fetchStockPrices(purchasedStocks),
+    {
+      refetchInterval: intervalMs,
+      refetchOnWindowFocus: false,
+    });
+  console.log("Stock prices from useQuery:", stockPrices);
 
 
   // UseQuery() function for fetch Profit and Loss
@@ -121,13 +121,13 @@ const Portfolio = () => {
         throw new Error(`Failed to fetch stock price for ${symbol}`);
       }
       const data = await response.json();
-      return data.c; 
+      return data.c;
     } catch (error) {
       console.error(error);
       return null;
     }
   };
-  
+
   // updateNetProfitLoss
   const updateNetProfitLoss = () => {
     let net = 0;
@@ -138,16 +138,16 @@ const Portfolio = () => {
         throw new Error(`Stock with symbol ${stock.symbol} not found`);
       }
       net += (stockPrice - stock.purchasePrice) * stock.shares;
-      
+
     });
     setNetProfitLoss(net);
   };
   // handle stock selection for purchase function
-  const handleStockSelection = (e: { target: { value: React.SetStateAction<null>; }; }) => {
+  const handleStockSelection = (e: any) => {
     setSelectedStock(e.target.value);
   };
   // handle stock share input for purchase function
-  const handleSharesChange = (e: { target: { value: React.SetStateAction<number>; }; }) => {
+  const handleSharesChange = (e: any) => {
     setShares(e.target.value);
   };
   // handle purchase
@@ -166,8 +166,8 @@ const Portfolio = () => {
       quantity: shares,
       asset_type: "Stock",
       asset_name: selectedStock,
-      purchase_price: stockPrice??0,
- 
+      purchase_price: stockPrice ?? 0,
+
     };
     const response = await fetch('/api/simulation/buy', {
       method: 'POST',
@@ -190,7 +190,7 @@ const Portfolio = () => {
   };
 
   // handle Sell
-  const handleStockSell = async (stockToSell:any, sharesToSell:any) => {
+  const handleStockSell = async (stockToSell: any, sharesToSell: any) => {
     if (!stockToSell || !sharesToSell) {
       console.error('Stock or shares not provided');
       return;
@@ -230,12 +230,12 @@ const Portfolio = () => {
 
 
   return (
-      <div className="container max-w-5xl px-8 mx-auto">
-        <Grid justifyContent="center" style={{ textAlign: 'center' }}>
-          <Container style={{ padding: 20 }}>
-            <Typography align="center" variant="h2" >Investment Simulation</Typography>
-            <div>
-             <Typography variant="h3">Past Profit/Loss: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></Typography>
+    <div className="container max-w-5xl px-8 mx-auto">
+      <Grid justifyContent="center" style={{ textAlign: 'center' }}>
+        <Container style={{ padding: 20 }}>
+          <Typography align="center" variant="h2" >Investment Simulation</Typography>
+          <div>
+            <Typography variant="h3">Past Profit/Loss: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></Typography>
 
           </div>
           <div>
@@ -263,7 +263,7 @@ const Portfolio = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {purchasedStocks.map((stock: { symbol: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; id: boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.Key | null | undefined; purchase_price: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; shares: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; purchasePrice: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; purchaseDate: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => {
+                {purchasedStocks.map((stock: any) => {
                   const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
 
                   return (
