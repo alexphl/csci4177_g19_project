@@ -4,13 +4,10 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import TableHead from '@mui/material/TableHead';
-import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
@@ -170,20 +167,22 @@ const Portfolio = () => {
     if (!selectedStock || !shares) {
       return;
     }
-    const stockPrice = await fetchStockPrice(selectedStock);
+    const stockPrice = await fetchStockPrice(selectedStock.symbol);
+    console.log(selectedStock.symbol);
     // In the case stockInfo is not defined, throw an error
     if (!stockPrice) {
       throw new Error(`Stock with symbol ${selectedStock} not found`);
     }
     const payload = {
       owner_id: owner_id, // Todo
-      ticker: selectedStock,
+      ticker: selectedStock.symbol,
       quantity: shares,
       asset_type: "Stock",
-      asset_name: selectedStock,
+      asset_name: selectedStock.symbol,
       purchase_price: stockPrice??0,
  
     };
+    console.log(payload);
     const response = await fetch('/api/simulation/buy', {
       method: 'POST',
       headers: {
@@ -282,9 +281,8 @@ const Portfolio = () => {
               <TableBody>
                 {purchasedStocks.map((stock: { symbol: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; id: boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.Key | null | undefined; purchase_price: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; shares: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; purchasePrice: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; purchaseDate: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => {
                   const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
-
                   return (
-                    <TableRow key={stock.id}>
+                    <TableRow >
                       <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.id}</TableCell>
                       <TableCell >{stock.symbol}</TableCell>
                       <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.purchase_price}</TableCell>
@@ -339,7 +337,6 @@ const Portfolio = () => {
                       ...params.InputProps,
                       endAdornment: (
                         <>
-
                           {loading ? <CircularProgress color="inherit" size={20} /> : null}
                           {params.InputProps.endAdornment}
           </>
