@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
+import { any } from 'zod';
 
 
 
@@ -25,7 +26,7 @@ const owner_id = "user1";
 // Main Code
 const Portfolio = () => {
   // UseStates 
-  const [selectedStock, setSelectedStock] = useState(null);
+  const [selectedStock, setSelectedStock] = useState<any>(null);
   const [shares, setShares] = useState(0);
   const [netProfitLoss, setNetProfitLoss] = useState(0);
   const [sharesToSell, setSharesToSell] = useState({});
@@ -279,7 +280,7 @@ const Portfolio = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {purchasedStocks.map((stock: { symbol: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; id: boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.Key | null | undefined; purchase_price: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; shares: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; purchasePrice: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; purchaseDate: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => {
+                {purchasedStocks.map((stock:any) => {
                   const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
                   return (
                     <TableRow >
