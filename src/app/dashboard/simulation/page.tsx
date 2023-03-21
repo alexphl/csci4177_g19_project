@@ -93,6 +93,7 @@ const Portfolio = () => {
   {
     refetchInterval: intervalMs,
     refetchOnWindowFocus: false, 
+    onSuccess: () => updateNetProfitLoss(),
   });
   console.log("Stock prices from useQuery:", stockPrices); 
 
@@ -129,6 +130,8 @@ const Portfolio = () => {
   };
   
   // updateNetProfitLoss
+  // [This is still using fetchStockPrice not just use stockPrices array is for decoupling]
+  // Otherwise it may cause error when StockPrices is not updated
   const updateNetProfitLoss = () => {
     let net = 0;
     purchasedStocks.forEach(async (stock: { symbol: string; purchasePrice: number; shares: number; }) => {
@@ -184,6 +187,7 @@ const Portfolio = () => {
       setShares(0);
       setSelectedStock(null);
       updateNetProfitLoss();
+      refetchStockPrices();
     } else {
       console.error('Error purchasing stock');
     }
@@ -222,6 +226,7 @@ const Portfolio = () => {
       refetchPurchasedStocks();
       refetchPastProfitLoss();
       updateNetProfitLoss();
+      refetchStockPrices();
     } else {
       console.error('Error selling stock', await response.json());
     }
