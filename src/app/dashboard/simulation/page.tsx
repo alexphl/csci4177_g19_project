@@ -17,29 +17,25 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
+import Autocomplete from '@mui/material/Autocomplete';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 
 const owner_id = "user1";
 // hardcode of stock current price [To be deleted]
-const stocks = [
-  { symbol: 'AAPL' },
-  { symbol: 'GOOG' },
-  { symbol: 'AMZN' },
-  { symbol: 'MSFT' },
-  { symbol: 'V' },
-  { symbol: 'JNJ' },
-  { symbol: 'JPM' },
-];
 // Main Code
 const Portfolio = () => {
-  // UseStates
+  // UseStates 
   const [selectedStock, setSelectedStock] = useState(null);
   const [shares, setShares] = useState(0);
   const [netProfitLoss, setNetProfitLoss] = useState(0);
-  const [sharesToSell, setSharesToSell] = useState<any>();
+  const [sharesToSell, setSharesToSell] = useState({});
   const [intervalMs, setIntervalMs] = React.useState(1000);
-
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   // UseQuery() and related functions
   // UseQuery() function for fetch Portfolio
   const fetchUserPortfolio = async () => {
@@ -67,13 +63,13 @@ const Portfolio = () => {
     refetchOnWindowFocus: false,
   });
   // useQuery() function for fetch Quotes
-  const fetchStockPrices = async (purchasedStocks: any[]) => {
+  const fetchStockPrices = async (purchasedStocks:any[]) =>{
     const requests = purchasedStocks.map((stock) => {
       return fetch(`/api/stocks/quote/${stock.symbol}`);
     });
-
+  
     const responses = await Promise.all(requests);
-
+  
     const prices = await Promise.all(
       responses.map((response) => response.json())
     );
@@ -122,35 +118,51 @@ const Portfolio = () => {
         throw new Error(`Failed to fetch stock price for ${symbol}`);
       }
       const data = await response.json();
-      return data.c;
+      return data.c; 
     } catch (error) {
       console.error(error);
       return null;
     }
   };
-
+  // handle stock Purchase function
+  const handleSearchInputChange = async (event: any, value: string) => {
+    setSearchQuery(value);
+  
+    if (value.length >= 2) {
+      setLoading(true);
+  
+      try {
+        const response = await fetch(`/api/stocks/search/${value}`);
+        if (!response.ok) {
+          console.log(`Failed to search for stocks with the symbol ${value}`);
+        }
+        const data = await response.json();
+        setSearchResults(data.result);
+      } catch (error) {
+        console.error(error);
+      }
+  
+      setLoading(false);
+    } else {
+      setSearchResults([]);
+    }
+  };
   // updateNetProfitLoss
-  // [This is still using fetchStockPrice not just use stockPrices array is for decoupling]
-  // Otherwise it may cause error when StockPrices is not updated
   const updateNetProfitLoss = () => {
     let net = 0;
-    purchasedStocks.forEach(async (stock: { symbol: string; purchasePrice: number; shares: number; }) => {
-      const stockPrice = await fetchStockPrice(stock.symbol);
+    purchasedStocks.forEach((stock: { symbol: string; purchasePrice: number; shares: number; }) => {
+      const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
       // In the case stockInfo is not defined, throw an error
       if (!stockPrice) {
-        throw new Error(`Stock with symbol ${stock.symbol} not found`);
+        console.log(`Stock with symbol ${stock.symbol} not found`);
       }
       net += (stockPrice - stock.purchasePrice) * stock.shares;
-
     });
     setNetProfitLoss(net);
   };
-  // handle stock selection for purchase function
-  const handleStockSelection = (e: any) => {
-    setSelectedStock(e.target.value);
-  };
+  
   // handle stock share input for purchase function
-  const handleSharesChange = (e: any) => {
+  const handleSharesChange = (e: { target: { value: React.SetStateAction<number>; }; }) => {
     setShares(e.target.value);
   };
   // handle purchase
@@ -169,8 +181,8 @@ const Portfolio = () => {
       quantity: shares,
       asset_type: "Stock",
       asset_name: selectedStock,
-      purchase_price: stockPrice ?? 0,
-
+      purchase_price: stockPrice??0,
+ 
     };
     const response = await fetch('/api/simulation/buy', {
       method: 'POST',
@@ -194,7 +206,7 @@ const Portfolio = () => {
   };
 
   // handle Sell
-  const handleStockSell = async (stockToSell: any, sharesToSell: any) => {
+  const handleStockSell = async (stockToSell:any, sharesToSell:any) => {
     if (!stockToSell || !sharesToSell) {
       console.error('Stock or shares not provided');
       return;
@@ -235,12 +247,12 @@ const Portfolio = () => {
 
 
   return (
-    <div className="container max-w-5xl px-8 mx-auto">
-      <Grid justifyContent="center" style={{ textAlign: 'center' }}>
-        <Container style={{ padding: 20 }}>
-          <Typography align="center" variant="h2" >Investment Simulation</Typography>
-          <div>
-            <Typography variant="h3">Past Profit/Loss: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></Typography>
+      <div className="container max-w-5xl px-8 mx-auto">
+        <Grid justifyContent="center" style={{ textAlign: 'center' }}>
+          <Container style={{ padding: 20 }}>
+            <Typography align="center" variant="h2" >Investment Simulation</Typography>
+            <div>
+             <Typography variant="h3">Past Profit/Loss: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></Typography>
 
           </div>
           <div>
@@ -268,7 +280,7 @@ const Portfolio = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {purchasedStocks.map((stock: any) => {
+                {purchasedStocks.map((stock: { symbol: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; id: boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.Key | null | undefined; purchase_price: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; shares: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; purchasePrice: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; purchaseDate: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => {
                   const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
 
                   return (
@@ -311,18 +323,31 @@ const Portfolio = () => {
         <Grid justifyContent="center" style={{ textAlign: 'center' }}>
           <div>
             <FormControl sx={{ m: 1 }} variant="outlined">
-              <InputLabel id="">Stock name</InputLabel>
-              <Select
+              <Autocomplete
+                options={searchResults}
+                loading={loading}
+                getOptionLabel={(option: any) => `${option.symbol} - ${option.description}`}
                 value={selectedStock}
-                onChange={handleStockSelection}
-                label="Stock name"
-              >
-                {stocks.map(stock => (
-                  <MenuItem key={stock.symbol} value={stock.symbol}>
-                    {stock.symbol}
-                  </MenuItem>
-                ))}
-              </Select>
+                onChange={(event: any, newValue: any) => setSelectedStock(newValue || null)}
+                onInputChange={handleSearchInputChange}
+                renderInput={(params: any) => (
+                  <TextField
+                    {...params}
+                    label="Stock name"
+                    variant="outlined"
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <>
+
+                          {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                          {params.InputProps.endAdornment}
+          </>
+        ),
+      }}
+    />
+  )}
+/>
               <br />
               <br />
               <TextField
