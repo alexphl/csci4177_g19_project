@@ -15,9 +15,8 @@ const TransitionWrap = ({ children }: { children: React.ReactNode }) => {
     <motion.div
       className="flex justify-center"
       key={page}
-      variants={variants} // Pass the variant object into Framer Motion
-      initial="hidden" // Set the initial state to variants.hidden
-      animate="enter" // Animated state to variants.enter
+      style={{ opacity: 0, transform: "translateY(1.5rem)" }} // Set the initial state to variants.hidden
+      animate={{ opacity: 1, transform: "translateY(0rem)" }}
       transition={{
         type: "spring",
         damping: 30,
