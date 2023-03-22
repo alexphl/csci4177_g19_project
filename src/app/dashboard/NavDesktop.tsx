@@ -14,8 +14,14 @@ export default function NavDesktop() {
 
   return (
     <nav className="group z-[90] border-r border-neutral-900 hidden h-screen w-20 min-w-fit max-w-fit flex-col gap-3 bg-black/[0.6] p-3 text-sm font-medium text-neutral-400 shadow-md saturate-200 backdrop-blur-lg transition-all hover:w-60 hover:max-w-sm hover:min-w-0 hover:text-neutral-200 md:fixed md:flex lg:p-4 2xl:p-5">
-      <button className="mx-auto mb-12 flex aspect-square w-fit flex-none items-center rounded-full bg-white/[0.05] p-2 group-hover:mx-0">
-        <UserIcon className="w-5" />
+      <button className="mb-16 gap-3 border-white/[0.1] bg-white/[0.05] flex items-center rounded-full w-full">
+        <div className="transition-all border border-neutral-800 flex aspect-square w-fit items-center rounded-full bg-black p-2 group-hover:p-4">
+          <UserIcon className="w-6" />
+        </div>
+        <div className="flex hidden items-start flex-col group-hover:block">
+          <p className="font-bold w-fit">John Doe</p>
+          <p className="text-xs text-neutral-400 w-fit">johndoe@email.com</p>
+        </div>
       </button>
 
       <Link href="/dashboard" className={linkStyle}>

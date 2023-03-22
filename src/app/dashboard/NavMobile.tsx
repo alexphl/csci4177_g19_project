@@ -47,12 +47,15 @@ export default function NavMobile() {
             >
               <hr className="border border-white/[0.5] w-8 rounded-full" />
 
-              <div className="border text-neutral-100 p-4 gap-4 border-white/[0.1] bg-white/[0.05] flex items-center rounded-2xl w-full h-16">
-                <button className="flex aspect-square w-fit items-center rounded-full bg-black/[0.4] p-2 group-hover:mx-0 shadow-md">
-                  <UserIcon className="w-5 text-neutral-400" />
-                </button>
-                <p className="text-sm">John Doe</p>
-              </div>
+              <button className="border text-neutral-100 p-5 gap-5 border-white/[0.1] bg-white/[0.05] flex items-center rounded-2xl w-full">
+                <div className="flex aspect-square w-fit items-center rounded-full bg-black/[0.4] p-2 group-hover:mx-0 shadow-md">
+                  <UserIcon className="w-6" />
+                </div>
+                <div className="flex items-start flex-col">
+                  <p className="font-bold">John Doe</p>
+                  <p className="text-xs text-neutral-400">johndoe@email.com</p>
+                </div>
+              </button>
 
               <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
                 <Link href="/dashboard" className={linkStyle} onClick={() => setExpanded(false)}>
