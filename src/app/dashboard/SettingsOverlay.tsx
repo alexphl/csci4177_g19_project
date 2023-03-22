@@ -1,8 +1,9 @@
+import dynamic from "next/dynamic";
 import FocusTrap from "focus-trap-react";
 import { RemoveScroll } from "react-remove-scroll";
 import { memo } from "react";
 import type { Dispatch, SetStateAction } from "react";
-import SettingsPane from "./SettingsPane";
+const SettingsPane = dynamic(() => import("./SettingsPane"));
 
 function SettingsOverlay(props: { setOpen: Dispatch<SetStateAction<boolean>> }) {
   return (
