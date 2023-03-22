@@ -38,7 +38,7 @@ router.get("/", async function (req, res) {
       console.error(err);
     });
 });
-//Route to get nasdaq data for 4
+//Route to get user subscribed news list
 router.get("/user/:id", async function (req, res) {
   try {
     const account_id = req.params.id;

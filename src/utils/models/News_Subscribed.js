@@ -1,7 +1,6 @@
-"use strict";
-import { Schema, model, models } from "mongoose";
+const mongoose = require("mongoose");
 
-const News_Subscribe = Schema({
+const News_Subscribe = new mongoose.Schema({
   account_id: Number,
   subscribe_stocks: [
     {
@@ -11,5 +10,6 @@ const News_Subscribe = Schema({
   ],
 });
 
-export default models.News_Subscribe ||
-  model("news_subscribes", News_Subscribe);
+module.exports =
+  mongoose.models.news_subscribes ||
+  mongoose.model("news_subscribes", News_Subscribe);
