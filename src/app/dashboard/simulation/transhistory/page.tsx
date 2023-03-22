@@ -17,7 +17,7 @@ const darkTheme = createTheme({
   },
 });
 
-const TransactionHistory = () => {
+export default function TransactionHistory() {
   const [transactions, setTransactions] = useState<any[]>([]);
   const owner_id = 'user1';
 
@@ -72,5 +72,3 @@ const TransactionHistory = () => {
     </ThemeProvider>
   );
 };
-
-export default TransactionHistory;

@@ -24,7 +24,7 @@ import { any } from 'zod';
 const owner_id = "user1";
 // hardcode of stock current price [To be deleted]
 // Main Code
-const Portfolio = () => {
+export default function Portfolio() {
   // UseStates
   const [selectedStock, setSelectedStock] = useState<any>(null);
   const [shares, setShares] = useState(0);
@@ -378,5 +378,3 @@ const Portfolio = () => {
   );
 
 };
-
-export default Portfolio;
