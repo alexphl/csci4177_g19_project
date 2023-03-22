@@ -28,9 +28,9 @@ const user = {
     },
   ],
 };
-//Route to get all customers
+//Route to get nasdaq data for 4
 router.get("/", async function (req, res) {
-  await getnew("Nasdaq", 5)
+  await getnew("Nasdaq", 4)
     .then((docs) => {
       res.send(docs);
     })
@@ -38,20 +38,26 @@ router.get("/", async function (req, res) {
       console.error(err);
     });
 });
+//Route to get nasdaq data for 4
 router.get("/user/:id", async function (req, res) {
   try {
     const account_id = req.params.id;
     const subscribes = await Model.findOne({ account_id });
-    var list = subscribes.subscribe_stocks;
+    var list = subscribes.subscribe_stocks.substring(0,4);
     await getnews_list(list)
       .then((docs) => {
-        res.send(docs);
+        var subscription=docs;
+        for (var i = 0; i < subscription.length; i++) {
+          subscription[i].ticker_symbol = list[i].ticker_symbol;
+        }
+        res.send(subscription);
+
       })
       .catch((err) => {
         console.error(err);
       });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error(err);
   }
 });
 // router.get("/deatil/:id", async function (req, res) {
