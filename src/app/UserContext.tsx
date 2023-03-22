@@ -20,7 +20,7 @@ export const userReducer = (state: any, action: { type: string, payload: string 
     default:
       return state;
   }
-};
+}
 
 export default function UserContextProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatchUser] = useReducer(userReducer, {
@@ -33,4 +33,4 @@ export default function UserContextProvider({ children }: { children: React.Reac
       {children}
     </userContext.Provider>
   );
-};
+}

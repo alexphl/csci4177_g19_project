@@ -135,6 +135,6 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
       />
     </>
   );
-};
+}
 
 export default memo(StockChart);

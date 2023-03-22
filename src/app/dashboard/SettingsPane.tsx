@@ -10,4 +10,4 @@ export default function SettingsPane() {
       <p className="text-lg">User Preferences Pane</p>
     </div>
   );
-};
+}

@@ -68,6 +68,6 @@ function StockListbox() {
       </Listbox>
     </div>
   );
-};
+}
 
 export default memo(StockListbox);

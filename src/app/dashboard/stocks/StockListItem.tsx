@@ -191,6 +191,6 @@ function StockListItem(props: {
       </div>
     </Link>
   );
-};
+}
 
 export default memo(StockListItem);

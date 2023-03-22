@@ -21,4 +21,4 @@ export default function TransitionWrap({ children }: { children: React.ReactNode
       {children}
     </motion.div>
   );
-};
+}

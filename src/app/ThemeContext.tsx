@@ -59,4 +59,4 @@ const themeMUI = createTheme({
 
 export default function ThemeContextProvider({ children }: { children: React.ReactNode }) {
   return <ThemeProvider theme={themeMUI}>{children}</ThemeProvider>;
-};
+}

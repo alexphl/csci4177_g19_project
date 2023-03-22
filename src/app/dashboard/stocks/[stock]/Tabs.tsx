@@ -39,6 +39,6 @@ function Tabs(props: {
       </Tab.Group>
     </div>
   );
-};
+}
 
 export default memo(Tabs);

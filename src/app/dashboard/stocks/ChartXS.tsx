@@ -91,6 +91,6 @@ function StockChartXS(props: { symbol: string; quote: iQuote }) {
       />
     </>
   );
-};
+}
 
 export default memo(StockChartXS);

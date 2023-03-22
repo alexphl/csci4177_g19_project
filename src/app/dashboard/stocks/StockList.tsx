@@ -300,6 +300,6 @@ function StockList(props: {
       }
     </>
   );
-};
+}
 
 export default memo(StockList);

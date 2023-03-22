@@ -96,4 +96,4 @@ export default function NavDesktop() {
       </section>
     </nav>
   );
-};
+}

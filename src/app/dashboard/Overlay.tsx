@@ -21,6 +21,6 @@ function Overlay({ children }: { children: React.ReactNode }) {
       </FocusTrap>
     </RemoveScroll>
   );
-};
+}
 
 export default memo(Overlay);

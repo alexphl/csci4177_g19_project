@@ -37,6 +37,6 @@ function Searchbox(
       <button className={"order-last h-full w-6 transition-all shrink-0" + (searchIsActive ? " text-neutral-300" : " hidden")} onClick={() => exitSearch()}><XMarkIcon /></button>
     </div>
   );
-};
+}
 
 export default memo(Searchbox);
