@@ -8,11 +8,11 @@ function classNames(...classes: string[]) {
 /**
  * Tab navigation panel
  **/
-const Tabs = (props: {
+function Tabs(props: {
   selector: [number, Dispatch<SetStateAction<number>>];
   components: string[];
   className?: string;
-}) => {
+}) {
   const categories = props.components;
   const [selectedIndex, setSelectedIndex] = props.selector;
 

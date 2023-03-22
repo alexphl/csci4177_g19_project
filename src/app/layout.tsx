@@ -19,7 +19,7 @@ const font = localFont({
   display: "swap",
 });
 
-function RootLayout({
+export default function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
   children,
@@ -41,5 +41,3 @@ function RootLayout({
     </UserContextProvider>
   );
 }
-
-export default RootLayout;

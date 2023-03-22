@@ -25,7 +25,7 @@ function formatLabels(labels: number[], timeframe: number) {
   }
 }
 
-const StockChart = (props: { symbol: string; quote: iQuote }) => {
+function StockChart(props: { symbol: string; quote: iQuote }) {
   const points = useQuery<iCandle>({
     queryKey: ["/api/stocks/hist/today/", props.symbol],
     initialData: { c: [], d: [], o: [], t: [], s: "ok" },

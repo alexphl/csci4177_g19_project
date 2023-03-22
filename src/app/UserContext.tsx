@@ -22,7 +22,7 @@ export const userReducer = (state: any, action: { type: string, payload: string 
   }
 };
 
-const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
+export default function UserContextProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatchUser] = useReducer(userReducer, {
     // initial state
     user: { isLoggedIn: false, email: undefined },
@@ -34,5 +34,3 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
     </userContext.Provider>
   );
 };
-
-export default UserContextProvider;

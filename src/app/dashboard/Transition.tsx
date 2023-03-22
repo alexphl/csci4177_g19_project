@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useSelectedLayoutSegment } from "next/navigation";
 
-const TransitionWrap = ({ children }: { children: React.ReactNode }) => {
+export default function TransitionWrap({ children }: { children: React.ReactNode }) {
   const page = useSelectedLayoutSegment();
 
   return (
@@ -22,5 +22,3 @@ const TransitionWrap = ({ children }: { children: React.ReactNode }) => {
     </motion.div>
   );
 };
-
-export default TransitionWrap;

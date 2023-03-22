@@ -10,7 +10,7 @@ import { useState } from "react";
 
 const linkStyle = "active:brightness-125 active:saturate-200";
 
-const NavMobile = () => {
+export default function NavMobile() {
   const segment = useSelectedLayoutSegment();
   const [isExpanded, setExpanded] = useState(false);
 
@@ -118,5 +118,3 @@ const NavMobile = () => {
     </>
   );
 };
-
-export default NavMobile;

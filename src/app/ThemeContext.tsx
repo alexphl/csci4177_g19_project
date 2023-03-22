@@ -57,8 +57,6 @@ const themeMUI = createTheme({
   },
 });
 
-const ThemeContextProvider = ({ children }: { children: React.ReactNode }) => {
+export default function ThemeContextProvider({ children }: { children: React.ReactNode }) {
   return <ThemeProvider theme={themeMUI}>{children}</ThemeProvider>;
 };
-
-export default ThemeContextProvider;

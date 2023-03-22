@@ -9,7 +9,7 @@ import { contentBrowse, contentExplore, contentSettings } from "./NavSchema";
 
 const linkStyle = "active:brightness-125 active:saturate-200";
 
-const NavDesktop = () => {
+export default function NavDesktop() {
   const segment = useSelectedLayoutSegment();
 
   return (
@@ -97,5 +97,3 @@ const NavDesktop = () => {
     </nav>
   );
 };
-
-export default NavDesktop;

@@ -2,12 +2,12 @@ import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { memo } from "react";
 import type { Dispatch, SetStateAction } from "react";
 
-const Searchbox = (
+function Searchbox(
   props: {
     searchController: [boolean, Dispatch<SetStateAction<boolean>>],
     queryController: [string, Dispatch<SetStateAction<string>>],
     className?: string
-  }) => {
+  }) {
   const [searchIsActive, setSearchIsActive] = props.searchController;
   const [query, setQuery] = props.queryController;
 

@@ -4,7 +4,7 @@ import { memo, createContext } from "react";
 
 export const overlayContext = createContext({ isOpen: false });
 
-const Overlay = ({ children }: { children: React.ReactNode }) => {
+function Overlay({ children }: { children: React.ReactNode }) {
   return (
     <RemoveScroll>
       <FocusTrap>

@@ -1,6 +1,6 @@
 import { UserIcon } from "@heroicons/react/20/solid";
 
-const SettingsPane = () => {
+export default function SettingsPane() {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-8 border border-neutral-800 bg-black text-neutral-500 sm:rounded-2xl">
       <button className="flex cursor-default items-center rounded-full bg-black p-5 shadow-xl outline-none">
@@ -11,5 +11,3 @@ const SettingsPane = () => {
     </div>
   );
 };
-
-export default SettingsPane;
