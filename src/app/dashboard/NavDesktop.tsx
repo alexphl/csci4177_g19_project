@@ -4,17 +4,22 @@ import Link from "next/link";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { RectangleGroupIcon } from "@heroicons/react/24/outline";
 import { useSelectedLayoutSegment } from "next/navigation";
+import type { Dispatch, SetStateAction } from "react";
 
 import { contentBrowse, contentExplore, contentSettings } from "./NavSchema";
 
 const linkStyle = "active:brightness-125 active:saturate-200";
 
-export default function NavDesktop() {
+export default function NavDesktop(props: { overlayController: [boolean, Dispatch<SetStateAction<boolean>>] }) {
   const segment = useSelectedLayoutSegment();
+  const [isOverlayOpen, setOverlayOpen] = props.overlayController;
 
   return (
     <nav className="group md:grid grid-rows-[15%_auto] z-[90] border-r border-white/[0.1] hidden h-screen w-20 min-w-fit max-w-fit gap-3 bg-neutral-800/50 p-3 text-sm font-medium text-neutral-400 shadow-md backdrop-saturate-[3.0] backdrop-blur-xl transition-[width] hover:w-60 hover:max-w-sm hover:min-w-0 hover:text-neutral-200 md:fixed lg:p-4 2xl:p-5">
-      <button className="place-self-start gap-3 border-white/[0.1] bg-white/[0.05] flex items-center rounded-full w-full">
+      <button
+        className="place-self-start gap-3 border-white/[0.1] bg-white/[0.05] flex items-center rounded-full w-full"
+        onClick={() => setOverlayOpen(!isOverlayOpen)}
+      >
         <div className="transition-all shadow-md border border-neutral-800 flex aspect-square w-fit items-center rounded-full bg-black/[0.6] p-2 group-hover:p-4">
           <UserIcon className="w-6" />
         </div>

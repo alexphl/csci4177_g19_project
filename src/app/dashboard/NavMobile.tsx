@@ -4,15 +4,17 @@ import Link from "next/link";
 import { UserIcon, Bars3Icon, RectangleGroupIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSelectedLayoutSegment } from "next/navigation";
+import type { Dispatch, SetStateAction } from "react";
 
 import { contentBrowse, contentExplore, contentSettings, mobileBar } from "./NavSchema";
 import { useState } from "react";
 
 const linkStyle = "active:brightness-125";
 
-export default function NavMobile() {
+export default function NavMobile(props: { overlayController: [boolean, Dispatch<SetStateAction<boolean>>] }) {
   const segment = useSelectedLayoutSegment();
   const [isExpanded, setExpanded] = useState(false);
+  const [isOverlayOpen, setOverlayOpen] = props.overlayController;
 
   return (
     <>
@@ -47,7 +49,10 @@ export default function NavMobile() {
             >
               <hr className="border border-white/[0.5] w-8 rounded-full" />
 
-              <button className="border text-neutral-100 p-5 gap-5 border-white/[0.1] bg-white/[0.05] flex items-center rounded-2xl w-full">
+              <button
+                className="border text-neutral-100 p-5 gap-5 border-white/[0.1] bg-white/[0.05] flex items-center rounded-2xl w-full"
+                onClick={() => setOverlayOpen(!isOverlayOpen)}
+              >
                 <div className="flex aspect-square w-fit items-center rounded-full bg-black/[0.4] p-2 group-hover:mx-0 shadow-md">
                   <UserIcon className="w-6" />
                 </div>

@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import Transition from "./Transition";
 import type { Metadata } from "next";
+import UIWrap from "./UIWrap";
 
 const NavDesktop = dynamic(() => import("./NavDesktop"));
 const NavMobile = dynamic(() => import("./NavMobile"));
@@ -17,8 +18,7 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <NavDesktop />
-      <NavMobile />
+      <UIWrap />
       <div className="text-neutral-100 md:ml-16">
         <Transition>{children}</Transition>
       </div>
