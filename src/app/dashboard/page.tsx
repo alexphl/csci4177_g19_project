@@ -16,7 +16,7 @@ export default function Dashboard() {
     <div className="container mb-12 flex max-w-2xl flex-col gap-10 px-6 pt-20 transition-all 2xl:max-w-5xl">
       <h1 className="text-xl leading-relaxed font-medium text-neutral-400 font-display">
         Welcome to <br />
-        <strong className="text-5xl font-extrabold text-white">STOCKVISION</strong>
+        <strong className="text-3xl sm:text-5xl font-extrabold text-white">STOCKVISION</strong>
       </h1>
 
       <section>
