@@ -3,11 +3,6 @@
 import { motion } from "framer-motion";
 import { useSelectedLayoutSegment } from "next/navigation";
 
-const variants = {
-  hidden: { opacity: 0, y: 25 },
-  enter: { opacity: 1, y: 0 },
-};
-
 const TransitionWrap = ({ children }: { children: React.ReactNode }) => {
   const page = useSelectedLayoutSegment();
 
@@ -15,7 +10,7 @@ const TransitionWrap = ({ children }: { children: React.ReactNode }) => {
     <motion.div
       className="flex justify-center"
       key={page}
-      style={{ opacity: 0, transform: "translateY(1.5rem)" }} // Set the initial state to variants.hidden
+      style={{ opacity: 0, transform: "translateY(1.5rem)" }}
       animate={{ opacity: 1, transform: "translateY(0rem)" }}
       transition={{
         type: "spring",
