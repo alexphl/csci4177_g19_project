@@ -10,13 +10,28 @@ const Tabs = dynamic(() => import("./Tabs"));
 
 const chartTimeframes = ["1D", "1W", "1M", "6M", "1Y", "5Y", "ALL"];
 
+function formatLabels(labels: number[], timeframe: number) {
+  switch (timeframe) {
+    case 0:
+      return labels.map((timestamp) => {
+        let date = new Date(timestamp * 1000);
+        return date.toLocaleString("en-GB", {
+          hour: "numeric",
+          minute: "2-digit"
+        });
+      })
+    default:
+      return labels.map((timestamp) => new Date(timestamp * 1000).toString())
+  }
+}
+
 const StockChart = (props: { symbol: string; quote: iQuote }) => {
   const points = useQuery<iCandle>({
     queryKey: ["/api/stocks/hist/today/", props.symbol],
     initialData: { c: [], d: [], o: [], t: [], s: "ok" },
   });
 
-  const [selectedTimeframe, setSelectedTimeframe] = useState(2);
+  const [selectedTimeframe, setSelectedTimeframe] = useState(0);
 
   const lineColor =
     props.quote.d > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)";
@@ -35,7 +50,7 @@ const StockChart = (props: { symbol: string; quote: iQuote }) => {
       >
         <Line
           data={{
-            labels: points.data.t.concat(props.quote.t),
+            labels: formatLabels(points.data.t.concat(props.quote.t), selectedTimeframe),
             datasets: [
               {
                 label: "Price",
@@ -96,7 +111,7 @@ const StockChart = (props: { symbol: string; quote: iQuote }) => {
                   maxTicksLimit: 6,
                   maxRotation: 0,
                   padding: 6,
-                  labelOffset: 24,
+                  //labelOffset: 24,
                   color: "rgba(255,255,255,0.3)",
                   font: {
                     size: 10,

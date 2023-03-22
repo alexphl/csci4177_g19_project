@@ -10,7 +10,7 @@ import type { iQuote, iCandle } from "@/utils/types/iStocks";
 const StockChartXS = (props: { symbol: string; quote: iQuote }) => {
   const points = useQuery<iCandle>({
     queryKey: ["/api/stocks/hist/today/", props.symbol],
-    initialData: { c: [], d: [], o: [], t: [], s: "ok" },
+    initialData: { c: [], d: [], o: [], t: [], s: "no_data" },
   });
 
   const lineColor =
