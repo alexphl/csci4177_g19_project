@@ -14,7 +14,7 @@ function formatLabels(labels: number[], timeframe: number) {
   switch (timeframe) {
     case 0:
       return labels.map((timestamp) => {
-        let date = new Date(timestamp * 1000);
+        const date = new Date(timestamp * 1000);
         return date.toLocaleString("en-GB", {
           hour: "numeric",
           minute: "2-digit"

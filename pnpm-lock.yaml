@@ -25,7 +25,7 @@ specifiers:
   eslint-config-next: 13.2.3
   express: ^4.18.2
   focus-trap-react: ^10.1.1
-  framer-motion: ^10.8.4
+  framer-motion: ^10.8.5
   fuse.js: ^6.6.2
   lru-cache: ^8.0.4
   mongoose: 7.0.2
@@ -61,7 +61,7 @@ dependencies:
   cookie-parser: 1.4.6
   express: 4.18.2
   focus-trap-react: 10.1.1_v2m5e27vhdewzwhryxwfaorcca
-  framer-motion: 10.8.4_biqbaboplfbrettd7655fr4n2y
+  framer-motion: 10.8.5_biqbaboplfbrettd7655fr4n2y
   fuse.js: 6.6.2
   lru-cache: 8.0.4
   mongoose: 7.0.2
@@ -2240,8 +2240,8 @@ packages:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
     dev: true
 
-  /framer-motion/10.8.4_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-dNcWapHLw1uTH9Yukqj1+uU87YM7GEkz2HjjR/k5Efo5ZKhzHpEeTsifrulwhTOqOR2N009JkMhtHnHEhMfKkg==}
+  /framer-motion/10.8.5_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-qwvUAIwCc6fEZhg7ST+/z+f7Vt882jJvLiWZUHNdq2oZ/Y7gM6mLlpKi9xQg+pLu6DQVypikcKQ+MKnoFoXAJg==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
