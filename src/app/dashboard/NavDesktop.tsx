@@ -13,9 +13,9 @@ export default function NavDesktop() {
   const segment = useSelectedLayoutSegment();
 
   return (
-    <nav className="group md:grid grid-rows-[15%_auto] z-[90] border-r border-neutral-900 hidden h-screen w-20 min-w-fit max-w-fit gap-3 bg-black/[0.6] p-3 text-sm font-medium text-neutral-400 shadow-md saturate-200 backdrop-blur-lg transition-[width] hover:w-60 hover:max-w-sm hover:min-w-0 hover:text-neutral-200 md:fixed lg:p-4 2xl:p-5">
+    <nav className="group md:grid grid-rows-[15%_auto] z-[90] border-r border-white/[0.1] hidden h-screen w-20 min-w-fit max-w-fit gap-3 bg-neutral-800/50 p-3 text-sm font-medium text-neutral-400 shadow-md backdrop-saturate-[3.0] backdrop-blur-xl transition-[width] hover:w-60 hover:max-w-sm hover:min-w-0 hover:text-neutral-200 md:fixed lg:p-4 2xl:p-5">
       <button className="place-self-start gap-3 border-white/[0.1] bg-white/[0.05] flex items-center rounded-full w-full">
-        <div className="transition-all border border-neutral-800 flex aspect-square w-fit items-center rounded-full bg-black p-2 group-hover:p-4">
+        <div className="transition-all shadow-md border border-neutral-800 flex aspect-square w-fit items-center rounded-full bg-black/[0.6] p-2 group-hover:p-4">
           <UserIcon className="w-6" />
         </div>
         <div className="flex hidden items-start flex-col group-hover:block overflow-hidden whitespace-nowrap w-[60%]">
@@ -40,7 +40,7 @@ export default function NavDesktop() {
         </Link>
 
         <section className="flex flex-col gap-2">
-          <hr className="my-1 w-full rounded-full border border-neutral-800" />
+          <hr className="my-1 w-full rounded-full border border-white/[0.1]" />
           {contentBrowse.map((link) => (
             <Link key={link.link} href={link.link} className={linkStyle}>
               <div
@@ -58,7 +58,7 @@ export default function NavDesktop() {
               </div>
             </Link>
           ))}
-          <hr className="my-1 w-full rounded-full border border-neutral-800" />
+          <hr className="my-1 w-full rounded-full border border-white/[0.1]" />
         </section>
 
         <section className="flex flex-col gap-2">
@@ -79,7 +79,7 @@ export default function NavDesktop() {
               </div>
             </Link>
           ))}
-          <hr className="my-1 w-full rounded-full border border-neutral-800" />
+          <hr className="my-1 w-full rounded-full border border-white/[0.1]" />
         </section>
 
         <section className="flex flex-col gap-2">

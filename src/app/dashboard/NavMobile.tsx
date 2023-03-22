@@ -8,7 +8,7 @@ import { useSelectedLayoutSegment } from "next/navigation";
 import { contentBrowse, contentExplore, contentSettings, mobileBar } from "./NavSchema";
 import { useState } from "react";
 
-const linkStyle = "active:brightness-125 active:saturate-200";
+const linkStyle = "active:brightness-125";
 
 export default function NavMobile() {
   const segment = useSelectedLayoutSegment();
@@ -26,7 +26,7 @@ export default function NavMobile() {
               </div>
             </Link>
           )}
-          <button className={"w-[2.15rem] p-1.5 hover:bg-white/[0.1] rounded-xl saturate-200" + (isExpanded ? " bg-white/[0.1]" : "")} onClick={() => setExpanded(!isExpanded)}>
+          <button className={"w-[2.15rem] p-1.5 hover:bg-white/[0.1] rounded-xl" + (isExpanded ? " bg-white/[0.1]" : "")} onClick={() => setExpanded(!isExpanded)}>
             <Bars3Icon />
           </button>
         </nav>
