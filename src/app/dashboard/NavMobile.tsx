@@ -40,7 +40,7 @@ const NavMobile = () => {
               exit={{ y: "34rem" }}
               transition={{
                 type: "spring",
-                damping: 40,
+                damping: 42,
                 stiffness: 650,
               }}
               className="overflow-auto scrollbar-hide pb-40 flex flex-col font-medium items-center gap-4 fixed p-4 bottom-[-2rem] w-[100vw] max-w-md rounded-t-3xl h-[90%] max-h-[34rem] border-[1.5px] border-white/[0.1] shadow-[0_-20px_60px_rgba(0,0,0,0.6)] bg-neutral-800/50 backdrop-blur-2xl backdrop-saturate-[3.0]"
@@ -55,7 +55,7 @@ const NavMobile = () => {
               </div>
 
               <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
-                <Link href="/dashboard" className={linkStyle}>
+                <Link href="/dashboard" className={linkStyle} onClick={() => setExpanded(false)}>
                   <div
                     className="flex gap-5 items-center w-full rounded-lg p-3 hover:bg-white/[0.1] hover:text-white text-sm "
                   >
@@ -69,7 +69,7 @@ const NavMobile = () => {
 
               <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
                 {contentBrowse.map((link) => (
-                  <Link key={link.link} href={link.link} className={linkStyle}>
+                  <Link key={link.link} href={link.link} className={linkStyle} onClick={() => setExpanded(false)}>
                     <div
                       className="flex gap-5 items-center w-full rounded-lg p-3 hover:bg-white/[0.1] hover:text-white text-sm "
                     >
@@ -84,7 +84,7 @@ const NavMobile = () => {
 
               <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
                 {contentExplore.map((link) => (
-                  <Link key={link.link} href={link.link} className={linkStyle}>
+                  <Link key={link.link} href={link.link} className={linkStyle} onClick={() => setExpanded(false)}>
                     <div
                       className="flex gap-5 items-center w-full rounded-lg p-3 hover:bg-white/[0.1] hover:text-white text-sm "
                     >
@@ -99,7 +99,7 @@ const NavMobile = () => {
 
               <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
                 {contentSettings.map((link) => (
-                  <Link key={link.link} href={link.link} className={linkStyle}>
+                  <Link key={link.link} href={link.link} className={linkStyle} onClick={() => setExpanded(false)}>
                     <div
                       className="flex gap-5 items-center w-full rounded-lg p-3 hover:bg-white/[0.1] hover:text-white text-sm "
                     >

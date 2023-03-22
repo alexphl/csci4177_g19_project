@@ -60,6 +60,7 @@ export const contentSettings = [
 
 export const mobileBar = [
   contentBrowse[0],		// stocks
+  contentBrowse[1],		// customers
   contentBrowse[2],		// accounts
   contentExplore[0],	// news
 ]
