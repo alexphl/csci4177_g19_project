@@ -14,13 +14,13 @@ export default function Dashboard() {
 
   return (
     <div className="container mb-12 flex max-w-2xl flex-col gap-10 px-6 pt-20 transition-all 2xl:max-w-5xl">
-      <h1 className="text-2xl leading-relaxed text-neutral-400">
+      <h1 className="text-xl leading-relaxed font-medium text-neutral-400 font-display">
         Welcome to <br />
-        <strong className="text-4xl text-white">STOCKVISION</strong>
+        <strong className="text-5xl font-extrabold text-white">STOCKVISION</strong>
       </h1>
 
       <section>
-        <h2 className="text-xl font-bold">Search</h2>
+        <h2 className="text-xl font-semibold font-display mb-1">Search</h2>
         <div>
           <p className={subheadingStyle}>
             Search for customers by name, username, email or street address:
@@ -31,9 +31,9 @@ export default function Dashboard() {
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-orange-200">Browse</h2>
+        <h2 className="text-xl font-semibold font-display mb-1 text-orange-200">Browse</h2>
         <p className={subheadingStyle}>
-          Browse customers, accounts and transactions
+          Browse stocks, customers, accounts and transactions
         </p>
 
         <div className="mt-4 flex w-full flex-wrap gap-3">
@@ -55,10 +55,9 @@ export default function Dashboard() {
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-sky-200">Explore</h2>
+        <h2 className="text-xl font-semibold font-display mb-1 text-sky-200">Explore</h2>
         <p className={subheadingStyle}>
-          View analytic tools like charts, graphs and maps of StockVision&apos;s
-          users
+          View news, analytics tools, or run an investment simulation
         </p>
 
         <div className="mt-4 flex w-full flex-wrap gap-3">
@@ -78,7 +77,7 @@ export default function Dashboard() {
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-violet-200">Configure</h2>
+        <h2 className="text-xl font-semibold font-display mb-1 text-violet-200">Configure</h2>
         <p className={subheadingStyle}>Manage your profile settings</p>
 
         <div className="mt-4 flex w-full flex-wrap gap-3">

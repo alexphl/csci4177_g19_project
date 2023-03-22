@@ -13,9 +13,15 @@ export const metadata: Metadata = {
 import localFont from "next/font/local";
 
 // If loading a variable font, you don't need to specify the font weight
-const font = localFont({
+const bodyFont = localFont({
   src: "../styles/Satoshi-Variable.woff2",
-  variable: "--font-custom",
+  variable: "--font-body",
+  display: "swap",
+});
+
+const displayFont = localFont({
+  src: "../styles/Unbounded-Variable.ttf",
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -32,7 +38,7 @@ export default function RootLayout({
         <ThemeContextProvider>
           <html
             lang="en"
-            className={`${font.variable} bg-neutral-900 font-sans`}
+            className={`${displayFont.variable} ${bodyFont.variable} bg-neutral-900 font-sans`}
           >
             <body className="font-sans text-neutral-100">{children}</body>
           </html>

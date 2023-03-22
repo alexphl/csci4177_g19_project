@@ -13,7 +13,10 @@ const themeMUI = createTheme({
     },
   },
   typography: {
-    fontFamily: "var(--font-custom)", // see root layout.tsx for definition
+    h1: {
+      fontFamily: "var(--font-display)"
+    },
+    fontFamily: "var(--font-body)", // see root layout.tsx for definition
   },
   components: {
     MuiCard: {
