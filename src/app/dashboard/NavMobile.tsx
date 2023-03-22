@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import { UserIcon, Bars3Icon } from "@heroicons/react/24/outline";
+import { UserIcon, Bars3Icon, RectangleGroupIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSelectedLayoutSegment } from "next/navigation";
 
@@ -35,17 +35,82 @@ const NavMobile = () => {
           {
             isExpanded &&
             <motion.div
-              initial={{ y: "30rem" }}
+              initial={{ y: "34rem" }}
               animate={{ y: 0 }}
-              exit={{ y: "30rem" }}
+              exit={{ y: "34rem" }}
               transition={{
                 type: "spring",
                 damping: 40,
                 stiffness: 650,
               }}
-              className="fixed bottom-[-2rem] w-[100vw] max-w-md rounded-t-2xl h-4/5 max-h-[30rem] border-[1.5px] border-neutral-800 shadow-[0_-20px_60px_rgba(0,0,0,0.6)] bg-zinc-800/50 backdrop-blur-xl backdrop-saturate-[4.0]"
+              className="overflow-auto scrollbar-hide pb-40 flex flex-col font-medium items-center gap-4 fixed p-4 bottom-[-2rem] w-[100vw] max-w-md rounded-t-3xl h-[90%] max-h-[34rem] border-[1.5px] border-white/[0.1] shadow-[0_-20px_60px_rgba(0,0,0,0.6)] bg-neutral-800/50 backdrop-blur-2xl backdrop-saturate-[3.0]"
             >
+              <hr className="border border-white/[0.5] w-8 rounded-full" />
 
+              <div className="border text-neutral-100 p-4 gap-4 border-white/[0.1] bg-white/[0.05] flex items-center rounded-2xl w-full h-16">
+                <button className="flex aspect-square w-fit items-center rounded-full bg-black/[0.4] p-2 group-hover:mx-0 shadow-md">
+                  <UserIcon className="w-5 text-neutral-400" />
+                </button>
+                <p className="text-sm">John Doe</p>
+              </div>
+
+              <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
+                <Link href="/dashboard" className={linkStyle}>
+                  <div
+                    className="flex gap-5 items-center w-full rounded-lg p-3 hover:bg-white/[0.1] hover:text-white text-sm "
+                  >
+                    <RectangleGroupIcon className="w-5 shrink-0 ml-0.5" />
+                    <h2>
+                      Dashboard
+                    </h2>
+                  </div>
+                </Link>
+              </div>
+
+              <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
+                {contentBrowse.map((link) => (
+                  <Link key={link.link} href={link.link} className={linkStyle}>
+                    <div
+                      className="flex gap-5 items-center w-full rounded-lg p-3 hover:bg-white/[0.1] hover:text-white text-sm "
+                    >
+                      <div className="w-5 shrink-0 ml-0.5">{link.icon}</div>
+                      <h2>
+                        {link.heading}
+                      </h2>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
+                {contentExplore.map((link) => (
+                  <Link key={link.link} href={link.link} className={linkStyle}>
+                    <div
+                      className="flex gap-5 items-center w-full rounded-lg p-3 hover:bg-white/[0.1] hover:text-white text-sm "
+                    >
+                      <div className="w-5 shrink-0 ml-0.5">{link.icon}</div>
+                      <h2>
+                        {link.heading}
+                      </h2>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
+                {contentSettings.map((link) => (
+                  <Link key={link.link} href={link.link} className={linkStyle}>
+                    <div
+                      className="flex gap-5 items-center w-full rounded-lg p-3 hover:bg-white/[0.1] hover:text-white text-sm "
+                    >
+                      <div className="w-5 shrink-0 ml-0.5">{link.icon}</div>
+                      <h2>
+                        {link.heading}
+                      </h2>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </motion.div>
           }
         </AnimatePresence>
