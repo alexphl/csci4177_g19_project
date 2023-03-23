@@ -15,7 +15,7 @@ export default function NavDesktop(props: { overlayController: [boolean, Dispatc
   const [isOverlayOpen, setOverlayOpen] = props.overlayController;
 
   return (
-    <nav className="group md:grid grid-rows-[15%_auto] z-[90] border-r border-white/[0.1] hidden h-screen w-20 min-w-fit max-w-fit gap-3 bg-neutral-800/50 p-3 text-sm font-medium text-neutral-400 shadow-md backdrop-saturate-[3.0] backdrop-blur-xl transition-[width] hover:w-60 hover:max-w-sm hover:min-w-0 hover:text-neutral-200 md:fixed lg:p-4 2xl:p-5">
+    <nav className="group md:grid grid-rows-[15%_auto] z-[90] border-r rounded-r-3xl border-white/[0.1] transform-gpu will-change-auto hover:will-change-contents hidden h-screen w-20 min-w-fit max-w-fit gap-3 bg-neutral-800/50 p-3 text-sm font-medium text-neutral-400 shadow-md backdrop-saturate-[3.0] backdrop-blur-xl transition-[width] hover:w-64 hover:max-w-sm hover:min-w-0 hover:text-neutral-200 md:fixed lg:p-4 2xl:p-5">
       <button
         className="place-self-start gap-3 border-white/[0.1] bg-white/[0.05] flex items-center rounded-full w-full"
         onClick={() => setOverlayOpen(!isOverlayOpen)}
@@ -33,7 +33,7 @@ export default function NavDesktop(props: { overlayController: [boolean, Dispatc
         <Link href="/dashboard" className={linkStyle}>
           <div
             className={
-              "flex items-center gap-5 rounded-md p-2 hover:bg-neutral-200/[0.15]" +
+              "flex items-center gap-5 rounded-lg p-2 hover:bg-neutral-200/[0.15]" +
               (!segment ? " bg-neutral-200/[0.1] text-neutral-100" : "")
             }
           >
@@ -50,7 +50,7 @@ export default function NavDesktop(props: { overlayController: [boolean, Dispatc
             <Link key={link.link} href={link.link} className={linkStyle}>
               <div
                 className={
-                  "flex items-center gap-5 rounded-md p-2 hover:bg-orange-200/[0.15] hover:text-orange-200" +
+                  "flex items-center gap-5 rounded-lg p-2 hover:bg-orange-200/[0.15] hover:text-orange-200" +
                   (link.heading.toLowerCase() === segment
                     ? " bg-orange-200/[0.1] text-orange-200"
                     : "")
@@ -71,7 +71,7 @@ export default function NavDesktop(props: { overlayController: [boolean, Dispatc
             <Link key={link.link} href={link.link} className={linkStyle}>
               <div
                 className={
-                  "flex items-center gap-5 rounded-md p-2 hover:bg-sky-200/[0.15] hover:text-sky-200" +
+                  "flex items-center gap-5 rounded-lg p-2 hover:bg-sky-200/[0.15] hover:text-sky-200" +
                   (link.heading.toLowerCase() === segment
                     ? " bg-sky-200/[0.1] text-sky-200"
                     : "")
