@@ -1,8 +1,11 @@
 "use client";
 
-import { useContext } from "react";
+import dynamic from "next/dynamic";
+import { useContext, memo } from "react";
 import { userContext } from "../UserContext";
-import LoginOrRegister from "./LoginOrRegister";
+
+// lazy load components
+const LoginOrRegister = dynamic(() => import("./LoginOrRegister"));
 
 function Auth() {
   // user context - has properties: loggedIn, email
@@ -22,4 +25,4 @@ function Auth() {
   );
 }
 
-export default Auth;
+export default memo(Auth);

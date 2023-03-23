@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, memo } from "react";
 import { userContext } from "../UserContext";
 import {
   FormGroup,
@@ -148,4 +148,4 @@ function RegistrationForm() {
   );
 }
 
-export default RegistrationForm;
+export default memo(RegistrationForm);
