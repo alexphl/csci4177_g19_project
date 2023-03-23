@@ -6,7 +6,7 @@ import { useState } from "react";
 /**
  * Chart mode selection listbox
  **/
-const StockListbox = () => {
+function StockListbox() {
   const modes = [
     "My List 1",
     "My List 2",
@@ -38,10 +38,9 @@ const StockListbox = () => {
                 <Listbox.Option
                   key={mode}
                   className={({ active }) =>
-                    `relative cursor-pointer select-none py-2 pl-9 pr-6 ${
-                      active
-                        ? "bg-neutral-100/[0.1] text-orange-200"
-                        : "text-white"
+                    `relative cursor-pointer select-none py-2 pl-9 pr-6 ${active
+                      ? "bg-neutral-100/[0.1] text-orange-200"
+                      : "text-white"
                     }`
                   }
                   value={mode}
@@ -49,9 +48,8 @@ const StockListbox = () => {
                   {({ selected }) => (
                     <>
                       <span
-                        className={`block truncate ${
-                          selected ? "font-medium" : "font-normal"
-                        }`}
+                        className={`block truncate ${selected ? "font-medium" : "font-normal"
+                          }`}
                       >
                         {"Show " + mode}
                       </span>
@@ -70,6 +68,6 @@ const StockListbox = () => {
       </Listbox>
     </div>
   );
-};
+}
 
 export default memo(StockListbox);

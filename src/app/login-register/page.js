@@ -13,7 +13,10 @@ function Auth() {
   }
 
   return (
-    <div className="container m-auto my-10 max-w-md bg-black border border-neutral-800 pt-1 p-4 shadow-lg rounded-xl" aria-label="Login or Register">
+    <div
+      className="container my-10 max-w-md rounded-xl border border-neutral-800 bg-black p-2 pt-1 shadow-lg"
+      aria-label="Login or Register"
+    >
       <LoginOrRegister />
     </div>
   );

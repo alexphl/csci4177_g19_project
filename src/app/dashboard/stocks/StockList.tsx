@@ -34,11 +34,11 @@ function filterResults(results: iSearch | undefined) {
   );
 }
 
-const StockList = (props: {
+function StockList(props: {
   searchIsActive: boolean;
   searchQuery: string;
   selectedStock: string | undefined;
-}) => {
+}) {
   const selectedStock = props.selectedStock;
   const userStocks = useQuery<string[]>({
     queryKey: [`/api/stocks/user`],
@@ -300,6 +300,6 @@ const StockList = (props: {
       }
     </>
   );
-};
+}
 
 export default memo(StockList);
