@@ -9,11 +9,10 @@ import styles from "@/styles/header.module.css";
 
 import apiURL from "@/APIurl";
 const baseURL = apiURL + "/news/";
-var userURL = apiURL + "/news/user/";
+var userURL = apiURL + "/news/user/371138";
 
 export default function News_list() {
-  const { isSuccess, isLoading, data } = useQuery({ queryKey: [baseURL] });
-  console.log(data[0]);
+  const { isSuccess, isLoading, data } = useQuery({ queryKey: [userURL] });
   return (
     <div className={styles.newslistBox}>
       {isSuccess &&
@@ -24,31 +23,30 @@ export default function News_list() {
                 pathname: "/dashboard/single_news",
               }}
             >
-              <Grid container>
-                <Grid item xs={12} md={7}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={9}>
                   <Typography variant="h6">{element.title}</Typography>
-
-                  {element.author != null ? (
-                    <Typography variant="body2">
-                      Written by: {element.author}
-                    </Typography>
-                  ) : null}
+                  <Typography variant="body1">{element.description}</Typography>
                   <Typography variant="body2">
+                    {element.author != null ? (
+                      <span>Written by: {element.author} &nbsp;</span>
+                    ) : null}
                     publishded: {element.publishedAt}
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={2}>
+                <Grid item xs={6} md={1}>
                   <Typography variant="body1">
                     {element.ticker_symbol}
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={3}>
+                <Grid item xs={6} md={2}>
                   {element.urlToImage != null ? (
-                    <Image
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
                       alt=""
                       src={element.urlToImage}
-                      width={100}
-                      height={100}
+                      width={150}
+                      height={150}
                     />
                   ) : (
                     <Image

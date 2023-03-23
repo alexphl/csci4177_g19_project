@@ -41,23 +41,22 @@ router.get("/", async function (req, res) {
 //Route to get user subscribed news list
 router.get("/user/:id", async function (req, res) {
   try {
-    const account_id = req.params.id;
-    const subscribes = await Model.findOne({ account_id });
-    var list = subscribes.subscribe_stocks.substring(0,4);
-    await getnews_list(list)
+
+    const subscribes = await Model.findOne({ account_id: req.params.id });
+    var list = subscribes.subscribe_stocks;
+    await getnews_list(list.slice(0, 4))
       .then((docs) => {
-        var subscription=docs;
+        var subscription = docs;
         for (var i = 0; i < subscription.length; i++) {
           subscription[i].ticker_symbol = list[i].ticker_symbol;
         }
         res.send(subscription);
-
       })
       .catch((err) => {
         console.error(err);
       });
   } catch (error) {
-    console.error(err);
+    console.log(error);
   }
 });
 // router.get("/deatil/:id", async function (req, res) {

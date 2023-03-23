@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import { Schema, model, models } from "mongoose";
 
-const News_Subscribe = new mongoose.Schema({
+const news_subscribesSchema = Schema({
   account_id: Number,
   subscribe_stocks: [
     {
@@ -9,7 +9,5 @@ const News_Subscribe = new mongoose.Schema({
     },
   ],
 });
-
-module.exports =
-  mongoose.models.news_subscribes ||
-  mongoose.model("news_subscribes", News_Subscribe);
+export default models.news_subscribes ||
+  model("news_subscribes", news_subscribesSchema);
