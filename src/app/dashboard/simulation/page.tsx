@@ -34,6 +34,9 @@ export default function Portfolio() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  // Style page
+  const stylePane =
+  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";
   // UseQuery() and related functions
   // UseQuery() function for fetch Portfolio
   const fetchUserPortfolio = async () => {
@@ -204,9 +207,7 @@ export default function Portfolio() {
       console.error('Error purchasing stock');
     }
   };
-  // Style page
-  const stylePane =
-  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";
+
   // handle Sell
   const handleStockSell = async (stockToSell: any, sharesToSell: any) => {
     if (!stockToSell || !sharesToSell) {
