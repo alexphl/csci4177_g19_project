@@ -3,10 +3,12 @@ import FocusTrap from "focus-trap-react";
 import { RemoveScroll } from "react-remove-scroll";
 import { memo } from "react";
 import type { Dispatch, SetStateAction } from "react";
+import UserContextProvider from "../UserContext";
 const Preferenes = dynamic(() => import("./preferences/page"));
 
 function SettingsOverlay(props: { setOpen: Dispatch<SetStateAction<boolean>> }) {
   return (
+    <UserContextProvider>
     <RemoveScroll>
       <FocusTrap>
         <div className="fixed z-[90] flex h-screen w-screen cursor-pointer place-content-center place-items-center">
@@ -21,6 +23,7 @@ function SettingsOverlay(props: { setOpen: Dispatch<SetStateAction<boolean>> }) 
         </div>
       </FocusTrap>
     </RemoveScroll>
+    </UserContextProvider>
   );
 }
 
