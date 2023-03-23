@@ -1,15 +1,18 @@
-"use client";
+"use client"
 
-import { useContext } from "react";
-import { userContext } from "../UserContext";
-import LoginOrRegister from "./LoginOrRegister";
+import { useContext } from "react"
+import { userContext } from "../UserContext"
+import LoginOrRegister from "./LoginOrRegister"
+import { useRouter } from "next/navigation"
+
 
 function Auth() {
   // user context - has properties: loggedIn, email
-  const { user } = useContext(userContext);
+  const { user } = useContext(userContext)
+  let router= useRouter()
 
   if (user.loggedIn) {
-    return <div>Redirecting... {redirect("/dashboard")}</div>;
+    return <div>Redirecting... {router.push("/dashboard")}</div>
   }
 
   return (
@@ -22,4 +25,4 @@ function Auth() {
   );
 }
 
-export default Auth;
+export default Auth

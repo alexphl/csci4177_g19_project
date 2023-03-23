@@ -18,7 +18,7 @@ function RegistrationForm() {
   const [error, setError] = useState("");
 
   // user context - has properties: loggedIn, email
-  const { user, dispatchUser } = useContext(userContext);
+  const { dispatchUser } = useContext(userContext);
 
   // input validation functions
   const isValidEmail = (val) => {
@@ -59,10 +59,17 @@ function RegistrationForm() {
     // passwords must match
 
     if (err.length === 0) {
+      // check with database
+      
+
+      // set state
       dispatchUser({
         type: "SET_USER",
         payload: { email: email, loggedIn: true },
       });
+
+      // store a session cookie
+
     } else {
       setError(err);
     }

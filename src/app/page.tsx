@@ -17,7 +17,7 @@ export default function HomePage() {
 
         <LoginForm />
 
-        <Link href={"/dashboard"} className="font-medium text-white/75 p-2 bg-black/25 rounded-lg">Bypass Login</Link>
+        {/* <Link href={"/dashboard"} className="font-medium text-white/75 p-2 bg-black/25 rounded-lg">Bypass Login</Link> */}
       </div>
     </div>
   );
