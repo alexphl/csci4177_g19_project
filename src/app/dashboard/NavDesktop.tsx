@@ -84,27 +84,6 @@ export default function NavDesktop(props: { overlayController: [boolean, Dispatc
               </div>
             </Link>
           ))}
-          <hr className="my-1 w-full rounded-full border border-white/[0.1]" />
-        </section>
-
-        <section className="flex flex-col gap-2">
-          {contentSettings.map((link) => (
-            <Link key={link.link} href={link.link} className={linkStyle}>
-              <div
-                className={
-                  "flex items-center gap-5 rounded-md p-2 hover:bg-violet-200/[0.15] hover:text-violet-200" +
-                  +(link.heading.toLowerCase() === segment
-                    ? " bg-violet-200/[0.1] text-violet-200"
-                    : "")
-                }
-              >
-                <div className="w-5 shrink-0 ml-0.5">{link.icon}</div>
-                <h2 className="hidden opacity-0 group-hover:inline-block group-hover:opacity-100">
-                  {link.heading}
-                </h2>
-              </div>
-            </Link>
-          ))}
         </section>
       </div>
     </nav>

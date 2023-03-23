@@ -53,7 +53,7 @@ export const contentExplore = [
 export const contentSettings = [
   {
     heading: "Preferences",
-    link: "/dashboard/settings",
+    link: "/dashboard/preferences",
     icon: <CogIcon />,
   },
 ];

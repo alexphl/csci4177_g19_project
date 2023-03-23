@@ -62,7 +62,7 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
                 </div>
               </button>
 
-              <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
+              <section className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
                 <Link href="/dashboard" className={linkStyle} onClick={() => setExpanded(false)}>
                   <div
                     className="flex gap-5 items-center w-full rounded-lg p-3 hover:bg-white/[0.1] hover:text-white text-sm "
@@ -73,9 +73,9 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
                     </h2>
                   </div>
                 </Link>
-              </div>
+              </section>
 
-              <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
+              <section className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
                 {contentBrowse.map((link) => (
                   <Link key={link.link} href={link.link} className={linkStyle} onClick={() => setExpanded(false)}>
                     <div
@@ -88,9 +88,9 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
                     </div>
                   </Link>
                 ))}
-              </div>
+              </section>
 
-              <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
+              <section className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
                 {contentExplore.map((link) => (
                   <Link key={link.link} href={link.link} className={linkStyle} onClick={() => setExpanded(false)}>
                     <div
@@ -103,22 +103,7 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
                     </div>
                   </Link>
                 ))}
-              </div>
-
-              <div className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
-                {contentSettings.map((link) => (
-                  <Link key={link.link} href={link.link} className={linkStyle} onClick={() => setExpanded(false)}>
-                    <div
-                      className="flex gap-5 items-center w-full rounded-lg p-3 hover:bg-white/[0.1] hover:text-white text-sm "
-                    >
-                      <div className="w-5 shrink-0 ml-0.5">{link.icon}</div>
-                      <h2>
-                        {link.heading}
-                      </h2>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              </section>
             </motion.div>
           }
         </AnimatePresence>
