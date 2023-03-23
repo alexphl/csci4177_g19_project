@@ -56,19 +56,14 @@ export default function News_list() {
               <Grid item xs={6} md={2}>
                 {element.urlToImage != null ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    alt=""
-                    src={element.urlToImage}
-                    width={150}
-                    height={150}
-                  />
+                  <img alt="" src={element.urlToImage} width={200} />
                 ) : (
                   <Image
                     alt="sorry for the not display news image, because all news image
                   are private company server which we can access;"
                     src="http://placehold.it/32x32"
-                    width={100}
-                    height={100}
+                    width={200}
+                    height={200}
                   />
                 )}
               </Grid>
@@ -97,7 +92,7 @@ export default function News_list() {
           >
             <DialogTitle id="alert-dialog-title"></DialogTitle>
             <DialogContent>
-              <Typography variant="h6">{select.title}</Typography>
+              <Typography variant="h5">{select.title}</Typography>
               <Typography variant="body2">
                 {select.author != null ? (
                   <span>Written by: {select.author} &nbsp;</span>
@@ -106,17 +101,23 @@ export default function News_list() {
               </Typography>
               {select.urlToImage != null ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img alt="" src={select.urlToImage} width={150} height={150} />
+                <img alt="" src={select.urlToImage} width={400} />
               ) : (
                 <Image
                   alt="sorry for the not display news image, because all news image
                   are private company server which we can access;"
                   src="http://placehold.it/32x32"
-                  width={100}
-                  height={100}
+                  width={200}
+                  height={200}
                 />
               )}
+              <Typography variant="body2">{select.content}</Typography>
             </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>
+                Because of api limitation we could not offer full news
+              </Button>
+            </DialogActions>
           </Dialog>
         )}
       </div>

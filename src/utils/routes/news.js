@@ -77,20 +77,20 @@ router.get("/", async function (req, res) {
 //Route to get user subscribed news list
 router.get("/user/:id", async function (req, res) {
   try {
-    // const subscribes = await Model.findOne({ account_id: req.params.id });
-    // var list = subscribes.subscribe_stocks;
-    // await getnews_list(list.slice(0, 4))
-    //   .then((docs) => {
-    //     var subscription = docs;
-    //     for (var i = 0; i < subscription.length; i++) {
-    //       subscription[i].ticker_symbol = list[i].ticker_symbol;
-    //     }
-    //     res.send(subscription);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
-    res.send(newsexample);
+    const subscribes = await Model.findOne({ account_id: req.params.id });
+    var list = subscribes.subscribe_stocks;
+    await getnews_list(list.slice(0, 4))
+      .then((docs) => {
+        var subscription = docs;
+        for (var i = 0; i < subscription.length; i++) {
+          subscription[i].ticker_symbol = list[i].ticker_symbol;
+        }
+        res.send(subscription);
+      })
+      .catch((err) => {
+        res.send(newsexample);
+      });
+    
   } catch (error) {
     console.log(error);
   }
