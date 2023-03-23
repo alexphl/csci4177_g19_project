@@ -16,7 +16,8 @@ const darkTheme = createTheme({
     mode: 'dark',
   },
 });
-
+const stylePane =
+  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";
 const TransactionHistory = () => {
   const [transactions, setTransactions] = useState<any[]>([]);
   const owner_id = 'user1';
@@ -34,11 +35,11 @@ const TransactionHistory = () => {
   }, []);
 
   return (
+
     <ThemeProvider theme={darkTheme}>
       <Container>
-        <Typography variant="h3" align="center" gutterBottom>
-          Transaction History
-        </Typography>
+        <strong className="text-4xl text-white">CUSTOMERS</strong>
+        <div className={stylePane}>
         <Table>
           <TableHead>
             <TableRow>
@@ -68,6 +69,7 @@ const TransactionHistory = () => {
             ))}
           </TableBody>
         </Table>
+        </div>
       </Container>
     </ThemeProvider>
   );

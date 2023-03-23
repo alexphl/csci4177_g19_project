@@ -204,7 +204,9 @@ const Portfolio = () => {
       console.error('Error purchasing stock');
     }
   };
-
+  // Style page
+  const stylePane =
+  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";
   // handle Sell
   const handleStockSell = async (stockToSell:any, sharesToSell:any) => {
     if (!stockToSell || !sharesToSell) {
@@ -250,13 +252,12 @@ const Portfolio = () => {
       <div className="container max-w-5xl px-8 mx-auto">
         <Grid justifyContent="center" style={{ textAlign: 'center' }}>
           <Container style={{ padding: 20 }}>
-            <Typography align="center" variant="h2" >Investment Simulation</Typography>
             <div>
-             <Typography variant="h3">Past Profit/Loss: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></Typography>
-
+            <Typography variant="h3"><strong className="text-4xl text-white">Profit: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></strong></Typography>
+            
           </div>
           <div>
-            <Typography variant="h3">Net Profit/Loss: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></Typography>
+            <Typography variant="h3"><strong className="text-4xl text-white">Unrealized Profit: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></strong></Typography>
           </div>
         </Container>
       </Grid>
@@ -266,17 +267,19 @@ const Portfolio = () => {
         <Box >
 
           <Box >
-            <Table sx={{ border: 1 }} >
+          <div className={stylePane}>
+            <Table>
               <TableHead>
                 <TableRow>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>ID</TableCell>
                   <TableCell>Symbol</TableCell>
-                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Company</TableCell>
                   <TableCell>Shares</TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Purchase Price</TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Current Price</TableCell>
                   <TableCell>Profit/Loss</TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Purchase Date</TableCell>
+                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}></TableCell>
+                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Sell Num</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -284,9 +287,12 @@ const Portfolio = () => {
                   const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
                   return (
                     <TableRow >
-                      <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.id}</TableCell>
+                      <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                        {stock.id.slice(-3)}
+                      </TableCell>
+
                       <TableCell >{stock.symbol}</TableCell>
-                      <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.purchase_price}</TableCell>
+                 
                       <TableCell >{stock.shares}</TableCell>
                       <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>${stock.purchasePrice}</TableCell>
                       <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
@@ -309,6 +315,7 @@ const Portfolio = () => {
                           inputProps={{ min: 0, max: stock.shares }}
                           value={sharesToSell[stock.id] || 0}
                           onChange={(e) => setSharesToSell({ ...sharesToSell, [stock.id]: parseInt(e.target.value) })}
+                          fullWidth 
                         />
                       </TableCell>
 
@@ -317,6 +324,7 @@ const Portfolio = () => {
                 })}
               </TableBody>
             </Table>
+            </div>
           </Box>
         </Box>
         <Grid justifyContent="center" style={{ textAlign: 'center' }}>
