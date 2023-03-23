@@ -10,7 +10,8 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-
+import Button from '@mui/material/Button';
+import Link from "next/link";
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -39,6 +40,13 @@ const TransactionHistory = () => {
     <ThemeProvider theme={darkTheme}>
       <Container>
         <strong className="text-4xl text-white">CUSTOMERS</strong>
+        <Link href="/dashboard/simulation" passHref>
+                <Button
+                color="secondary"
+                >
+                BACK
+                </Button>
+        </Link>
         <div className={stylePane}>
         <Table>
           <TableHead>
