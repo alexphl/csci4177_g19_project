@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -11,15 +11,15 @@ import Link from "next/link";
 import Typography from '@mui/material/Typography';
 
 const Buy = () => {
-    const router = useRouter();
-    const [shares, setShares] = useState(0);
-    const [selectedStock, setSelectedStock] = useState<any>(null);
-    const [searchResults, setSearchResults] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const owner_id = "user1";
-      // fetch a single stock price
+  const router = useRouter();
+  const [shares, setShares] = useState(0);
+  const [selectedStock, setSelectedStock] = useState<any>(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const owner_id = "user1";
+  // fetch a single stock price
   const fetchStockPrice = async (symbol: String) => {
     try {
       const response = await fetch(`/api/stocks/quote/${symbol}`);
@@ -33,7 +33,7 @@ const Buy = () => {
       return null;
     }
   };
-    // handle purchase
+  // handle purchase
   const handleStockPurchase = async () => {
     if (!selectedStock || !shares) {
       return;
@@ -66,12 +66,12 @@ const Buy = () => {
     if (response.ok) {
       const updatedPortfolio = await response.json();
       router.push('/dashboard/simulation/');
-      setIsSubmitting(false); // Set isSubmitting back to false when the request finishes but received a failed 
+      setIsSubmitting(false); // Set isSubmitting back to false when the request finishes but received a failed
     } else {
-        setIsSubmitting(false); // Set isSubmitting back to false when the request finishes but received a failed 
-        console.error('Error purchasing stock');
-      
-    } 
+      setIsSubmitting(false); // Set isSubmitting back to false when the request finishes but received a failed
+      console.error('Error purchasing stock');
+
+    }
   };
   // handle stock Purchase function
   const handleSearchInputChange = async (event: any, value: string) => {
@@ -96,18 +96,18 @@ const Buy = () => {
       setSearchResults([]);
     }
   };
-    // handle stock share input for purchase function
-    const handleSharesChange = (e: any) => {
-        setShares(e.target.value);
-      };
-      
-    return (
-        
-        <Grid justifyContent="center" style={{ textAlign: 'center' }}>
-        <Typography variant="h3"><strong className="text-4xl text-white">BUY</strong></Typography>
-        <div>
+  // handle stock share input for purchase function
+  const handleSharesChange = (e: any) => {
+    setShares(e.target.value);
+  };
+
+  return (
+
+    <Grid justifyContent="center" style={{ textAlign: 'center' }}>
+      <Typography variant="h3"><strong className="text-4xl text-white">BUY</strong></Typography>
+      <div>
         <FormControl sx={{ m: 1 }} variant="outlined">
-            <Autocomplete
+          <Autocomplete
             options={searchResults}
             loading={loading}
             getOptionLabel={(option: any) => `${option.symbol} - ${option.description}`}
@@ -116,50 +116,50 @@ const Buy = () => {
             onInputChange={handleSearchInputChange}
             renderInput={(params: any) => (
 
-                
-            <TextField
+
+              <TextField
                 {...params}
                 label="Stock name"
                 variant="outlined"
                 InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
+                  ...params.InputProps,
+                  endAdornment: (
                     <>
-                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                        {params.InputProps.endAdornment}
+                      {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                      {params.InputProps.endAdornment}
                     </>
-                    ),
+                  ),
                 }}
-                />
+              />
             )}
-            />
-            <br />
-            <br />
-            <TextField
+          />
+          <br />
+          <br />
+          <TextField
             label="Shares"
             type="number"
             value={shares}
             onChange={handleSharesChange}
             variant="outlined"
-            />
-            <br />
-            <br />
-            <Button onClick={handleStockPurchase}disabled={isSubmitting}
+          />
+          <br />
+          <br />
+          <Button onClick={handleStockPurchase} disabled={isSubmitting}
             color="primary"
-            >
+          >
             Purchase
+          </Button>
+          <Link href="/dashboard/simulation" passHref>
+            <Button
+              color="secondary"
+            >
+              BACK
             </Button>
-            <Link href="/dashboard/simulation" passHref>
-                <Button
-                color="secondary"
-                >
-                BACK
-                </Button>
-            </Link>
+          </Link>
         </FormControl>
 
-        </div>
-        </Grid>
-    );
+      </div>
+    </Grid>
+  );
 }
 export default Buy;

@@ -1,9 +1,8 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import {
   Container,
-  Typography,
   Table,
   TableBody,
   TableCell,
@@ -41,42 +40,42 @@ const TransactionHistory = () => {
       <Container>
         <strong className="text-4xl text-white">CUSTOMERS</strong>
         <Link href="/dashboard/simulation" passHref>
-                <Button
-                color="secondary"
-                >
-                BACK
-                </Button>
+          <Button
+            color="secondary"
+          >
+            BACK
+          </Button>
         </Link>
         <div className={stylePane}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Type</TableCell>
-              <TableCell>Asset Name</TableCell>
-              <TableCell>Ticker</TableCell>
-              <TableCell>Quantity</TableCell>
-              <TableCell>Transaction Date</TableCell>
-              <TableCell>Transaction Price</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {transactions.map((transaction) => (
-              <TableRow key={transaction._id}>
-                <TableCell>{transaction.transaction_type}</TableCell>
-                <TableCell>{transaction.asset_name}</TableCell>
-                <TableCell>{transaction.ticker}</TableCell>
-                <TableCell>{transaction.quantity}</TableCell>
-                <TableCell>{transaction.transaction_date}</TableCell>
-                <TableCell>
-                  {transaction.transaction_price
-                    ? `$${transaction.transaction_price.toFixed(2)}`
-                    : ''}
-                </TableCell>
-
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Type</TableCell>
+                <TableCell>Asset Name</TableCell>
+                <TableCell>Ticker</TableCell>
+                <TableCell>Quantity</TableCell>
+                <TableCell>Transaction Date</TableCell>
+                <TableCell>Transaction Price</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {transactions.map((transaction) => (
+                <TableRow key={transaction._id}>
+                  <TableCell>{transaction.transaction_type}</TableCell>
+                  <TableCell>{transaction.asset_name}</TableCell>
+                  <TableCell>{transaction.ticker}</TableCell>
+                  <TableCell>{transaction.quantity}</TableCell>
+                  <TableCell>{transaction.transaction_date}</TableCell>
+                  <TableCell>
+                    {transaction.transaction_price
+                      ? `$${transaction.transaction_price.toFixed(2)}`
+                      : ''}
+                  </TableCell>
+
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </Container>
     </ThemeProvider>

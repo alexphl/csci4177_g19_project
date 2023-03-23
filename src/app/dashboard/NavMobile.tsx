@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useSelectedLayoutSegment } from "next/navigation";
 import type { Dispatch, SetStateAction } from "react";
 
-import { contentBrowse, contentExplore, contentSettings, mobileBar } from "./NavSchema";
+import { contentBrowse, contentExplore, mobileBar } from "./NavSchema";
 import { useState } from "react";
 
 const linkStyle = "active:brightness-125";

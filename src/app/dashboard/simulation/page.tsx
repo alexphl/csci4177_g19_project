@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,48 +8,41 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import TableHead from '@mui/material/TableHead';
-import FormControl from '@mui/material/FormControl';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import Autocomplete from '@mui/material/Autocomplete';
-import CircularProgress from '@mui/material/CircularProgress';
-import { any } from 'zod';
-
-
-
 
 const owner_id = "user1";
 // hardcode of stock current price [To be deleted]
+
 // Main Code
 export default function Portfolio() {
+
   // UseStates
-
-
   const [netProfitLoss, setNetProfitLoss] = useState(0);
   const [sharesToSell, setSharesToSell] = useState<any>({});
-  const [intervalMs, setIntervalMs] = React.useState(1000);
-
+  const [intervalMs, setIntervalMs] = useState(1000);
   const [searchResults, setSearchResults] = useState([]);
-      // fetch a single stock price
-    const fetchStockPrice = async (symbol: String) => {
-      try {
-        const response = await fetch(`/api/stocks/quote/${symbol}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch stock price for ${symbol}`);
-        }
-        const data = await response.json();
-        return data.c;
-      } catch (error) {
-        console.error(error);
-        return null;
+
+  // fetch a single stock price
+  const fetchStockPrice = async (symbol: String) => {
+    try {
+      const response = await fetch(`/api/stocks/quote/${symbol}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch stock price for ${symbol}`);
       }
-    };
+      const data = await response.json();
+      return data.c;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
   // Style page
   const stylePane =
-  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";
+    "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";
   // UseQuery() and related functions
   // UseQuery() function for fetch Portfolio
   const fetchUserPortfolio = async () => {
@@ -184,12 +177,11 @@ export default function Portfolio() {
 
 
   return (
-      <div className="container max-w-5xl px-8 mx-auto">
-        <Grid justifyContent="center" style={{ textAlign: 'center' }}>
-          <Container style={{ padding: 20 }}>
-            <div>
+    <div className="container max-w-5xl px-8 mx-auto">
+      <Grid justifyContent="center" style={{ textAlign: 'center' }}>
+        <Container style={{ padding: 20 }}>
+          <div>
             <Typography variant="h3"><strong className="text-4xl text-white">Profit: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></strong></Typography>
-            
           </div>
           <div>
             <Typography variant="h3"><strong className="text-4xl text-white">Unrealized Profit: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></strong></Typography>
@@ -197,79 +189,79 @@ export default function Portfolio() {
         </Container>
       </Grid>
       <Link href="/dashboard/simulation/transhistory" passHref>
-            <Button
-            color="secondary"
-            >
-            Transaction History
-            </Button>
-        </Link>
-        <Link href="/dashboard/simulation/buy" passHref>
-            <Button
-            color="secondary"
-            >
-            Buy a new stock
-            </Button>
-        </Link>
+        <Button
+          color="secondary"
+        >
+          Transaction History
+        </Button>
+      </Link>
+      <Link href="/dashboard/simulation/buy" passHref>
+        <Button
+          color="secondary"
+        >
+          Buy a new stock
+        </Button>
+      </Link>
       <div>
         <Box >
           <Box >
-          <div className={stylePane}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>ID</TableCell>
-                  <TableCell>Symbol</TableCell>
-                  <TableCell>Shares</TableCell>
-                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Purchase Price</TableCell>
-                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Current Price</TableCell>
-                  <TableCell>Profit/Loss</TableCell>
-                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Purchase Date</TableCell>
-                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}></TableCell>
-                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Sell Num</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {purchasedStocks.map((stock: any) => {
-                  const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
-                  return (
-                    <TableRow >
-                      <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
-                        {stock.id.slice(-3)}
-                      </TableCell>
+            <div className={stylePane}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>ID</TableCell>
+                    <TableCell>Symbol</TableCell>
+                    <TableCell>Shares</TableCell>
+                    <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Purchase Price</TableCell>
+                    <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Current Price</TableCell>
+                    <TableCell>Profit/Loss</TableCell>
+                    <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Purchase Date</TableCell>
+                    <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}></TableCell>
+                    <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Sell Num</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {purchasedStocks.map((stock: any) => {
+                    const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
+                    return (
+                      <TableRow key={stock.symbol}>
+                        <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                          {stock.id.slice(-3)}
+                        </TableCell>
 
-                      <TableCell >{stock.symbol}</TableCell>
-                 
-                      <TableCell >{stock.shares}</TableCell>
-                      <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>${stock.purchasePrice}</TableCell>
-                      <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
-                        {stockPrice ? `$${stockPrice}` : 'N/A'}
-                      </TableCell>
-                      <TableCell>
-                        {stockPrice
-                          ? `$${((Number(stockPrice) - Number(stock.purchasePrice)) * Number(stock.shares)).toFixed(2)}`
-                          : 'N/A'}
-                      </TableCell>
-                      <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.purchaseDate}</TableCell>
-                      <TableCell>
-                        <Button onClick={() => handleStockSell(stock, sharesToSell[stock.id])}>
-                          Sell
-                        </Button>
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          type="number"
-                          inputProps={{ min: 0, max: stock.shares }}
-                          value={sharesToSell[stock.id] || 0}
-                          onChange={(e) => setSharesToSell({ ...sharesToSell, [stock.id]: parseInt(e.target.value) })}
-                          fullWidth 
-                        />
-                      </TableCell>
+                        <TableCell >{stock.symbol}</TableCell>
 
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+                        <TableCell >{stock.shares}</TableCell>
+                        <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>${stock.purchasePrice}</TableCell>
+                        <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                          {stockPrice ? `$${stockPrice}` : 'N/A'}
+                        </TableCell>
+                        <TableCell>
+                          {stockPrice
+                            ? `$${((Number(stockPrice) - Number(stock.purchasePrice)) * Number(stock.shares)).toFixed(2)}`
+                            : 'N/A'}
+                        </TableCell>
+                        <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.purchaseDate}</TableCell>
+                        <TableCell>
+                          <Button onClick={() => handleStockSell(stock, sharesToSell[stock.id])}>
+                            Sell
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            type="number"
+                            inputProps={{ min: 0, max: stock.shares }}
+                            value={sharesToSell[stock.id] || 0}
+                            onChange={(e) => setSharesToSell({ ...sharesToSell, [stock.id]: parseInt(e.target.value) })}
+                            fullWidth
+                          />
+                        </TableCell>
+
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
             </div>
           </Box>
         </Box>

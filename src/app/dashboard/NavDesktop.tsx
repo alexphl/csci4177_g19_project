@@ -6,7 +6,7 @@ import { RectangleGroupIcon } from "@heroicons/react/24/outline";
 import { useSelectedLayoutSegment } from "next/navigation";
 import type { Dispatch, SetStateAction } from "react";
 
-import { contentBrowse, contentExplore, contentSettings } from "./NavSchema";
+import { contentBrowse, contentExplore } from "./NavSchema";
 
 const linkStyle = "active:brightness-125 active:saturate-200";
 
