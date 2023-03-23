@@ -24,12 +24,12 @@ import { any } from 'zod';
 const owner_id = "user1";
 // hardcode of stock current price [To be deleted]
 // Main Code
-const Portfolio = () => {
-  // UseStates 
+export default function Portfolio() {
+  // UseStates
   const [selectedStock, setSelectedStock] = useState<any>(null);
   const [shares, setShares] = useState(0);
   const [netProfitLoss, setNetProfitLoss] = useState(0);
-  const [sharesToSell, setSharesToSell] = useState({});
+  const [sharesToSell, setSharesToSell] = useState<any>({});
   const [intervalMs, setIntervalMs] = React.useState(1000);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -61,13 +61,13 @@ const Portfolio = () => {
     refetchOnWindowFocus: false,
   });
   // useQuery() function for fetch Quotes
-  const fetchStockPrices = async (purchasedStocks:any[]) =>{
+  const fetchStockPrices = async (purchasedStocks: any[]) => {
     const requests = purchasedStocks.map((stock) => {
       return fetch(`/api/stocks/quote/${stock.symbol}`);
     });
-  
+
     const responses = await Promise.all(requests);
-  
+
     const prices = await Promise.all(
       responses.map((response) => response.json())
     );
@@ -81,15 +81,15 @@ const Portfolio = () => {
   }
 
   const {
-    data : stockPrices,
-    refetch: refetchStockPrices ,
-  } =  useQuery( ["stockPrices", purchasedStocks.map((stock: { symbol: any; }) => stock.symbol)], ()=>fetchStockPrices(purchasedStocks),
-  {
-    refetchInterval: intervalMs,
-    refetchOnWindowFocus: false, 
-    onSuccess: () => updateNetProfitLoss(),
-  });
-  console.log("Stock prices from useQuery:", stockPrices); 
+    data: stockPrices,
+    refetch: refetchStockPrices,
+  } = useQuery(["stockPrices", purchasedStocks.map((stock: { symbol: any; }) => stock.symbol)], () => fetchStockPrices(purchasedStocks),
+    {
+      refetchInterval: intervalMs,
+      refetchOnWindowFocus: false,
+      onSuccess: () => updateNetProfitLoss(),
+    });
+  console.log("Stock prices from useQuery:", stockPrices);
 
 
   // UseQuery() function for fetch Profit and Loss
@@ -116,7 +116,7 @@ const Portfolio = () => {
         throw new Error(`Failed to fetch stock price for ${symbol}`);
       }
       const data = await response.json();
-      return data.c; 
+      return data.c;
     } catch (error) {
       console.error(error);
       return null;
@@ -125,10 +125,10 @@ const Portfolio = () => {
   // handle stock Purchase function
   const handleSearchInputChange = async (event: any, value: string) => {
     setSearchQuery(value);
-  
+
     if (value.length >= 2) {
       setLoading(true);
-  
+
       try {
         const response = await fetch(`/api/stocks/search/${value}`);
         if (!response.ok) {
@@ -139,7 +139,7 @@ const Portfolio = () => {
       } catch (error) {
         console.error(error);
       }
-  
+
       setLoading(false);
     } else {
       setSearchResults([]);
@@ -158,9 +158,9 @@ const Portfolio = () => {
     });
     setNetProfitLoss(net);
   };
-  
+
   // handle stock share input for purchase function
-  const handleSharesChange = (e: { target: { value: React.SetStateAction<number>; }; }) => {
+  const handleSharesChange = (e: any) => {
     setShares(e.target.value);
   };
   // handle purchase
@@ -180,8 +180,8 @@ const Portfolio = () => {
       quantity: shares,
       asset_type: "Stock",
       asset_name: selectedStock.symbol,
-      purchase_price: stockPrice??0,
- 
+      purchase_price: stockPrice ?? 0,
+
     };
     console.log(payload);
     const response = await fetch('/api/simulation/buy', {
@@ -208,7 +208,7 @@ const Portfolio = () => {
   const stylePane =
   "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";
   // handle Sell
-  const handleStockSell = async (stockToSell:any, sharesToSell:any) => {
+  const handleStockSell = async (stockToSell: any, sharesToSell: any) => {
     if (!stockToSell || !sharesToSell) {
       console.error('Stock or shares not provided');
       return;
@@ -283,7 +283,7 @@ const Portfolio = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {purchasedStocks.map((stock:any) => {
+                {purchasedStocks.map((stock: any) => {
                   const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
                   return (
                     <TableRow >
@@ -348,12 +348,12 @@ const Portfolio = () => {
                         <>
                           {loading ? <CircularProgress color="inherit" size={20} /> : null}
                           {params.InputProps.endAdornment}
-          </>
-        ),
-      }}
-    />
-  )}
-/>
+                        </>
+                      ),
+                    }}
+                  />
+                )}
+              />
               <br />
               <br />
               <TextField
@@ -385,6 +385,4 @@ const Portfolio = () => {
 
   );
 
-};
-
-export default Portfolio;
+}

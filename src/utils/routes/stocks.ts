@@ -1,5 +1,3 @@
-"use strict";
-
 import { Router } from "express";
 import LRU from "lru-cache";
 const router = Router();
@@ -9,10 +7,10 @@ const cache = new LRU({
   ttl: 1000 * 60 * 25, // Response's Time to Live (ms)
 });
 
-let userStocks = { list: ["AAPL", "MSFT", "GOOG"] };
+const userStocks = { list: ["AAPL", "MSFT", "GOOG"] };
 
 // Get all stocks
-router.get("/", async function (req, _res) {
+router.get("/", async function(req, _res) {
   const cached = cache.get(req.url);
   if (cached) {
     _res.send(cached);
@@ -30,13 +28,13 @@ router.get("/", async function (req, _res) {
       return res.json();
     })
     .then((json) => {
-      cache.set(req.url, json, [{ ttl: 1000 * 60 * 60 * 48 }]);
+      cache.set(req.url, json, { ttl: 1000 * 60 * 60 * 48 });
       _res.send(json);
     });
 });
 
 // Get quote for a stock
-router.get("/quote/:symbol", async function (req, _res, next) {
+router.get("/quote/:symbol", async function(req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) {
     _res.send(cached);
@@ -64,7 +62,7 @@ router.get("/quote/:symbol", async function (req, _res, next) {
 });
 
 // Get company description for a stock
-router.get("/profile/:symbol", async function (req, _res, next) {
+router.get("/profile/:symbol", async function(req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) {
     _res.send(cached);
@@ -82,7 +80,7 @@ router.get("/profile/:symbol", async function (req, _res, next) {
       return res.json();
     })
     .then((json) => {
-      cache.set(req.url, json, [{ ttl: 1000 * 60 * 60 * 48 }]);
+      cache.set(req.url, json, { ttl: 1000 * 60 * 60 * 48 });
       _res.send(json);
     })
     .catch((error) => {
@@ -92,7 +90,7 @@ router.get("/profile/:symbol", async function (req, _res, next) {
 });
 
 // Search for a stock symbol
-router.get("/search/:q", async function (req, _res, next) {
+router.get("/search/:q", async function(req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) {
     _res.send(cached);
@@ -110,7 +108,7 @@ router.get("/search/:q", async function (req, _res, next) {
       return res.json();
     })
     .then((json) => {
-      cache.set(req.url, json, [{ ttl: 1000 * 60 * 60 * 48 }]);
+      cache.set(req.url, json, { ttl: 1000 * 60 * 60 * 48 });
       _res.send(json);
     })
     .catch((error) => {
@@ -120,7 +118,7 @@ router.get("/search/:q", async function (req, _res, next) {
 });
 
 // TESTING
-router.get("/hist/today/:symbol", async function (req, _res, next) {
+router.get("/hist/today/:symbol", async function(req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) {
     _res.send(cached);
@@ -155,12 +153,12 @@ router.get("/hist/today/:symbol", async function (req, _res, next) {
 });
 
 // Get user stocks
-router.get("/user", async function (req, res) {
+router.get("/user", async function(req, res) {
   res.send(userStocks.list);
 });
 
 // Set user stocks
-router.post("/user", async function (req, res) {
+router.post("/user", async function(req, res) {
   const newList = req.body;
   if (newList) userStocks.list = newList;
   res.sendStatus(200);

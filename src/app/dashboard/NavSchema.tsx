@@ -7,7 +7,7 @@ import {
   ReceiptPercentIcon,
   CogIcon,
   NewspaperIcon,
-} from "@heroicons/react/20/solid";
+} from "@heroicons/react/24/outline";
 
 export const contentBrowse = [
   {
@@ -53,13 +53,14 @@ export const contentExplore = [
 export const contentSettings = [
   {
     heading: "Preferences",
-    link: "/dashboard/settings",
+    link: "/dashboard/preferences",
     icon: <CogIcon />,
   },
 ];
 
 export const mobileBar = [
   contentBrowse[0],		// stocks
+  contentBrowse[1],		// customers
   contentBrowse[2],		// accounts
   contentExplore[0],	// news
 ]

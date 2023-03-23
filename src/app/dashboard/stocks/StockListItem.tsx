@@ -21,7 +21,7 @@ const loadingVariants = {
 
 const loading = "animate-pulse bg-neutral-900 w-4/6";
 
-const StockListItem = (props: {
+function StockListItem(props: {
   stock: string | null;
   selected?: boolean;
   isEditMode?: boolean;
@@ -30,7 +30,7 @@ const StockListItem = (props: {
   addStock: (stock: string) => false | void;
   removeStock: (stock: string) => false | void;
   className?: string;
-}) => {
+}) {
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, props.stock],
     enabled: !!props.stock,
@@ -191,6 +191,6 @@ const StockListItem = (props: {
       </div>
     </Link>
   );
-};
+}
 
 export default memo(StockListItem);
