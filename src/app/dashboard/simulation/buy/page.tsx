@@ -1,14 +1,16 @@
 "use client"
 import { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import Grid from '@mui/material/Grid';
-import Autocomplete from '@mui/material/Autocomplete';
-import CircularProgress from '@mui/material/CircularProgress';
 import { useRouter } from 'next/navigation';
 import Link from "next/link";
-import Typography from '@mui/material/Typography';
+import {
+  Autocomplete,
+  FormControl,
+  CircularProgress,
+  TextField,
+  Typography,
+  Button,
+  Grid
+} from '@mui/material';
 
 const Buy = () => {
   const router = useRouter();

@@ -3,13 +3,13 @@ import { useState, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import {
   Container,
+  Button,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
 } from '@mui/material';
-import Button from '@mui/material/Button';
 import Link from "next/link";
 const darkTheme = createTheme({
   palette: {
