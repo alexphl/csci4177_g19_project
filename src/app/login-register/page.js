@@ -5,7 +5,6 @@ import { userContext } from "../UserContext"
 import LoginOrRegister from "./LoginOrRegister"
 import { useRouter } from "next/navigation"
 
-
 function Auth() {
   // user context - has properties: loggedIn, email
   const { user } = useContext(userContext)

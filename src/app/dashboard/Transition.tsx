@@ -2,11 +2,13 @@
 
 import { motion } from "framer-motion";
 import { useSelectedLayoutSegment } from "next/navigation";
+import UserContextProvider from "../UserContext";
 
 export default function TransitionWrap({ children }: { children: React.ReactNode }) {
   const page = useSelectedLayoutSegment();
 
   return (
+    <UserContextProvider>
     <motion.div
       className="flex justify-center"
       key={page}
@@ -20,5 +22,6 @@ export default function TransitionWrap({ children }: { children: React.ReactNode
     >
       {children}
     </motion.div>
+    </UserContextProvider>
   );
 }
