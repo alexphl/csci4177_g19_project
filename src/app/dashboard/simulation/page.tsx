@@ -26,14 +26,27 @@ const owner_id = "user1";
 // Main Code
 export default function Portfolio() {
   // UseStates
-  const [selectedStock, setSelectedStock] = useState<any>(null);
-  const [shares, setShares] = useState(0);
+
+
   const [netProfitLoss, setNetProfitLoss] = useState(0);
   const [sharesToSell, setSharesToSell] = useState<any>({});
   const [intervalMs, setIntervalMs] = React.useState(1000);
-  const [searchQuery, setSearchQuery] = useState('');
+
   const [searchResults, setSearchResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+      // fetch a single stock price
+    const fetchStockPrice = async (symbol: String) => {
+      try {
+        const response = await fetch(`/api/stocks/quote/${symbol}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch stock price for ${symbol}`);
+        }
+        const data = await response.json();
+        return data.c;
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+    };
   // Style page
   const stylePane =
   "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";
@@ -111,43 +124,8 @@ export default function Portfolio() {
     initialData: 0,
     refetchOnWindowFocus: false,
   });
-  // fetch a single stock price
-  const fetchStockPrice = async (symbol: String) => {
-    try {
-      const response = await fetch(`/api/stocks/quote/${symbol}`);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch stock price for ${symbol}`);
-      }
-      const data = await response.json();
-      return data.c;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  };
-  // handle stock Purchase function
-  const handleSearchInputChange = async (event: any, value: string) => {
-    setSearchQuery(value);
 
-    if (value.length >= 2) {
-      setLoading(true);
 
-      try {
-        const response = await fetch(`/api/stocks/search/${value}`);
-        if (!response.ok) {
-          console.log(`Failed to search for stocks with the symbol ${value}`);
-        }
-        const data = await response.json();
-        setSearchResults(data.result);
-      } catch (error) {
-        console.error(error);
-      }
-
-      setLoading(false);
-    } else {
-      setSearchResults([]);
-    }
-  };
   // updateNetProfitLoss
   const updateNetProfitLoss = () => {
     let net = 0;
@@ -162,51 +140,6 @@ export default function Portfolio() {
     setNetProfitLoss(net);
   };
 
-  // handle stock share input for purchase function
-  const handleSharesChange = (e: any) => {
-    setShares(e.target.value);
-  };
-  // handle purchase
-  const handleStockPurchase = async () => {
-    if (!selectedStock || !shares) {
-      return;
-    }
-    const stockPrice = await fetchStockPrice(selectedStock.symbol);
-    console.log(selectedStock.symbol);
-    // In the case stockInfo is not defined, throw an error
-    if (!stockPrice) {
-      throw new Error(`Stock with symbol ${selectedStock} not found`);
-    }
-    const payload = {
-      owner_id: owner_id, // Todo
-      ticker: selectedStock.symbol,
-      quantity: shares,
-      asset_type: "Stock",
-      asset_name: selectedStock.symbol,
-      purchase_price: stockPrice ?? 0,
-
-    };
-    console.log(payload);
-    const response = await fetch('/api/simulation/buy', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (response.ok) {
-      const updatedPortfolio = await response.json();
-      refetchPurchasedStocks();
-      refetchPastProfitLoss();
-      setShares(0);
-      setSelectedStock(null);
-      updateNetProfitLoss();
-      refetchStockPrices();
-    } else {
-      console.error('Error purchasing stock');
-    }
-  };
 
   // handle Sell
   const handleStockSell = async (stockToSell: any, sharesToSell: any) => {
@@ -226,6 +159,7 @@ export default function Portfolio() {
       sell_price: stockPrice,
       asset_id: stockToSell.id,
     };
+
 
 
     const response = await fetch('/api/simulation/sell', {
@@ -262,11 +196,8 @@ export default function Portfolio() {
           </div>
         </Container>
       </Grid>
-
-
       <div>
         <Box >
-
           <Box >
           <div className={stylePane}>
             <Table>
@@ -328,59 +259,20 @@ export default function Portfolio() {
             </div>
           </Box>
         </Box>
-        <Grid justifyContent="center" style={{ textAlign: 'center' }}>
-          <div>
-            <FormControl sx={{ m: 1 }} variant="outlined">
-              <Autocomplete
-                options={searchResults}
-                loading={loading}
-                getOptionLabel={(option: any) => `${option.symbol} - ${option.description}`}
-                value={selectedStock}
-                onChange={(event: any, newValue: any) => setSelectedStock(newValue || null)}
-                onInputChange={handleSearchInputChange}
-                renderInput={(params: any) => (
-                  <TextField
-                    {...params}
-                    label="Stock name"
-                    variant="outlined"
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                          {params.InputProps.endAdornment}
-                        </>
-                      ),
-                    }}
-                  />
-                )}
-              />
-              <br />
-              <br />
-              <TextField
-                label="Shares"
-                type="number"
-                value={shares}
-                onChange={handleSharesChange}
-                variant="outlined"
-              />
-              <br />
-              <br />
-              <Button onClick={handleStockPurchase}
-                color="primary"
-              >
-                Purchase
-              </Button>
-            </FormControl>
-            <Link href="/dashboard/simulation/transhistory" passHref>
-              <Button
-                color="secondary"
-              >
-                Transaction History
-              </Button>
-            </Link>
-          </div>
-        </Grid>
+        <Link href="/dashboard/simulation/transhistory" passHref>
+            <Button
+            color="secondary"
+            >
+            Transaction History
+            </Button>
+        </Link>
+        <Link href="/dashboard/simulation/buy" passHref>
+            <Button
+            color="secondary"
+            >
+            Buy a new stock
+            </Button>
+        </Link>
       </div>
     </div>
 

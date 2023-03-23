@@ -73,4 +73,6 @@ const TransactionHistory = () => {
       </Container>
     </ThemeProvider>
   );
-}
+};
+
+export default TransactionHistory;
