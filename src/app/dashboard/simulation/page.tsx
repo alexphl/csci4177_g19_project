@@ -196,6 +196,20 @@ export default function Portfolio() {
           </div>
         </Container>
       </Grid>
+      <Link href="/dashboard/simulation/transhistory" passHref>
+            <Button
+            color="secondary"
+            >
+            Transaction History
+            </Button>
+        </Link>
+        <Link href="/dashboard/simulation/buy" passHref>
+            <Button
+            color="secondary"
+            >
+            Buy a new stock
+            </Button>
+        </Link>
       <div>
         <Box >
           <Box >
@@ -259,20 +273,6 @@ export default function Portfolio() {
             </div>
           </Box>
         </Box>
-        <Link href="/dashboard/simulation/transhistory" passHref>
-            <Button
-            color="secondary"
-            >
-            Transaction History
-            </Button>
-        </Link>
-        <Link href="/dashboard/simulation/buy" passHref>
-            <Button
-            color="secondary"
-            >
-            Buy a new stock
-            </Button>
-        </Link>
       </div>
     </div>
 

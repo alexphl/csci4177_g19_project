@@ -7,6 +7,8 @@ import Grid from '@mui/material/Grid';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useRouter } from 'next/navigation';
+import Link from "next/link";
+import Typography from '@mui/material/Typography';
 
 const Buy = () => {
     const router = useRouter();
@@ -64,9 +66,12 @@ const Buy = () => {
     if (response.ok) {
       const updatedPortfolio = await response.json();
       router.push('/dashboard/simulation/');
+      setIsSubmitting(false); // Set isSubmitting back to false when the request finishes but received a failed 
     } else {
-      console.error('Error purchasing stock');
-    }
+        setIsSubmitting(false); // Set isSubmitting back to false when the request finishes but received a failed 
+        console.error('Error purchasing stock');
+      
+    } 
   };
   // handle stock Purchase function
   const handleSearchInputChange = async (event: any, value: string) => {
@@ -97,7 +102,9 @@ const Buy = () => {
       };
       
     return (
+        
         <Grid justifyContent="center" style={{ textAlign: 'center' }}>
+        <Typography variant="h3"><strong className="text-4xl text-white">BUY</strong></Typography>
         <div>
         <FormControl sx={{ m: 1 }} variant="outlined">
             <Autocomplete
@@ -142,6 +149,13 @@ const Buy = () => {
             >
             Purchase
             </Button>
+            <Link href="/dashboard/simulation" passHref>
+                <Button
+                color="secondary"
+                >
+                BACK
+                </Button>
+            </Link>
         </FormControl>
 
         </div>
