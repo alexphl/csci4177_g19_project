@@ -32,7 +32,11 @@ const config = {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: "placehold.it",
+        hostname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "**",
       },
     ],
   },

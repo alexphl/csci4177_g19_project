@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { TrashIcon, PlusIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import Image from "next/image"
 import type { iQuote, iProfile, iCompanyNews } from "@/utils/types/iStocks";
 
 // Lazy load
@@ -158,8 +159,10 @@ export default function StockDetails({
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <article className="relative flex h-28 cursor-pointer items-center gap-4 rounded-xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700">
-                  <div className="h-full w-32 rounded-lg bg-white/[0.1] shrink-0" />
+                <article className="relative flex h-28 cursor-pointer items-center gap-4 rounded-2xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700">
+                  <div className="relative overflow-hidden h-full object-cover w-36 rounded-xl bg-white/[0.1] shrink-0 contrast-75 brightness-75 saturate-125" >
+                    {story.image && <Image src={story.image} alt="" fill />}
+                  </div>
                   <div className="h-full py-1 pr-4 w-10 flex-1">
                     <h1 className="font-semibold max-w-prose truncate">{story.headline}</h1>
                     <p className="text-sm text-neutral-400 h-10 max-w-prose text-ellipsis line-clamp-2">{story.summary}</p>
