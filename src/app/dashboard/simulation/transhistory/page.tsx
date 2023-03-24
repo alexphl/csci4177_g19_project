@@ -78,12 +78,13 @@ const TransactionHistory = () => {
                   <TableCell sx={{ display: { xs: 'table-cell', sm: 'none' } }}>{transaction.transaction_type.charAt(0)}</TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{transaction.transaction_type}</TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
-                  {transaction.asset_name}
-              </TableCell>
+                    {transaction.asset_name}
+                  </TableCell>
                   
                   <TableCell>{transaction.ticker}</TableCell>
                   <TableCell>{transaction.quantity}</TableCell>
-                  <TableCell>{transaction.transaction_date}</TableCell>
+                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{transaction.transaction_date}</TableCell>
+                  <TableCell  sx={{ display: { xs: 'table-cell', sm: 'none' } }}>{transaction.transaction_date.substring(0,10).replace(/-/g, "")}</TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
                     {transaction.transaction_price
                       ? `$${transaction.transaction_price.toFixed(2)}`
