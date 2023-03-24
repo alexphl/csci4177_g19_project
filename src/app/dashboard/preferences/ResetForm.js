@@ -15,6 +15,7 @@ function ResetForm() {
     e.preventDefault();
     setNewPass(e.target.value);
   };
+
   const handleConfirmPassChange = (e) => {
     e.preventDefault();
     setConfirmPass(e.target.value);
@@ -23,6 +24,11 @@ function ResetForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submit!", currPass, newPass, confirmPass);
+
+    /** ToDo
+     * - Update on server
+     * - Dispatch changes with userContext
+     */
   };
 
   return (

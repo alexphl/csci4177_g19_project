@@ -12,6 +12,10 @@ function DeleteForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submit!", deleteVerify, deleteVerify === "DELETE");
+    /** ToDo
+     * - Delete on server
+     * - Dispatch changes with userContext -> reset to null/false
+     */
   };
 
   return (
@@ -27,7 +31,9 @@ function DeleteForm() {
           value={deleteVerify}
           autoComplete="off"
         />
-        <Button onClick={handleSubmit}>DELETE</Button>
+        <Button color="error" onClick={handleSubmit}>
+          DELETE
+        </Button>
       </FormGroup>
     </form>
   );

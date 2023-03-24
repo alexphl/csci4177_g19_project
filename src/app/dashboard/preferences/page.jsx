@@ -21,13 +21,13 @@ const style = {
   backgroundColor: "background.paper",
   border: "3px solid #000",
   boxShadow: 10,
-  color: "#000",
+  color: "primary",
   p: 4,
   borderRadius: "15px",
 };
 
 function Preferences() {
-  const { user } = useContext(userContext);
+  const { user, dispatchUser } = useContext(userContext);
 
   //modals
   const [open1, setOpen1] = useState(false);
