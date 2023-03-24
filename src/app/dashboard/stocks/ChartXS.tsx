@@ -9,7 +9,7 @@ import type { iQuote, iCandle } from "@/utils/types/iStocks";
 
 function StockChartXS(props: { symbol: string; quote: iQuote }) {
   const points = useQuery<iCandle>({
-    queryKey: ["/api/stocks/hist/today/", props.symbol],
+    queryKey: ["/api/stocks/hist/1D/", props.symbol],
     initialData: { c: [], d: [], o: [], t: [], s: "no_data" },
   });
 

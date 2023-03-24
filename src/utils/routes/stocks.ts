@@ -69,7 +69,7 @@ router.get("/search/:q", async function(req, _res, next) {
 });
 
 // Get candlestick data for the last 24h
-router.get("/hist/today/:symbol", async function(req, _res, next) {
+router.get("/hist/1D/:symbol", async function(req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) {
     _res.send(cached);
@@ -97,6 +97,111 @@ router.get("/hist/today/:symbol", async function(req, _res, next) {
   // const from = yesterday.unix();
 
   cachedFetch(`https://finnhub.io/api/v1/stock/candle?symbol=${req.params.symbol}&resolution=${intervalMin}&from=${from}&to=${to}`, _res, req.url, next);
+});
+
+// Get candlestick data for the last week
+router.get("/hist/1W/:symbol", async function(req, _res, next) {
+  const cached = cache.get(req.url);
+  if (cached) {
+    _res.send(cached);
+    return;
+  }
+
+  const interval = "60";
+
+  let lastWeek = dayjs().utc().startOf('day').hour(13).subtract(1, 'week');
+  while (lastWeek.day() === 0 || lastWeek.day() === 6) {
+    lastWeek = lastWeek.subtract(1, 'day');
+  }
+
+  const to = dayjs().unix();
+  const from = lastWeek.unix();
+
+  cachedFetch(`https://finnhub.io/api/v1/stock/candle?symbol=${req.params.symbol}&resolution=${interval}&from=${from}&to=${to}`, _res, req.url, next);
+});
+
+// Get candlestick data for the last month
+router.get("/hist/1M/:symbol", async function(req, _res, next) {
+  const cached = cache.get(req.url);
+  if (cached) {
+    _res.send(cached);
+    return;
+  }
+
+  const interval = "D";
+
+  let lastMonth = dayjs().utc().startOf('day').hour(13).subtract(1, 'month');
+  while (lastMonth.day() === 0 || lastMonth.day() === 6) {
+    lastMonth = lastMonth.subtract(1, 'day');
+  }
+
+  const to = dayjs().unix();
+  const from = lastMonth.unix();
+
+  cachedFetch(`https://finnhub.io/api/v1/stock/candle?symbol=${req.params.symbol}&resolution=${interval}&from=${from}&to=${to}`, _res, req.url, next);
+});
+
+// Get candlestick data for the last month
+router.get("/hist/6M/:symbol", async function(req, _res, next) {
+  const cached = cache.get(req.url);
+  if (cached) {
+    _res.send(cached);
+    return;
+  }
+
+  const interval = "D";
+
+  let lastMonths = dayjs().utc().startOf('day').hour(13).subtract(6, 'month');
+  while (lastMonths.day() === 0 || lastMonths.day() === 6) {
+    lastMonths = lastMonths.subtract(1, 'day');
+  }
+
+  const to = dayjs().unix();
+  const from = lastMonths.unix();
+
+  cachedFetch(`https://finnhub.io/api/v1/stock/candle?symbol=${req.params.symbol}&resolution=${interval}&from=${from}&to=${to}`, _res, req.url, next);
+});
+
+// Get candlestick data for the last month
+router.get("/hist/1Y/:symbol", async function(req, _res, next) {
+  const cached = cache.get(req.url);
+  if (cached) {
+    _res.send(cached);
+    return;
+  }
+
+  const interval = "W";
+
+  let lastYear = dayjs().utc().startOf('day').hour(13).subtract(1, 'year');
+  while (lastYear.day() === 0 || lastYear.day() === 6) {
+    lastYear = lastYear.subtract(1, 'day');
+  }
+
+  const to = dayjs().unix();
+  const from = lastYear.unix();
+
+  cachedFetch(`https://finnhub.io/api/v1/stock/candle?symbol=${req.params.symbol}&resolution=${interval}&from=${from}&to=${to}`, _res, req.url, next);
+});
+
+// Get candlestick data for the lastw week
+router.get("/hist/month/:symbol", async function(req, _res, next) {
+  const cached = cache.get(req.url);
+  if (cached) {
+    _res.send(cached);
+    return;
+  }
+
+  const interval = "D";
+
+  let lastMonth = dayjs().utc().startOf('day').hour(13).subtract(1, 'month');
+  while (lastMonth.day() === 0 || lastMonth.day() === 6) {
+    lastMonth = lastMonth.subtract(1, 'day');
+  }
+
+  const to = dayjs().unix();
+  const from = lastMonth.unix();
+
+  cachedFetch(`https://finnhub.io/api/v1/stock/candle?symbol=${req.params.symbol}&resolution=${interval}&from=${from}&to=${to}`, _res, req.url, next);
 });
 
 // Get candlestick data for the last 24h
