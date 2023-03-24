@@ -1,12 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { TrashIcon, PlusIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import type { iQuote, iProfile } from "@/utils/types/iStocks";
+import type { iQuote, iProfile, iCompanyNews } from "@/utils/types/iStocks";
 
 // Lazy load
 const Chart = dynamic(() => import("./Chart"));
@@ -27,6 +28,10 @@ export default function StockDetails({
   const userStocks = useQuery<string[]>({
     queryKey: [`/api/stocks/user`],
   });
+  const companyNews = useQuery<iCompanyNews[]>({
+    queryKey: [`/api/stocks/company-news/`, params.stock]
+  });
+  const [newsLimit, setNewsLimit] = useState(3);
   const isAdded =
     userStocks.isSuccess && userStocks.data.includes(params.stock);
 
@@ -142,23 +147,42 @@ export default function StockDetails({
         <Chart symbol={params.stock} quote={quote.data} />
       )}
 
-      <section className="mt-6 text-neutral-100 transition-all">
-        <h1 className="text-xl font-bold">Related News</h1>
-        <div className="mt-4 flex flex-col gap-3">
-          {[...Array(4)].map((_x, i) => (
-            <article
-              key={i}
-              className="flex h-28 cursor-pointer items-center gap-4 rounded-xl border border-neutral-800 p-2 hover:border-neutral-700"
+      {companyNews.isSuccess &&
+        <section className={"mt-6 text-neutral-100 transition-all"}>
+          <h1 className="text-xl font-bold">Related News</h1>
+          <div className="mt-4 flex flex-col gap-3">
+            {companyNews.data.slice(0, newsLimit).map((story: iCompanyNews) => (
+              <a
+                key={story.id}
+                href={story.url}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <article className="relative flex h-28 cursor-pointer items-center gap-4 rounded-xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700">
+                  <div className="h-full w-32 rounded-lg bg-white/[0.1] shrink-0" />
+                  <div className="h-full py-1 pr-4 w-10 flex-1">
+                    <h1 className="font-semibold max-w-prose truncate">{story.headline}</h1>
+                    <p className="text-sm text-neutral-400 h-10 max-w-prose text-ellipsis line-clamp-2">{story.summary}</p>
+                  </div>
+                </article>
+              </a>
+            ))}
+          </div>
+        </section>
+      }
+
+      {
+        companyNews.isSuccess && companyNews.data.length > newsLimit && (
+          <div className="flex mt-6 w-full flex-col items-center justify-center">
+            <button
+              className="rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-2 text-sm font-medium active:opacity-70"
+              onClick={() => setNewsLimit(newsLimit + 2)}
             >
-              <div className="h-full w-32 rounded-lg bg-white/[0.1]" />
-              <div className="flex h-full flex-col py-1">
-                <h2 className="text-lg font-bold">Story Title</h2>
-                <p className="text-sm text-neutral-400">Lorem Ipsum</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+              Show more stories
+            </button>
+          </div>
+        )
+      }
     </>
   );
 }

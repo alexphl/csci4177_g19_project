@@ -49,7 +49,7 @@ function StockListItem(props: {
     >
       <div
         className={
-          "group grid grid-cols-[2fr_1fr_1fr] items-center gap-1 rounded-lg border border-neutral-900 p-3 transition-[padding] ease-out hover:bg-white/[0.08] active:backdrop-blur-xl 2xl:p-4" +
+          "group grid grid-cols-[2fr_1fr_1fr] items-center gap-1 rounded-lg border border-neutral-900 p-3 bg-white/[0.05] transition-[padding] ease-out hover:bg-white/[0.08] active:backdrop-blur-xl 2xl:p-4" +
           (props.selected || props.isEditMode
             ? " border-transparent bg-white/[0.12] py-4 pr-5 text-neutral-50 2xl:py-5"
             : " bg-transparent") +

@@ -26,7 +26,7 @@ async function cachedFetch(route: string, _res: any, reqUrl: string, next: any) 
       return res.json();
     })
     .then((json) => {
-      cache.set(reqUrl, json);
+      if (json) cache.set(reqUrl, json);
       _res.send(json);
     })
     .catch((error) => {
