@@ -62,11 +62,11 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
       >
         <Line
           data={{
-            labels: formatLabels(points.data.t.concat(props.quote.t), selectedTimeframe),
+            labels: formatLabels(points.data.t, selectedTimeframe),
             datasets: [
               {
                 label: "Price",
-                data: points.data.c.concat(props.quote.c),
+                data: points.data.c,
                 borderColor: lineColor,
                 borderWidth: 3,
                 spanGaps: true,
