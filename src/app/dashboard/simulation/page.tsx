@@ -194,7 +194,7 @@ export default function Portfolio() {
             </Typography>
           </div>
           <div>
-            <Typography variant="h3"><strong className="text-4xl text-white">Unrealized Profit: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></strong></Typography>
+            <Typography variant="h4" ><strong className="text-4xl text-white">Unrealized Profit: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></strong></Typography>
           </div>
         </Container>
       </Grid>
@@ -238,10 +238,10 @@ export default function Portfolio() {
                 Profit
               </TableCell>
               <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Purchase Date</TableCell>
-              <TableCell ></TableCell>
-              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+              <TableCell>
                 Sell Num
               </TableCell>
+              <TableCell ></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -267,13 +267,9 @@ export default function Portfolio() {
                       : 'N/A'}
                   </TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.purchaseDate}</TableCell>
-                  <TableCell >
-                    <Button size="small" onClick={() => handleStockSell(stock, sharesToSell[stock.id])}>
-                      Sell
-                    </Button>
-                  </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ display: {xs: 'none', sm:'table-cell'} }}>
                     <TextField
+                     
                       type="number"
                       inputProps={{ min: 0, max: stock.shares }}
                       value={sharesToSell[stock.id] || 0}
@@ -281,6 +277,21 @@ export default function Portfolio() {
                       fullWidth
                     />
                   </TableCell>
+                  <TableCell>
+                    <TextField
+                        sx={{ display: {sm: 'none' } }}
+                        type="number"
+                        inputProps={{ min: 0, max: stock.shares }}
+                        value={sharesToSell[stock.id] || 0}
+                        onChange={(e) => setSharesToSell({ ...sharesToSell, [stock.id]: parseInt(e.target.value) })}
+                        fullWidth
+                      />
+                    <Button size="small" onClick={() => handleStockSell(stock, sharesToSell[stock.id])}>
+                      Sell
+                    </Button>
+                    
+                  </TableCell>
+                  
 
                 </TableRow>
               );
