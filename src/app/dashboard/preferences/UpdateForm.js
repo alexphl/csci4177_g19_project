@@ -18,6 +18,12 @@ function UpdateForm() {
   const handleSubmit = (e) =>{
     e.preventDefault()
     console.log("Submit!",name, email)
+
+    /** ToDo
+     * - Update on server
+     * - Dispatch changes with userContext
+     */
+
   }
 
   return (

@@ -21,12 +21,15 @@ const style = {
   backgroundColor: 'background.paper',
   border: '3px solid #000',
   boxShadow: 10,
-  color: '#000',
+  color: 'primary',
   p: 4,
   borderRadius: '15px'
 }
 export default function Preferences() {
-  const { user } = useContext(userContext)
+  const { user , dispatchUser} = useContext(userContext)
+  let router= useRouter()
+
+  if(!user.loggedIn) return <div>Redirecting... {router.push("/")}</div>
 
   //modals
   const [open1, setOpen1] = useState(false)
@@ -35,7 +38,7 @@ export default function Preferences() {
   const handleClose1 = () => setOpen1(false)
   const handleClose2 = () => setOpen2(false)
   const handleClose3 = () => setOpen3(false)
-  let router= useRouter()
+  
 
   const handleUpdate = (e) => {
     e.preventDefault()
@@ -51,9 +54,6 @@ export default function Preferences() {
     e.preventDefault()
     setOpen3(true)
   }
-
-
-  if(!user.loggedIn) return <div>Redirecting... {router.push("/")}</div>
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-8 text-neutral-500">
