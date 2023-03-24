@@ -38,12 +38,12 @@ const TransactionHistory = () => {
 
     <ThemeProvider theme={darkTheme}>
       <Container>
-        <strong className="text-4xl text-white">CUSTOMERS</strong>
+        <strong className="text-4xl text-white">Simulation Transaction History</strong>
         <Link href="/dashboard/simulation" passHref>
           <Button
             color="secondary"
           >
-            BACK
+            GO BACK
           </Button>
         </Link>
         <div className={stylePane}>

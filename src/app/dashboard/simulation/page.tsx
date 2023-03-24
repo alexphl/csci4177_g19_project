@@ -26,6 +26,7 @@ const stylePane =
 export default function Portfolio() {
 
   // UseStates
+  const [isSellPopupOpen, setIsSellPopupOpen] = useState(false);
   const [netProfitLoss, setNetProfitLoss] = useState(0);
   const [sharesToSell, setSharesToSell] = useState<any>({});
   const [intervalMs, setIntervalMs] = useState(1000);
@@ -195,7 +196,7 @@ export default function Portfolio() {
         <Button
           color="secondary"
         >
-          Transaction History
+          View Transaction History
         </Button>
       </Link>
       <Link href="/dashboard/simulation/buy" passHref>
@@ -210,21 +211,39 @@ export default function Portfolio() {
           <TableHead>
             <TableRow>
               <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>ID</TableCell>
-              <TableCell>Symbol</TableCell>
-              <TableCell>Shares</TableCell>
+              <TableCell sx={{ display: { xs: 'table-cell', sm: 'none' } }}>
+                Sym
+              </TableCell>
+              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                Symbol
+              </TableCell>
+              <TableCell sx={{ display: { xs: 'table-cell', sm: 'none' } }}>
+                No.
+              </TableCell>
+              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                Shares
+              </TableCell>
               <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Purchase Price</TableCell>
               <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Current Price</TableCell>
-              <TableCell>Profit/Loss</TableCell>
+              <TableCell sx={{ display: { xs: 'table-cell', sm: 'none' } }}>
+                Earn
+              </TableCell>
+              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                Profit
+              </TableCell>
               <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Purchase Date</TableCell>
-              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}></TableCell>
-              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Sell Num</TableCell>
+              <TableCell ></TableCell>
+              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                Sell Num
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {purchasedStocks.map((stock: any) => {
               const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
+              const stockWithCurrentPrice = { ...stock, currentPrice: stockPrice };
               return (
-                <TableRow key={stock.symbol}>
+                <TableRow key={stock.symbol} >
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
                     {stock.id.slice(-3)}
                   </TableCell>
@@ -242,8 +261,8 @@ export default function Portfolio() {
                       : 'N/A'}
                   </TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.purchaseDate}</TableCell>
-                  <TableCell>
-                    <Button onClick={() => handleStockSell(stock, sharesToSell[stock.id])}>
+                  <TableCell >
+                    <Button size="small" onClick={() => handleStockSell(stock, sharesToSell[stock.id])}>
                       Sell
                     </Button>
                   </TableCell>
