@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useContext, memo } from "react";
-import { userContext } from "../UserContext";
+import { userContext } from "@/app/UserContext";
 import { useRouter } from "next/navigation";
 
 // lazy load components
@@ -14,12 +14,16 @@ function Auth() {
   let router = useRouter();
 
   if (user.loggedIn) {
-    return <div>Redirecting... {router.push("/dashboard")}</div>;
+    router.push("/dashboard");
   }
 
   return (
     <div
-      className="container my-10 max-w-md rounded-xl border border-neutral-800 bg-black p-2 pt-1 shadow-lg"
+      className={
+        "container my-10 max-w-md rounded-xl border border-neutral-800 bg-black p-2 pt-1 shadow-lg transition-all " +
+        (user.loggedIn &&
+          " pointer-events-none animate-pulse contrast-50 saturate-0")
+      }
       aria-label="Login or Register"
     >
       <LoginOrRegister />

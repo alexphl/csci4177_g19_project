@@ -1,13 +1,15 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { userContext } from "../../UserContext";
-import { useRouter } from "next/navigation";
-import { useState, useContext, memo, useEffect } from "react";
+import { useState, useContext, memo } from "react";
 import { Modal, Box, Button } from "@mui/material";
-import DeleteForm from "./DeleteForm";
-import ResetForm from "./ResetForm";
-import UpdateForm from "./UpdateForm";
+
+// Lazy load components
+const DeleteForm = dynamic(() => import("./DeleteForm"));
+const ResetForm = dynamic(() => import("./ResetForm"));
+const UpdateForm = dynamic(() => import("./UpdateForm"));
 
 // Style for modal
 const style = {
@@ -27,13 +29,6 @@ const style = {
 function Preferences() {
   const { user } = useContext(userContext);
 
-  // the effect forces router to only run on client - necessary for build to work
-  useEffect(() => {
-    if (!user.loggedIn) {
-      router.replace("/");
-    }
-  }, [user]);
-
   //modals
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -41,7 +36,6 @@ function Preferences() {
   const handleClose1 = () => setOpen1(false);
   const handleClose2 = () => setOpen2(false);
   const handleClose3 = () => setOpen3(false);
-  const router = useRouter();
 
   const handleUpdate = (e) => {
     e.preventDefault();

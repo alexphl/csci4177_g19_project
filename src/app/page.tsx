@@ -1,9 +1,5 @@
-import Link from "next/link";
 import LoginForm from "./login-register/page"
 
-// This is a Client Component. It receives data as props and
-// has access to state and effects just like Page components
-// in the `pages` directory.
 export default function HomePage() {
   return (
     <div className="flex h-screen bg-gradient-to-br from-neutral-900 to-blue-900/50 place-items-center">

@@ -1,5 +1,5 @@
 import { Button, FormGroup, TextField } from "@mui/material";
-import { useState } from "react";
+import { useState, memo } from "react";
 
 function UpdateForm() {
   const [name, setName] = useState("");
@@ -50,4 +50,4 @@ function UpdateForm() {
   );
 }
 
-export default UpdateForm;
+export default memo(UpdateForm);

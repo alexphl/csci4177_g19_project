@@ -1,5 +1,5 @@
 import { Button, FormGroup, TextField } from "@mui/material";
-import { useState } from "react";
+import { useState, memo } from "react";
 
 function DeleteForm() {
   const [deleteVerify, setDeleteVerify] = useState("");
@@ -33,4 +33,4 @@ function DeleteForm() {
   );
 }
 
-export default DeleteForm;
+export default memo(DeleteForm);

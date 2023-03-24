@@ -1,5 +1,5 @@
 import { Button, FormGroup, TextField } from "@mui/material";
-import { useState } from "react";
+import { useState, memo } from "react";
 
 function ResetForm() {
   const [currPass, setCurrPass] = useState("");
@@ -69,4 +69,4 @@ function ResetForm() {
   );
 }
 
-export default ResetForm;
+export default memo(ResetForm);
