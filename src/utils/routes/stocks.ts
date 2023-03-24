@@ -9,6 +9,27 @@ const cache = new LRU({
 
 const userStocks = { list: ["AAPL", "MSFT", "GOOG"] };
 
+async function cachedFetch(route: string, _res: any, reqUrl: string, next: any) {
+  await fetch(
+    `${route}&token=${process.env.FINNHUB_API_KEY}`
+  )
+    .then((res) => {
+      if (!res.ok) {
+        _res.sendStatus(res.status);
+        return;
+      }
+      return res.json();
+    })
+    .then((json) => {
+      cache.set(reqUrl, json);
+      _res.send(json);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      next(error);
+    });
+}
+
 // Get all stocks
 router.get("/", async function(req, _res) {
   const cached = cache.get(req.url);
@@ -41,24 +62,7 @@ router.get("/quote/:symbol", async function(req, _res, next) {
     return;
   }
 
-  fetch(
-    `https://finnhub.io/api/v1/quote?symbol=${req.params.symbol}&token=${process.env.FINNHUB_API_KEY}`
-  )
-    .then((res) => {
-      if (!res.ok) {
-        _res.sendStatus(res.status);
-        return;
-      }
-      return res.json();
-    })
-    .then((json) => {
-      cache.set(req.url, json);
-      _res.send(json);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      next(error);
-    });
+  cachedFetch(`https://finnhub.io/api/v1/quote?symbol=${req.params.symbol}`, _res, req.url, next);
 });
 
 // Get company description for a stock
@@ -69,24 +73,7 @@ router.get("/profile/:symbol", async function(req, _res, next) {
     return;
   }
 
-  fetch(
-    `https://finnhub.io/api/v1/stock/profile2?symbol=${req.params.symbol}&token=${process.env.FINNHUB_API_KEY}`
-  )
-    .then((res) => {
-      if (!res.ok) {
-        _res.sendStatus(res.status);
-        return;
-      }
-      return res.json();
-    })
-    .then((json) => {
-      cache.set(req.url, json, { ttl: 1000 * 60 * 60 * 48 });
-      _res.send(json);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      next(error);
-    });
+  cachedFetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${req.params.symbol}`, _res, req.url, next);
 });
 
 // Search for a stock symbol
@@ -97,24 +84,7 @@ router.get("/search/:q", async function(req, _res, next) {
     return;
   }
 
-  fetch(
-    `https://finnhub.io/api/v1/search?q=${req.params.q}&token=${process.env.FINNHUB_API_KEY}`
-  )
-    .then((res) => {
-      if (!res.ok) {
-        _res.sendStatus(res.status);
-        return;
-      }
-      return res.json();
-    })
-    .then((json) => {
-      cache.set(req.url, json, { ttl: 1000 * 60 * 60 * 48 });
-      _res.send(json);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      next(error);
-    });
+  cachedFetch(`https://finnhub.io/api/v1/search?q=${req.params.q}`, _res, req.url, next);
 });
 
 // TESTING
@@ -132,24 +102,7 @@ router.get("/hist/today/:symbol", async function(req, _res, next) {
   const to = (Date.now() / 1000) | 0;
   const intervalMin = "30";
 
-  fetch(
-    `https://finnhub.io/api/v1/stock/candle?symbol=${req.params.symbol}&resolution=${intervalMin}&from=${from}&to=${to}&token=${process.env.FINNHUB_API_KEY}`
-  )
-    .then((res) => {
-      if (!res.ok) {
-        _res.sendStatus(res.status);
-        return;
-      }
-      return res.json();
-    })
-    .then((json) => {
-      cache.set(req.url, json);
-      _res.send(json);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      next(error);
-    });
+  cachedFetch(`https://finnhub.io/api/v1/stock/candle?symbol=${req.params.symbol}&resolution=${intervalMin}&from=${from}&to=${to}`, _res, req.url, next);
 });
 
 // Get user stocks
