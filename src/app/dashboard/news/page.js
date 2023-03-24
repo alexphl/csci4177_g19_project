@@ -10,10 +10,14 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
+
+
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import apiURL from "@/APIurl";
+import Link from "next/link";
+
 const baseURL = apiURL + "/news/";
 var userURL = apiURL + "/news/user/111";
 
@@ -93,6 +97,12 @@ export default function News_list() {
             <DialogTitle id="alert-dialog-title"></DialogTitle>
             <DialogContent>
               <Typography variant="h5">{select.title}</Typography>
+              <Link
+                href={select.url}
+                alt="Because of api limitation we could not offer full news"
+              >
+                <u>Link to Original website</u>
+              </Link>
               <Typography variant="body2">
                 {select.author != null ? (
                   <span>Written by: {select.author} &nbsp;</span>
@@ -111,12 +121,10 @@ export default function News_list() {
                   height={200}
                 />
               )}
-              <Typography variant="body2">{select.content}</Typography>
+              <DialogContentText>{select.content}</DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose}>
-                Because of api limitation we could not offer full news
-              </Button>
+              <Button onClick={handleClose}>Close</Button>
             </DialogActions>
           </Dialog>
         )}
