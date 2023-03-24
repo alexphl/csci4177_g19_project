@@ -50,23 +50,41 @@ const TransactionHistory = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Type</TableCell>
-                <TableCell>Asset Name</TableCell>
+              <TableCell sx={{ display: { xs: 'table-cell', sm: 'none' } }}>
+                T
+              </TableCell>
+              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                Type
+              </TableCell>
+                <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                Asset Name
+              </TableCell>
                 <TableCell>Ticker</TableCell>
                 <TableCell>Quantity</TableCell>
-                <TableCell>Transaction Date</TableCell>
-                <TableCell>Transaction Price</TableCell>
+                <TableCell sx={{ display: { xs: 'table-cell', sm: 'none' } }}>
+                Date
+              </TableCell>
+              <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                Transaction Date
+              </TableCell>
+                <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                Transaction Price
+              </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {transactions.map((transaction) => (
                 <TableRow key={transaction._id}>
-                  <TableCell>{transaction.transaction_type}</TableCell>
-                  <TableCell>{transaction.asset_name}</TableCell>
+                  <TableCell sx={{ display: { xs: 'table-cell', sm: 'none' } }}>{transaction.transaction_type.charAt(0)}</TableCell>
+                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{transaction.transaction_type}</TableCell>
+                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+                  {transaction.asset_name}
+              </TableCell>
+                  
                   <TableCell>{transaction.ticker}</TableCell>
                   <TableCell>{transaction.quantity}</TableCell>
                   <TableCell>{transaction.transaction_date}</TableCell>
-                  <TableCell>
+                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
                     {transaction.transaction_price
                       ? `$${transaction.transaction_price.toFixed(2)}`
                       : ''}
