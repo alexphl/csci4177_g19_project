@@ -1,5 +1,6 @@
 import { Router } from "express";
 import LRU from "lru-cache";
+import dayjs from "dayjs";
 const router = Router();
 
 const cache = new LRU({
@@ -29,30 +30,6 @@ async function cachedFetch(route: string, _res: any, reqUrl: string, next: any) 
       next(error);
     });
 }
-
-// Get all stocks
-router.get("/", async function(req, _res) {
-  const cached = cache.get(req.url);
-  if (cached) {
-    _res.send(cached);
-    return;
-  }
-
-  fetch(
-    `https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${process.env.FINNHUB_API_KEY}`
-  )
-    .then((res) => {
-      if (!res.ok) {
-        _res.sendStatus(res.status);
-        return;
-      }
-      return res.json();
-    })
-    .then((json) => {
-      cache.set(req.url, json, { ttl: 1000 * 60 * 60 * 48 });
-      _res.send(json);
-    });
-});
 
 // Get quote for a stock
 router.get("/quote/:symbol", async function(req, _res, next) {
@@ -87,7 +64,7 @@ router.get("/search/:q", async function(req, _res, next) {
   cachedFetch(`https://finnhub.io/api/v1/search?q=${req.params.q}`, _res, req.url, next);
 });
 
-// TESTING
+// Get candlestick data for the last 24h
 router.get("/hist/today/:symbol", async function(req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) {
@@ -95,18 +72,30 @@ router.get("/hist/today/:symbol", async function(req, _res, next) {
     return;
   }
 
-  const timeStamp = new Date();
-  const yesterdayDate = new Date(timeStamp.getTime() - 24 * 60 * 60 * 1000);
-
-  const from = (yesterdayDate.getTime() / 1000) | 0;
-  const to = (Date.now() / 1000) | 0;
   const intervalMin = "30";
+  const to = dayjs().unix();
+  const from = dayjs().subtract(1, 'day').unix();
 
   cachedFetch(`https://finnhub.io/api/v1/stock/candle?symbol=${req.params.symbol}&resolution=${intervalMin}&from=${from}&to=${to}`, _res, req.url, next);
 });
 
+// Get candlestick data for the last 24h
+// payload must be of type {symbol: string, from: Date, to: Date}
+router.get("/company-news/:symbol", async function(req, _res, next) {
+  const cached = cache.get(req.url);
+  if (cached) {
+    _res.send(cached);
+    return;
+  }
+
+  const to = dayjs().format('YYYY-MM-DD');
+  const from = dayjs().subtract(7, 'day').format('YYYY-MM-DD');
+
+  cachedFetch(`https://finnhub.io/api/v1/company-news?symbol=${req.params.symbol}&from=${from}&to=${to}`, _res, req.url, next);
+});
+
 // Get user stocks
-router.get("/user", async function(req, res) {
+router.get("/user", async function(_req, res) {
   res.send(userStocks.list);
 });
 
