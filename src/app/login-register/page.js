@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useContext, memo } from "react";
 import { userContext } from "../UserContext";
+import { useRouter } from "next/navigation";
 
 // lazy load components
 const LoginOrRegister = dynamic(() => import("./LoginOrRegister"));
@@ -10,9 +11,10 @@ const LoginOrRegister = dynamic(() => import("./LoginOrRegister"));
 function Auth() {
   // user context - has properties: loggedIn, email
   const { user } = useContext(userContext);
+  let router = useRouter();
 
   if (user.loggedIn) {
-    return <div>Redirecting... {redirect("/dashboard")}</div>;
+    return <div>Redirecting... {router.push("/dashboard")}</div>;
   }
 
   return (

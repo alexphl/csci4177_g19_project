@@ -3,7 +3,7 @@ import FocusTrap from "focus-trap-react";
 import { RemoveScroll } from "react-remove-scroll";
 import { memo } from "react";
 import type { Dispatch, SetStateAction } from "react";
-const Preferenes = dynamic(() => import("./preferences/page"));
+const Preferences = dynamic(() => import("./preferences/page"));
 
 function SettingsOverlay(props: { setOpen: Dispatch<SetStateAction<boolean>> }) {
   return (
@@ -16,7 +16,7 @@ function SettingsOverlay(props: { setOpen: Dispatch<SetStateAction<boolean>> }) 
           />
 
           <div className="absolute z-[51] h-screen max-h-[800px] min-h-[500px] w-screen max-w-3xl bg-black sm:rounded-2xl border border-neutral-800 cursor-default shadow-lg sm:h-5/6">
-            <Preferenes />
+            <Preferences />
           </div>
         </div>
       </FocusTrap>

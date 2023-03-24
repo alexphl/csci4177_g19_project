@@ -55,10 +55,17 @@ function LoginForm() {
     // passwords must match
 
     if (err.length === 0) {
+      // check with database
+      
+
+      // set state
       dispatchUser({
         type: "SET_USER",
         payload: { email: email, loggedIn: true },
       });
+
+      // store a session cookie
+      
     } else {
       setError(err);
     }
