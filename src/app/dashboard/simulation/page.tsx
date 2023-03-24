@@ -185,7 +185,13 @@ export default function Portfolio() {
       <Grid justifyContent="center" style={{ textAlign: 'center' }}>
         <Container style={{ padding: 20 }}>
           <div>
-            <Typography variant="h3"><strong className="text-4xl text-white">Profit: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>${pastProfitLoss ? pastProfitLoss.toFixed(2) : '0.00'}</span></strong></Typography>
+            <Typography variant="h3">
+              <strong className="text-4xl text-white">
+                Profit: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>
+                  ${isNaN(pastProfitLoss) ? '0.00' : pastProfitLoss.toFixed(2)}
+                </span>
+              </strong>
+            </Typography>
           </div>
           <div>
             <Typography variant="h3"><strong className="text-4xl text-white">Unrealized Profit: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></strong></Typography>
