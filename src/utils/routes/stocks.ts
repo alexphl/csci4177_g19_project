@@ -1,7 +1,11 @@
 import { Router } from "express";
-import LRU from "lru-cache";
-import dayjs from "dayjs";
+import LRU from "lru-cache"
 const router = Router();
+
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc)
+
 
 const cache = new LRU({
   max: 200, // max number of cached responses
@@ -72,9 +76,25 @@ router.get("/hist/today/:symbol", async function(req, _res, next) {
     return;
   }
 
-  const intervalMin = "30";
+  const intervalMin = "15";
+
+  let marketOpen = dayjs().utc().startOf('day').hour(13);
+  while (marketOpen.day() === 0 || marketOpen.day() === 6) {
+    marketOpen = marketOpen.subtract(1, 'day');
+  }
+
   const to = dayjs().unix();
-  const from = dayjs().subtract(1, 'day').unix();
+  const from = marketOpen.unix();
+
+  // const intervalMin = "30";
+
+  // let yesterday = dayjs().subtract(1, 'day');
+  // while (yesterday.day() === 0 || yesterday.day() === 6) {
+  //   yesterday = yesterday.subtract(1, 'day');
+  // }
+
+  // const to = dayjs().unix();
+  // const from = yesterday.unix();
 
   cachedFetch(`https://finnhub.io/api/v1/stock/candle?symbol=${req.params.symbol}&resolution=${intervalMin}&from=${from}&to=${to}`, _res, req.url, next);
 });
