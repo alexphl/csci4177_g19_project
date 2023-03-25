@@ -176,7 +176,7 @@ export default function StockDetails({
               >
                 <article className="relative flex h-28 cursor-pointer items-center gap-4 rounded-2xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700">
                   <div className="relative overflow-hidden h-full object-cover w-36 rounded-xl bg-white/[0.1] shrink-0 contrast-75 brightness-75 saturate-125" >
-                    {story.image && <Image src={story.image} alt="" fill />}
+                    {story.image && <Image src={story.image} alt="" fill sizes="100%" />}
                   </div>
                   <div className="flex flex-col gap-1 h-full py-2 pr-3 w-10 flex-1">
                     <h1 className="font-semibold leading-relaxed max-w-prose truncate">{story.headline}</h1>
