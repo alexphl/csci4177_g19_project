@@ -14,6 +14,18 @@ import type { iQuote, iProfile, iCompanyNews } from "@/utils/types/iStocks";
 const Chart = dynamic(() => import("./Chart"));
 const NotFound = dynamic(() => import("../../[404]/page"));
 
+// Filters search results to hide stock subvariants
+// This logic will likely be moved to backend
+function filterNews(results: iCompanyNews[] | undefined, company: string) {
+  if (!results || !results[0]) { return []; }
+  return (
+    results.filter((item: iCompanyNews) => {
+      if (item.headline.includes(company) || item.summary.includes(company)) return true;
+      return false;
+    })
+  );
+}
+
 export default function StockDetails({
   params,
 }: {
@@ -30,7 +42,8 @@ export default function StockDetails({
     queryKey: [`/api/stocks/user`],
   });
   const companyNews = useQuery<iCompanyNews[]>({
-    queryKey: [`/api/stocks/company-news/`, params.stock]
+    queryKey: [`/api/stocks/company-news/`, params.stock],
+    enabled: !!profile.data
   });
   const [newsLimit, setNewsLimit] = useState(3);
   const isAdded =
@@ -70,6 +83,8 @@ export default function StockDetails({
       queryClient.invalidateQueries({ queryKey: ["/api/stocks/user"] });
     },
   });
+
+  const filteredNews = companyNews.isSuccess ? filterNews(companyNews.data, profile.data!.name.split(' ')[0]) : [];
 
   if (quote.isSuccess && quote.data.c === 0 && quote.data.d === null) {
     return <NotFound />;
@@ -152,7 +167,7 @@ export default function StockDetails({
         <section className={"mt-6 text-neutral-100 transition-all"}>
           <h1 className="text-xl font-bold">Related News</h1>
           <div className="mt-4 flex flex-col gap-3">
-            {companyNews.data.slice(0, newsLimit).map((story: iCompanyNews) => (
+            {filteredNews.slice(0, newsLimit).map((story: iCompanyNews) => (
               <a
                 key={story.id}
                 href={story.url}
@@ -163,10 +178,11 @@ export default function StockDetails({
                   <div className="relative overflow-hidden h-full object-cover w-36 rounded-xl bg-white/[0.1] shrink-0 contrast-75 brightness-75 saturate-125" >
                     {story.image && <Image src={story.image} alt="" fill />}
                   </div>
-                  <div className="h-full py-1 pr-4 w-10 flex-1">
-                    <h1 className="font-semibold max-w-prose truncate">{story.headline}</h1>
-                    <p className="text-sm text-neutral-400 h-10 max-w-prose text-ellipsis line-clamp-2">{story.summary}</p>
+                  <div className="flex flex-col gap-1 h-full py-2 pr-3 w-10 flex-1">
+                    <h1 className="font-semibold leading-relaxed max-w-prose truncate">{story.headline}</h1>
+                    <p className="text-sm text-neutral-400 max-w-prose text-ellipsis line-clamp-2">{story.summary}</p>
                   </div>
+                  <div className="absolute bottom-2 left-2 bg-neutral-900/75 rounded-tr-xl rounded-bl-xl py-1.5 px-2.5 w-fit text-xs backdrop-blur-lg text-neutral-300 font-medium backdrop-saturate-[3]">{story.source}</div>
                 </article>
               </a>
             ))}
@@ -175,11 +191,11 @@ export default function StockDetails({
       }
 
       {
-        companyNews.isSuccess && companyNews.data.length > newsLimit && (
+        filteredNews && filteredNews.length > newsLimit && (
           <div className="flex mt-6 w-full flex-col items-center justify-center">
             <button
               className="rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-2 text-sm font-medium active:opacity-70"
-              onClick={() => setNewsLimit(newsLimit + 2)}
+              onClick={() => setNewsLimit(newsLimit + 3)}
             >
               Show more stories
             </button>
