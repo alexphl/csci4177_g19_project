@@ -5,7 +5,7 @@ import { Line } from "react-chartjs-2";
 
 import { useQuery } from "@tanstack/react-query";
 
-import type { iQuote, iCandle } from "@/utils/types/iStocks";
+import type { iQuote, iCandle } from "@/types/iStocks";
 
 function StockChartXS(props: { symbol: string; quote: iQuote }) {
   const points = useQuery<iCandle>({

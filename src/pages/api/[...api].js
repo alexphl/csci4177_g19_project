@@ -51,7 +51,6 @@ app.use(function (_req, res, next) {
   next();
 });
 
-
 // IMPORT ROUTES START ------------------------------
 
 import indexRouter from "@/utils/routes/index";
@@ -74,7 +73,6 @@ app.use("/api/simulation", simulationRouter);
 app.use("/api/news", news);
 
 // IMPORT ROUTES END --------------------------------
-
 
 // catch 404 and forward to error handler
 app.use(function (_req, _res, next) {

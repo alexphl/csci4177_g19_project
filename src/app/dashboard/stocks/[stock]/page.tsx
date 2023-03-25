@@ -9,8 +9,8 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image"
 import { motion } from "framer-motion";
-import type { iQuote, iProfile, iCompanyNews } from "@/utils/types/iStocks";
-const shortNum = require('number-shortener');
+import type { iQuote, iProfile, iCompanyNews } from "@/types/iStocks";
+import shortNum from 'number-shortener';
 
 // Lazy load
 const Chart = dynamic(() => import("./Chart"));

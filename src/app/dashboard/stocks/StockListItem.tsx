@@ -8,7 +8,7 @@ import {
   BookmarkIcon,
   BookmarkSlashIcon,
 } from "@heroicons/react/24/outline";
-import type { iProfile, iQuote } from "@/utils/types/iStocks";
+import type { iProfile, iQuote } from "@/types/iStocks";
 
 // Lazy load charts
 const StockChartXS = dynamic(() => import("./ChartXS"));
