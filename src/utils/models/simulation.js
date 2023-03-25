@@ -18,7 +18,7 @@ const transactionSchema = new mongoose.Schema({
   transaction_price: Number,
 });
 const stockListSchema = new mongoose.Schema({
-  stock_List: String,
+  stock: String,
 });
 
 const portfolioSchema = new mongoose.Schema({
