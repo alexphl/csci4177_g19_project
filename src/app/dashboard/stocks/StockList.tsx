@@ -246,7 +246,11 @@ function StockList(props: {
               {
                 /* SHOW LOADING PLACEHOLDER */
                 searchResult.isFetching && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex flex-col gap-4"
+                  >
                     {[...Array(3)].map((_x, i) => (
                       <StockListItem
                         isAdded={false}

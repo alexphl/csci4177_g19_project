@@ -169,7 +169,7 @@ export default function StockDetails({
         <Chart symbol={params.stock} quote={quote.data} />
       )}
 
-      {companyNews.isSuccess &&
+      {(companyNews.isSuccess && filteredNews.length > 0) &&
         <section className={"mt-6 text-neutral-100"}>
           <h1 className="text-xl font-bold">Related News</h1>
           <div className="mt-4 flex flex-col gap-3">
