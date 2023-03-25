@@ -62,14 +62,16 @@ import stocksRouter from "@/utils/routes/stocks";
 import userRouter from "@/utils/routes/userRoutes";
 import authRouter from "@/utils/routes/authRoutes";
 import simulationRouter from "@/utils/routes/simulation";
+import news from "@/utils/routes/news";
 app.use("/api/", indexRouter);
 app.use("/api/account", accountRouter);
 app.use("/api/customer", customerRouter);
 app.use("/api/transaction", transactionRouter);
 app.use("/api/stocks", stocksRouter);
-app.use('/api/users', userRouter);
-app.use('/api/auth', authRouter);
-app.use('/api/simulation',simulationRouter);
+app.use("/api/users", userRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/simulation", simulationRouter);
+app.use("/api/news", news);
 
 // IMPORT ROUTES END --------------------------------
 

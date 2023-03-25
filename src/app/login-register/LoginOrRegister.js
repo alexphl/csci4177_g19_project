@@ -1,12 +1,13 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import RegistrationForm from "./RegistrationForm";
-import LoginForm from "./LoginForm";
-import { useState } from "react";
+import { Tabs, Tab, Box } from "@mui/material";
+import { useState, memo } from "react";
+
+// lazy load components
+const RegistrationForm = dynamic(() => import("./RegistrationForm"));
+const LoginForm = dynamic(() => import("./LoginForm"));
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -37,7 +38,7 @@ function a11yProps(index) {
   };
 }
 
-export default function LoginOrRegister() {
+function LoginOrRegister() {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -66,3 +67,5 @@ export default function LoginOrRegister() {
     </Box>
   );
 }
+
+export default memo(LoginOrRegister);

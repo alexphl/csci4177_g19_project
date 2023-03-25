@@ -1,0 +1,22 @@
+{
+  "account_id": 371138,
+  "subscribe_stocks": [
+    {
+      "ticker_symbol": "TSLA",
+      "name": "Tesla"
+    },
+
+    {
+      "ticker_symbol": "AAPL",
+      "name": "Apple"
+    },
+    {
+      "ticker_symbol": "GOOG",
+      "name": "Alphabet"
+    },
+    {
+      "ticker_symbol": "AFRM",
+      "name": "Affirm Holdings"
+    }
+  ]
+}
