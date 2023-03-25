@@ -200,7 +200,7 @@ router.get("/hist/month/:symbol", async function(req, _res, next) {
   cachedFetch(`https://finnhub.io/api/v1/stock/candle?symbol=${req.params.symbol}&resolution=${interval}&from=${from}&to=${to}`, _res, req.url, next);
 });
 
-// Get company news for the last 24h
+// Get company news for the last day or so
 router.get("/company-news/:symbol", async function(req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) {
@@ -208,9 +208,9 @@ router.get("/company-news/:symbol", async function(req, _res, next) {
     return;
   }
 
-  const today = dayjs().minute(0).second(0).millisecond(0);
+  const today = dayjs().utc().minute(0).second(0).millisecond(0);
   const to = today.format('YYYY-MM-DD');
-  const from = today.startOf('day').subtract(1, 'day').format('YYYY-MM-DD');
+  const from = today.startOf('day').subtract(2, 'day').format('YYYY-MM-DD');
 
   cachedFetch(`https://finnhub.io/api/v1/company-news?symbol=${req.params.symbol}&from=${from}&to=${to}`, _res, req.url, next);
 });
