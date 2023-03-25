@@ -4,12 +4,13 @@ import { useMemo, useState } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { TrashIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { BookmarkIcon, BookmarkSlashIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image"
 import { motion } from "framer-motion";
 import type { iQuote, iProfile, iCompanyNews } from "@/utils/types/iStocks";
+const shortNum = require('number-shortener');
 
 // Lazy load
 const Chart = dynamic(() => import("./Chart"));
@@ -100,14 +101,14 @@ export default function StockDetails({
   return (quote.isSuccess &&
     <>
       <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-8 -my-5 hidden h-10 -translate-y-8 rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0 sm:block" />
-      <div className="w-full overflow-auto pb-6 transition-all scrollbar-hide">
+      <div className="w-full overflow-auto mb-4 transition-all scrollbar-hide">
         <nav className="flex w-full items-center justify-between pb-6 sm:hidden">
           <Link href={"/dashboard/stocks/"}>
-            <ArrowLeftIcon className="h-9 w-9 rounded-md bg-white/[0.1] p-2" />
+            <ArrowLeftIcon className="h-9 w-9 rounded-md bg-white/[0.1] p-2 border border-neutral-800" />
           </Link>
           {userStocks.isSuccess && isAdded && (
             <button
-              className="rounded-md bg-white/[0.1] p-2 hover:bg-rose-400 hover:text-black"
+              className="rounded-md bg-white/[0.1] p-2 hover:bg-rose-400 hover:text-black border border-neutral-800"
               onClick={() =>
                 userStocksMut.mutate([
                   ...userStocks.data.filter((item: string) => {
@@ -116,17 +117,17 @@ export default function StockDetails({
                 ])
               }
             >
-              <TrashIcon className="w-4" />
+              <BookmarkSlashIcon className="w-4" />
             </button>
           )}
           {userStocks.isSuccess && !isAdded && (
             <button
-              className="rounded-md bg-white/[0.1] p-2 hover:bg-green-400 hover:text-black"
+              className="rounded-md bg-white/[0.1] p-2 hover:bg-green-400 hover:text-black border border-neutral-800"
               onClick={() =>
                 userStocksMut.mutate([...userStocks.data.concat(params.stock)])
               }
             >
-              <PlusIcon className="w-4" />
+              <BookmarkIcon className="w-4" />
             </button>
           )}
         </nav>
@@ -166,12 +167,23 @@ export default function StockDetails({
         </section>
       </div>
 
+      <div className="flex gap-2 rounded-lg w-full text-xs font-medium text-neutral-400 mb-4 flex-wrap">
+        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800">Open: {quote.data.o}</p>
+        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800">High: {quote.data.h}</p>
+        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800">Low: {quote.data.l}</p>
+        {profile.isSuccess &&
+          <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800">
+            Market Cap: {shortNum((profile.data.marketCapitalization * 1000000).toFixed(0)).replace('+', '').toUpperCase()}
+          </p>
+        }
+      </div>
+
       {params.stock && quote.isSuccess && (
         <Chart symbol={params.stock} quote={quote.data} />
       )}
 
       {(companyNews.isSuccess && filteredNews.length > 0) &&
-        <section className={"mt-10 text-neutral-100"} >
+        <section className={"mt-8 text-neutral-100"} >
           <h1 className="text-lg font-bold">From the News</h1>
           <div className="mt-3 flex flex-col gap-3">
             {filteredNews.slice(0, newsLimit).map((story: iCompanyNews) => (

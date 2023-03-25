@@ -33,6 +33,7 @@ specifiers:
   mongoose: 7.0.3
   morgan: ^1.10.0
   next: 13.2.3
+  number-shortener: ^1.0.1
   postcss: ^8.4.21
   prettier: ^2.8.7
   prettier-plugin-tailwindcss: ^0.2.5
@@ -72,6 +73,7 @@ dependencies:
   mongoose: 7.0.3
   morgan: 1.10.0
   next: 13.2.3_biqbaboplfbrettd7655fr4n2y
+  number-shortener: 1.0.1
   prop-types: 15.8.1
   react: 18.2.0
   react-chartjs-2: 5.2.0_t5yjg6ab35jnsudnh2qdighszm
@@ -3229,6 +3231,10 @@ packages:
       console-control-strings: 1.1.0
       gauge: 3.0.2
       set-blocking: 2.0.0
+    dev: false
+
+  /number-shortener/1.0.1:
+    resolution: {integrity: sha512-I/M1nzsUSyQa1iSefi0aFWceoLcw29Y9DTuawG8cq1pyFZjRyCsJo/+Fpe6XQIWVBKrLklhWGmfbnZMgBEsZgg==}
     dev: false
 
   /object-assign/4.1.1:

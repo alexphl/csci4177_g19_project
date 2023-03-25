@@ -41,16 +41,13 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
       ? (props.quote.d > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)")
       : (points.data.c[points.data.c.length - 1] - points.data.c[0] > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)");
 
-
-
   if (points.data.s !== "ok") { return (<> </>) }
-
   return (
     <>
       <div
         className={
-          `relative z-10 h-56 w-full rounded-xl border border-neutral-800 bg-gradient-to-bl p-1 shadow-2xl md:h-64 lg:h-72 2xl:h-80 2xl:p-2 ` +
-          (selectedTimeframe === 0
+          `relative z-10 h-56 w-full rounded-xl border border-neutral-800 bg-gradient-to-bl p-1 shadow-2xl md:h-64 lg:h-72 2xl:h-80 2xl:p-2 `
+          + (selectedTimeframe === 0
             ? (props.quote.d > 0
               ? "from-green-300/[0.2] via-green-100/[0.09] to-green-100/[0.09] shadow-green-300/[0.17] "
               : "from-red-300/[0.2] via-red-100/[0.09] to-red-100/[0.09] shadow-red-300/[0.17] ")
@@ -144,7 +141,7 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
       <Tabs
         selector={[selectedTimeframe, setSelectedTimeframe]}
         components={chartTimeframes}
-        className="my-1 px-12 xl:my-2"
+        className="my-1 px-8 lg:px-12 xl:my-2"
       />
     </>
   );

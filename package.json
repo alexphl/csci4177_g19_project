@@ -31,6 +31,7 @@
     "mongoose": "7.0.3",
     "morgan": "^1.10.0",
     "next": "13.2.3",
+    "number-shortener": "^1.0.1",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-chartjs-2": "^5.2.0",

@@ -61,7 +61,7 @@ export default function StocksLayout({
         <div /* RIGHT pane */
           className={
             stylePane +
-            " p-7 sm:block sm:p-8 " +
+            " p-6 sm:block sm:p-8 " +
             (selectedStock
               ? "col-start-1 block sm:col-start-2"
               : "hidden translate-y-20 opacity-40")

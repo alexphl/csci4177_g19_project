@@ -1,27 +1,30 @@
 export type iQuote = {
-  c: number; // current price
-  d: number; // change
-  o: number; // open price
-  t: number; // UNIX timestamp
+  c: number, // current price
+  d: number, // change
+  o: number, // open price
+  h: number, // high
+  l: number, // low
+  t: number, // UNIX timestamp
 }
 
 export type iCandle = {
-  c: Array<number>; // current price
-  d: Array<number>; // change
-  o: Array<number>; // open price
-  t: Array<number>; // UNIX timestamp
-  s: string; 				//status
+  c: Array<number>, // current price
+  d: Array<number>, // change
+  o: Array<number>, // open price
+  t: Array<number>, // UNIX timestamp
+  s: string 				//status
 }
 
 export type iProfile = {
   name: string,
   exchange: string,
-  currency: string;
+  currency: string,
+  marketCapitalization: number
 }
 
 export type iSearch = {
   count: number,
-  result: [iSearchItem],
+  result: [iSearchItem]
 }
 
 export type iSearchItem = {
