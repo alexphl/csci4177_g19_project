@@ -167,7 +167,7 @@ export default function StockDetails({
         <section className={"mt-6 text-neutral-100"}>
           <h1 className="text-xl font-bold">Related News</h1>
           <div className="mt-4 flex flex-col gap-3">
-            {filteredNews.map((story: iCompanyNews) => (
+            {companyNews.data.map((story: iCompanyNews) => (
               <a
                 key={story.id}
                 href={story.url}
