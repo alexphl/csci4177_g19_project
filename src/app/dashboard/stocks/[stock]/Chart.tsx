@@ -46,7 +46,8 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
     <>
       <div
         className={
-          `relative z-10 h-56 w-full rounded-xl border border-neutral-800 bg-gradient-to-bl p-1 shadow-2xl md:h-64 lg:h-72 2xl:h-80 2xl:p-2 `
+          `relative z-10 h-56 w-full transition-all rounded-xl border border-neutral-800 bg-gradient-to-bl p-1 shadow-2xl md:h-64 lg:h-72 2xl:h-80 2xl:p-2 `
+          + (points.isLoading ? " saturate-0 " : "")
           + (selectedTimeframe === 0
             ? (props.quote.d > 0
               ? "from-green-300/[0.2] via-green-100/[0.09] to-green-100/[0.09] shadow-green-300/[0.17] "

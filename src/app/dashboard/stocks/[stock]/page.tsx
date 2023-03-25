@@ -101,7 +101,7 @@ export default function StockDetails({
   return (quote.isSuccess &&
     <>
       <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-8 -my-5 hidden h-10 -translate-y-8 rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0 sm:block" />
-      <div className="w-full overflow-auto mb-4 transition-all scrollbar-hide">
+      <div className="w-full overflow-auto mb-5 transition-all scrollbar-hide">
         <nav className="flex w-full items-center justify-between pb-6 sm:hidden">
           <Link href={"/dashboard/stocks/"}>
             <ArrowLeftIcon className="h-9 w-9 rounded-md bg-white/[0.1] p-2 border border-neutral-800" />
@@ -167,12 +167,12 @@ export default function StockDetails({
         </section>
       </div>
 
-      <div className="flex gap-2 rounded-lg w-full text-xs font-medium text-neutral-400 mb-4 flex-wrap">
-        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800">Open: {quote.data.o}</p>
-        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800">High: {quote.data.h}</p>
-        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800">Low: {quote.data.l}</p>
+      <div className="flex gap-2 rounded-lg w-full text-xs font-medium text-neutral-400 mb-5 flex-wrap">
+        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800 border border-white/[0.05]">Open: {quote.data.o}</p>
+        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800 border border-white/[0.05]">High: {quote.data.h}</p>
+        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800 border border-white/[0.05]">Low: {quote.data.l}</p>
         {profile.isSuccess &&
-          <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800">
+          <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800 border border-white/[0.05]">
             Market Cap: {shortNum((profile.data.marketCapitalization * 1000000).toFixed(0)).replace('+', '').toUpperCase()}
           </p>
         }

@@ -27,7 +27,7 @@ function Tabs(props: {
                 classNames(
                   "w-full rounded-xl py-1 text-xs font-bold saturate-200 leading-5 outline-none",
                   selected
-                    ? "bg-white/[0.1] font-extrabold text-white/[0.95]"
+                    ? "bg-white/[0.1] font-extrabold text-white/[0.95] border border-white/[0.1]"
                     : "text-white/[0.4] hover:bg-white/[0.04] hover:text-white/[0.90]"
                 )
               }
