@@ -8,6 +8,7 @@ import { TrashIcon, PlusIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image"
+import { motion } from "framer-motion";
 import type { iQuote, iProfile, iCompanyNews } from "@/utils/types/iStocks";
 
 // Lazy load
@@ -170,9 +171,13 @@ export default function StockDetails({
       )}
 
       {(companyNews.isSuccess && filteredNews.length > 0) &&
-        <section className={"mt-6 text-neutral-100"}>
-          <h1 className="text-xl font-bold">Related News</h1>
-          <div className="mt-4 flex flex-col gap-3">
+        <motion.section
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className={"mt-10 text-neutral-100"}
+        >
+          <h1 className="text-lg font-bold">From the News</h1>
+          <div className="mt-3 flex flex-col gap-3">
             {filteredNews.slice(0, newsLimit).map((story: iCompanyNews) => (
               <a
                 key={story.id}
@@ -180,20 +185,24 @@ export default function StockDetails({
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <article className="relative flex h-28 cursor-pointer items-center gap-4 rounded-2xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700">
-                  <div className="relative overflow-hidden h-full object-cover w-28 lg:w-36 rounded-xl bg-white/[0.1] shrink-0 contrast-75 brightness-75 saturate-125" >
-                    {story.image && <Image src={story.image} alt="" fill sizes="100%" />}
+                <motion.article
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="relative flex h-28 cursor-pointer items-center gap-3 rounded-2xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700"
+                >
+                  <div className="relative overflow-hidden h-full w-28 lg:w-36 object-cover rounded-xl bg-white/[0.1] shrink-0" >
+                    {story.image && <Image src={story.image} alt="" fill sizes="100%" className="object-cover contrast-75 brightness-75 saturate-[1.25]" />}
                   </div>
                   <div className="flex flex-col gap-1.5 h-full py-1 pr-3 w-10 flex-1">
                     <h1 className="font-semibold text-sm leading-tight max-w-prose line-clamp-2 text-ellipsis">{story.headline}</h1>
                     <p className="font-medium text-xs text-neutral-400 leading-tight max-w-prose text-ellipsis line-clamp-3">{story.summary}</p>
                   </div>
-                  <div className="absolute bottom-2 left-2 bg-neutral-900/75 rounded-tr-xl rounded-bl-xl py-1.5 px-2.5 w-fit text-xs backdrop-blur-lg text-neutral-300 font-medium backdrop-saturate-[3]">{story.source}</div>
-                </article>
+                  <div className="absolute bottom-2 left-2 bg-neutral-900/75 rounded-tr-xl rounded-bl-xl py-1.5 px-2.5 w-fit text-xs backdrop-blur-lg text-neutral-200 font-medium backdrop-saturate-[3]">{story.source}</div>
+                </motion.article>
               </a>
             ))}
           </div>
-        </section>
+        </motion.section>
       }
 
       {
