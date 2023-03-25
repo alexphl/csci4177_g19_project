@@ -19,7 +19,7 @@ Chart.register(...registerables);
 Chart.register(annotationPlugin);
 
 const stylePane =
-  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-72 sm:pb-40 transition-all overscroll-contain";
+  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-64 sm:pb-40 transition-all overscroll-contain";
 
 export default function StocksLayout({
   children, // will be a page or nested layout
@@ -43,7 +43,7 @@ export default function StocksLayout({
   }
 
   return (
-    <div className="flex-auto">
+    <div className="flex-auto overflow-y-clip h-screen w-full">
       <nav
         className={
           "mx-auto block grid-cols-[3fr_5fr] items-center gap-2 transition-all lg:container sm:grid sm:h-20 sm:py-0 sm:px-2 md:px-4 lg:gap-4 lg:px-6 xl:h-28 xl:gap-5 xl:px-20 2xl:h-32 " +

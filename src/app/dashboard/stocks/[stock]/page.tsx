@@ -24,6 +24,7 @@ function filterNews(results: iCompanyNews[] | undefined, company: iProfile | und
   const companyName = company.name.split(' ')[0];
   return (
     results.filter((item: iCompanyNews) => {
+      if (!item.summary || !item.source) return false;
       if (item.headline.includes(companyName) || item.summary.includes(companyName)) return true;
       return false;
     })
@@ -198,9 +199,9 @@ export default function StockDetails({
                 <motion.article
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="relative flex h-28 cursor-pointer items-center gap-3 rounded-2xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700"
+                  className="relative flex h-28 cursor-pointer items-center gap-3 rounded-xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700"
                 >
-                  <div className="relative flex place-content-center overflow-hidden h-full w-28 lg:w-36 object-cover rounded-xl bg-white/[0.1] shrink-0" >
+                  <div className="relative flex place-content-center overflow-hidden h-full w-28 lg:w-36 object-cover rounded-lg bg-white/[0.1] shrink-0" >
                     {story.image && <Image src={story.image} alt="" fill sizes="100%" className="object-cover contrast-75 brightness-75 saturate-[1.25]" />}
                     {!story.image && <PhotoIcon className="w-10 text-black/50" />}
                   </div>
@@ -208,7 +209,7 @@ export default function StockDetails({
                     <h1 className="font-semibold text-sm leading-tight max-w-prose line-clamp-2 text-ellipsis">{story.headline}</h1>
                     <p className="font-medium text-xs text-neutral-400 leading-tight max-w-prose text-ellipsis line-clamp-3">{story.summary}</p>
                   </div>
-                  <div className="absolute bottom-2 left-2 bg-neutral-900/75 rounded-tr-xl rounded-bl-xl py-1.5 px-2.5 w-fit text-xs backdrop-blur-lg text-neutral-200 font-medium backdrop-saturate-[3]">{story.source}</div>
+                  <div className="absolute bottom-2 left-2 bg-neutral-900/75 rounded-tr-lg rounded-bl-lg py-1.5 px-2.5 w-fit text-xs backdrop-blur-lg text-neutral-200 font-medium backdrop-saturate-[3] max-w-[7rem] truncate">{story.source}</div>
                 </motion.article>
               </a>
             ))}
