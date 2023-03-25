@@ -13,8 +13,10 @@ import {
   Button,
   TableHead,
   Container,
-  Grid
+  Grid,
+  NoSsr
 } from '@mui/material';
+import { motion } from 'framer-motion';
 // [To Do] Replaced by a real user ID
 const owner_id = "user1";
 // Main style of table
@@ -28,6 +30,18 @@ export default function Portfolio() {
   const [sharesToSell, setSharesToSell] = useState<any>({});
   const [intervalMs, setIntervalMs] = useState(1000);
   const [searchResults, setSearchResults] = useState([]);
+  // Framer motions
+  const tableVariants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.5, staggerChildren: 0.1 } },
+    exit: { opacity: 0 },
+  };
+
+  const rowVariants = {
+    initial: { opacity: 0, x: -20 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 20 },
+  };
   // [Function] Fetch a single stock price
   const fetchStockPrice = async (symbol: String) => {
     try {
@@ -42,7 +56,7 @@ export default function Portfolio() {
       return null;
     }
   };
-
+  
   // [UseQuery and Related Functions]
   // [Function] Fetch whole asset of a user
   const fetchUserPortfolio = async () => {
@@ -168,6 +182,7 @@ export default function Portfolio() {
   return (
     <div className="container max-w-5xl sm:px-8 mx-auto flex-auto">
       <Grid justifyContent="center" style={{ textAlign: 'center' }}>
+      <motion.div initial={{ y: -20 }} animate={{ y: 0 }} transition={{ duration: 0.5 }}>
         <Container style={{ padding: 20 }}>
           <div>
             <Typography variant="h3">
@@ -182,22 +197,30 @@ export default function Portfolio() {
             <Typography variant="h4" ><strong className="text-4xl text-white">Unrealized Profit: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></strong></Typography>
           </div>
         </Container>
+      </motion.div>
       </Grid>
-      <Link href="/dashboard/simulation/transhistory" passHref>
-        <Button
-          color="secondary"
-        >
-          View Transaction History
-        </Button>
-      </Link>
-      <Link href="/dashboard/simulation/buy" passHref>
-        <Button
-          color="secondary"
-        >
-          Buy a new stock
-        </Button>
-      </Link>
+      
+      <motion.div variants={tableVariants} initial="initial" animate="animate" exit="exit">
+
+      <Grid container justifyContent="space-between" style={{ marginBottom: '20px' }}>
+        <Link href="/dashboard/simulation/transhistory" passHref>
+          <motion.div whileHover={{ scale: 1.05 }}>
+            <Button color="secondary" sx={{ position: 'relative' }}>
+              View Transaction History
+            </Button>
+          </motion.div>
+        </Link>
+        <Link href="/dashboard/simulation/buy" passHref>
+          <motion.div whileHover={{ scale: 1.05 }}>
+            <Button color="secondary" sx={{ position: 'relative' }}>
+              Buy a new stock
+            </Button>
+          </motion.div>
+        </Link>
+      </Grid>
+
       <div className={stylePane}>
+      <NoSsr>
         <Table>
           <TableHead>
             <TableRow>
@@ -229,12 +252,13 @@ export default function Portfolio() {
               <TableCell ></TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <motion.tbody variants={tableVariants}>
+   
             {purchasedStocks.map((stock: any) => {
               const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
               const stockWithCurrentPrice = { ...stock, currentPrice: stockPrice };
               return (
-                <TableRow key={stock.symbol} >
+                <motion.tr key={stock.symbol} variants={rowVariants}>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
                     {stock.id.slice(-3)}
                   </TableCell>
@@ -272,14 +296,17 @@ export default function Portfolio() {
                       Sell
                     </Button>
                   </TableCell>
-                </TableRow>
+                </motion.tr>
               );
             })}
-          </TableBody>
+             
+ 
+          </motion.tbody>
         </Table>
+        </NoSsr>
       </div>
+      </motion.div>
     </div>
-
   );
 
 }
