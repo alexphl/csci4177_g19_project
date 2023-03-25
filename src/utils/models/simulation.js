@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const assetSchema = new mongoose.Schema({
   asset_name: String,
@@ -17,9 +17,6 @@ const transactionSchema = new mongoose.Schema({
   transaction_date: Date,
   transaction_price: Number,
 });
-const stockSchema = new mongoose.Schema({
-  stock: String,
-});
 
 const portfolioSchema = new mongoose.Schema({
   last_update: {
@@ -29,15 +26,12 @@ const portfolioSchema = new mongoose.Schema({
   owner_id: String,
   profit: {
     type: Number,
-    default: 0
+    default: 0,
   },
   assets: [assetSchema],
   transaction_history: [transactionSchema],
-  stock_list : [stockSchema],
+  stock_list: [String],
 });
 
-
-module.exports = mongoose.models.Portfolio || mongoose.model("Portfolio", portfolioSchema);
-
-
-
+module.exports =
+  mongoose.models.Portfolio || mongoose.model("Portfolio", portfolioSchema);

@@ -2,6 +2,7 @@ import { Router } from "express";
 import LRU from "lru-cache"
 const router = Router();
 
+import Model from '../models/simulation';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 dayjs.extend(utc)
@@ -12,7 +13,36 @@ const cache = new LRU({
   ttl: 1000 * 60 * 25, // Response's Time to Live (ms)
 });
 
-const userStocks = { list: ["AAPL", "MSFT", "GOOG"] };
+// Get user stocks
+router.get("/user/:id", async function(_req, res, next) {
+  const owner_id = _req.params.id;
+
+  await Model.findOne({ owner_id })
+    .then((portfolio) => {
+      res.send(portfolio.stock_list);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      next(error);
+    });
+});
+
+// Set user stocks
+router.post("/user/:id", async function(req, res) {
+  const owner_id = req.params.id;
+  const newList = req.body;
+
+  const portfolio = await Model.findOne({ owner_id });
+
+  if (!portfolio) {
+    return res.status(404).json({ message: 'Portfolio not found' });
+  }
+
+  portfolio.stock_list = newList;
+
+  await portfolio.save();
+  res.sendStatus(200);
+});
 
 async function cachedFetch(route: string, _res: any, reqUrl: string, next: any) {
   await fetch(
@@ -213,18 +243,6 @@ router.get("/company-news/:symbol", async function(req, _res, next) {
   const from = today.startOf('day').subtract(2, 'day').format('YYYY-MM-DD');
 
   cachedFetch(`https://finnhub.io/api/v1/company-news?symbol=${req.params.symbol}&from=${from}&to=${to}`, _res, req.url, next);
-});
-
-// Get user stocks
-router.get("/user", async function(_req, res) {
-  res.send(userStocks.list);
-});
-
-// Set user stocks
-router.post("/user", async function(req, res) {
-  const newList = req.body;
-  if (newList) userStocks.list = newList;
-  res.sendStatus(200);
 });
 
 export default router;
