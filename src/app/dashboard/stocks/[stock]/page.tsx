@@ -14,6 +14,20 @@ import type { iQuote, iProfile, iCompanyNews } from "@/utils/types/iStocks";
 const Chart = dynamic(() => import("./Chart"));
 const NotFound = dynamic(() => import("../../[404]/page"));
 
+// Filters search results to hide stock subvariants
+// This logic will likely be moved to backend
+function filterNews(results: iCompanyNews[] | undefined, company: iProfile | undefined) {
+  if (!results || !results[0]) { return []; }
+  if (!company || !company.name) { return []; }
+  const companyName = company.name.split(' ')[0];
+  return (
+    results.filter((item: iCompanyNews) => {
+      if (item.headline.includes(companyName) || item.summary.includes(companyName)) return true;
+      return false;
+    })
+  );
+}
+
 export default function StockDetails({
   params,
 }: {
@@ -30,25 +44,18 @@ export default function StockDetails({
     queryKey: [`/api/stocks/user`],
   });
   const companyNews = useQuery<iCompanyNews[]>({
-    queryKey: [`/api/stocks/company-news/`, params.stock]
+    queryKey: [`/api/stocks/company-news/`, params.stock],
+    enabled: !!profile.data
   });
   const [newsLimit, setNewsLimit] = useState(3);
   const isAdded =
     userStocks.isSuccess && userStocks.data.includes(params.stock);
 
-  function filterNews(results: iCompanyNews[] | undefined, company: iProfile | undefined) {
-    if (!results || !results[0]) { return []; }
-    if (!company || !company.name) { return []; }
-    const companyName = company.name.split(' ')[0];
-    return (
-      results.filter((item: iCompanyNews) => {
-        if (item.headline.includes(companyName) || item.summary.includes(companyName)) return true;
-        return false;
-      })
-    );
-  }
-
-  const filteredNews = filterNews(companyNews.data, profile.data);
+  const filteredNews = useMemo(
+    () =>
+      filterNews(companyNews.data, profile.data),
+    [companyNews.data, profile.data]
+  );
 
   // Function to update user stock list
   // Implements optimistic updates
