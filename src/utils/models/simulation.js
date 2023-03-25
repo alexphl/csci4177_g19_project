@@ -17,6 +17,9 @@ const transactionSchema = new mongoose.Schema({
   transaction_date: Date,
   transaction_price: Number,
 });
+const stockListSchema = new mongoose.Schema({
+  stock_List: String,
+});
 
 const portfolioSchema = new mongoose.Schema({
   last_update: {
@@ -30,6 +33,7 @@ const portfolioSchema = new mongoose.Schema({
   },
   assets: [assetSchema],
   transaction_history: [transactionSchema],
+  stock_list : [stockListSchema],
 });
 
 
