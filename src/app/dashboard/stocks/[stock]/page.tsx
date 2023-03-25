@@ -51,6 +51,12 @@ export default function StockDetails({
   const isAdded =
     userStocks.isSuccess && userStocks.data.includes(params.stock);
 
+  const filteredNews = useMemo(
+    () =>
+      filterNews(companyNews.data, profile.data),
+    [companyNews.data, profile.data]
+  );
+
   // Function to update user stock list
   // Implements optimistic updates
   const userStocksMut = useMutation({
@@ -85,12 +91,6 @@ export default function StockDetails({
       queryClient.invalidateQueries({ queryKey: ["/api/stocks/user"] });
     },
   });
-
-  const filteredNews = useMemo(
-    () =>
-      filterNews(companyNews.data, profile.data),
-    [companyNews.data]
-  );
 
   if (quote.isSuccess && quote.data.c === 0 && quote.data.d === null) {
     return <NotFound />;
