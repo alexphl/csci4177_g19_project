@@ -54,7 +54,7 @@ export default function StockDetails({
   const filteredNews = useMemo(
     () =>
       filterNews(companyNews.data, profile.data),
-    [companyNews.data, profile.data]
+    [companyNews, profile]
   );
 
   // Function to update user stock list
