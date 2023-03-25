@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -16,11 +16,13 @@ const NotFound = dynamic(() => import("../../[404]/page"));
 
 // Filters search results to hide stock subvariants
 // This logic will likely be moved to backend
-function filterNews(results: iCompanyNews[] | undefined, company: string) {
+function filterNews(results: iCompanyNews[] | undefined, company: iProfile | undefined) {
   if (!results || !results[0]) { return []; }
+  if (!company || !company.name) { return []; }
+  const companyName = company.name.split(' ')[0];
   return (
     results.filter((item: iCompanyNews) => {
-      if (item.headline.includes(company) || item.summary.includes(company)) return true;
+      if (item.headline.includes(companyName) || item.summary.includes(companyName)) return true;
       return false;
     })
   );
@@ -84,7 +86,11 @@ export default function StockDetails({
     },
   });
 
-  const filteredNews = companyNews.isSuccess ? filterNews(companyNews.data, profile.data!.name.split(' ')[0]) : [];
+  const filteredNews = useMemo(
+    () =>
+      filterNews(companyNews.data, profile.data),
+    [companyNews.data]
+  );
 
   if (quote.isSuccess && quote.data.c === 0 && quote.data.d === null) {
     return <NotFound />;
@@ -167,7 +173,7 @@ export default function StockDetails({
         <section className={"mt-6 text-neutral-100"}>
           <h1 className="text-xl font-bold">Related News</h1>
           <div className="mt-4 flex flex-col gap-3">
-            {companyNews.data.map((story: iCompanyNews) => (
+            {filteredNews.slice(0, newsLimit).map((story: iCompanyNews) => (
               <a
                 key={story.id}
                 href={story.url}
