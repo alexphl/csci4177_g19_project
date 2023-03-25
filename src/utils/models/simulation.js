@@ -17,7 +17,7 @@ const transactionSchema = new mongoose.Schema({
   transaction_date: Date,
   transaction_price: Number,
 });
-const stockListSchema = new mongoose.Schema({
+const stockSchema = new mongoose.Schema({
   stock: String,
 });
 
@@ -33,7 +33,7 @@ const portfolioSchema = new mongoose.Schema({
   },
   assets: [assetSchema],
   transaction_history: [transactionSchema],
-  stock_list : [stockListSchema],
+  stock_list : [stockSchema],
 });
 
 
