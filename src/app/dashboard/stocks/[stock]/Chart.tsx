@@ -94,6 +94,18 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
               legend: {
                 display: false,
               },
+              annotation: {
+                annotations: {
+                  line1: {
+                    type: "line",
+                    yMin: props.quote.o,
+                    yMax: props.quote.o,
+                    borderColor: "rgba(255,255,255,0.4)",
+                    borderWidth: 1.5,
+                    borderDash: [10, 10],
+                  },
+                },
+              },
             },
             scales: {
               y: {
