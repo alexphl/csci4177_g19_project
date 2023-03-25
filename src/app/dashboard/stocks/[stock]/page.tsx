@@ -84,8 +84,6 @@ export default function StockDetails({
     },
   });
 
-  const filteredNews = companyNews.isSuccess ? filterNews(companyNews.data, profile.data!.name.split(' ')[0]) : [];
-
   if (quote.isSuccess && quote.data.c === 0 && quote.data.d === null) {
     return <NotFound />;
   }
@@ -167,7 +165,7 @@ export default function StockDetails({
         <section className={"mt-6 text-neutral-100 transition-all"}>
           <h1 className="text-xl font-bold">Related News</h1>
           <div className="mt-4 flex flex-col gap-3">
-            {filteredNews.slice(0, newsLimit).map((story: iCompanyNews) => (
+            {filterNews(companyNews.data, profile.data!.name.split(' ')[0]).slice(0, newsLimit).map((story: iCompanyNews) => (
               <a
                 key={story.id}
                 href={story.url}
@@ -191,7 +189,7 @@ export default function StockDetails({
       }
 
       {
-        filteredNews && filteredNews.length > newsLimit && (
+        companyNews.data && companyNews.data.length > newsLimit && (
           <div className="flex mt-6 w-full flex-col items-center justify-center">
             <button
               className="rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-2 text-sm font-medium active:opacity-70"
