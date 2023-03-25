@@ -19,6 +19,8 @@ router.post('/buy', async (req, res) => {
       portfolio = new Model({
         owner_id,
         assets: [],
+        transaction_history:[],
+        stock_list:[],
       });
     }
     
