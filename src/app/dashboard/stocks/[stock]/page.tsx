@@ -44,18 +44,13 @@ export default function StockDetails({
     queryKey: [`/api/stocks/user`],
   });
   const companyNews = useQuery<iCompanyNews[]>({
-    queryKey: [`/api/stocks/company-news/`, params.stock],
-    enabled: !!profile.data
+    queryKey: [`/api/stocks/company-news/`, params.stock]
   });
   const [newsLimit, setNewsLimit] = useState(3);
   const isAdded =
     userStocks.isSuccess && userStocks.data.includes(params.stock);
 
-  const filteredNews = useMemo(
-    () =>
-      filterNews(companyNews.data, profile.data),
-    [companyNews, profile]
-  );
+  const filteredNews = filterNews(companyNews.data, profile.data);
 
   // Function to update user stock list
   // Implements optimistic updates
