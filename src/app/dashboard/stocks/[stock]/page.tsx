@@ -171,11 +171,7 @@ export default function StockDetails({
       )}
 
       {(companyNews.isSuccess && filteredNews.length > 0) &&
-        <motion.section
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className={"mt-10 text-neutral-100"}
-        >
+        <section className={"mt-10 text-neutral-100"} >
           <h1 className="text-lg font-bold">From the News</h1>
           <div className="mt-3 flex flex-col gap-3">
             {filteredNews.slice(0, newsLimit).map((story: iCompanyNews) => (
@@ -202,7 +198,7 @@ export default function StockDetails({
               </a>
             ))}
           </div>
-        </motion.section>
+        </section>
       }
 
       {
