@@ -40,8 +40,12 @@ router.post("/user/:id", async function(req, res) {
 
   portfolio.stock_list = newList;
 
-  await portfolio.save();
-  res.sendStatus(200);
+  const writeResult = await portfolio.save();
+  if (writeResult.hasWriteError) {
+    return res.status(500).json({ message: 'Write error' });
+  }
+
+  return res.sendStatus(200);
 });
 
 async function cachedFetch(route: string, _res: any, reqUrl: string, next: any) {

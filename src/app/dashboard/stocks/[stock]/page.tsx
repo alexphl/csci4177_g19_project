@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { BookmarkIcon, BookmarkSlashIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon, BookmarkSlashIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image"
@@ -200,8 +200,9 @@ export default function StockDetails({
                   animate={{ opacity: 1 }}
                   className="relative flex h-28 cursor-pointer items-center gap-3 rounded-2xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700"
                 >
-                  <div className="relative overflow-hidden h-full w-28 lg:w-36 object-cover rounded-xl bg-white/[0.1] shrink-0" >
+                  <div className="relative flex place-content-center overflow-hidden h-full w-28 lg:w-36 object-cover rounded-xl bg-white/[0.1] shrink-0" >
                     {story.image && <Image src={story.image} alt="" fill sizes="100%" className="object-cover contrast-75 brightness-75 saturate-[1.25]" />}
+                    {!story.image && <PhotoIcon className="w-10 text-black/50" />}
                   </div>
                   <div className="flex flex-col gap-1.5 h-full py-1 pr-3 w-10 flex-1">
                     <h1 className="font-semibold text-sm leading-tight max-w-prose line-clamp-2 text-ellipsis">{story.headline}</h1>
