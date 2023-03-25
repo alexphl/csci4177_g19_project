@@ -181,12 +181,12 @@ export default function StockDetails({
                 target="_blank"
               >
                 <article className="relative flex h-28 cursor-pointer items-center gap-4 rounded-2xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700">
-                  <div className="relative overflow-hidden h-full object-cover w-36 rounded-xl bg-white/[0.1] shrink-0 contrast-75 brightness-75 saturate-125" >
+                  <div className="relative overflow-hidden h-full object-cover w-28 lg:w-36 rounded-xl bg-white/[0.1] shrink-0 contrast-75 brightness-75 saturate-125" >
                     {story.image && <Image src={story.image} alt="" fill sizes="100%" />}
                   </div>
-                  <div className="flex flex-col gap-1 h-full py-2 pr-3 w-10 flex-1">
-                    <h1 className="font-semibold leading-relaxed max-w-prose truncate">{story.headline}</h1>
-                    <p className="text-sm text-neutral-400 max-w-prose text-ellipsis line-clamp-2">{story.summary}</p>
+                  <div className="flex flex-col gap-1.5 h-full py-1 pr-3 w-10 flex-1">
+                    <h1 className="font-semibold text-sm leading-tight max-w-prose line-clamp-2 text-ellipsis">{story.headline}</h1>
+                    <p className="font-medium text-xs text-neutral-400 leading-tight max-w-prose text-ellipsis line-clamp-3">{story.summary}</p>
                   </div>
                   <div className="absolute bottom-2 left-2 bg-neutral-900/75 rounded-tr-xl rounded-bl-xl py-1.5 px-2.5 w-fit text-xs backdrop-blur-lg text-neutral-300 font-medium backdrop-saturate-[3]">{story.source}</div>
                 </article>
