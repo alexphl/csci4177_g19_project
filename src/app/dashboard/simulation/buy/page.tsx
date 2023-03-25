@@ -11,7 +11,7 @@ import {
   Button,
   Grid
 } from '@mui/material';
-
+import { motion } from 'framer-motion';
 const Buy = () => {
   const router = useRouter();
   const [shares, setShares] = useState(0);
@@ -21,6 +21,33 @@ const Buy = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const owner_id = "user1";
+  // Framer Motion
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delay: 0.5,
+        duration: 1.5,
+      },
+    },
+    exit: {
+      x: '-100vw',
+      transition: { ease: 'easeInOut' },
+    },
+  };
+
+  const buttonVariants = {
+    hover: {
+      scale: 1.1,
+      textShadow: '0px 0px 8px rgb(255, 255, 255)',
+      boxShadow: '0px 0px 8px rgb(255, 255, 255)',
+      transition: {
+        duration: 0.3,
+        yoyo: Infinity,
+      },
+    },
+  };
   // fetch a single stock price
   const fetchStockPrice = async (symbol: String) => {
     try {
@@ -104,7 +131,12 @@ const Buy = () => {
   };
 
   return (
-
+    <motion.div
+    variants={containerVariants}
+    initial="hidden"
+    animate="visible"
+    exit="exit"
+  >
     <Grid justifyContent="center" style={{ textAlign: 'center' }}>
       <Typography variant="h3"><strong className="text-4xl text-white">BUY</strong></Typography>
       <div>
@@ -146,11 +178,13 @@ const Buy = () => {
           />
           <br />
           <br />
+          <motion.div variants={buttonVariants} whileHover="hover">
           <Button onClick={handleStockPurchase} disabled={isSubmitting}
             color="primary"
           >
             Purchase
           </Button>
+          </motion.div>
           <Link href="/dashboard/simulation" passHref>
             <Button
               color="secondary"
@@ -162,6 +196,7 @@ const Buy = () => {
 
       </div>
     </Grid>
+    </motion.div>
   );
 }
 export default Buy;

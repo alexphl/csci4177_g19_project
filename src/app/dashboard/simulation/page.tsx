@@ -194,7 +194,7 @@ export default function Portfolio() {
             </Typography>
           </div>
           <div>
-            <Typography variant="h4" ><strong className="text-4xl text-white">Unrealized Profit: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></strong></Typography>
+            <Typography variant="h4" ><strong className="text-4xl text-white">Unrealized: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></strong></Typography>
           </div>
         </Container>
       </motion.div>
