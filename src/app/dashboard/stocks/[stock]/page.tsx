@@ -111,7 +111,7 @@ export default function StockDetails({
           </Link>
           {userStocks.isSuccess && isAdded && (
             <button
-              className="rounded-md bg-white/[0.1] p-2 hover:bg-rose-400 hover:text-black border border-neutral-800"
+              className="rounded-md bg-white/[0.1] p-2 hover:bg-rose-300/75 hover:text-black border border-neutral-800"
               onClick={() =>
                 userStocksMut.mutate([
                   ...userStocks.data.filter((item: string) => {
@@ -120,17 +120,17 @@ export default function StockDetails({
                 ])
               }
             >
-              <BookmarkSlashIcon className="w-4" />
+              <BookmarkSlashIcon className="w-4" fill="rgba(255,255,255,0.2)" />
             </button>
           )}
           {userStocks.isSuccess && !isAdded && (
             <button
-              className="rounded-md bg-white/[0.1] p-2 hover:bg-green-400 hover:text-black border border-neutral-800"
+              className="rounded-md bg-white/[0.1] p-2 hover:bg-green-300/75 hover:text-black border border-neutral-800"
               onClick={() =>
                 userStocksMut.mutate([...userStocks.data.concat(params.stock)])
               }
             >
-              <BookmarkIcon className="w-4" />
+              <BookmarkIcon className="w-4" fill="rgba(255,255,255,0.2)" />
             </button>
           )}
         </nav>
