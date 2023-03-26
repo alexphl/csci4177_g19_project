@@ -3,31 +3,9 @@
 import { Router } from "express";
 import { getnew, getnews_list } from "../controllers/newsController";
 const router = Router();
-import Model from "../models/News_Subscribed";
+import Model from "../models/simulation";
 
 //Data retrieval routes:
-const user = {
-  account_id: 371138,
-  subscribe_stocks: [
-    {
-      ticker_symbol: "TSLA",
-      name: "Tesla",
-    },
-
-    {
-      ticker_symbol: "AAPL",
-      name: "Apple",
-    },
-    {
-      ticker_symbol: "GOOG",
-      name: "Alphabet",
-    },
-    {
-      ticker_symbol: "AFRM",
-      name: "Affirm Holdings",
-    },
-  ],
-};
 const newsexample = [
   {
     source: {
@@ -77,8 +55,9 @@ router.get("/", async function (req, res) {
 //Route to get user subscribed news list
 router.get("/user/:id", async function (req, res) {
   try {
-    const subscribes = await Model.findOne({ account_id: req.params.id });
-    var list = subscribes.subscribe_stocks;
+
+    const subscribes = await Model.findOne({ owner_id: req.params.id });
+    var list = subscribes.stock_list;
     await getnews_list(list.slice(0, 4))
       .then((docs) => {
         var subscription = docs;
