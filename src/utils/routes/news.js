@@ -2,6 +2,7 @@
 
 import { Router } from "express";
 import { getnew, getnews_list } from "../controllers/newsController";
+import { stock_symbol } from "./stock_functions";
 const router = Router();
 import Model from "../models/simulation";
 
@@ -58,23 +59,24 @@ router.get("/user/:id", async function (req, res) {
 
     const subscribes = await Model.findOne({ owner_id: req.params.id });
     var list = subscribes.stock_list;
-    await getnews_list(list.slice(0, 4))
-      .then((docs) => {
-        var subscription = docs;
-        for (var i = 0; i < subscription.length; i++) {
-          subscription[i].ticker_symbol = list[i].ticker_symbol;
-        }
-        res.send(subscription);
-      })
-      .catch((err) => {
-        res.send(newsexample);
-      });
+    list.forEach(element=> {
+      stock_symbol(element);
+    });
+    // await getnews_list(list.slice(0, 4))
+    //   .then((docs) => {
+    //     var subscription = docs;
+    //     for (var i = 0; i < subscription.length; i++) {
+    //       subscription[i].ticker_symbol = list[i].ticker_symbol;
+    //     }
+    //     res.send(subscription);
+    //   })
+    //   .catch((err) => {
+    //     res.send(newsexample);
+    //   });
   } catch (error) {
     console.log(error);
   }
 });
-// router.get("/deatil/:id", async function (req, res) {
 
-// });
 
 export default router;
