@@ -37,11 +37,13 @@ function StockListItem(props: {
 
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, props.stock],
+    retry: true,
     enabled: !!props.stock && isInView,
   });
   const profile = useQuery<iProfile>({
     queryKey: [`/api/stocks/profile/`, props.stock],
     staleTime: Infinity,
+    retry: true,
     enabled: !!props.stock && !!quote.data && isInView,
   });
 

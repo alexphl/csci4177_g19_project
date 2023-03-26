@@ -42,10 +42,12 @@ export default function StockDetails({
   const router = useRouter();
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, params.stock],
+    retry: true,
   });
   const profile = useQuery<iProfile>({
     queryKey: [`/api/stocks/profile/`, params.stock],
     staleTime: Infinity,
+    retry: true,
   });
   const userStocks = useQuery<string[]>({
     queryKey: [`/api/stocks/user/${userID}`],

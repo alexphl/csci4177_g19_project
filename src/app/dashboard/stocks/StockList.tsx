@@ -107,6 +107,7 @@ function StockList(props: {
     queryKey: [`/api/stocks/search/`, encodeURIComponent(debouncedQuery.trim())],
     enabled: !!debouncedQuery,
     staleTime: Infinity,
+    retry: true,
   });
 
   // Filter search results
