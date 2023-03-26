@@ -12,7 +12,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { motion, Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
 import { CubeTransparentIcon } from "@heroicons/react/20/solid";
-import type { iSearch, iSearchItem } from "@/utils/types/iStocks";
+import type { iSearch, iSearchItem } from "@/types/iStocks";
 
 // Lazy-load components
 const StockListItem = dynamic(() => import("./StockListItem"));
@@ -34,6 +34,8 @@ function filterResults(results: iSearch | undefined) {
   );
 }
 
+const userID = "user1";
+
 function StockList(props: {
   searchIsActive: boolean;
   searchQuery: string;
@@ -41,14 +43,14 @@ function StockList(props: {
 }) {
   const selectedStock = props.selectedStock;
   const userStocks = useQuery<string[]>({
-    queryKey: [`/api/stocks/user`],
+    queryKey: [`/api/stocks/user/${userID}`],
   });
 
   // Function to update user stock list
   // Implements optimistic updates
   const userStocksMut = useMutation({
     mutationFn: ((newList: string[]) =>
-      fetch(`/api/stocks/user`, {
+      fetch(`/api/stocks/user/${userID}`, {
         method: "POST",
         body: JSON.stringify(newList),
         headers: { "Content-Type": "application/json" },
@@ -57,13 +59,13 @@ function StockList(props: {
     onMutate: async (newList) => {
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
-      await queryClient.cancelQueries({ queryKey: ["/api/stocks/user"] });
+      await queryClient.cancelQueries({ queryKey: [`/api/stocks/user/${userID}`] });
 
       // Snapshot the previous value
-      const previousList = queryClient.getQueryData(["/api/stocks/user"]);
+      const previousList = queryClient.getQueryData([`/api/stocks/user/${userID}`]);
 
       // Optimistically update to the new value
-      queryClient.setQueryData(["/api/stocks/user"], () => newList);
+      queryClient.setQueryData([`/api/stocks/user/${userID}`], () => newList);
 
       // Return a context object with the snapshotted value
       return { previousList };
@@ -71,11 +73,11 @@ function StockList(props: {
     // If the mutation fails,
     // use the context returned from onMutate to roll back
     onError: (context: { previousList: string[] }) => {
-      queryClient.setQueryData(["/api/stocks/user"], context.previousList);
+      queryClient.setQueryData([`/api/stocks/user/${userID}`], context.previousList);
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/stocks/user"] });
+      queryClient.invalidateQueries({ queryKey: [`/api/stocks/user/${userID}`] });
     },
   });
 
@@ -246,7 +248,11 @@ function StockList(props: {
               {
                 /* SHOW LOADING PLACEHOLDER */
                 searchResult.isFetching && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex flex-col gap-4"
+                  >
                     {[...Array(3)].map((_x, i) => (
                       <StockListItem
                         isAdded={false}

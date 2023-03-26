@@ -15,11 +15,11 @@ export default function UIWrap() {
   const { user } = useContext<any>(userContext);
 
   // the effect forces router to only run on client - necessary for build to work
-  useEffect(() => {
-    if (!user.loggedIn) {
-      router.replace("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!user.loggedIn) {
+  //     router.replace("/");
+  //   }
+  // }, []);
 
   return (
     <>

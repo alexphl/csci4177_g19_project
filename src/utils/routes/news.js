@@ -90,7 +90,6 @@ router.get("/user/:id", async function (req, res) {
       .catch((err) => {
         res.send(newsexample);
       });
-    
   } catch (error) {
     console.log(error);
   }

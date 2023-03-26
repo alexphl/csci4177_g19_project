@@ -19,7 +19,7 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
   return (
     <>
       <div className="fixed z-50 flex bottom-5 justify-center items-center w-full px-8 md:hidden">
-        <nav className="z-50 text-white/[0.8] flex items-center justify-around bg-neutral-900/[0.6] border-[1.5px] border-white/[0.1] backdrop-blur-lg backdrop-saturate-[5.0] shadow-xl w-full max-w-sm h-[3.25rem] rounded-2xl">
+        <nav className="z-50 text-white/[0.8] flex items-center justify-around bg-neutral-900/[0.6] border-[1.5px] border-white/[0.1] backdrop-blur-lg backdrop-saturate-[3.0] shadow-xl w-full max-w-sm h-[3.25rem] rounded-2xl">
           {mobileBar.map((entry) =>
             <Link key={entry.link} href={entry.link}>
               <div className="w-[2.15rem] p-1.5 hover:bg-white/[0.05] rounded-xl drop-shadow-sm">

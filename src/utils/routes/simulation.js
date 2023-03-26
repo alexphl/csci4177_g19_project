@@ -1,14 +1,15 @@
-const express = require('express');
+import { Router } from "express";
+import Model from "../models/simulation";
 //import Portfolio from '../schemas/simulation';
-const router = express.Router();
-const Model = require('../models/simulation');
+const router = Router();
 //Post Method
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get("/", function (_req, res, _next) {
+  res.render("index", { title: "Express" });
 });
 
-router.post('/buy', async (req, res) => {
-  const { owner_id, asset_name, asset_type, ticker, quantity,purchase_price } = req.body;
+router.post("/buy", async (req, res) => {
+  const { owner_id, asset_name, asset_type, ticker, quantity, purchase_price } =
+    req.body;
   const purchase_date = new Date();
   try {
     // Search by owner id
@@ -19,9 +20,11 @@ router.post('/buy', async (req, res) => {
       portfolio = new Model({
         owner_id,
         assets: [],
+        transaction_history:[],
+        stock_list:[],
       });
     }
-    
+
     const newAsset = {
       asset_name,
       asset_type,
@@ -31,7 +34,7 @@ router.post('/buy', async (req, res) => {
       purchase_price,
     };
     portfolio.assets.push(newAsset);
-   
+
     // ADD A NEW TRANSACTION HISTORY
     const transaction = {
       transaction_type: "BUY",
@@ -42,54 +45,59 @@ router.post('/buy', async (req, res) => {
       transaction_date: purchase_date,
       transaction_price: purchase_price,
     };
-  
+
     portfolio.transaction_history.push(transaction);
     const updatedPortfolio = await portfolio.save();
 
     // SAVE NEW ASSETS
-    
+
     res.status(200).json(updatedPortfolio);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
-  
 });
 
 // fetching profit
-router.get('/profit/:owner_id', async (req, res) => {
+router.get("/profit/:owner_id", async (req, res) => {
   try {
     const { owner_id } = req.params;
     const portfolio = await Model.findOne({ owner_id });
 
     if (!portfolio) {
-      return res.status(404).json({ message: 'Portfolio not found' });
+      return res.status(404).json({ message: "Portfolio not found" });
     }
 
-    res.status(200).json( portfolio.profit );
+    res.status(200).json(portfolio.profit);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    res.status(500).json({ message: "Server error", error });
   }
 });
 // Sell Stock
-router.put('/sell', async (req, res) => {
-  const { owner_id, ticker, quantity: quantity_to_sell, sell_price, asset_id } = req.body;
+router.put("/sell", async (req, res) => {
+  const {
+    owner_id,
+    ticker,
+    quantity: quantity_to_sell,
+    sell_price,
+    asset_id,
+  } = req.body;
 
   try {
     const portfolio = await Model.findOne({ owner_id });
 
     if (!portfolio) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Find the asset matching the provided asset_id
     const asset = portfolio.assets.id(asset_id);
 
     if (!asset) {
-      return res.status(404).json({ message: 'Asset not found' });
+      return res.status(404).json({ message: "Asset not found" });
     }
 
     if (asset.quantity < quantity_to_sell) {
-      return res.status(400).json({ message: 'Not enough quantity to sell' });
+      return res.status(400).json({ message: "Not enough quantity to sell" });
     }
 
     // Calculate the profit for this sell transaction
@@ -106,7 +114,7 @@ router.put('/sell', async (req, res) => {
     }
 
     const transaction = {
-      transaction_type: 'SELL',
+      transaction_type: "SELL",
       asset_name: asset.asset_name,
       asset_type: asset.asset_type,
       ticker,
@@ -124,16 +132,14 @@ router.put('/sell', async (req, res) => {
   }
 });
 
-
-
-router.get('/portfolio/:owner_id', async (req, res) => {
+router.get("/portfolio/:owner_id", async (req, res) => {
   const { owner_id } = req.params;
 
   try {
     const portfolio = await Model.findOne({ owner_id });
 
     if (!portfolio) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.status(200).json(portfolio.assets);
@@ -142,14 +148,14 @@ router.get('/portfolio/:owner_id', async (req, res) => {
   }
 });
 
-router.get('/transaction-history/:owner_id', async (req, res) => {
+router.get("/transaction-history/:owner_id", async (req, res) => {
   const { owner_id } = req.params;
 
   try {
     const portfolio = await Model.findOne({ owner_id });
 
     if (!portfolio) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.status(200).json(portfolio.transaction_history);
@@ -159,14 +165,14 @@ router.get('/transaction-history/:owner_id', async (req, res) => {
 });
 
 //Clear one person's current stock
-router.delete('/stocks/:owner_id', async (req, res) => {
+router.delete("/stocks/:owner_id", async (req, res) => {
   const { owner_id } = req.params;
 
   try {
     const portfolio = await Model.findOne({ owner_id });
 
     if (!portfolio) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Clear all stocks
@@ -174,12 +180,10 @@ router.delete('/stocks/:owner_id', async (req, res) => {
 
     // Save the updated portfolio
     const updatedPortfolio = await portfolio.save();
-    res.status(200).json({ message: 'All stocks cleared', updatedPortfolio });
+    res.status(200).json({ message: "All stocks cleared", updatedPortfolio });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
 
-
-
-module.exports = router;
+export default router;

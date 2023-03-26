@@ -3,62 +3,73 @@
 import { Line } from "react-chartjs-2";
 import { memo, useState } from "react";
 import dynamic from "next/dynamic";
-import type { iCandle, iQuote } from "@/utils/types/iStocks";
+import type { iCandle, iQuote } from "@/types/iStocks";
 import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 
 const Tabs = dynamic(() => import("./Tabs"));
 
-const chartTimeframes = ["1D", "1W", "1M", "6M", "1Y", "5Y", "ALL"];
+const chartTimeframes = ["1D", "1W", "1M", "6M", "1Y"];
 
 function formatLabels(labels: number[], timeframe: number) {
   switch (timeframe) {
     case 0:
       return labels.map((timestamp) => {
-        const date = new Date(timestamp * 1000);
-        return date.toLocaleString("en-GB", {
-          hour: "numeric",
-          minute: "2-digit"
-        });
+        return dayjs(timestamp * 1000).format("HH:mm");
+      })
+    case 1:
+      return labels.map((timestamp) => {
+        return dayjs(timestamp * 1000).format("ddd D, HH:mm");
       })
     default:
-      return labels.map((timestamp) => new Date(timestamp * 1000).toString())
+      return labels.map((timestamp) => {
+        return dayjs(timestamp * 1000).format("D MMM YY");
+      })
   }
 }
 
 function StockChart(props: { symbol: string; quote: iQuote }) {
+  const [selectedTimeframe, setSelectedTimeframe] = useState(0);
+
   const points = useQuery<iCandle>({
-    queryKey: ["/api/stocks/hist/today/", props.symbol],
+    queryKey: ["/api/stocks/hist/", `${chartTimeframes[selectedTimeframe]}/`, props.symbol],
     initialData: { c: [], d: [], o: [], t: [], s: "ok" },
   });
 
-  const [selectedTimeframe, setSelectedTimeframe] = useState(0);
-
   const lineColor =
-    props.quote.d > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)";
+    selectedTimeframe === 0
+      ? (props.quote.d > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)")
+      : (points.data.c[points.data.c.length - 1] - points.data.c[0] > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)");
 
   if (points.data.s !== "ok") { return (<> </>) }
-
   return (
     <>
       <div
         className={
-          `relative z-10 h-56 w-full rounded-xl border border-neutral-800 bg-gradient-to-bl p-1 shadow-2xl md:h-64 lg:h-72 2xl:h-80 2xl:p-2 ` +
-          (props.quote.d > 0
-            ? "from-green-300/[0.2] via-green-100/[0.09] to-green-100/[0.09] shadow-green-300/[0.17] "
-            : "from-red-300/[0.2] via-red-100/[0.09] to-red-100/[0.09] shadow-red-300/[0.17] ")
+          `relative z-10 h-56 w-full transition-all rounded-xl border border-neutral-800 bg-gradient-to-bl p-1 shadow-2xl md:h-64 lg:h-72 2xl:h-80 2xl:p-2 `
+          + (points.isLoading ? " saturate-0 " : "")
+          + (selectedTimeframe === 0
+            ? (props.quote.d > 0
+              ? "from-green-300/[0.2] via-green-100/[0.09] to-green-100/[0.09] shadow-green-300/[0.17] "
+              : "from-red-300/[0.2] via-red-100/[0.09] to-red-100/[0.09] shadow-red-300/[0.17] ")
+            : (points.data.c[points.data.c.length - 1] - points.data.c[0] > 0
+              ? "from-green-300/[0.2] via-green-100/[0.09] to-green-100/[0.09] shadow-green-300/[0.17] "
+              : "from-red-300/[0.2] via-red-100/[0.09] to-red-100/[0.09] shadow-red-300/[0.17] ")
+          )
         }
       >
         <Line
           data={{
-            labels: formatLabels(points.data.t.concat(props.quote.t), selectedTimeframe),
+            labels: formatLabels(points.data.t, selectedTimeframe),
             datasets: [
               {
                 label: "Price",
-                data: points.data.c.concat(props.quote.c),
+                data: points.data.c,
                 borderColor: lineColor,
                 borderWidth: 3,
                 spanGaps: true,
                 normalized: true,
+                tension: 0.1,
               },
             ],
           }}
@@ -82,6 +93,18 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
             plugins: {
               legend: {
                 display: false,
+              },
+              annotation: {
+                annotations: {
+                  line1: {
+                    type: "line",
+                    yMin: props.quote.o,
+                    yMax: props.quote.o,
+                    borderColor: "rgba(255,255,255,0.4)",
+                    borderWidth: 1.5,
+                    borderDash: [10, 10],
+                  },
+                },
               },
             },
             scales: {
@@ -131,7 +154,7 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
       <Tabs
         selector={[selectedTimeframe, setSelectedTimeframe]}
         components={chartTimeframes}
-        className="my-1.5 px-6 xl:my-2"
+        className="my-1 px-8 lg:px-12 xl:my-2"
       />
     </>
   );
