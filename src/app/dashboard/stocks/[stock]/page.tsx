@@ -6,11 +6,12 @@ import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { BookmarkIcon, BookmarkSlashIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import Image from "next/image"
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { iQuote, iProfile, iCompanyNews } from "@/types/iStocks";
 import shortNum from 'number-shortener';
+import StockListItem from "../StockListItem";
 
 // Lazy load
 const Chart = dynamic(() => import("./Chart"));
@@ -38,6 +39,7 @@ export default function StockDetails({
 }: {
   params: { stock: string };
 }) {
+  const router = useRouter();
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, params.stock],
   });
@@ -48,10 +50,15 @@ export default function StockDetails({
   const userStocks = useQuery<string[]>({
     queryKey: [`/api/stocks/user/${userID}`],
   });
-  const companyNews = useQuery<iCompanyNews[]>({
-    queryKey: [`/api/stocks/company-news/`, params.stock],
+  const peerSymbols = useQuery<string[]>({
+    queryKey: [`/api/stocks/peers/`, params.stock],
     enabled: !!profile.data
   });
+  const companyNews = useQuery<iCompanyNews[]>({
+    queryKey: [`/api/stocks/company-news/`, params.stock],
+    enabled: !!peerSymbols.data
+  });
+
   const [newsLimit, setNewsLimit] = useState(3);
   const isAdded =
     userStocks.isSuccess && userStocks.data.includes(params.stock);
@@ -97,6 +104,24 @@ export default function StockDetails({
     },
   });
 
+  function removeStock(stock: string) {
+    return (
+      userStocks.isSuccess &&
+      userStocksMut.mutate([
+        ...userStocks.data.filter((item: string) => {
+          return item !== stock;
+        }),
+      ])
+    );
+  }
+
+  function addStock(stock: string) {
+    return (
+      userStocks.isSuccess &&
+      userStocksMut.mutate([...userStocks.data.concat(stock)])
+    );
+  }
+
   if (quote.isSuccess && quote.data.c === 0 && quote.data.d === null) {
     return <NotFound />;
   }
@@ -106,19 +131,16 @@ export default function StockDetails({
       <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-8 -my-5 hidden h-10 -translate-y-8 rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0 sm:block" />
       <div className="w-full overflow-auto mb-5 transition-all scrollbar-hide">
         <nav className="flex w-full items-center justify-between pb-6 sm:hidden">
-          <Link href={"/dashboard/stocks/"}>
-            <ArrowLeftIcon className="h-9 w-9 rounded-md bg-white/[0.1] p-2 border border-neutral-800" />
-          </Link>
+          <button
+            className="rounded-md bg-white/[0.1] p-2 border border-neutral-800"
+            onClick={() => router.back()}
+          >
+            <ArrowLeftIcon className="w-4" />
+          </button>
           {userStocks.isSuccess && isAdded && (
             <button
               className="rounded-md bg-white/[0.1] p-2 hover:bg-rose-300/75 hover:text-black border border-neutral-800"
-              onClick={() =>
-                userStocksMut.mutate([
-                  ...userStocks.data.filter((item: string) => {
-                    return item !== params.stock;
-                  }),
-                ])
-              }
+              onClick={() => removeStock(params.stock)}
             >
               <BookmarkSlashIcon className="w-4" fill="rgba(255,255,255,0.2)" />
             </button>
@@ -126,9 +148,7 @@ export default function StockDetails({
           {userStocks.isSuccess && !isAdded && (
             <button
               className="rounded-md bg-white/[0.1] p-2 hover:bg-green-300/75 hover:text-black border border-neutral-800"
-              onClick={() =>
-                userStocksMut.mutate([...userStocks.data.concat(params.stock)])
-              }
+              onClick={() => addStock(params.stock)}
             >
               <BookmarkIcon className="w-4" fill="rgba(255,255,255,0.2)" />
             </button>
@@ -184,6 +204,28 @@ export default function StockDetails({
       {params.stock && quote.isSuccess && (
         <Chart symbol={params.stock} quote={quote.data} />
       )}
+
+      {(userStocks.isSuccess && peerSymbols.isSuccess && peerSymbols.data.length > 0) &&
+        <section className={"mt-8 text-neutral-100"} >
+          <h1 className="text-lg font-bold">Peer stocks</h1>
+          <div className="snap-x transition-all mt-3 flex gap-3 w-full overflow-x-scroll scrollbar-hide">
+            {peerSymbols.data
+              .filter((symbol) => (!symbol.includes(".") && !symbol.includes(":") && !symbol.includes(params.stock) && !userStocks.data.includes(symbol)))
+              .slice(0, 3)
+              .map((symbol) => (
+                <div className="snap-start relative w-72 flex-none">
+                  <StockListItem
+                    stock={symbol}
+                    isAdded={userStocks.data.includes(symbol)}
+                    searchIsActive={true}
+                    addStock={addStock}
+                    removeStock={removeStock}
+                  />
+                </div>
+              ))}
+          </div>
+        </section>
+      }
 
       {(companyNews.isSuccess && filteredNews.length > 0) &&
         <section className={"mt-8 text-neutral-100"} >

@@ -254,4 +254,15 @@ router.get("/company-news/:symbol", async function(req, _res, next) {
   cachedFetch(`https://finnhub.io/api/v1/company-news?symbol=${req.params.symbol}&from=${from}&to=${to}`, _res, req.url, next);
 });
 
+// Get list of related simbols (operating  in the same sub-Industry)
+router.get("/peers/:symbol", async function(req, _res, next) {
+  const cached = cache.get(req.url);
+  if (cached) {
+    _res.send(cached);
+    return;
+  }
+
+  cachedFetch(`https://finnhub.io/api/v1/stock/peers?symbol=${req.params.symbol}`, _res, req.url, next);
+});
+
 export default router;
