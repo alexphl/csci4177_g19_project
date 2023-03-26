@@ -108,6 +108,7 @@ function StockList(props: {
     enabled: !!debouncedQuery,
     staleTime: Infinity,
     retry: true,
+    retryDelay: 1000
   });
 
   // Filter search results

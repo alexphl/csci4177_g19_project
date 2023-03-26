@@ -35,6 +35,7 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
   const points = useQuery<iCandle>({
     queryKey: ["/api/stocks/hist/", `${chartTimeframes[selectedTimeframe]}/`, props.symbol],
     retry: true,
+    retryDelay: 1000,
     placeholderData: { c: [], d: [], o: [], t: [], s: "no_data" },
   });
 

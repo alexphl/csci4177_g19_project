@@ -44,11 +44,12 @@ export default function StockDetails({
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, params.stock],
     enabled: !chartsAreFetching,
+    retryDelay: 1000,
     retry: true,
   });
   const profile = useQuery<iProfile>({
     refetchOnWindowFocus: false,
-    enabled: !chartsAreFetching,
+    enabled: quote.isSuccess && !chartsAreFetching,
     queryKey: [`/api/stocks/profile/`, params.stock],
     staleTime: Infinity,
     retry: true,
@@ -127,6 +128,15 @@ export default function StockDetails({
     return (
       userStocks.isSuccess &&
       userStocksMut.mutate([...userStocks.data.concat(stock)])
+    );
+  }
+
+  if (quote.isLoading) {
+    // Loading
+    return (
+      <div className="flex w-full h-full place-content-center items-center justify-center flex-col">
+        <div className="w-8 h-8 rounded-full bg-white/50 animate-bounce" />
+      </div>
     );
   }
 
