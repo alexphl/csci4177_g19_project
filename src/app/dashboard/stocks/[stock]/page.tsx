@@ -208,10 +208,9 @@ export default function StockDetails({
       {(userStocks.isSuccess && peerSymbols.isSuccess && peerSymbols.data.length > 0) &&
         <section className={"mt-8 text-neutral-100"} >
           <h1 className="text-lg font-bold">Peer stocks</h1>
-          <div className="snap-x transition-all mt-3 flex gap-3 w-full overflow-x-scroll scrollbar-hide">
+          <div className="transition-all mt-3 flex gap-3 w-full overflow-x-scroll scrollbar-hide">
             {peerSymbols.data
               .filter((symbol) => (!symbol.includes(".") && !symbol.includes(":") && !symbol.includes(params.stock) && !userStocks.data.includes(symbol)))
-              .slice(0, 3)
               .map((symbol) => (
                 <div key={symbol} className="snap-start relative w-72 flex-none">
                   <StockListItem

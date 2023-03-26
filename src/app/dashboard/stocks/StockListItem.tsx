@@ -1,8 +1,9 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { memo } from "react";
+import { memo, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import { useInView } from "framer-motion"
 import {
   Bars2Icon,
   BookmarkIcon,
@@ -31,18 +32,22 @@ function StockListItem(props: {
   removeStock: (stock: string) => false | void;
   className?: string;
 }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref);
+
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, props.stock],
-    enabled: !!props.stock,
+    enabled: !!props.stock && isInView,
   });
   const profile = useQuery<iProfile>({
     queryKey: [`/api/stocks/profile/`, props.stock],
     staleTime: Infinity,
-    enabled: !!props.stock,
+    enabled: !!props.stock && !!quote.data && isInView,
   });
 
   return (
     <Link
+      ref={ref}
       className={props.className}
       draggable={!props.isEditMode && !props.selected}
       href={`/dashboard/stocks/${props.stock}`}
