@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useIsFetching } from "@tanstack/react-query";
 import { BookmarkIcon, BookmarkSlashIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Image from "next/image"
@@ -40,12 +40,15 @@ export default function StockDetails({
   params: { stock: string };
 }) {
   const router = useRouter();
+  const chartsAreFetching = useIsFetching({ queryKey: ["/api/stocks/hist/"] }) > 0;
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, params.stock],
+    enabled: !chartsAreFetching,
     retry: true,
   });
   const profile = useQuery<iProfile>({
     refetchOnWindowFocus: false,
+    enabled: !chartsAreFetching,
     queryKey: [`/api/stocks/profile/`, params.stock],
     staleTime: Infinity,
     retry: true,
@@ -57,11 +60,11 @@ export default function StockDetails({
     staleTime: Infinity,
     refetchOnWindowFocus: false,
     queryKey: [`/api/stocks/peers/`, params.stock],
-    enabled: !!profile.data
+    enabled: !!profile.data && !chartsAreFetching
   });
   const companyNews = useQuery<iCompanyNews[]>({
     queryKey: [`/api/stocks/company-news/`, params.stock],
-    enabled: !!peerSymbols.data
+    enabled: !!peerSymbols.data && !chartsAreFetching
   });
 
   const [newsLimit, setNewsLimit] = useState(3);
@@ -227,7 +230,7 @@ export default function StockDetails({
                 </div>
               ))}
           </div>
-          <h1 className="order-first text-lg font-bold peer-empty:hidden">Peer stocks</h1>
+          <h1 className="order-first text-lg font-bold peer-empty:hidden">Similar stocks</h1>
         </section>
       }
 

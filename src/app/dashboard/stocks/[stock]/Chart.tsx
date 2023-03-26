@@ -12,10 +12,11 @@ const Tabs = dynamic(() => import("./Tabs"));
 const chartTimeframes = ["1D", "1W", "1M", "6M", "1Y"];
 
 function formatLabels(labels: number[], timeframe: number) {
+  if (!labels) return [];
   switch (timeframe) {
     case 0:
       return labels.map((timestamp) => {
-        return dayjs(timestamp * 1000).format("HH:mm");
+        return dayjs(timestamp * 1000).format("ddd HH:mm");
       })
     case 1:
       return labels.map((timestamp) => {
@@ -37,7 +38,7 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
     placeholderData: { c: [], d: [], o: [], t: [], s: "no_data" },
   });
 
-  if (!points.data) { return (<> </>) }
+  if (!points.data || (!points.isFetching && points.data.s !== "ok")) { return (<> </>) }
 
   const lineColor =
     selectedTimeframe === 0
