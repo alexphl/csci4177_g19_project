@@ -115,7 +115,12 @@ const Buy = () => {
           console.log(`Failed to search for stocks with the symbol ${value}`);
         }
         const data = await response.json();
-        setSearchResults(data.result);
+        // Add the filter function here
+        const filteredResults = data.result.filter((result: any) => {
+          return !result.symbol.includes('.') && !result.symbol.includes(':');
+        });
+        setSearchResults(filteredResults);
+        console.log(filteredResults);
       } catch (error) {
         console.error(error);
       }
