@@ -45,6 +45,7 @@ export default function StockDetails({
     retry: true,
   });
   const profile = useQuery<iProfile>({
+    refetchOnWindowFocus: false,
     queryKey: [`/api/stocks/profile/`, params.stock],
     staleTime: Infinity,
     retry: true,
@@ -53,6 +54,8 @@ export default function StockDetails({
     queryKey: [`/api/stocks/user/${userID}`],
   });
   const peerSymbols = useQuery<string[]>({
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
     queryKey: [`/api/stocks/peers/`, params.stock],
     enabled: !!profile.data
   });
@@ -207,10 +210,9 @@ export default function StockDetails({
         <Chart symbol={params.stock} quote={quote.data} />
       )}
 
-      {(userStocks.isSuccess && peerSymbols.isSuccess && peerSymbols.data.length > 0) &&
-        <section className={"mt-8 text-neutral-100"} >
-          <h1 className="text-lg font-bold">Peer stocks</h1>
-          <div className="transition-all mt-3 flex gap-3 w-full overflow-x-scroll scrollbar-hide">
+      {(userStocks.isSuccess && peerSymbols.isSuccess) &&
+        <section className={"mt-8 text-neutral-100 empty:hidden flex flex-col"} >
+          <div className="peer mt-3 flex gap-3 w-full overflow-x-scroll scrollbar-hide empty:hidden">
             {peerSymbols.data
               .filter((symbol) => (!symbol.includes(".") && !symbol.includes(":") && !symbol.includes(params.stock) && !userStocks.data.includes(symbol)))
               .map((symbol) => (
@@ -225,13 +227,13 @@ export default function StockDetails({
                 </div>
               ))}
           </div>
+          <h1 className="order-first text-lg font-bold peer-empty:hidden">Peer stocks</h1>
         </section>
       }
 
-      {(companyNews.isSuccess && filteredNews.length > 0) &&
-        <section className={"mt-8 text-neutral-100"} >
-          <h1 className="text-lg font-bold">From the News</h1>
-          <div className="mt-3 flex flex-col gap-3">
+      {companyNews.isSuccess &&
+        <section className={"mt-8 text-neutral-100 empty:hidden flex flex-col"} >
+          <div className="peer mt-3 flex flex-col gap-3 empty:hidden">
             {filteredNews.slice(0, newsLimit).map((story: iCompanyNews) => (
               <a
                 key={story.id}
@@ -261,6 +263,7 @@ export default function StockDetails({
               </a>
             ))}
           </div>
+          <h1 className="order-first text-lg font-bold peer-empty:hidden">From the News</h1>
         </section>
       }
 

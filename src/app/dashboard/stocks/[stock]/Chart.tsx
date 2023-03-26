@@ -34,15 +34,16 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
   const points = useQuery<iCandle>({
     queryKey: ["/api/stocks/hist/", `${chartTimeframes[selectedTimeframe]}/`, props.symbol],
     retry: true,
-    initialData: { c: [], d: [], o: [], t: [], s: "ok" },
+    placeholderData: { c: [], d: [], o: [], t: [], s: "no_data" },
   });
+
+  if (!points.data) { return (<> </>) }
 
   const lineColor =
     selectedTimeframe === 0
       ? (props.quote.d > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)")
       : (points.data.c[points.data.c.length - 1] - points.data.c[0] > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)");
 
-  if (points.data.s !== "ok") { return (<> </>) }
   return (
     <>
       <div

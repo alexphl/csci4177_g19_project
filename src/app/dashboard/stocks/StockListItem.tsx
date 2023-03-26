@@ -44,6 +44,7 @@ function StockListItem(props: {
     queryKey: [`/api/stocks/profile/`, props.stock],
     staleTime: Infinity,
     retry: true,
+    refetchOnWindowFocus: false,
     enabled: !!props.stock && !!quote.data && isInView,
   });
 
