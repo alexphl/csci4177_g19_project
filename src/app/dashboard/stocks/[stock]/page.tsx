@@ -170,12 +170,12 @@ export default function StockDetails({
         </section>
       </div>
 
-      <div className="flex gap-2 rounded-lg w-full text-xs font-medium text-neutral-400 mb-5 flex-wrap">
-        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800 border border-white/[0.05]">Open: {quote.data.o}</p>
-        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800 border border-white/[0.05]">High: {quote.data.h}</p>
-        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800 border border-white/[0.05]">Low: {quote.data.l}</p>
+      <div className="flex gap-2 rounded-lg w-full text-xs font-medium text-neutral-300 mb-5 flex-wrap">
+        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800 border border-white/[0.06]">Open: {quote.data.o}</p>
+        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800 border border-white/[0.06]">High: {quote.data.h}</p>
+        <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800 border border-white/[0.06]">Low: {quote.data.l}</p>
         {profile.isSuccess &&
-          <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800 border border-white/[0.05]">
+          <p className="bg-white/[0.1] rounded-lg px-2 py-1 border-neutral-800 border border-white/[0.06]">
             Market Cap: {shortNum((profile.data.marketCapitalization * 1000000).toFixed(0)).replace('+', '').toUpperCase()}
           </p>
         }
@@ -199,10 +199,14 @@ export default function StockDetails({
                 <motion.article
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="relative flex h-28 cursor-pointer items-center gap-3 rounded-xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700"
+                  className="relative flex h-28 cursor-pointer items-center gap-3 rounded-xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700 hover:bg-white/[0.075]"
                 >
-                  <div className="relative flex place-content-center overflow-hidden h-full w-28 lg:w-36 object-cover rounded-lg bg-white/[0.1] shrink-0" >
-                    {story.image && <Image src={story.image} alt="" fill sizes="100%" className="object-cover contrast-75 brightness-75 saturate-[1.25]" />}
+                  <div className="relative border border-neutral-700 shadow-md flex place-content-center overflow-hidden h-full w-28 lg:w-36 object-cover rounded-lg bg-white/[0.1] shrink-0" >
+                    {story.image &&
+                      <>
+                        <div className="bg-gradient-to-bl from-white/25 via-transparent to-transparent rounded-lg relative z-50 w-full h-full"> </div>
+                        <Image src={story.image} alt="" fill sizes="100%" className="object-cover contrast-75 brightness-75 saturate-[1.25]" />
+                      </>}
                     {!story.image && <PhotoIcon className="w-10 text-black/50" />}
                   </div>
                   <div className="flex flex-col gap-1.5 h-full py-1 pr-3 w-10 flex-1">

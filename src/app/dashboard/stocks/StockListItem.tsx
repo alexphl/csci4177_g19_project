@@ -160,7 +160,7 @@ function StockListItem(props: {
             >
               {props.isAdded && (
                 <button
-                  className="rounded-xl border border-white/[0.2] bg-black/[0.5] p-2 shadow-sm hover:bg-rose-400 hover:text-black"
+                  className="rounded-xl border border-white/[0.4] bg-black/[0.5] p-2 shadow-sm hover:bg-rose-400 hover:text-black"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -172,7 +172,7 @@ function StockListItem(props: {
               )}
               {!props.isAdded && (
                 <button
-                  className="rounded-xl border border-white/[0.2] bg-black/[0.5] p-2 shadow-sm hover:bg-green-400 hover:text-black"
+                  className="rounded-xl border border-white/[0.4] bg-black/[0.5] p-2 shadow-sm hover:bg-green-400 hover:text-black"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
