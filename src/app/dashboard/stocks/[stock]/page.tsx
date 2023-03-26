@@ -213,7 +213,7 @@ export default function StockDetails({
               .filter((symbol) => (!symbol.includes(".") && !symbol.includes(":") && !symbol.includes(params.stock) && !userStocks.data.includes(symbol)))
               .slice(0, 3)
               .map((symbol) => (
-                <div className="snap-start relative w-72 flex-none">
+                <div key={symbol} className="snap-start relative w-72 flex-none">
                   <StockListItem
                     stock={symbol}
                     isAdded={userStocks.data.includes(symbol)}
