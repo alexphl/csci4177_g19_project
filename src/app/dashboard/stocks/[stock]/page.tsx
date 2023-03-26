@@ -15,7 +15,7 @@ import StockListItem from "../StockListItem";
 
 // Lazy load
 const Chart = dynamic(() => import("./Chart"));
-const NotFound = dynamic(() => import("../../[404]/page"));
+const NotFound = dynamic(() => import("../../[404]/NotFound"));
 
 // Filters search results to hide stock subvariants
 // This logic will likely be moved to backend
@@ -39,6 +39,7 @@ export default function StockDetails({
 }: {
   params: { stock: string };
 }) {
+  params.stock = params.stock.toUpperCase();
   const router = useRouter();
   const chartsAreFetching = useIsFetching({ queryKey: ["/api/stocks/hist/"] }) > 0;
   const quote = useQuery<iQuote>({
@@ -141,7 +142,7 @@ export default function StockDetails({
   }
 
   if (quote.isSuccess && quote.data.c === 0 && quote.data.d === null) {
-    return <NotFound />;
+    return <div className="relative h-24 -mt-12 flex"> <NotFound message="Sorry, this stock was not found in our records." /> </div>;
   }
 
   return (quote.isSuccess &&
