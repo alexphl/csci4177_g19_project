@@ -8,11 +8,11 @@ function classNames(...classes: string[]) {
 /**
  * Tab navigation panel
  **/
-const Tabs = (props: {
+function Tabs(props: {
   selector: [number, Dispatch<SetStateAction<number>>];
   components: string[];
   className?: string;
-}) => {
+}) {
   const categories = props.components;
   const [selectedIndex, setSelectedIndex] = props.selector;
 
@@ -25,9 +25,9 @@ const Tabs = (props: {
               key={category}
               className={({ selected }) =>
                 classNames(
-                  "w-full rounded-xl py-1 text-xs font-bold saturate-200 leading-5 outline-none",
+                  "w-full rounded-xl py-1 text-xs font-bold backdrop-saturate-200 leading-5 outline-none",
                   selected
-                    ? "bg-white/[0.1] font-extrabold text-white/[0.95]"
+                    ? "bg-white/[0.1] font-extrabold text-white/[0.95] border border-white/[0.1]"
                     : "text-white/[0.4] hover:bg-white/[0.04] hover:text-white/[0.90]"
                 )
               }
@@ -39,6 +39,6 @@ const Tabs = (props: {
       </Tab.Group>
     </div>
   );
-};
+}
 
 export default memo(Tabs);

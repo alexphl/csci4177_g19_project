@@ -5,28 +5,29 @@ import { Line } from "react-chartjs-2";
 
 import { useQuery } from "@tanstack/react-query";
 
-import type { iQuote, iCandle } from "@/utils/types/iStocks";
+import type { iQuote, iCandle } from "@/types/iStocks";
 
-const StockChartXS = (props: { symbol: string; quote: iQuote }) => {
+function StockChartXS(props: { symbol: string; quote: iQuote }) {
   const points = useQuery<iCandle>({
-    queryKey: ["/api/stocks/hist/today/", props.symbol],
-    initialData: { c: [], d: [], o: [], t: [], s: "ok" },
+    queryKey: ["/api/stocks/hist/1D/", props.symbol],
+    placeholderData: { c: [], d: [], o: [], t: [], s: "no_data" },
+    retry: true,
   });
+
+  if (!points.data || points.data!.s !== "ok") { return (<> </>) }
 
   const lineColor =
     props.quote.d > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)";
-
-  if (points.data.s !== "ok") { return (<> </>) }
 
   return (
     <>
       <Line
         data={{
-          labels: points.data.t.concat(props.quote.t),
+          labels: points.data.t,
           datasets: [
             {
               label: "Price",
-              data: points.data.c.concat(props.quote.c),
+              data: points.data.c,
               backgroundColor: "transparent",
               borderColor: [lineColor],
               borderWidth: 2.5,
@@ -91,6 +92,6 @@ const StockChartXS = (props: { symbol: string; quote: iQuote }) => {
       />
     </>
   );
-};
+}
 
 export default memo(StockChartXS);

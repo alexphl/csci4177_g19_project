@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+"use strict";
+import { Schema, model, models } from "mongoose";
 
-const assetSchema = new mongoose.Schema({
+const assetSchema = Schema({
   asset_name: String,
   asset_type: String,
   ticker: String,
@@ -8,7 +9,8 @@ const assetSchema = new mongoose.Schema({
   purchase_date: Date,
   purchase_price: Number,
 });
-const transactionSchema = new mongoose.Schema({
+
+const transactionSchema = Schema({
   transaction_type: String,
   asset_name: String,
   asset_type: String,
@@ -18,7 +20,7 @@ const transactionSchema = new mongoose.Schema({
   transaction_price: Number,
 });
 
-const portfolioSchema = new mongoose.Schema({
+const portfolioSchema = Schema({
   last_update: {
     type: Date,
     default: Date.now,
@@ -26,14 +28,11 @@ const portfolioSchema = new mongoose.Schema({
   owner_id: String,
   profit: {
     type: Number,
-    default: 0
+    default: 0,
   },
   assets: [assetSchema],
   transaction_history: [transactionSchema],
+  stock_list: [String],
 });
 
-
-module.exports = mongoose.models.Portfolio || mongoose.model("Portfolio", portfolioSchema);
-
-
-
+export default models.Portfolio || model("Portfolio", portfolioSchema);

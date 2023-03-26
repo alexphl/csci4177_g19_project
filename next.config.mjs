@@ -15,12 +15,28 @@ const config = {
     "@heroicons/react/20/solid": {
       transform: "@heroicons/react/20/solid/{{member}}",
     },
+    "@heroicons/react/24/solid": {
+      transform: "@heroicons/react/24/solid/{{member}}",
+    },
+    "@heroicons/react/24/outline": {
+      transform: "@heroicons/react/24/outline/{{member}}",
+    },
+    "@mui/icons-material": {
+      transform: "@mui/icons-material/{{member}}",
+    },
+    "@mui/material": {
+      transform: "@mui/material/{{member}}",
+    },
   },
   images: {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: "placehold.it",
+        hostname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "**",
       },
     ],
   },

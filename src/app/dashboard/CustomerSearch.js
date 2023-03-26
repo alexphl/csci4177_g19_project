@@ -1,20 +1,18 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useQuery } from "@tanstack/react-query";
-import { useState, useDeferredValue } from "react";
+import { useState, useDeferredValue, memo } from "react";
 import { useDebounce } from "use-debounce";
-
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
-
-import CustomerCard from "./CustomerCard";
+import { Grid, TextField, Box, CircularProgress } from "@mui/material";
 
 import apiURL from "@/APIurl";
 const baseURL = apiURL + "/customer/search/";
 
-export default function CustomerSearch() {
+// lazy load
+const CustomerCard = dynamic(() => import("./CustomerCard"));
+
+function CustomerSearch() {
   const [searchQuery, setQuery] = useState(null);
   const [debouncedQuery] = useDebounce(searchQuery, 500); // Debounce query with a delay
   const deferredSearchQuery = useDeferredValue(debouncedQuery);
@@ -68,3 +66,5 @@ export default function CustomerSearch() {
     </div>
   );
 }
+
+export default memo(CustomerSearch);

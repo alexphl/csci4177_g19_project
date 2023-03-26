@@ -1,7 +1,13 @@
 import dynamic from "next/dynamic";
 import Transition from "./Transition";
+import type { Metadata } from "next";
 
-const NavDesktop = dynamic(() => import("./NavDesktop"));
+const UIWrap = dynamic(() => import("./UIWrap"));
+
+export const metadata: Metadata = {
+  title: "Dashboard - StockVision",
+  description: "Your personal dashboard",
+};
 
 export default function DashboardLayout({
   children,
@@ -10,7 +16,7 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <NavDesktop />
+      <UIWrap />
       <div className="text-neutral-100 md:ml-16">
         <Transition>{children}</Transition>
       </div>

@@ -1,19 +1,19 @@
 "use client";
-import * as React from "react";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { useQuery } from "@tanstack/react-query";
-import CircularProgress from "@mui/material/CircularProgress";
+import { useState } from "react";
 import Image from "next/image";
+import {
+  Grid,
+  Typography,
+  CircularProgress,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import styles from "@/styles/header.module.css";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-
-
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 
 import apiURL from "@/APIurl";
 import Link from "next/link";
@@ -23,8 +23,8 @@ var userURL = apiURL + "/news/user/111";
 
 export default function News_list() {
   const { isSuccess, isLoading, data } = useQuery({ queryKey: [userURL] });
-  const [open, setOpen] = React.useState(false);
-  const [select, setSelect] = React.useState(null);
+  const [open, setOpen] = useState(false);
+  const [select, setSelect] = useState(null);
 
   const handleOpen = (parameter) => (event) => {
     setSelect(parameter);

@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-custom)', ...fontFamily.sans],
+        sans: ['var(--font-body)', ...fontFamily.sans],
+        display: ['var(--font-display)', ...fontFamily.sans],
       },
       transitionTimingFunction: {
         'rubber': 'cubic-bezier(0.25, 0.8, 0.25, 1.4)',
@@ -23,5 +24,5 @@ module.exports = {
       }
     },
   },
-  plugins: [require('tailwind-scrollbar-hide')],
+  plugins: [require('tailwind-scrollbar-hide'), require('@tailwindcss/line-clamp')],
 };

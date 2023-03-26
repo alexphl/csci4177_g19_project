@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useContext } from "react";
+import { memo, useEffect, useState, useContext } from "react";
 import { userContext } from "../UserContext";
 import {
   FormGroup,
@@ -55,10 +55,15 @@ function LoginForm() {
     // passwords must match
 
     if (err.length === 0) {
+      // check with database
+
+      // set state
       dispatchUser({
         type: "SET_USER",
         payload: { email: email, loggedIn: true },
       });
+
+      // store a session cookie
     } else {
       setError(err);
     }
@@ -91,6 +96,11 @@ function LoginForm() {
   // }
 
   useEffect(() => {
+    setEmail("johndoe@email.com");
+    setPassword("ABCabc123!");
+  }, []);
+
+  useEffect(() => {
     //
   }, [error]);
 
@@ -103,6 +113,7 @@ function LoginForm() {
               placeholder="Email"
               autoComplete="email"
               label="Email"
+              value={email}
               focused
               margin="normal"
               onChange={handleEmailChange}
@@ -112,6 +123,7 @@ function LoginForm() {
               autoComplete="current-password"
               label="Password"
               type="password"
+              value={password}
               focused
               margin="normal"
               onChange={handlePasswordChange}
@@ -127,4 +139,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default memo(LoginForm);

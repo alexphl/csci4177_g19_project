@@ -1,14 +1,15 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { memo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { memo, useRef } from "react";
+import { useQuery, useIsFetching } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import { useInView } from "framer-motion"
 import {
   Bars2Icon,
   BookmarkIcon,
   BookmarkSlashIcon,
 } from "@heroicons/react/24/outline";
-import type { iProfile, iQuote } from "@/utils/types/iStocks";
+import type { iProfile, iQuote } from "@/types/iStocks";
 
 // Lazy load charts
 const StockChartXS = dynamic(() => import("./ChartXS"));
@@ -21,7 +22,7 @@ const loadingVariants = {
 
 const loading = "animate-pulse bg-neutral-900 w-4/6";
 
-const StockListItem = (props: {
+function StockListItem(props: {
   stock: string | null;
   selected?: boolean;
   isEditMode?: boolean;
@@ -30,26 +31,34 @@ const StockListItem = (props: {
   addStock: (stock: string) => false | void;
   removeStock: (stock: string) => false | void;
   className?: string;
-}) => {
+}) {
+  const ref = useRef(null);
+  const isInView = useInView(ref);
+  const chartsAreFetching = useIsFetching({ queryKey: ["/api/stocks/hist/"] }) > 0;
+
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, props.stock],
-    enabled: !!props.stock,
+    retry: true,
+    enabled: !!props.stock && isInView && !chartsAreFetching,
   });
   const profile = useQuery<iProfile>({
     queryKey: [`/api/stocks/profile/`, props.stock],
     staleTime: Infinity,
-    enabled: !!props.stock,
+    retry: true,
+    refetchOnWindowFocus: false,
+    enabled: !!props.stock && !!quote.data && isInView && !chartsAreFetching,
   });
 
   return (
     <Link
+      ref={ref}
       className={props.className}
       draggable={!props.isEditMode && !props.selected}
       href={`/dashboard/stocks/${props.stock}`}
     >
       <div
         className={
-          "group grid grid-cols-[2fr_1fr_1fr] items-center gap-1 rounded-lg border border-neutral-900 p-3 transition-[padding] ease-out hover:bg-white/[0.08] active:backdrop-blur-xl 2xl:p-4" +
+          "group grid grid-cols-[2fr_1fr_1fr] w-full items-center gap-1 rounded-lg border border-neutral-800 p-3 bg-white/[0.05] transition-[padding] ease-out hover:bg-white/[0.08] active:backdrop-blur-xl 2xl:p-4" +
           (props.selected || props.isEditMode
             ? " border-transparent bg-white/[0.12] py-4 pr-5 text-neutral-50 2xl:py-5"
             : " bg-transparent") +
@@ -88,7 +97,7 @@ const StockListItem = (props: {
                   (props.searchIsActive && " group-hover:hidden")
                 }
               >
-                {props.stock && quote.isSuccess && (
+                {props.stock && quote.isSuccess && profile.isSuccess && (
                   <StockChartXS symbol={props.stock} quote={quote.data} />
                 )}
               </div>
@@ -160,26 +169,26 @@ const StockListItem = (props: {
             >
               {props.isAdded && (
                 <button
-                  className="rounded-xl border border-white/[0.2] bg-black/[0.5] p-2 shadow-sm hover:bg-rose-400 hover:text-black"
+                  className="rounded-xl border border-white/[0.4] bg-black/[0.5] p-2 shadow-sm hover:bg-rose-300/75 hover:text-black"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     props.removeStock(props.stock || "");
                   }}
                 >
-                  <BookmarkSlashIcon className="w-4" />
+                  <BookmarkSlashIcon className="w-4" fill="rgba(255,255,255,0.2)" />
                 </button>
               )}
               {!props.isAdded && (
                 <button
-                  className="rounded-xl border border-white/[0.2] bg-black/[0.5] p-2 shadow-sm hover:bg-green-400 hover:text-black"
+                  className="rounded-xl border border-white/[0.4] bg-black/[0.5] p-2 shadow-sm hover:bg-green-300/75 hover:text-black"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     props.addStock(props.stock || "");
                   }}
                 >
-                  <BookmarkIcon className="w-4" />
+                  <BookmarkIcon className="w-4" fill="rgba(255,255,255,0.2)" />
                 </button>
               )}
               {!props.searchIsActive && (
@@ -191,6 +200,6 @@ const StockListItem = (props: {
       </div>
     </Link>
   );
-};
+}
 
 export default memo(StockListItem);
