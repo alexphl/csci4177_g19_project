@@ -29,7 +29,7 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
             </Link>
           )}
           <button className={"w-[2.15rem] p-1.5 hover:bg-white/[0.1] rounded-xl" + (isExpanded ? " bg-white/[0.1]" : "")} onClick={() => setExpanded(!isExpanded)}>
-            <Bars3Icon />
+            <Bars3Icon fill="rgba(255,255,255,0.2)" />
           </button>
         </nav>
 
@@ -54,7 +54,7 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
                 onClick={() => setOverlayOpen(!isOverlayOpen)}
               >
                 <div className="flex aspect-square w-fit items-center rounded-full bg-black/[0.4] p-2 group-hover:mx-0 shadow-md">
-                  <UserIcon className="w-6" />
+                  <UserIcon className="w-6" fill="rgba(255,255,255,0.2)" />
                 </div>
                 <div className="flex items-start flex-col">
                   <p className="font-bold">John Doe</p>
@@ -67,7 +67,7 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
                   <div
                     className="flex gap-5 items-center w-full rounded-lg p-3 hover:bg-white/[0.1] hover:text-white text-sm "
                   >
-                    <RectangleGroupIcon className="w-5 shrink-0 ml-0.5" />
+                    <RectangleGroupIcon className="w-5 shrink-0 ml-0.5" fill="rgba(255,255,255,0.2)" />
                     <h2>
                       Dashboard
                     </h2>

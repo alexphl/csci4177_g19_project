@@ -3,7 +3,7 @@
 import { Line } from "react-chartjs-2";
 import { memo, useState } from "react";
 import dynamic from "next/dynamic";
-import type { iCandle, iQuote } from "@/utils/types/iStocks";
+import type { iCandle, iQuote } from "@/types/iStocks";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 

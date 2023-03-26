@@ -7,7 +7,7 @@ const router = Router();
 //Data retrieval routes:
 
 //Route to get all customers
-router.get("/", async function (req, res) {
+router.get("/", async function (_req, res) {
   await Customers.find({})
     .then((docs) => {
       res.send(docs);
@@ -31,7 +31,7 @@ router.get("/:n(\\d+)/:k(\\d+)", async function (req, res) {
 });
 
 //Route to get customer usernames
-router.get("/username/", async function (req, res) {
+router.get("/username/", async function (_req, res) {
   await Customers.find({})
     .select("username")
     .then((docs) => {
@@ -54,7 +54,7 @@ router.get("/username/:username", async function (req, res) {
 });
 
 //Route to get customer usernames
-router.get("/email/", async function (req, res) {
+router.get("/email/", async function (_req, res) {
   await Customers.find({})
     .select("email")
     .then((docs) => {
@@ -89,7 +89,7 @@ router.get("/search/:query", async function (req, res) {
 
 //Aggregate statistic routes:
 //Route to get total count of customers:
-router.get("/count/", async function (req, res) {
+router.get("/count/", async function (_req, res) {
   await Customers.countDocuments({})
     .then((count) => {
       console.log("Count :", count);

@@ -12,7 +12,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { motion, Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
 import { CubeTransparentIcon } from "@heroicons/react/20/solid";
-import type { iSearch, iSearchItem } from "@/utils/types/iStocks";
+import type { iSearch, iSearchItem } from "@/types/iStocks";
 
 // Lazy-load components
 const StockListItem = dynamic(() => import("./StockListItem"));

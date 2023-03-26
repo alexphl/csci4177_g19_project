@@ -5,7 +5,7 @@ import Accounts from "../models/Accounts";
 const router = Router();
 
 /* GET users listing. */
-router.get("/", async function (req, res) {
+router.get("/", async function (_req, res) {
   await Accounts.find({})
     .then((docs) => {
       res.send(docs);

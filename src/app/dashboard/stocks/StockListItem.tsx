@@ -8,7 +8,7 @@ import {
   BookmarkIcon,
   BookmarkSlashIcon,
 } from "@heroicons/react/24/outline";
-import type { iProfile, iQuote } from "@/utils/types/iStocks";
+import type { iProfile, iQuote } from "@/types/iStocks";
 
 // Lazy load charts
 const StockChartXS = dynamic(() => import("./ChartXS"));
@@ -160,26 +160,26 @@ function StockListItem(props: {
             >
               {props.isAdded && (
                 <button
-                  className="rounded-xl border border-white/[0.2] bg-black/[0.5] p-2 shadow-sm hover:bg-rose-400 hover:text-black"
+                  className="rounded-xl border border-white/[0.4] bg-black/[0.5] p-2 shadow-sm hover:bg-rose-300/75 hover:text-black"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     props.removeStock(props.stock || "");
                   }}
                 >
-                  <BookmarkSlashIcon className="w-4" />
+                  <BookmarkSlashIcon className="w-4" fill="rgba(255,255,255,0.2)" />
                 </button>
               )}
               {!props.isAdded && (
                 <button
-                  className="rounded-xl border border-white/[0.2] bg-black/[0.5] p-2 shadow-sm hover:bg-green-400 hover:text-black"
+                  className="rounded-xl border border-white/[0.4] bg-black/[0.5] p-2 shadow-sm hover:bg-green-300/75 hover:text-black"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     props.addStock(props.stock || "");
                   }}
                 >
-                  <BookmarkIcon className="w-4" />
+                  <BookmarkIcon className="w-4" fill="rgba(255,255,255,0.2)" />
                 </button>
               )}
               {!props.searchIsActive && (

@@ -1,24 +1,26 @@
 import { Schema, model, models } from "mongoose";
 //mongoose.set('debug', true);
 
-const userSchema = new Schema({
+const userSchema = new Schema(
+  {
     name: {
-        type: String,
-        required: false
+      type: String,
+      required: false,
     },
     email: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     password: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     isAdmin: {
-        type: Boolean,
-        default: false
-    }
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true }
+);
 
-}, { timestamps: true })
-
-module.exports = models.User || model('User', userSchema)
+export default models.User || model("User", userSchema);
