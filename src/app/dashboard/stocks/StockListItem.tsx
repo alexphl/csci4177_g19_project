@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { memo, useRef } from "react";
-import { useQuery, useIsFetching } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion"
 import {
@@ -34,19 +34,18 @@ function StockListItem(props: {
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref);
-  const chartsAreFetching = useIsFetching({ queryKey: ["/api/stocks/hist/"] }) > 0;
 
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, props.stock],
     retry: true,
-    enabled: !!props.stock && isInView && !chartsAreFetching,
+    enabled: !!props.stock && isInView,
   });
   const profile = useQuery<iProfile>({
     queryKey: [`/api/stocks/profile/`, props.stock],
     staleTime: Infinity,
     retry: true,
     refetchOnWindowFocus: false,
-    enabled: !!props.stock && !!quote.data && isInView && !chartsAreFetching,
+    enabled: !!props.stock && !!quote.isSuccess && isInView,
   });
 
   return (

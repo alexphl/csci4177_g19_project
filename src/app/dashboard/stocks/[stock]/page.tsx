@@ -2,21 +2,22 @@
 
 import { useMemo, useState } from "react";
 import { queryClient } from "@/app/QueryProvider";
-import { ArrowLeftIcon } from "@heroicons/react/20/solid";
-import { useMutation, useQuery, useIsFetching } from "@tanstack/react-query";
-import { BookmarkIcon, BookmarkSlashIcon, PhotoIcon } from "@heroicons/react/24/outline";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { BookmarkIcon, BookmarkSlashIcon, PhotoIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Image from "next/image"
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { iQuote, iProfile, iCompanyNews } from "@/types/iStocks";
 import shortNum from 'number-shortener';
-import StockListItem from "../StockListItem";
 
 // Lazy load
 const Chart = dynamic(() => import("./Chart"));
 const NotFound = dynamic(() => import("../../[404]/NotFound"));
+const StockListItem = dynamic(() => import("../StockListItem"));
 const Loading = dynamic(() => import("../../loading"));
+
+const userID = "user1";
 
 // Filters search results to hide stock subvariants
 // This logic will likely be moved to backend
@@ -33,8 +34,6 @@ function filterNews(results: iCompanyNews[] | undefined, company: iProfile | und
   );
 }
 
-const userID = "user1";
-
 export default function StockDetails({
   params,
 }: {
@@ -42,16 +41,14 @@ export default function StockDetails({
 }) {
   params.stock = params.stock.toUpperCase();
   const router = useRouter();
-  const chartsAreFetching = useIsFetching({ queryKey: ["/api/stocks/hist/"] }) > 0;
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, params.stock],
-    enabled: !chartsAreFetching,
     retryDelay: 1000,
     retry: true,
   });
   const profile = useQuery<iProfile>({
     refetchOnWindowFocus: false,
-    enabled: quote.isSuccess && !chartsAreFetching,
+    enabled: quote.isSuccess,
     queryKey: [`/api/stocks/profile/`, params.stock],
     staleTime: Infinity,
     retry: true,
@@ -63,11 +60,11 @@ export default function StockDetails({
     staleTime: Infinity,
     refetchOnWindowFocus: false,
     queryKey: [`/api/stocks/peers/`, params.stock],
-    enabled: !!profile.data && !chartsAreFetching
+    enabled: !!profile.isSuccess
   });
   const companyNews = useQuery<iCompanyNews[]>({
     queryKey: [`/api/stocks/company-news/`, params.stock],
-    enabled: !!peerSymbols.data && !chartsAreFetching
+    enabled: !!peerSymbols.isSuccess
   });
 
   const [newsLimit, setNewsLimit] = useState(3);
