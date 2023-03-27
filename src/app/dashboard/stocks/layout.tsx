@@ -29,9 +29,9 @@ export default function StocksLayout({
   const [searchIsActive, setSearchIsActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const today = dayjs().startOf('day');
-  const marketOpen = today.utc().hour(13);
-  const marketClose = today.utc().hour(21);
+  const today = dayjs().startOf('minute');
+  const marketOpen = today.startOf('day').utc().hour(13);
+  const marketClose = today.startOf('day').utc().hour(21);
   const isWeekend = today.day() === 0 || today.day() === 6;
 
   // Destrucutre path to see if user selected a particular stock
@@ -62,7 +62,7 @@ export default function StocksLayout({
           </div>
           <p className="font-medium text-neutral-400 text-sm text-end">
             {!isWeekend && (today.diff(marketOpen.local()) < 0 && `Markets open today at ${marketOpen.local().format("HH:mm")}`)}
-            {!isWeekend && (today.diff(marketOpen.local()) > 0 && (today.diff(marketClose.local()) > 0 ? `Markets close today at ${marketClose.local().format("HH:mm")}` : "The markets have closed"))}
+            {!isWeekend && (today.diff(marketOpen.local()) > 0 && (today.diff(marketClose.local()) < 0 ? `Markets close today at ${marketClose.local().format("HH:mm")}` : "The markets have closed"))}
             {isWeekend && `The markets reopen on Monday at ${marketOpen.local().format('HH:mm')}`}
           </p>
         </div>
