@@ -14,10 +14,9 @@ function StockChartXS(props: { symbol: string; quote: iQuote }) {
     retry: true,
   });
 
-  if (!points.data || points.data!.s !== "ok") { return (<> </>) }
+  if (!points.data || points.data.s !== "ok") { return (<> </>) }
 
-  const lineColor =
-    props.quote.d > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)";
+  const lineColor = props.quote.d > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)";
 
   return (
     <>

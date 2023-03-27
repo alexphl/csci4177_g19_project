@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useDebounce } from "use-debounce";
 import {
@@ -12,7 +12,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { motion, Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
 import { CubeTransparentIcon } from "@heroicons/react/20/solid";
-import type { iSearch, iSearchItem } from "@/types/iStocks";
+import type { iSearchItem } from "@/types/iStocks";
 import Loading from "../loading";
 
 // Lazy-load components
