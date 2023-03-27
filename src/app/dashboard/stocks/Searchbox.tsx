@@ -19,7 +19,7 @@ function Searchbox(
   return (
     <div
       className={
-        "flex h-12 items-center gap-4 rounded-2xl border-2 px-4 text-neutral-400 transition-all focus-within:gap-2 focus-within:border-neutral-600 focus-within:bg-black focus-within:text-neutral-100 focus:shadow-2xl " +
+        "relative flex h-12 items-center gap-4 rounded-2xl border-2 px-4 text-neutral-400 transition-all focus-within:gap-2 focus-within:border-neutral-600 focus-within:bg-black focus-within:text-neutral-100 focus:shadow-2xl " +
         props.className + (searchIsActive ? " bg-black border-neutral-800" : " bg-black/[0.35] border-neutral-900")
       }
     >
