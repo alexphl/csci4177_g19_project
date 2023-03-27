@@ -19,7 +19,7 @@ import Loading from "../loading";
 const StockListItem = dynamic(() => import("./StockListItem"));
 const StockListbox = dynamic(() => import("./Listbox"));
 
-const listStyle = "flex flex-col gap-2.5 transition";
+const listStyle = "flex flex-col gap-2.5 transition-transform";
 
 const userID = "user1";
 
@@ -111,7 +111,7 @@ function StockList(props: {
         /* SHOW USER STOCKS */
         !props.searchIsActive && userStocks.isSuccess && (
           <>
-            <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-4 flex -translate-y-4 items-center rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0">
+            <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-4 flex flex-auto -translate-y-4 items-center rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0">
               <StockListbox />
               <button
                 className={
@@ -130,7 +130,7 @@ function StockList(props: {
             <Reorder.Group
               axis="y"
               values={userStocks.data}
-              onReorder={(newOrder: string[]) => userStocksMut.mutate(newOrder)}
+              onReorder={userStocksMut.mutate}
               as="ol"
               className={listStyle}
             >
@@ -229,7 +229,7 @@ function StockList(props: {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="flex flex-col gap-4"
+                    className={listStyle}
                   >
                     {[...Array(3)].map((_x, i) => (
                       <StockListItem

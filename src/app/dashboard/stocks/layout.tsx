@@ -23,7 +23,7 @@ Chart.register(...registerables);
 Chart.register(annotationPlugin);
 
 const stylePane =
-  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-scroll scrollbar-hide pb-64 sm:pb-40 transition-all overscroll-contain";
+  "relative bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-scroll scrollbar-hide pb-64 sm:pb-40 transition-transform overscroll-contain";
 
 export default function StocksLayout({
   children, // will be a page or nested layout
@@ -72,7 +72,7 @@ export default function StocksLayout({
         </div>
       </nav>
 
-      <main className="mx-auto grid-cols-[3fr_5fr] gap-2 transition-all lg:container sm:grid sm:px-2 md:px-4 lg:gap-3 lg:px-6 xl:gap-5 xl:px-20">
+      <main className="mx-auto grid-cols-[auto] sm:grid-cols-[3fr_5fr] gap-2 transition-all lg:container grid sm:px-2 md:px-4 lg:gap-3 lg:px-6 xl:gap-5 xl:px-20">
         <div /* LEFT pane */
           className={stylePane + (selectedStock ? " hidden sm:block" : "")}
         >
