@@ -6,13 +6,17 @@ import dynamic from "next/dynamic";
 import { Chart, registerables } from "chart.js";
 import annotationPlugin from "chartjs-plugin-annotation";
 import Searchbox from "./Searchbox";
+import Loading from "../loading";
 
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+
 dayjs.extend(utc)
 
 // Lazy load components
-const StockList = dynamic(() => import("./StockList"));
+const StockList = dynamic(() => import("./StockList"), {
+  loading: () => <div className="relative h-24 -mt-12 flex"> <Loading /> </div>,
+});
 
 // Necessary for charts to render
 Chart.register(...registerables);

@@ -16,6 +16,7 @@ import StockListItem from "../StockListItem";
 // Lazy load
 const Chart = dynamic(() => import("./Chart"));
 const NotFound = dynamic(() => import("../../[404]/NotFound"));
+const Loading = dynamic(() => import("../../loading"));
 
 // Filters search results to hide stock subvariants
 // This logic will likely be moved to backend
@@ -134,11 +135,7 @@ export default function StockDetails({
 
   if (quote.isLoading) {
     // Loading
-    return (
-      <div className="flex w-full h-full place-content-center items-center justify-center flex-col">
-        <div className="w-8 h-8 rounded-full bg-white/50 animate-bounce" />
-      </div>
-    );
+    return <div className="relative h-24 -mt-12 flex"> <Loading /> </div>
   }
 
   if (quote.isSuccess && quote.data.c === 0 && quote.data.d === null) {
