@@ -9,7 +9,7 @@ import {
   SparklesIcon,
 } from "@heroicons/react/24/solid";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { motion, Reorder } from "framer-motion";
+import { m, Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
 import { CubeTransparentIcon } from "@heroicons/react/20/solid";
 import type { iSearchItem } from "@/types/iStocks";
@@ -139,25 +139,33 @@ function StockList(props: {
                   key={stock}
                   value={stock}
                   dragListener={isEditMode || stock === selectedStock}
-                  initial={{ opacity: 0.5, scale: 0.95, filter: "blur(4px)" }}
-                  animate={{ opacity: 1, scale: 1, filter: "none" }}
                   transition={{
                     type: "spring",
                     damping: 25,
                     stiffness: 400,
-                    delay: i / 18,
                   }}
                 >
-                  <StockListItem
-                    key={stock}
-                    stock={stock}
-                    isEditMode={isEditMode}
-                    isAdded={userStocks.data.includes(stock)}
-                    addStock={addStock}
-                    removeStock={removeStock}
-                    selected={stock === selectedStock}
-                    searchIsActive={props.searchIsActive}
-                  />
+                  <m.div
+                    initial={{ opacity: 0.5, scale: 0.95, filter: "blur(4px)" }}
+                    animate={{ opacity: 1, scale: 1, filter: "none" }}
+                    transition={{
+                      type: "spring",
+                      damping: 20,
+                      stiffness: 350,
+                      delay: i / 16,
+                    }}
+                  >
+                    <StockListItem
+                      key={stock}
+                      stock={stock}
+                      isEditMode={isEditMode}
+                      isAdded={userStocks.data.includes(stock)}
+                      addStock={addStock}
+                      removeStock={removeStock}
+                      selected={stock === selectedStock}
+                      searchIsActive={props.searchIsActive}
+                    />
+                  </m.div>
                 </Reorder.Item>
               ))}
             </Reorder.Group>
@@ -226,7 +234,7 @@ function StockList(props: {
               {
                 /* SHOW LOADING PLACEHOLDER */
                 searchResult.isFetching && (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className={listStyle}
@@ -242,7 +250,7 @@ function StockList(props: {
                         selected={false}
                       />
                     ))}
-                  </motion.div>
+                  </m.div>
                 )
               }
 

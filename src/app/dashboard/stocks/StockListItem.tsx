@@ -2,8 +2,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { memo, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion"
+import { m, useInView } from "framer-motion";
 import {
   Bars2Icon,
   BookmarkIcon,
@@ -75,13 +74,13 @@ function StockListItem(props: {
             }
           >
             {(profile.isSuccess && (
-              <motion.p
+              <m.p
                 variants={loadingVariants}
                 initial="initial"
                 animate="animate"
               >
                 {profile.data.name}
-              </motion.p>
+              </m.p>
             )) || <br />}
           </div>
         </div>
@@ -114,17 +113,17 @@ function StockListItem(props: {
                   }
                 >
                   {(quote.data && (
-                    <motion.h1
+                    <m.h1
                       variants={loadingVariants}
                       initial="initial"
                       animate="animate"
                     >
                       {quote.data.c && quote.data.c.toFixed(2)}
-                    </motion.h1>
+                    </m.h1>
                   )) || <br />}
                 </div>
                 {(quote.isSuccess && (
-                  <motion.p
+                  <m.p
                     variants={loadingVariants}
                     initial="initial"
                     animate="animate"
@@ -137,7 +136,7 @@ function StockListItem(props: {
                       (quote.data.d > 0
                         ? `+${quote.data.d.toFixed(2)}`
                         : `${quote.data.d.toFixed(2)}`)}
-                  </motion.p>
+                  </m.p>
                 )) || (
                     <p className={"ml-auto text-xs font-medium " + loading}>
                       <br />
@@ -151,7 +150,7 @@ function StockListItem(props: {
         {
           // Add / remove, drag, and other actions
           (props.selected || props.isEditMode || props.searchIsActive) && (
-            <motion.div
+            <m.div
               className={
                 "col-span-2 ml-auto flex items-center gap-2 " +
                 (props.searchIsActive &&
@@ -193,7 +192,7 @@ function StockListItem(props: {
               {!props.searchIsActive && (
                 <Bars2Icon className="relative z-50 ml-2 w-6 cursor-grab text-neutral-500 active:text-neutral-100" />
               )}
-            </motion.div>
+            </m.div>
           )
         }
       </div>

@@ -7,7 +7,7 @@ import { BookmarkIcon, BookmarkSlashIcon, PhotoIcon, ArrowLeftIcon } from "@hero
 import dynamic from "next/dynamic";
 import Image from "next/image"
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import type { iQuote, iProfile, iCompanyNews } from "@/types/iStocks";
 import shortNum from 'number-shortener';
 
@@ -130,7 +130,7 @@ export default function StockDetails({
     );
   }
 
-  if (quote.isLoading) {
+  if (quote.isLoading || quote.isError) {
     // Loading
     return <div className="relative h-24 -mt-12 flex"> <Loading /> </div>
   }
@@ -139,7 +139,7 @@ export default function StockDetails({
     return <div className="relative h-24 -mt-12 flex"> <NotFound message="Sorry, this stock was not found in our records." /> </div>;
   }
 
-  return (quote.isSuccess &&
+  return (
     <>
       <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-8 -my-5 hidden h-10 -translate-y-8 rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0 sm:block" />
       <div className="w-full overflow-auto mb-5 transition-all scrollbar-hide">
@@ -247,7 +247,7 @@ export default function StockDetails({
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <motion.article
+                <m.article
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="relative flex h-28 cursor-pointer items-center gap-3 rounded-xl border border-neutral-800 bg-white/[0.05] p-2 hover:border-neutral-700 hover:bg-white/[0.075]"
@@ -265,7 +265,7 @@ export default function StockDetails({
                     <p className="font-medium text-xs text-neutral-400 leading-tight max-w-prose text-ellipsis line-clamp-3">{story.summary}</p>
                   </div>
                   <div className="absolute bottom-2 left-2 bg-neutral-900/75 rounded-tr-lg rounded-bl-lg py-1.5 px-2.5 w-fit text-xs backdrop-blur-lg text-neutral-200 font-medium backdrop-saturate-[3] max-w-[7rem] truncate">{story.source}</div>
-                </motion.article>
+                </m.article>
               </a>
             ))}
           </div>
