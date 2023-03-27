@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { memo } from "react";
+import { memo, useTransition } from "react";
 import type { Dispatch, SetStateAction } from "react";
 
 function Searchbox(
@@ -8,12 +8,15 @@ function Searchbox(
     queryController: [string, Dispatch<SetStateAction<string>>],
     className?: string
   }) {
+  const [_isPending, startTransition] = useTransition();
   const [searchIsActive, setSearchIsActive] = props.searchController;
   const [query, setQuery] = props.queryController;
 
   function exitSearch() {
-    setSearchIsActive(false);
-    setQuery("");
+    startTransition(() => {
+      setSearchIsActive(false);
+      setQuery("");
+    });
   }
 
   return (
@@ -30,11 +33,16 @@ function Searchbox(
         placeholder="Explore symbols"
         spellCheck="false"
         onChange={(e) => setQuery(e.target.value)}
-        onFocus={() => setSearchIsActive(true)}
+        onFocus={() => startTransition(() => setSearchIsActive(true))}
       />
 
       <MagnifyingGlassIcon className={"order-first h-full w-5 transition-all peer-focus:w-0 shrink-0 " + (searchIsActive ? "text-neutral-300" : "text-neutral-400")} />
-      <button className={"order-last h-full w-6 transition-all shrink-0" + (searchIsActive ? " text-neutral-300" : " hidden")} onClick={() => exitSearch()}><XMarkIcon /></button>
+      <button
+        className={"order-last h-full w-6 transition-all shrink-0" + (searchIsActive ? " text-neutral-300" : " hidden")}
+        onClick={() => exitSearch()}
+      >
+        <XMarkIcon />
+      </button>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState, useTransition } from "react";
 import dynamic from "next/dynamic";
 import { useDebounce } from "use-debounce";
 import {
@@ -28,6 +28,7 @@ function StockList(props: {
   searchQuery: string;
   selectedStock: string | undefined;
 }) {
+  const [_isPending, startTransition] = useTransition();
   const selectedStock = props.selectedStock;
   const userStocks = useQuery<string[]>({
     queryKey: [`/api/stocks/user/${userID}`],
@@ -100,7 +101,7 @@ function StockList(props: {
 
   // Reset search result limit between searches
   useEffect(() => {
-    setResultLimit(5);
+    startTransition(() => setResultLimit(5));
   }, [searchResult.data]);
 
   if (!userStocks.isSuccess) { return <div className="relative h-24 -mt-12 flex"> <Loading /> </div> }
@@ -120,7 +121,7 @@ function StockList(props: {
                     ? " bg-white/[0.8] text-black"
                     : " bg-white/[0.1]")
                 }
-                onClick={() => setEditMode(!isEditMode)}
+                onClick={() => startTransition(() => setEditMode(!isEditMode))}
               >
                 <CubeTransparentIcon className="w-4" />
               </button>
@@ -130,7 +131,7 @@ function StockList(props: {
             <Reorder.Group
               axis="y"
               values={userStocks.data}
-              onReorder={userStocksMut.mutate}
+              onReorder={(newOrder: string[]) => startTransition(() => userStocksMut.mutate(newOrder))}
               as="ol"
               className={listStyle}
             >
