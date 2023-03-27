@@ -29,7 +29,7 @@ function SettingsOverlay(props: { setOpen: Dispatch<SetStateAction<boolean>> }) 
               damping: 30,
               stiffness: 500,
             }}
-            className="absolute z-[51] h-[75%] max-h-[800px] min-h-[500px] w-[95%] max-w-3xl bg-black rounded-2xl border border-neutral-800 cursor-default shadow-lg sm:h-5/6"
+            className="absolute z-[51] h-[75%] max-h-[800px] min-h-[500px] w-[95%] max-w-xl bg-black rounded-2xl border border-neutral-800 cursor-default shadow-lg sm:h-5/6"
           >
             <Preferences />
           </m.div>
