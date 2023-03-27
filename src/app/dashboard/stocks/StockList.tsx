@@ -13,6 +13,7 @@ import { motion, Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
 import { CubeTransparentIcon } from "@heroicons/react/20/solid";
 import type { iSearch, iSearchItem } from "@/types/iStocks";
+import Loading from "../loading";
 
 // Lazy-load components
 const StockListItem = dynamic(() => import("./StockListItem"));
@@ -125,7 +126,7 @@ function StockList(props: {
     setResultLimit(5);
   }, [searchResult.data]);
 
-  if (!userStocks.isSuccess) { return (<> </>) }
+  if (!userStocks.isSuccess) { return <div className="relative h-24 -mt-12 flex"> <Loading /> </div> }
 
   return (
     <>
