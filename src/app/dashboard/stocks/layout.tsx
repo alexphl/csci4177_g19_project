@@ -23,7 +23,7 @@ Chart.register(...registerables);
 Chart.register(annotationPlugin);
 
 const stylePane =
-  "relative bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-scroll scrollbar-hide pb-64 sm:pb-40 transition-transform overscroll-contain";
+  "relative bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-scroll scrollbar-hide pb-64 sm:pb-40 transition-transform transform-gpu overscroll-contain";
 
 export default function StocksLayout({
   children, // will be a page or nested layout
