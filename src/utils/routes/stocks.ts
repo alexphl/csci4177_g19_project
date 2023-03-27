@@ -5,6 +5,7 @@ const router = Router();
 import Model from '../models/simulation';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { TabOutlined } from "@mui/icons-material";
 dayjs.extend(utc)
 
 
@@ -102,7 +103,8 @@ router.get("/hist/1D/:symbol", async function(req, _res, next) {
 
   const today = dayjs().startOf('hour');
   let marketOpen = today.startOf('day').utc().hour(13);
-  while (marketOpen.day() === 0 || marketOpen.day() === 6) {
+
+  while (marketOpen.day() === 0 || (marketOpen.day() === 1 && (today.hour() < marketOpen.hour())) || marketOpen.day() === 6) {
     marketOpen = marketOpen.subtract(1, 'day');
   }
 
