@@ -5,9 +5,8 @@ const router = Router();
 import Model from '../models/simulation';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { TabOutlined } from "@mui/icons-material";
+import type { iSearchItem } from "@/types/iStocks";
 dayjs.extend(utc)
-
 
 const cache = new LRU({
   max: 200, // max number of cached responses
@@ -88,7 +87,29 @@ router.get("/search/:q", async function(req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) { return _res.send(cached); }
 
-  cachedFetch(`https://finnhub.io/api/v1/search?q=${req.params.q}`, _res, req.url, next);
+  await fetch(
+    `https://finnhub.io/api/v1/search?q=${req.params.q}&token=${process.env.FINNHUB_API_KEY}`
+  )
+    .then((res) => {
+      if (!res.ok) { return _res.sendStatus(res.status); }
+      return res.json();
+    })
+    .then((json) => {
+      // FILTER STOCK RESULTS
+      if (!json || !json.result) { return null; }
+      json = json.result.filter((item: iSearchItem) => {
+        if (item.symbol.includes(".") || item.symbol.includes(":")) return false;
+        if (item.type === "Common Stock" || item.type === "ADR") return true;
+
+        return false;
+      });
+      cache.set(req.url, json);
+      return _res.send(json);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      next(error);
+    });
 });
 
 // Get candlestick data for the last 24h

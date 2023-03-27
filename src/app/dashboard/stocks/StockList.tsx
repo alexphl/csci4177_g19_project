@@ -21,20 +21,6 @@ const StockListbox = dynamic(() => import("./Listbox"));
 
 const listStyle = "flex flex-col gap-2.5 transition";
 
-// Filters search results to hide stock subvariants
-// This logic will likely be moved to backend
-function filterResults(results: iSearch | undefined) {
-  if (!results || !results.result) { return null; }
-  return (
-    results.result.filter((item: iSearchItem) => {
-      if (item.symbol.includes(".") || item.symbol.includes(":")) return false;
-      if (item.type === "Common Stock" || item.type === "ADR") return true;
-
-      return false;
-    })
-  );
-}
-
 const userID = "user1";
 
 function StockList(props: {
@@ -104,22 +90,13 @@ function StockList(props: {
   const [isEditMode, setEditMode] = useState(false);
   const [debouncedQuery] = useDebounce(props.searchQuery, 600); // Debounce query with a delay
   const [resultLimit, setResultLimit] = useState(5);
-  const searchResult = useQuery<iSearch>({
+  const searchResult = useQuery<iSearchItem[]>({
     queryKey: [`/api/stocks/search/`, encodeURIComponent(debouncedQuery.trim())],
     enabled: !!debouncedQuery,
     staleTime: Infinity,
     retry: true,
     retryDelay: 1000
   });
-
-  // Filter search results
-  const filtered = useMemo(
-    () =>
-      filterResults(
-        searchResult.data
-      ),
-    [searchResult]
-  );
 
   // Reset search result limit between searches
   useEffect(() => {
@@ -231,9 +208,7 @@ function StockList(props: {
 
               {
                 /* SHOW SEARCH RESULTS */
-                searchResult.isSuccess &&
-                filtered &&
-                filtered
+                searchResult.isSuccess && searchResult.data
                   .slice(0, resultLimit)
                   .map((result: iSearchItem) => (
                     <StockListItem
@@ -273,7 +248,7 @@ function StockList(props: {
 
               {
                 /* NOT FOUND MESSAGE */
-                searchResult.isSuccess && filtered && filtered.length === 0 && (
+                searchResult.isSuccess && searchResult.data.length === 0 && (
                   <div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
                     <div className="w-16 ">
                       <FaceFrownIcon />
@@ -293,8 +268,7 @@ function StockList(props: {
               {
                 /* SHOW MORE BUTTON */
                 searchResult.isSuccess &&
-                filtered &&
-                filtered.length > resultLimit && (
+                searchResult.data.length > resultLimit && (
                   <button
                     className="mx-auto mt-4 rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-2 text-sm font-medium active:opacity-70"
                     onClick={() => setResultLimit(resultLimit + 3)}
