@@ -54,15 +54,12 @@ async function cachedFetch(route: string, _res: any, reqUrl: string, next: any) 
     `${route}&token=${process.env.FINNHUB_API_KEY}`
   )
     .then((res) => {
-      if (!res.ok) {
-        _res.sendStatus(res.status);
-        return;
-      }
+      if (!res.ok) { return _res.sendStatus(res.status); }
       return res.json();
     })
     .then((json) => {
       if (json) cache.set(reqUrl, json);
-      _res.send(json);
+      return _res.send(json);
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -226,12 +223,27 @@ router.get("/company-news/:symbol", async function(req, _res, next) {
   cachedFetch(`https://finnhub.io/api/v1/company-news?symbol=${req.params.symbol}&from=${from}&to=${to}`, _res, req.url, next);
 });
 
-// Get list of related simbols (operating  in the same sub-Industry)
+// Get list of related symbols (operating  in the same sub-Industry)
 router.get("/peers/:symbol", async function(req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) { return _res.send(cached); }
 
-  cachedFetch(`https://finnhub.io/api/v1/stock/peers?symbol=${req.params.symbol}`, _res, req.url, next);
+  await fetch(
+    `https://finnhub.io/api/v1/stock/peers?symbol=${req.params.symbol}&token=${process.env.FINNHUB_API_KEY}`
+  )
+    .then((res) => {
+      if (!res.ok) { return _res.sendStatus(res.status); }
+      return res.json();
+    })
+    .then((json) => {
+      json = json.filter((symbol: string) => (!symbol.includes(".") && !symbol.includes(":") && !symbol.includes(req.params.symbol)));
+      cache.set(req.url, json);
+      return _res.send(json);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      next(error);
+    });
 });
 
 export default router;

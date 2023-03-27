@@ -224,19 +224,17 @@ export default function StockDetails({
       {(userStocks.isSuccess && peerSymbols.isSuccess) &&
         <section className={"mt-8 text-neutral-100 empty:hidden flex flex-col"} >
           <div className="peer mt-3 flex gap-3 w-full overflow-x-scroll scrollbar-hide empty:hidden">
-            {peerSymbols.data
-              .filter((symbol) => (!symbol.includes(".") && !symbol.includes(":") && !symbol.includes(params.stock) && !userStocks.data.includes(symbol)))
-              .map((symbol) => (
-                <div key={symbol} className="snap-start relative w-72 flex-none">
-                  <StockListItem
-                    stock={symbol}
-                    isAdded={userStocks.data.includes(symbol)}
-                    searchIsActive={true}
-                    addStock={addStock}
-                    removeStock={removeStock}
-                  />
-                </div>
-              ))}
+            {peerSymbols.data.map((symbol) => (
+              <div key={symbol} className="snap-start relative w-72 flex-none">
+                <StockListItem
+                  stock={symbol}
+                  isAdded={userStocks.data.includes(symbol)}
+                  searchIsActive={true}
+                  addStock={addStock}
+                  removeStock={removeStock}
+                />
+              </div>
+            ))}
           </div>
           <h1 className="order-first text-lg font-bold peer-empty:hidden">Similar stocks</h1>
         </section>
