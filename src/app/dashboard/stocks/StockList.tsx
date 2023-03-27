@@ -111,7 +111,7 @@ function StockList(props: {
         /* SHOW USER STOCKS */
         !props.searchIsActive && userStocks.isSuccess && (
           <>
-            <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-4 flex flex-auto -translate-y-4 items-center rounded-2xl bg-gradient-to-b from-black to-transparent p-4 pb-0">
+            <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-4 flex flex-auto items-center rounded-2xl bg-gradient-to-b from-black to-transparent p-4">
               <StockListbox />
               <button
                 className={
@@ -191,7 +191,7 @@ function StockList(props: {
         /* SHOW SEARCH RESULTS OR ALL STOCKS */
         props.searchIsActive && (
           <>
-            <h1 className="px-2.5 pt-1 pb-6 font-bold text-neutral-300">
+            <h1 className="px-1.5 py-6 font-bold">
               Search Results
             </h1>
 
