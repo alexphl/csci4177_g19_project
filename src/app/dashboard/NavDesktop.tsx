@@ -15,7 +15,7 @@ export default function NavDesktop(props: { overlayController: [boolean, Dispatc
   const [isOverlayOpen, setOverlayOpen] = props.overlayController;
 
   return (
-    <nav className="group md:grid grid-rows-[15%_auto] z-[90] border-r rounded-r-3xl border-white/[0.1] transform-gpu will-change-auto hover:will-change-contents hidden h-screen w-20 min-w-fit max-w-fit gap-3 bg-neutral-800/50 p-3 text-sm font-medium text-neutral-300 shadow-md backdrop-saturate-[3.0] backdrop-blur-xl transition-[width] hover:w-64 hover:max-w-sm hover:min-w-0 hover:text-neutral-200 md:fixed lg:p-4 2xl:p-5">
+    <nav className="group md:grid grid-rows-[15%_auto] z-50 border-r rounded-r-3xl border-white/[0.1] transform-gpu will-change-auto hover:will-change-contents hidden h-screen w-20 min-w-fit max-w-fit gap-3 bg-neutral-800/50 p-3 text-sm font-medium text-neutral-300 shadow-md backdrop-saturate-[3.0] backdrop-blur-xl transition-[width] hover:w-64 hover:max-w-sm hover:min-w-0 hover:text-neutral-200 md:fixed lg:p-4 2xl:p-5">
       <button
         className="place-self-start gap-3 border-white/[0.1] bg-white/[0.05] flex items-center rounded-full w-full"
         onClick={() => setOverlayOpen(!isOverlayOpen)}

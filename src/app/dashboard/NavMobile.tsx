@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { UserIcon, Bars3Icon, RectangleGroupIcon } from "@heroicons/react/24/outline";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { useSelectedLayoutSegment } from "next/navigation";
 import type { Dispatch, SetStateAction } from "react";
 
@@ -36,7 +36,7 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
         <AnimatePresence>
           {
             isExpanded &&
-            <motion.div
+            <m.div
               initial={{ y: "34rem" }}
               animate={{ y: 0 }}
               exit={{ y: "34rem" }}
@@ -104,7 +104,7 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
                   </Link>
                 ))}
               </section>
-            </motion.div>
+            </m.div>
           }
         </AnimatePresence>
       </div>
