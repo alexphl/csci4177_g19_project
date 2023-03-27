@@ -131,7 +131,7 @@ function StockList(props: {
             <Reorder.Group
               axis="y"
               values={userStocks.data}
-              onReorder={(newOrder: string[]) => startTransition(() => userStocksMut.mutate(newOrder))}
+              onReorder={userStocksMut.mutate}
               as="ol"
               className={listStyle}
             >
