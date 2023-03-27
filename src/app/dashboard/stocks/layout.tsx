@@ -29,9 +29,9 @@ export default function StocksLayout({
   const [searchIsActive, setSearchIsActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const today = dayjs().utc();
-  const marketOpen = today.startOf('day').utc().hour(13);
-  const marketClose = today.startOf('day').utc().hour(21);
+  const today = dayjs().startOf('day');
+  const marketOpen = today.utc().hour(13);
+  const marketClose = today.utc().hour(21);
   const isWeekend = today.day() === 0 || today.day() === 6;
 
   // Destrucutre path to see if user selected a particular stock
