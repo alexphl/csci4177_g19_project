@@ -1,5 +1,5 @@
 import { Tab } from "@headlessui/react";
-import { memo, useEffect, useTransition } from "react";
+import { memo, useTransition } from "react";
 import type { Dispatch, SetStateAction } from "react";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -16,8 +16,6 @@ function Tabs(props: {
   const categories = props.components;
   const [selectedIndex, setSelectedIndex] = props.selector;
   const [_isPending, startTransition] = useTransition();
-
-  useEffect(() => { console.log("CHANGED HERE ---------") }, [selectedIndex]);
 
   return (
     <div className={props.className}>
