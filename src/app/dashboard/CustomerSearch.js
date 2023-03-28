@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useDeferredValue, memo } from "react";
 import { useDebounce } from "use-debounce";
-import { Grid, TextField, Box, CircularProgress } from "@mui/material";
+import { Grid, TextField, CircularProgress } from "@mui/material";
 
 import apiURL from "@/APIurl";
 const baseURL = apiURL + "/customer/search/";
@@ -23,46 +23,36 @@ function CustomerSearch() {
 
   return (
     <div>
-      <Box
-        component="form"
-        noValidate
-        autoComplete="off"
-        align="center"
-        onSubmit={function (e) {
-          e.preventDefault();
+      <TextField
+        id="standard-basic"
+        variant="outlined"
+        margin="normal"
+        type="search"
+        fullWidth
+        onChange={function (e) {
+          setQuery(e.target.value);
         }}
-      >
-        <TextField
-          id="standard-basic"
-          variant="outlined"
-          margin="normal"
-          type="search"
-          fullWidth
-          onChange={function (e) {
-            setQuery(e.target.value);
-          }}
-        />
-        <Grid container spacing={2} align="left">
-          {customers.isSuccess &&
-            customers.data.map((customer) => (
-              <Grid item xs={12} sm={6} key={customer.username}>
-                <CustomerCard content={customer} />
-              </Grid>
-            ))}
-          {customers.isLoading && searchQuery && (
-            <Grid
-              container
-              spacing={0}
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              style={{ minHeight: "20vh" }}
-            >
-              <CircularProgress color="success" />
+      />
+      <Grid container spacing={2} align="left">
+        {customers.isSuccess &&
+          customers.data.map((customer) => (
+            <Grid item xs={12} sm={6} key={customer.username}>
+              <CustomerCard content={customer} />
             </Grid>
-          )}
-        </Grid>
-      </Box>
+          ))}
+        {customers.isLoading && searchQuery && (
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            style={{ minHeight: "20vh" }}
+          >
+            <CircularProgress color="success" />
+          </Grid>
+        )}
+      </Grid>
     </div>
   );
 }

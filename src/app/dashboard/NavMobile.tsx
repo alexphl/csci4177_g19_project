@@ -62,7 +62,7 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
                 >
                   <hr className="border border-white/[0.5] w-8 rounded-full" />
 
-                  <button
+                  <section
                     className="border text-neutral-100 p-5 gap-5 border-white/[0.1] bg-white/[0.05] flex items-center rounded-2xl w-full"
                     onClick={() => setOverlayOpen(!isOverlayOpen)}
                   >
@@ -73,7 +73,7 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
                       <p className="font-bold">John Doe</p>
                       <p className="text-xs text-neutral-400">johndoe@email.com</p>
                     </div>
-                  </button>
+                  </section>
 
                   <section className="flex flex-col gap-1 w-full rounded-xl border p-1 border-white/[0.1] bg-white/[0.05]">
                     <Link href="/dashboard" className={linkStyle} onClick={() => setExpanded(false)}>
