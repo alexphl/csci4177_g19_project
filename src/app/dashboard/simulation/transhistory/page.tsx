@@ -1,24 +1,17 @@
 "use client"
 import { useState, useEffect } from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import {
   Typography,
   Grid,
   Container,
   Button,
   Table,
-  TableBody,
   TableCell,
   TableHead,
   TableRow,
 } from '@mui/material';
 import Link from "next/link";
 import { motion } from 'framer-motion';
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
 const stylePane =
   "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";
 
