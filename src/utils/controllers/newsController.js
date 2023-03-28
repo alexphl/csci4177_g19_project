@@ -35,7 +35,7 @@ const getnew = (input, number) => {
 const getnews_list = async (user_stock_list) => {
   let promises = [];
   user_stock_list.map((value) => {
-    promises.push(getnew(value.name, 1));
+    promises.push(getnew(value, 1));
   });
   let results = await Promise.all(promises).catch((error) => {
     return error;
