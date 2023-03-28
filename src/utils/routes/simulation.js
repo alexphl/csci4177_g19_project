@@ -24,7 +24,9 @@ router.post("/buy", async (req, res) => {
         stock_list:[],
       });
     }
-
+    if (quantity === 0) {
+      return res.status(400).json({ message: "Quantity cannot be zero" });
+    }
     const newAsset = {
       asset_name,
       asset_type,
