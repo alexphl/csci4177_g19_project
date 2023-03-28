@@ -14,7 +14,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { m, Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
 import { CubeTransparentIcon } from "@heroicons/react/20/solid";
-import type { iSearchItem, iUserStockListItem } from "@/types/iStocks";
+import type { iSearchItem, iUserStockList, iUserStockListItem } from "@/types/iStocks";
 import Loading from "../loading";
 import { ListContext } from "./ListContext";
 
@@ -33,7 +33,7 @@ function StockList(props: {
 }) {
   const listContext = useContext(ListContext);
   const [selectedList, setSelectedList] = [listContext.state, listContext.setState];
-  const userLists = useQuery<string[]>({
+  const userLists = useQuery<iUserStockList[]>({
     queryKey: [`/api/stocks/user/lists/${userID}`],
   });
   const [_isPending, startTransition] = useTransition();
@@ -96,14 +96,14 @@ function StockList(props: {
 
   if (!userLists.isSuccess || !userStocks.isSuccess) { return <div className="relative h-24 -mt-12 flex"> <Loading /> </div> }
 
-  const stockList = userStocks.data.filter((item: iUserStockListItem) => item.list === userLists.data[selectedList]);
+  const stockList = userStocks.data.filter((item: iUserStockListItem) => item.listID === userLists.data[selectedList].id);
 
   function removeStock(stock: string) {
     return (
       userStocks.isSuccess &&
       userStocksMut.mutate([
         ...userStocks.data.filter((item: iUserStockListItem) => {
-          return (item.symbol !== stock) || (item.list !== userLists.data![selectedList]);
+          return (item.symbol !== stock) || (item.listID !== userLists.data![selectedList].id);
         }),
       ])
     );
@@ -112,13 +112,13 @@ function StockList(props: {
   function addStock(stock: string) {
     return (
       userStocks.isSuccess && userLists.isSuccess &&
-      userStocksMut.mutate([...userStocks.data.concat({ list: userLists.data[selectedList], symbol: stock })])
+      userStocksMut.mutate([...userStocks.data.concat({ listID: userLists.data[selectedList].id, symbol: stock })])
     );
   }
 
   function handleReorder(newOrder: iUserStockListItem[]) {
     //if (!userStocks.isSuccess || userLists.isSuccess) return;
-    const formatted = userStocks.data!.filter((item: iUserStockListItem) => item.list !== newOrder[0].list);
+    const formatted = userStocks.data!.filter((item: iUserStockListItem) => item.listID !== newOrder[0].listID);
     console.log(formatted.concat(newOrder));
     userStocksMut.mutate(formatted.concat(newOrder));
   }

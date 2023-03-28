@@ -24,7 +24,7 @@ const transactionSchema = Schema({
 });
 
 const stockListSchema = Schema({
-  list: String,
+  listID: String,
   symbol: String,
 });
 
@@ -40,7 +40,7 @@ const portfolioSchema = Schema({
   },
   assets: [assetSchema],
   transaction_history: [transactionSchema],
-  watchlists: [String],
+  watchlists: [{ id: String, name: String }],
   stock_list: [stockListSchema],
 });
 

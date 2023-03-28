@@ -8,13 +8,14 @@ import { useMutation } from "@tanstack/react-query";
 import { memo } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { ListContext } from "./ListContext";
+import type { iUserStockList } from "@/types/iStocks";
 
 const userID = "user1";
 
 /**
  * Chart mode selection listbox
  **/
-function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetStateAction<number>>] }) {
+function StockListbox(props: { lists: iUserStockList[], selector: [number, Dispatch<SetStateAction<number>>] }) {
   const [_isPending, startTransition] = useTransition();
   const modes = props.lists
   const listContext = useContext(ListContext);
@@ -24,7 +25,7 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
   // Function to update user stock list
   // Implements optimistic updates
   const userListsMut = useMutation({
-    mutationFn: ((newLists: string[]) =>
+    mutationFn: ((newLists: iUserStockList[]) =>
       fetch(`/api/stocks/user/lists/${userID}`, {
         method: "POST",
         body: JSON.stringify(newLists),
@@ -64,7 +65,12 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
     const name = encodeURIComponent(e.target.value.trim());
     if (!name) return;
 
-    userListsMut.mutate([...modes.concat(name)]);
+    const newList: iUserStockList = {
+      id: (modes[modes.length - 1].id + 1).toString(),
+      name: name
+    }
+
+    userListsMut.mutate([...modes.concat(newList)]);
     startTransition(() => setSelected((modes.length)));
   }
 
@@ -73,8 +79,8 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
     e.stopPropagation();
 
     userListsMut.mutate([
-      ...modes.filter((item: string) => {
-        return item !== modes[selected];
+      ...modes.filter((item: iUserStockList) => {
+        return item.id !== modes[selected].id;
       }),
     ])
     startTransition(() => setSelected(selected - 1));
@@ -88,7 +94,7 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
       >
         <div className="relative">
           <Listbox.Button className="relative w-full border border-neutral-800 cursor-pointer backdrop-blur-md rounded-md bg-white/[0.1] py-1 pl-3 pr-9 text-left hover:bg-white/[0.15] focus:outline-none focus-visible:border-orange-200">
-            <span className="block truncate">{modes[selected]}</span>
+            <span className="block truncate">{modes[selected].name}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1">
               <ArrowsUpDownIcon
                 className="mr-1.5 h-3 w-3 text-neutral-500"
@@ -102,7 +108,7 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
             leaveTo="transform scale-95 opacity-0"
           >
             <Listbox.Options className="absolute z-50 mt-1 max-h-96 w-60 overflow-x-hidden overflow-y-auto border border-white/[0.2] rounded-lg bg-neutral-800/[0.2] p-2 text-sm shadow-xl backdrop-blur-2xl backdrop-saturate-200 focus:outline-none">
-              {modes.map((mode: string, i) => (
+              {modes.map((mode: iUserStockList, i) => (
                 <Listbox.Option
                   key={i}
                   className={({ active }) =>
@@ -119,7 +125,7 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
                         className={`block truncate ${selected ? "font-medium" : "font-normal"
                           }`}
                       >
-                        {mode}
+                        {mode.name}
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-2.5 text-orange-200">

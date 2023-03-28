@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image"
 import { useRouter } from "next/navigation";
 import { m } from "framer-motion";
-import type { iQuote, iProfile, iCompanyNews, iUserStockListItem } from "@/types/iStocks";
+import type { iQuote, iProfile, iCompanyNews, iUserStockListItem, iUserStockList } from "@/types/iStocks";
 import { ListContext } from "../ListContext";
 import shortNum from 'number-shortener';
 
@@ -63,7 +63,7 @@ export default function StockDetails({
   const userStocks = useQuery<iUserStockListItem[]>({
     queryKey: [`/api/stocks/user/${userID}`],
   });
-  const userLists = useQuery<string[]>({
+  const userLists = useQuery<iUserStockList[]>({
     queryKey: [`/api/stocks/user/lists/${userID}`],
   });
   const peerSymbols = useQuery<string[]>({
@@ -127,7 +127,7 @@ export default function StockDetails({
       userStocks.isSuccess &&
       userStocksMut.mutate([
         ...userStocks.data.filter((item: iUserStockListItem) => {
-          return (item.symbol !== stock) || (item.list !== userLists.data![selectedList]);
+          return (item.symbol !== stock) || (item.listID !== userLists.data![selectedList].id);
         }),
       ])
     );
@@ -136,7 +136,7 @@ export default function StockDetails({
   function addStock(stock: string) {
     return (
       userStocks.isSuccess && userLists.isSuccess &&
-      userStocksMut.mutate([...userStocks.data.concat({ list: userLists.data[selectedList], symbol: stock })])
+      userStocksMut.mutate([...userStocks.data.concat({ listID: userLists.data[selectedList].id, symbol: stock })])
     );
   }
 
@@ -149,7 +149,7 @@ export default function StockDetails({
     return <div className="relative h-24 -mt-12 flex"> <NotFound message="Sorry, this stock was not found in our records." /> </div>;
   }
 
-  const stockList = userStocks.data.filter((item: iUserStockListItem) => item.list === userLists.data[selectedList]);
+  const stockList = userStocks.data.filter((item: iUserStockListItem) => item.listID === userLists.data[selectedList].id);
 
   return (
     <>

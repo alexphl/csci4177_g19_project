@@ -48,7 +48,12 @@ export type iCompanyNews = {
   url: string
 }
 
+export type iUserStockList = {
+  id: string,
+  name: string,
+}
+
 export type iUserStockListItem = {
-  list: string,
+  listID: string,
   symbol: string,
 }
