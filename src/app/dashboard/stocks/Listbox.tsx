@@ -3,10 +3,11 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { ArrowsUpDownIcon, CheckIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import type { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext, useTransition } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { memo } from "react";
 import { queryClient } from "@/app/QueryProvider";
+import { ListContext } from "./ListContext";
 
 const userID = "user1";
 
@@ -14,8 +15,11 @@ const userID = "user1";
  * Chart mode selection listbox
  **/
 function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetStateAction<number>>] }) {
+  const [_isPending, startTransition] = useTransition();
   const modes = props.lists
-  const [selected, setSelected] = props.selector;
+  const listContext = useContext(ListContext);
+  const selected = listContext.state;
+  const setSelected = listContext.setState;
 
   // Function to update user stock list
   // Implements optimistic updates
@@ -45,7 +49,7 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
     // use the context returned from onMutate to roll back
     onError: (context: { previousList: string[] }) => {
       queryClient.setQueryData([`/api/stocks/user/lists/${userID}`], context.previousList);
-      setSelected(0);
+      startTransition(() => setSelected((0)));
     },
     // Always refetch after error or success:
     onSettled: () => {
@@ -61,7 +65,7 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
     if (!name) return;
 
     userListsMut.mutate([...modes.concat(name)]);
-    setSelected(modes.length);
+    startTransition(() => setSelected((modes.length)));
   }
 
   function handleDelete(e: any) {
@@ -73,12 +77,15 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
         return item !== modes[selected];
       }),
     ])
-    setSelected(selected - 1);
+    startTransition(() => setSelected(selected - 1));
   }
 
   return (
     <div className="w-max text-sm font-medium text-neutral-300">
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox
+        value={selected}
+        onChange={(i: number) => startTransition(() => setSelected(i))}
+      >
         <div className="relative">
           <Listbox.Button className="relative w-full border border-neutral-800 cursor-pointer backdrop-blur-md rounded-md bg-white/[0.1] py-1 pl-3 pr-9 text-left hover:bg-white/[0.15] focus:outline-none focus-visible:border-orange-200">
             <span className="block truncate">{modes[selected]}</span>

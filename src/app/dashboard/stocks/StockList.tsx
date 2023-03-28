@@ -2,7 +2,7 @@
 
 "use client";
 
-import { memo, useEffect, useState, useTransition } from "react";
+import { memo, useContext, useEffect, useState, useTransition } from "react";
 import dynamic from "next/dynamic";
 import { useDebounce } from "use-debounce";
 import {
@@ -16,6 +16,7 @@ import { queryClient } from "@/app/QueryProvider";
 import { CubeTransparentIcon } from "@heroicons/react/20/solid";
 import type { iSearchItem, iUserStockListItem } from "@/types/iStocks";
 import Loading from "../loading";
+import { ListContext } from "./ListContext";
 
 // Lazy-load components
 const StockListItem = dynamic(() => import("./StockListItem"));
@@ -30,7 +31,8 @@ function StockList(props: {
   searchQuery: string;
   selectedStock: string | undefined;
 }) {
-  const [selectedList, setSelectedList] = useState<number>(0);
+  const listContext = useContext(ListContext);
+  const [selectedList, setSelectedList] = [listContext.state, listContext.setState];
   const userLists = useQuery<string[]>({
     queryKey: [`/api/stocks/user/lists/${userID}`],
   });
