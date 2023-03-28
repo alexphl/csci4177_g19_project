@@ -78,8 +78,6 @@ export default function StockDetails({
   });
 
   const [newsLimit, setNewsLimit] = useState(3);
-  const isAdded =
-    userStocks.isSuccess && userStocks.data.filter((savedItem: iUserStockListItem) => params.stock === savedItem.symbol).length > 0;
 
   const filteredNews = useMemo(
     () =>
@@ -150,6 +148,7 @@ export default function StockDetails({
   }
 
   const stockList = userStocks.data.filter((item: iUserStockListItem) => item.listID === userLists.data[selectedList].id);
+  const isAdded = stockList.filter((savedItem: iUserStockListItem) => params.stock === savedItem.symbol).length > 0;
 
   return (
     <>

@@ -92,7 +92,7 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
       ...modes.filter((item: iUserStockList) => item.id !== modes[selected].id),
     ])
 
-    startTransition(() => setSelected(selected - 1));
+    if (selected > 0) startTransition(() => setSelected(selected - 1));
   }
 
   return (
