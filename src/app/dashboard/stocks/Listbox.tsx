@@ -1,5 +1,5 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { ArrowsUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
+import { ArrowsUpDownIcon, CheckIcon, PlusIcon } from "@heroicons/react/20/solid";
 import type { Dispatch, SetStateAction } from "react";
 import { memo } from "react";
 
@@ -28,7 +28,7 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
           >
-            <Listbox.Options className="absolute z-50 mt-1 max-h-60 w-max overflow-auto rounded-md bg-neutral-500/[0.2] py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-2xl backdrop-saturate-200 focus:outline-none">
+            <Listbox.Options className="absolute z-50 mt-1 max-h-60 w-max overflow-auto border border-white/[0.2] rounded-md bg-neutral-800/[0.2] py-1 text-sm shadow-lg backdrop-blur-2xl backdrop-saturate-200 focus:outline-none">
               {modes.map((mode: string, i) => (
                 <Listbox.Option
                   key={i}
@@ -57,8 +57,14 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
                   )}
                 </Listbox.Option>
               ))}
-              <hr className="w-full border border-white/25 rounded-full my-2 px-4" />
-              <div className="py-2 px-4 hover:bg-neutral-100/[0.1] text-neutral-100"> New List </div>
+              <hr className="border border-white/[0.2] rounded-full my-4 w-10 mx-auto" />
+              <form className="flex relative w-full px-2 items-center hover:bg-neutral-100/[0.1]">
+                <PlusIcon className="w-5" />
+                <input
+                  placeholder="Create new list"
+                  className="flex-auto bg-transparent max-w-full p-2 text-neutral-100 placeholder:text-neutral-100 focus:placeholder:text-transparent" type="text"
+                />
+              </form>
             </Listbox.Options>
           </Transition>
         </div>
