@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { BookmarkIcon, BookmarkSlashIcon, PhotoIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon, BookmarkSlashIcon, PhotoIcon, ArrowLeftIcon, ArrowSmallRightIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Image from "next/image"
 import { useRouter } from "next/navigation";
@@ -219,8 +219,10 @@ export default function StockDetails({
       )}
 
       {(userStocks.isSuccess && peerSymbols.isSuccess) &&
-        <section className={"mt-8 text-neutral-100 empty:hidden flex flex-col"} >
-          <div className="peer mt-3 flex gap-3 w-full overflow-x-scroll scrollbar-hide empty:hidden">
+        <section className={"relative mt-8 text-neutral-100 empty:hidden flex flex-col"} >
+          <div
+            className="peer mt-3 flex content-center items-center gap-3 pr-10 w-full overflow-x-scroll scrollbar-hide empty:hidden"
+          >
             {peerSymbols.data.map((symbol) => (
               <div key={symbol} className="snap-start relative w-72 flex-none">
                 <StockListItem
@@ -232,6 +234,7 @@ export default function StockDetails({
                 />
               </div>
             ))}
+            <div className="absolute bg-gradient-to-r from-transparent to-black w-10 p-2 h-[90%] right-0 z-50" />
           </div>
           <h1 className="order-first text-lg font-bold peer-empty:hidden">Similar stocks</h1>
         </section>
