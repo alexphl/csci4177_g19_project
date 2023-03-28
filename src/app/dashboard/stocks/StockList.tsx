@@ -85,12 +85,21 @@ function StockList(props: {
     retryDelay: 1000
   });
 
+  // Reset search result limit between searches
+  useEffect(() => {
+    startTransition(() => setResultLimit(5));
+  }, [searchResult.data]);
+
+  if (!userLists.isSuccess || !userStocks.isSuccess) { return <div className="relative h-24 -mt-12 flex"> <Loading /> </div> }
+
+  const stockList = userStocks.data.filter((item: iUserStockListItem) => item.list === userLists.data[selectedList]);
+
   function removeStock(stock: string) {
     return (
       userStocks.isSuccess &&
       userStocksMut.mutate([
         ...userStocks.data.filter((item: iUserStockListItem) => {
-          return item.symbol !== stock;
+          return (item.symbol !== stock) || (item.list !== userLists.data![selectedList]);
         }),
       ])
     );
@@ -102,15 +111,6 @@ function StockList(props: {
       userStocksMut.mutate([...userStocks.data.concat({ list: userLists.data[selectedList], symbol: stock })])
     );
   }
-
-  // Reset search result limit between searches
-  useEffect(() => {
-    startTransition(() => setResultLimit(5));
-  }, [searchResult.data]);
-
-  if (!userLists.isSuccess || !userStocks.isSuccess) { return <div className="relative h-24 -mt-12 flex"> <Loading /> </div> }
-
-  const stockList = userStocks.data.filter((item: iUserStockListItem) => item.list === userLists.data[selectedList]);
 
   function handleReorder(newOrder: iUserStockListItem[]) {
     //if (!userStocks.isSuccess || userLists.isSuccess) return;

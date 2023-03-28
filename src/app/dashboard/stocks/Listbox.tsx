@@ -137,13 +137,15 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
                 />
               </div>
 
-              <div
-                className="flex relative w-full px-2 rounded-md text-neutral-300 items-center hover:bg-neutral-100/[0.1] hover:text-red-300"
-                onClick={(e) => handleDelete(e)}
-              >
-                <TrashIcon className="w-4 mx-0.5 flex-none" fill="rgba(255,255,255,0.2)" />
-                <p className="flex-auto max-w-full p-2 truncate">Delete this list</p>
-              </div>
+              {(modes.length > 1) &&
+                <div
+                  className="flex relative w-full px-2 rounded-md text-neutral-300 items-center hover:bg-neutral-100/[0.1] hover:text-red-300"
+                  onClick={(e) => handleDelete(e)}
+                >
+                  <TrashIcon className="w-4 mx-0.5 flex-none" fill="rgba(255,255,255,0.2)" />
+                  <p className="flex-auto max-w-full p-2 truncate">Delete this list</p>
+                </div>
+              }
 
             </Listbox.Options>
           </Transition>
