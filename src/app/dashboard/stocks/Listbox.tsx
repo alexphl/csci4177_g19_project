@@ -47,7 +47,7 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
                         className={`block truncate ${selected ? "font-medium" : "font-normal"
                           }`}
                       >
-                        {"Show " + mode}
+                        {mode}
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-2.5 text-orange-200">
