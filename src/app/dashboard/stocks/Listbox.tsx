@@ -71,7 +71,7 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
     if (!name) return;
 
     const newList: iUserStockList = {
-      id: (modes[modes.length - 1].id + 1).toString(),
+      id: (parseInt(modes[modes.length - 1].id) + 1).toString(),
       name: name
     }
 
