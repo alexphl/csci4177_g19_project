@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { memo, useTransition } from "react";
 import type { Dispatch, SetStateAction } from "react";

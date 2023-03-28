@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 import "../styles/globals.css";
 import UserContextProvider from "./UserContext";
 import ThemeContextProvider from "./ThemeContext";

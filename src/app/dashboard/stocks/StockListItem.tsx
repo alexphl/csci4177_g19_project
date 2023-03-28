@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { memo, useRef } from "react";

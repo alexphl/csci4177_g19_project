@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 import FocusTrap from "focus-trap-react";
 import { RemoveScroll } from "react-remove-scroll";
 import { m } from "framer-motion";

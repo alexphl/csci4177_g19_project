@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 import dynamic from "next/dynamic";
 import Transition from "./Transition";
 import type { Metadata } from "next";

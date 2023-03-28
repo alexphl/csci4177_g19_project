@@ -1,3 +1,6 @@
+/**Author: Yiqun Liang */
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 "use strict";
 import { Schema, model, models } from "mongoose";
 

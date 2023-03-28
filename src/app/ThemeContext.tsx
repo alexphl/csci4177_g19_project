@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 "use client";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";

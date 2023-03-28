@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 export type iQuote = {
   c: number, // current price
   d: number, // change

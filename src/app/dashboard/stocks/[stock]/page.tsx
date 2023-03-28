@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 "use client";
 
 import { useMemo, useState } from "react";
@@ -37,9 +39,10 @@ function filterNews(results: iCompanyNews[] | undefined, company: iProfile | und
 export default function StockDetails({
   params,
 }: {
-  params: { stock: string };
+  params: { stock: string, list?: string };
 }) {
   params.stock = params.stock.toUpperCase();
+
   const router = useRouter();
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, params.stock],
@@ -120,7 +123,7 @@ export default function StockDetails({
       userStocks.isSuccess &&
       userStocksMut.mutate([
         ...userStocks.data.filter((item: iUserStockListItem) => {
-          return item.symbol !== stock;
+          return (item.symbol !== stock);
         }),
       ])
     );
