@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
@@ -20,12 +19,13 @@ import apiURL from "@/APIurl";
 const accountBaseURL = apiURL + "/account/account_id/";
 const tranasctionsBaseURL = apiURL + "/transaction/account_id/";
 
-export default function Account({params}) {
-  const router = useSearchParams();
+export default function Account({ params }) {
   const account_id = params.account;
 
   const account = useQuery({ queryKey: [accountBaseURL, account_id] });
-  const transactions = useQuery({ queryKey: [tranasctionsBaseURL, account_id] });
+  const transactions = useQuery({
+    queryKey: [tranasctionsBaseURL, account_id],
+  });
 
   return (
     <Container style={{ minHeight: "100vh" }}>

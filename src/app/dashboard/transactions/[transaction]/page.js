@@ -2,16 +2,13 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { useSearchParams } from "next/navigation";
-
 import Container from "@mui/material/Container";
 
 import apiURL from "@/APIurl";
 const baseURL = apiURL + "/transaction/account_id/";
 
-export default function Transaction() {
-  const router = useSearchParams();
-  const { account_id } = router.query;
+export default function Transaction({ params }) {
+  const { account_id } = params.query;
 
   const transaction = useQuery({ queryKey: [baseURL, account_id] });
 

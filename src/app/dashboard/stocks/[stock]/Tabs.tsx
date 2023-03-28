@@ -1,5 +1,5 @@
 import { Tab } from "@headlessui/react";
-import { memo } from "react";
+import { memo, useEffect, useTransition } from "react";
 import type { Dispatch, SetStateAction } from "react";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -15,10 +15,16 @@ function Tabs(props: {
 }) {
   const categories = props.components;
   const [selectedIndex, setSelectedIndex] = props.selector;
+  const [_isPending, startTransition] = useTransition();
+
+  useEffect(() => { console.log("CHANGED HERE ---------") }, [selectedIndex]);
 
   return (
     <div className={props.className}>
-      <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+      <Tab.Group
+        selectedIndex={selectedIndex}
+        onChange={(newIndex: number) => startTransition(() => setSelectedIndex(newIndex))}
+      >
         <Tab.List className="flex space-x-1 rounded-2xl bg-black/[0.4] p-1">
           {categories.map((category) => (
             <Tab

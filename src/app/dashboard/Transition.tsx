@@ -1,13 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useSelectedLayoutSegment } from "next/navigation";
 
 export default function TransitionWrap({ children }: { children: React.ReactNode }) {
   const page = useSelectedLayoutSegment();
 
   return (
-    <motion.div
+    <m.div
       className="flex justify-center"
       key={page}
       style={{ opacity: 0, transform: "translateY(1.5rem)" }}
@@ -19,6 +19,6 @@ export default function TransitionWrap({ children }: { children: React.ReactNode
       }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

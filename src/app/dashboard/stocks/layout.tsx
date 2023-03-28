@@ -6,20 +6,24 @@ import dynamic from "next/dynamic";
 import { Chart, registerables } from "chart.js";
 import annotationPlugin from "chartjs-plugin-annotation";
 import Searchbox from "./Searchbox";
+import Loading from "../loading";
 
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+
 dayjs.extend(utc)
 
 // Lazy load components
-const StockList = dynamic(() => import("./StockList"));
+const StockList = dynamic(() => import("./StockList"), {
+  loading: () => <div className="relative h-24 -mt-12 flex"> <Loading /> </div>,
+});
 
 // Necessary for charts to render
 Chart.register(...registerables);
 Chart.register(annotationPlugin);
 
 const stylePane =
-  "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-scroll scrollbar-hide pb-64 sm:pb-40 transition-all overscroll-contain";
+  "relative bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl px-4 overflow-scroll scrollbar-hide pb-64 sm:pb-40 transition-transform overscroll-contain";
 
 export default function StocksLayout({
   children, // will be a page or nested layout
@@ -29,7 +33,7 @@ export default function StocksLayout({
   const [searchIsActive, setSearchIsActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const today = dayjs().utc();
+  const today = dayjs().startOf('minute');
   const marketOpen = today.startOf('day').utc().hour(13);
   const marketClose = today.startOf('day').utc().hour(21);
   const isWeekend = today.day() === 0 || today.day() === 6;
@@ -62,13 +66,13 @@ export default function StocksLayout({
           </div>
           <p className="font-medium text-neutral-400 text-sm text-end">
             {!isWeekend && (today.diff(marketOpen.local()) < 0 && `Markets open today at ${marketOpen.local().format("HH:mm")}`)}
-            {!isWeekend && (today.diff(marketOpen.local()) > 0 && (today.diff(marketClose.local()) > 0 ? `Markets close today at ${marketClose.local().format("HH:mm")}` : "The markets have closed"))}
+            {!isWeekend && (today.diff(marketOpen.local()) > 0 && (today.diff(marketClose.local()) < 0 ? `Markets close today at ${marketClose.local().format("HH:mm")}` : "The markets have closed"))}
             {isWeekend && `The markets reopen on Monday at ${marketOpen.local().format('HH:mm')}`}
           </p>
         </div>
       </nav>
 
-      <main className="mx-auto grid-cols-[3fr_5fr] gap-2 transition-all lg:container sm:grid sm:px-2 md:px-4 lg:gap-3 lg:px-6 xl:gap-5 xl:px-20">
+      <main className="mx-auto grid-cols-[auto] sm:grid-cols-[3fr_5fr] gap-2 transition-all lg:container grid sm:px-2 md:px-4 lg:gap-3 lg:px-6 xl:gap-5 xl:px-20">
         <div /* LEFT pane */
           className={stylePane + (selectedStock ? " hidden sm:block" : "")}
         >
@@ -81,9 +85,9 @@ export default function StocksLayout({
         <div /* RIGHT pane */
           className={
             stylePane +
-            " p-6 sm:block sm:p-8 " +
+            " px-6 py-6 sm:block sm:col-start-2 sm:p-8 " +
             (selectedStock
-              ? "col-start-1 block sm:col-start-2"
+              ? "col-start-1 block"
               : "hidden translate-y-20 opacity-40")
           }
         >

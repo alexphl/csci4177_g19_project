@@ -12,10 +12,11 @@ const Tabs = dynamic(() => import("./Tabs"));
 const chartTimeframes = ["1D", "1W", "1M", "6M", "1Y"];
 
 function formatLabels(labels: number[], timeframe: number) {
+  if (!labels) return [];
   switch (timeframe) {
     case 0:
       return labels.map((timestamp) => {
-        return dayjs(timestamp * 1000).format("HH:mm");
+        return dayjs(timestamp * 1000).format("ddd HH:mm");
       })
     case 1:
       return labels.map((timestamp) => {
@@ -33,21 +34,23 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
 
   const points = useQuery<iCandle>({
     queryKey: ["/api/stocks/hist/", `${chartTimeframes[selectedTimeframe]}/`, props.symbol],
-    initialData: { c: [], d: [], o: [], t: [], s: "ok" },
+    retry: true,
+    retryDelay: 1000,
+    placeholderData: { c: [], d: [], o: [], t: [], s: "no_data" },
   });
+
+  if (!points.data || (!points.isFetching && points.data.s !== "ok")) { return (<> </>) }
 
   const lineColor =
     selectedTimeframe === 0
       ? (props.quote.d > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)")
       : (points.data.c[points.data.c.length - 1] - points.data.c[0] > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)");
 
-  if (points.data.s !== "ok") { return (<> </>) }
   return (
     <>
       <div
         className={
-          `relative z-10 h-56 w-full transition-all rounded-xl border border-neutral-800 bg-gradient-to-bl p-1 shadow-2xl md:h-64 lg:h-72 2xl:h-80 2xl:p-2 `
-          + (points.isLoading ? " saturate-0 " : "")
+          `relative z-10 h-56 w-full rounded-xl border border-neutral-800 bg-gradient-to-bl p-1 shadow-2xl md:h-64 lg:h-72 2xl:h-80 2xl:p-2 `
           + (selectedTimeframe === 0
             ? (props.quote.d > 0
               ? "from-green-300/[0.2] via-green-100/[0.09] to-green-100/[0.09] shadow-green-300/[0.17] "
@@ -95,6 +98,9 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
                 display: false,
               },
               annotation: {
+                common: {
+                  drawTime: "beforeDatasetsDraw",
+                },
                 annotations: {
                   line1: {
                     type: "line",
@@ -110,7 +116,6 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
             scales: {
               y: {
                 display: true,
-                beginAtZero: false,
                 ticks: {
                   display: true,
                   padding: 8,
