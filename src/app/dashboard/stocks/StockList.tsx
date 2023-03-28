@@ -73,6 +73,18 @@ function StockList(props: {
     },
   });
 
+  // Search state with debouncing and deferred value
+  const [isEditMode, setEditMode] = useState(false);
+  const [debouncedQuery] = useDebounce(props.searchQuery, 600); // Debounce query with a delay
+  const [resultLimit, setResultLimit] = useState(5);
+  const searchResult = useQuery<iSearchItem[]>({
+    queryKey: [`/api/stocks/search/`, encodeURIComponent(debouncedQuery.trim())],
+    enabled: !!debouncedQuery,
+    staleTime: Infinity,
+    retry: true,
+    retryDelay: 1000
+  });
+
   function removeStock(stock: string) {
     return (
       userStocks.isSuccess &&
@@ -91,24 +103,21 @@ function StockList(props: {
     );
   }
 
-  // Search state with debouncing and deferred value
-  const [isEditMode, setEditMode] = useState(false);
-  const [debouncedQuery] = useDebounce(props.searchQuery, 600); // Debounce query with a delay
-  const [resultLimit, setResultLimit] = useState(5);
-  const searchResult = useQuery<iSearchItem[]>({
-    queryKey: [`/api/stocks/search/`, encodeURIComponent(debouncedQuery.trim())],
-    enabled: !!debouncedQuery,
-    staleTime: Infinity,
-    retry: true,
-    retryDelay: 1000
-  });
-
   // Reset search result limit between searches
   useEffect(() => {
     startTransition(() => setResultLimit(5));
   }, [searchResult.data]);
 
   if (!userLists.isSuccess || !userStocks.isSuccess) { return <div className="relative h-24 -mt-12 flex"> <Loading /> </div> }
+
+  const stockList = userStocks.data.filter((item: iUserStockListItem) => item.list === userLists.data[selectedList]);
+
+  function handleReorder(newOrder: iUserStockListItem[]) {
+    //if (!userStocks.isSuccess || userLists.isSuccess) return;
+    const formatted = userStocks.data!.filter((item: iUserStockListItem) => item.list !== newOrder[0].list);
+    console.log(formatted.concat(newOrder));
+    userStocksMut.mutate(formatted.concat(newOrder));
+  }
 
   return (
     <>
@@ -134,15 +143,15 @@ function StockList(props: {
 
             <Reorder.Group
               axis="y"
-              values={userStocks.data}
-              onReorder={userStocksMut.mutate}
+              values={stockList}
+              onReorder={handleReorder}
               as="ol"
               className={listStyle}
             >
-              {userStocks.data.map((item: iUserStockListItem, i) => (
+              {stockList.map((item: iUserStockListItem, i) => (
                 <Reorder.Item
                   key={item.symbol}
-                  value={item.symbol}
+                  value={item}
                   dragListener={isEditMode || item.symbol === selectedStock}
                   transition={{
                     type: "spring",
@@ -164,7 +173,7 @@ function StockList(props: {
                       key={item.symbol}
                       stock={item.symbol}
                       isEditMode={isEditMode}
-                      isAdded={userStocks.data.filter((savedItem: iUserStockListItem) => item.symbol === savedItem.symbol).length > 0}
+                      isAdded={stockList.filter((savedItem: iUserStockListItem) => item.symbol === savedItem.symbol).length > 0}
                       addStock={addStock}
                       removeStock={removeStock}
                       selected={item.symbol === selectedStock}
@@ -175,7 +184,7 @@ function StockList(props: {
               ))}
             </Reorder.Group>
 
-            {userStocks.data.length === 0 && (
+            {stockList.length === 0 && (
               <div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
                 <div className="w-16 ">
                   <SparklesIcon />
@@ -226,7 +235,7 @@ function StockList(props: {
                   .map((result: iSearchItem) => (
                     <StockListItem
                       key={result.symbol}
-                      isAdded={userStocks.data.filter((item: iUserStockListItem) => item.symbol === result.symbol).length > 0}
+                      isAdded={stockList.filter((item: iUserStockListItem) => item.symbol === result.symbol).length > 0}
                       addStock={addStock}
                       removeStock={removeStock}
                       stock={result.symbol}
