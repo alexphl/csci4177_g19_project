@@ -5,7 +5,7 @@ import { ArrowsUpDownIcon, CheckIcon, PlusIcon } from "@heroicons/react/20/solid
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { Dispatch, SetStateAction, useContext, useTransition } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { memo } from "react";
+import { memo, useState } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { ListContext } from "./ListContext";
 import type { iUserStockList, iUserStockListItem } from "@/types/iStocks";
@@ -84,6 +84,8 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
     e.preventDefault();
     e.stopPropagation();
 
+    if (selected > 0) setSelected(selected - 1);
+
     userStocksMut.mutate(
       [...userStocks.filter((item: iUserStockListItem) => item.listID !== modes[selected].id)]
     )
@@ -91,8 +93,6 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
     userListsMut.mutate([
       ...modes.filter((item: iUserStockList) => item.id !== modes[selected].id),
     ])
-
-    if (selected > 0) startTransition(() => setSelected(selected - 1));
   }
 
   return (
@@ -103,7 +103,7 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
       >
         <div className="relative">
           <Listbox.Button className="relative w-full border border-neutral-800 cursor-pointer backdrop-blur-md rounded-md bg-white/[0.1] py-1 pl-3 pr-9 text-left hover:bg-white/[0.15] focus:outline-none focus-visible:border-orange-200">
-            <span className="block truncate">{modes[selected].name}</span>
+            <span className="block truncate">{decodeURIComponent(modes[selected].name)}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1">
               <ArrowsUpDownIcon
                 className="mr-1.5 h-3 w-3 text-neutral-500"
@@ -112,8 +112,8 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
             </span>
           </Listbox.Button>
           <Transition
-            leave="transition duration-100 ease-out"
-            leaveFrom="transform scale-100 opacity-100"
+            leave="transition duration-200 ease-out"
+            leaveFrom="transform scale-200 opacity-100"
             leaveTo="transform scale-95 opacity-0"
           >
             <Listbox.Options className="absolute z-50 mt-1 max-h-96 w-60 overflow-x-hidden overflow-y-auto border border-white/[0.2] rounded-lg bg-neutral-800/[0.2] p-2 text-sm shadow-xl backdrop-blur-2xl backdrop-saturate-200 focus:outline-none">
@@ -134,7 +134,7 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
                         className={`block truncate ${selected ? "font-medium" : "font-normal"
                           }`}
                       >
-                        {mode.name}
+                        {decodeURIComponent(mode.name)}
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-2.5 text-orange-200">
@@ -149,14 +149,16 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
               <hr className="border border-white/[0.2] rounded-full my-4 w-10 mx-auto" />
 
               <div
-                className="flex text-neutral-300 rounded-md relative w-full px-2 items-center hover:bg-neutral-100/[0.1]"
+                className="relative flex text-neutral-300 rounded-md relative w-full px-2 items-center hover:bg-neutral-100/[0.1] focus-within:border border-white/[0.2] focus-within:bg-neutral-100/[0.1] transition-all focus-within:py-1 focus-within:rounded-lg focus-within:mb-2"
               >
                 <PlusIcon className="w-5 flex-none" />
                 <input
-                  onBlur={(e) => handleAdd(e)}
-                  name="newlist"
+                  onKeyDown={(e: any) => {
+                    e.stopPropagation();
+                    if (e.code === "Enter") { handleAdd(e); e.target.value = ""; }
+                  }}
                   placeholder="New list"
-                  className="flex-auto outline-none bg-transparent w-10 max-w-full p-2 placeholder:text-inherit placeholder:truncate focus:placeholder:text-transparent"
+                  className="flex-auto outline-none bg-transparent w-10 max-w-full p-2 placeholder:text-inherit placeholder:truncate focus:placeholder:text-white/50"
                   type="text"
                 />
               </div>
