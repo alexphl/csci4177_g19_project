@@ -64,9 +64,9 @@ function StockListItem(props: {
         href={`/dashboard/stocks/${props.stock}`}
       />
       <div className="overflow-hidden text-clip">
-        <h1 className="text-lg font-extrabold group-hover:text-neutral-50">
+        <h2 className="text-lg font-extrabold group-hover:text-neutral-50">
           {props.stock || <br />}
-        </h1>
+        </h2>
         <div
           className={
             "whitespace-nowrap text-xs font-medium text-neutral-400 " +

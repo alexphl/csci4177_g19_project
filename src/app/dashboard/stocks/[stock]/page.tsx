@@ -264,7 +264,7 @@ export default function StockDetails({
                     {!story.image && <PhotoIcon className="w-10 text-black/50" />}
                   </div>
                   <div className="flex flex-col gap-1.5 h-full py-1 pr-3 w-10 flex-1">
-                    <h1 className="font-semibold text-sm leading-tight max-w-prose line-clamp-2 text-ellipsis">{story.headline}</h1>
+                    <h2 className="font-semibold text-sm leading-tight max-w-prose line-clamp-2 text-ellipsis">{story.headline}</h2>
                     <p className="font-medium text-xs text-neutral-400 leading-tight max-w-prose text-ellipsis line-clamp-3">{story.summary}</p>
                   </div>
                   <div className="absolute bottom-2 left-2 bg-neutral-900/75 rounded-tr-lg rounded-bl-lg py-1.5 px-2.5 w-fit text-xs backdrop-blur-lg text-neutral-200 font-medium backdrop-saturate-[3] max-w-[7rem] truncate">{story.source}</div>
