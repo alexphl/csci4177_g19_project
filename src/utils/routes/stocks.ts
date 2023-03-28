@@ -112,7 +112,7 @@ router.get("/search/:q", async function(req, _res, next) {
     });
 });
 
-// Get candlestick data for the last 24h
+// Get candlestick for the last market open day
 router.get("/hist/1D/:symbol", async function(req, _res, next) {
   const cached = cache.get(req.url);
   if (cached) { return _res.send(cached); }
@@ -122,7 +122,7 @@ router.get("/hist/1D/:symbol", async function(req, _res, next) {
   const today = dayjs().startOf('hour');
   let marketOpen = today.startOf('day').utc().hour(13);
 
-  while (marketOpen.day() === 0 || (marketOpen.day() === 1 && (today.hour() < marketOpen.hour())) || marketOpen.day() === 6) {
+  while (today.utc().diff(marketOpen) < 0 || marketOpen.day() === 0 || marketOpen.day() === 6) {
     marketOpen = marketOpen.subtract(1, 'day');
   }
 
