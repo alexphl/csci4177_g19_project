@@ -1,3 +1,4 @@
+/**Author: Crystal Parker B00440168 */
 "use client";
 
 import dynamic from "next/dynamic";

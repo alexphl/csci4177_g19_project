@@ -1,3 +1,4 @@
+/**Author: Crystal Parker B00440168 */
 // get the model
 import User from "../models/userModel";
 import { Types } from "mongoose";
