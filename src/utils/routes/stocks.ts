@@ -63,7 +63,7 @@ router.get("/user/lists/:id", async function(_req, res, next) {
 });
 
 // Set user watchlists
-router.post("/user/:id", async function(req, res) {
+router.post("/user/lists/:id", async function(req, res) {
   const owner_id = req.params.id;
   const newList = req.body;
 
