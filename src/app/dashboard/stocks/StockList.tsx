@@ -188,19 +188,24 @@ function StockList(props: {
               ))}
             </Reorder.Group>
 
-            {stockList.length === 0 && (
-              <div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
-                <div className="w-16 ">
-                  <SparklesIcon />
-                </div>
-                <div className="flex flex-col items-center">
-                  <h1 className="text-lg font-bold">Your list is empty</h1>
-                  <h2 className="text-sm font-medium">
-                    You can add stocks using search
-                  </h2>
-                </div>
-              </div>
-            )}
+            { // EMPTY LIST MESSAGE
+              stockList.length === 0 && (
+                <m.div
+                  initial={{ opacity: 0, filter: "blur(4px)" }}
+                  animate={{ opacity: 1, filter: "none" }}
+                  className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500"
+                >
+                  <div className="w-16 ">
+                    <SparklesIcon />
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <h1 className="text-lg font-bold">This list is empty</h1>
+                    <h2 className="text-sm font-medium">
+                      You can add stocks here via search
+                    </h2>
+                  </div>
+                </m.div>
+              )}
           </>
         )
       }
