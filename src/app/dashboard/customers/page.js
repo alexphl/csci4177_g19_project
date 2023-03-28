@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
@@ -14,7 +14,33 @@ const baseURL = apiURL + "/customer/";
 
 export default function CustomerTable() {
   const { isSuccess, isLoading, data } = useQuery({ queryKey: [baseURL] });
+  const [filteredData, setFilteredData] = useState([]);
+  const [usernameFilter, setUsernameFilter] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
+  const [emailFilter, setEmailFilter] = useState("");
+  const [addressFilter, setAddressFilter] = useState("");
+  useEffect(() => {
+    if (isSuccess && data) {
+      setFilteredData(
+        data.filter((customer) => {
+          const {
+            username = '',
+            name = '',
+            email = '',
+            address = '',
+          } = customer;
 
+          return (
+            username.toLowerCase().includes(usernameFilter.toLowerCase()) &&
+            name.toLowerCase().includes(nameFilter.toLowerCase()) &&
+            email.toLowerCase().includes(emailFilter.toLowerCase()) &&
+            address.toLowerCase().includes(addressFilter.toLowerCase())
+          );
+        })
+
+      );
+    }
+  }, [isSuccess, data, usernameFilter, nameFilter, emailFilter, addressFilter]);
   return (
     <Grid container>
       <Grid
@@ -46,23 +72,20 @@ export default function CustomerTable() {
                 label="Username"
                 id="outlined-start-adornment"
                 margin="dense"
+                value={usernameFilter}
+                onChange={(e) => setUsernameFilter(e.target.value)}
               />
             </Grid>
           </Grid>
+          
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="First Name"
+              label="Legal Name"
               id="outlined-start-adornment"
               margin="dense"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Last Name"
-              id="outlined-start-adornment"
-              margin="dense"
+              value={nameFilter}
+              onChange={(e) => setNameFilter(e.target.value)}
             />
           </Grid>
 
@@ -73,6 +96,8 @@ export default function CustomerTable() {
                 label="Email Address"
                 id="outlined-start-adornment"
                 margin="dense"
+                value={emailFilter}
+                onChange={(e) => setEmailFilter(e.target.value)}
               />
             </Grid>
           </Grid>
@@ -82,6 +107,8 @@ export default function CustomerTable() {
               label="Street Address"
               id="outlined-start-adornment"
               margin="dense"
+              value={addressFilter}
+              onChange={(e) => setAddressFilter(e.target.value)}
             />
           </Grid>
         </Grid>
@@ -94,25 +121,22 @@ export default function CustomerTable() {
             direction="row"
             sx={{ maxHeight: "100vh", overflowY: { xs: "show", sm: "scroll" } }}
 
-            // style={{ maxHeight: "100vh", overflowY: "scroll", scrollbar: "none"}}
+          // style={{ maxHeight: "100vh", overflowY: "scroll", scrollbar: "none"}}
           >
             {isSuccess &&
-              data &&
-              data
-                .map((customer) => (
-                  <Grid
-                    item
-                    key={customer}
-                    xs={12}
-                    sm={12}
-                    md={6}
-                    lg={4}
-                    style={{ display: "flex" }}
-                  >
-                    <CustomerCard content={customer} />
-                  </Grid>
-                ))
-                .sort((a, b) => (a.name > b.name ? 1 : -1))}
+              filteredData.map((customer) => (
+                <Grid
+                  item
+                  key={customer}
+                  xs={12}
+                  sm={12}
+                  md={6}
+                  lg={4}
+                  style={{ display: "flex" }}
+                >
+                  <CustomerCard content={customer} />
+                </Grid>
+              ))}
             {isLoading && (
               <Grid
                 container
