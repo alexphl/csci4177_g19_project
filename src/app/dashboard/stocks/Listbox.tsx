@@ -8,14 +8,14 @@ import { useMutation } from "@tanstack/react-query";
 import { memo } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { ListContext } from "./ListContext";
-import type { iUserStockList } from "@/types/iStocks";
+import type { iUserStockList, iUserStockListItem } from "@/types/iStocks";
 
 const userID = "user1";
 
 /**
  * Chart mode selection listbox
  **/
-function StockListbox(props: { lists: iUserStockList[], selector: [number, Dispatch<SetStateAction<number>>] }) {
+function StockListbox(props: { userStocksController: [iUserStockListItem[], any], lists: iUserStockList[], selector: [number, Dispatch<SetStateAction<number>>] }) {
   const [_isPending, startTransition] = useTransition();
   const modes = props.lists
   const listContext = useContext(ListContext);
@@ -23,6 +23,10 @@ function StockListbox(props: { lists: iUserStockList[], selector: [number, Dispa
   const setSelected = listContext.setState;
 
   // Function to update user stock list
+  // Implements optimistic updates
+  const [userStocks, userStocksMut] = props.userStocksController;
+
+  // Function to update the lists of user's stock lists
   // Implements optimistic updates
   const userListsMut = useMutation({
     mutationFn: ((newLists: iUserStockList[]) =>
@@ -58,6 +62,7 @@ function StockListbox(props: { lists: iUserStockList[], selector: [number, Dispa
     },
   });
 
+  // Creates a new list
   function handleAdd(e: any) {
     e.preventDefault();
     e.stopPropagation();
@@ -74,15 +79,19 @@ function StockListbox(props: { lists: iUserStockList[], selector: [number, Dispa
     startTransition(() => setSelected((modes.length)));
   }
 
+  // Deletes currently selected list and all its contents
   function handleDelete(e: any) {
     e.preventDefault();
     e.stopPropagation();
 
+    userStocksMut.mutate(
+      [...userStocks.filter((item: iUserStockListItem) => item.listID !== modes[selected].id)]
+    )
+
     userListsMut.mutate([
-      ...modes.filter((item: iUserStockList) => {
-        return item.id !== modes[selected].id;
-      }),
+      ...modes.filter((item: iUserStockList) => item.id !== modes[selected].id),
     ])
+
     startTransition(() => setSelected(selected - 1));
   }
 
