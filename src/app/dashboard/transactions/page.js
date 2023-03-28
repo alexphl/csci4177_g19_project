@@ -11,6 +11,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TextField,
 } from '@mui/material';
 import Link from "next/link";
 import { motion } from 'framer-motion';
@@ -22,9 +23,10 @@ const darkTheme = createTheme({
 const stylePane =
   "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";
 
-export default function TransactionHistory() {
-  const [transactions, setTransactions] = useState([]);
-  const owner_id = 'user1';
+  export default function TransactionHistory() {
+    const [transactions, setTransactions] = useState([]);
+    const [username, setUsername] = useState('user1');
+    const owner_id = username;
   // Framer motions
   const tableVariants = {
     initial: { opacity: 0 },
@@ -47,7 +49,7 @@ export default function TransactionHistory() {
     };
 
     fetchTransactionHistory();
-  }, []);
+  }, [owner_id]); 
 
   return (
 
@@ -59,6 +61,17 @@ export default function TransactionHistory() {
           </div>
         </Container>
       </Grid>
+
+      <Grid container justifyContent="center" style={{ marginBottom: '20px' }}>
+        <TextField
+          label="Username"
+          variant="outlined"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{ marginRight: '20px' }}
+        />
+      </Grid>
+
       <Grid container justifyContent="space-between" style={{ marginBottom: '20px' }}>
         <Link href="/dashboard/simulation" passHref>
           <Button
@@ -96,7 +109,9 @@ export default function TransactionHistory() {
               </TableRow>
             </TableHead>
             <motion.tbody variants={tableVariants}>
-              {transactions.map((transaction) => (
+      {Array.isArray(transactions) &&
+        transactions.map((transaction) => (
+     
                 <motion.tr key={transaction._id} variants={rowVariants}>
                   <TableCell sx={{ display: { xs: 'table-cell', sm: 'none' } }}>{transaction.transaction_type.charAt(0)}</TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{transaction.transaction_type}</TableCell>
