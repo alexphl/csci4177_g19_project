@@ -3,12 +3,12 @@
 import { useMemo, useState } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { BookmarkIcon, BookmarkSlashIcon, PhotoIcon, ArrowLeftIcon, ArrowSmallRightIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon, BookmarkSlashIcon, PhotoIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Image from "next/image"
 import { useRouter } from "next/navigation";
 import { m } from "framer-motion";
-import type { iQuote, iProfile, iCompanyNews } from "@/types/iStocks";
+import type { iQuote, iProfile, iCompanyNews, iUserStockListItem } from "@/types/iStocks";
 import shortNum from 'number-shortener';
 
 // Lazy load
@@ -53,8 +53,11 @@ export default function StockDetails({
     staleTime: Infinity,
     retry: true,
   });
-  const userStocks = useQuery<string[]>({
+  const userStocks = useQuery<iUserStockListItem[]>({
     queryKey: [`/api/stocks/user/${userID}`],
+  });
+  const userLists = useQuery<string[]>({
+    queryKey: [`/api/stocks/user/lists/${userID}`],
   });
   const peerSymbols = useQuery<string[]>({
     staleTime: Infinity,
@@ -69,7 +72,7 @@ export default function StockDetails({
 
   const [newsLimit, setNewsLimit] = useState(3);
   const isAdded =
-    userStocks.isSuccess && userStocks.data.includes(params.stock);
+    userStocks.isSuccess && userStocks.data.filter((savedItem: iUserStockListItem) => params.stock === savedItem.symbol).length > 0;
 
   const filteredNews = useMemo(
     () =>
@@ -80,7 +83,7 @@ export default function StockDetails({
   // Function to update user stock list
   // Implements optimistic updates
   const userStocksMut = useMutation({
-    mutationFn: ((newList: string[]) =>
+    mutationFn: ((newList: iUserStockListItem[]) =>
       fetch(`/api/stocks/user/${userID}`, {
         method: "POST",
         body: JSON.stringify(newList),
@@ -103,7 +106,7 @@ export default function StockDetails({
     },
     // If the mutation fails,
     // use the context returned from onMutate to roll back
-    onError: (context: { previousList: string[] }) => {
+    onError: (context: { previousList: iUserStockListItem[] }) => {
       queryClient.setQueryData([`/api/stocks/user/${userID}`], context.previousList);
     },
     // Always refetch after error or success:
@@ -116,8 +119,8 @@ export default function StockDetails({
     return (
       userStocks.isSuccess &&
       userStocksMut.mutate([
-        ...userStocks.data.filter((item: string) => {
-          return item !== stock;
+        ...userStocks.data.filter((item: iUserStockListItem) => {
+          return item.symbol !== stock;
         }),
       ])
     );
@@ -125,8 +128,8 @@ export default function StockDetails({
 
   function addStock(stock: string) {
     return (
-      userStocks.isSuccess &&
-      userStocksMut.mutate([...userStocks.data.concat(stock)])
+      userStocks.isSuccess && userLists.isSuccess &&
+      userStocksMut.mutate([...userStocks.data.concat({ list: userLists.data[0], symbol: stock })])
     );
   }
 
@@ -227,7 +230,7 @@ export default function StockDetails({
               <div key={symbol} className="snap-start relative w-72 flex-none">
                 <StockListItem
                   stock={symbol}
-                  isAdded={userStocks.data.includes(symbol)}
+                  isAdded={userStocks.data.filter((savedItem: iUserStockListItem) => symbol === savedItem.symbol).length > 0}
                   searchIsActive={true}
                   addStock={addStock}
                   removeStock={removeStock}

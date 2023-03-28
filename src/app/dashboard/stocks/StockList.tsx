@@ -28,10 +28,10 @@ function StockList(props: {
   searchQuery: string;
   selectedStock: string | undefined;
 }) {
+  const [selectedList, setSelectedList] = useState<number>(0);
   const userLists = useQuery<string[]>({
     queryKey: [`/api/stocks/user/lists/${userID}`],
   });
-  const [selectedList, setSelectedList] = useState<number>(0);
   const [_isPending, startTransition] = useTransition();
   const selectedStock = props.selectedStock;
   const userStocks = useQuery<iUserStockListItem[]>({
@@ -86,8 +86,8 @@ function StockList(props: {
 
   function addStock(stock: string) {
     return (
-      userStocks.isSuccess &&
-      userStocksMut.mutate([...userStocks.data.concat({ list: userLists[selectedList], symbol: stock })])
+      userStocks.isSuccess && userLists.isSuccess &&
+      userStocksMut.mutate([...userStocks.data.concat({ list: userLists.data[selectedList], symbol: stock })])
     );
   }
 
