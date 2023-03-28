@@ -117,7 +117,7 @@ function StockList(props: {
         !props.searchIsActive && userStocks.isSuccess && (
           <>
             <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-4 flex flex-auto items-center rounded-2xl bg-gradient-to-b from-black to-transparent p-4">
-              <StockListbox />
+              <StockListbox lists={userLists.data} selector={[selectedList, setSelectedList]} />
               <button
                 className={
                   "ml-auto rounded-md border border-neutral-800 p-1.5 backdrop-blur-md transition " +

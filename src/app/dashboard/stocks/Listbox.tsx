@@ -1,25 +1,21 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { ArrowsUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
+import type { Dispatch, SetStateAction } from "react";
 import { memo } from "react";
-import { useState } from "react";
 
 /**
  * Chart mode selection listbox
  **/
-function StockListbox() {
-  const modes = [
-    "Watchlist",
-    "Watchlist 2",
-    "Watchlist 3",
-  ];
-  const [selected, setSelected] = useState(modes[0]);
+function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetStateAction<number>>] }) {
+  const modes = props.lists
+  const [selected, setSelected] = props.selector;
 
   return (
     <div className="w-max text-sm font-medium text-neutral-300">
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative">
           <Listbox.Button className="relative w-full border border-neutral-800 cursor-pointer backdrop-blur-md rounded-md bg-white/[0.1] py-1 pl-3 pr-9 text-left hover:bg-white/[0.15] focus:outline-none focus-visible:border-orange-200">
-            <span className="block truncate">{selected}</span>
+            <span className="block truncate">{modes[selected]}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1">
               <ArrowsUpDownIcon
                 className="mr-1.5 h-3 w-3 text-neutral-500"
@@ -33,16 +29,16 @@ function StockListbox() {
             leaveTo="transform scale-95 opacity-0"
           >
             <Listbox.Options className="absolute z-50 mt-1 max-h-60 w-max overflow-auto rounded-md bg-neutral-500/[0.2] py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-2xl backdrop-saturate-200 focus:outline-none">
-              {modes.map((mode: string) => (
+              {modes.map((mode: string, i) => (
                 <Listbox.Option
-                  key={mode}
+                  key={i}
                   className={({ active }) =>
                     `relative cursor-pointer select-none py-2 pl-9 pr-6 ${active
                       ? "bg-neutral-100/[0.1] text-orange-200"
                       : "text-white"
                     }`
                   }
-                  value={mode}
+                  value={i}
                 >
                   {({ selected }) => (
                     <>
@@ -61,6 +57,8 @@ function StockListbox() {
                   )}
                 </Listbox.Option>
               ))}
+              <hr className="w-full border border-white/25 rounded-full my-2 px-4" />
+              <div className="py-2 px-4 hover:bg-neutral-100/[0.1] text-neutral-100"> New List </div>
             </Listbox.Options>
           </Transition>
         </div>
