@@ -48,6 +48,41 @@ router.post("/user/:id", async function(req, res) {
   return res.sendStatus(200);
 });
 
+// Get user stock watchlists
+router.get("/user/lists/:id", async function(_req, res, next) {
+  const owner_id = _req.params.id;
+
+  await Model.findOne({ owner_id })
+    .then((portfolio) => {
+      res.send(portfolio.watchlists);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      next(error);
+    });
+});
+
+// Set user watchlists
+router.post("/user/:id", async function(req, res) {
+  const owner_id = req.params.id;
+  const newList = req.body;
+
+  const portfolio = await Model.findOne({ owner_id });
+
+  if (!portfolio) {
+    return res.status(404).json({ message: 'Portfolio not found' });
+  }
+
+  portfolio.watchlists = newList;
+
+  const writeResult = await portfolio.save();
+  if (writeResult.hasWriteError) {
+    return res.status(500).json({ message: 'Write error' });
+  }
+
+  return res.sendStatus(200);
+});
+
 async function cachedFetch(route: string, _res: any, reqUrl: string, next: any) {
   await fetch(
     `${route}&token=${process.env.FINNHUB_API_KEY}`

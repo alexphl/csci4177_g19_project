@@ -8,10 +8,9 @@ import { useState } from "react";
  **/
 function StockListbox() {
   const modes = [
-    "My List 1",
-    "My List 2",
-    "My List 3",
-    "Not Implemented Yet :)",
+    "Watchlist",
+    "Watchlist 2",
+    "Watchlist 3",
   ];
   const [selected, setSelected] = useState(modes[0]);
 

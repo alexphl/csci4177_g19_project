@@ -45,3 +45,8 @@ export type iCompanyNews = {
   summary: string,
   url: string
 }
+
+export type iUserStockListItem = {
+  list: string,
+  symbol: string,
+}

@@ -12,7 +12,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { m, Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
 import { CubeTransparentIcon } from "@heroicons/react/20/solid";
-import type { iSearchItem } from "@/types/iStocks";
+import type { iSearchItem, iUserStockListItem } from "@/types/iStocks";
 import Loading from "../loading";
 
 // Lazy-load components
@@ -28,16 +28,20 @@ function StockList(props: {
   searchQuery: string;
   selectedStock: string | undefined;
 }) {
+  const userLists = useQuery<string[]>({
+    queryKey: [`/api/stocks/user/lists/${userID}`],
+  });
+  const [selectedList, setSelectedList] = useState<number>(0);
   const [_isPending, startTransition] = useTransition();
   const selectedStock = props.selectedStock;
-  const userStocks = useQuery<string[]>({
+  const userStocks = useQuery<iUserStockListItem[]>({
     queryKey: [`/api/stocks/user/${userID}`],
   });
 
   // Function to update user stock list
   // Implements optimistic updates
   const userStocksMut = useMutation({
-    mutationFn: ((newList: string[]) =>
+    mutationFn: ((newList: iUserStockListItem[]) =>
       fetch(`/api/stocks/user/${userID}`, {
         method: "POST",
         body: JSON.stringify(newList),
@@ -60,7 +64,7 @@ function StockList(props: {
     },
     // If the mutation fails,
     // use the context returned from onMutate to roll back
-    onError: (context: { previousList: string[] }) => {
+    onError: (context: { previousList: iUserStockListItem[] }) => {
       queryClient.setQueryData([`/api/stocks/user/${userID}`], context.previousList);
     },
     // Always refetch after error or success:
@@ -73,8 +77,8 @@ function StockList(props: {
     return (
       userStocks.isSuccess &&
       userStocksMut.mutate([
-        ...userStocks.data.filter((item: string) => {
-          return item !== stock;
+        ...userStocks.data.filter((item: iUserStockListItem) => {
+          return item.symbol !== stock;
         }),
       ])
     );
@@ -83,7 +87,7 @@ function StockList(props: {
   function addStock(stock: string) {
     return (
       userStocks.isSuccess &&
-      userStocksMut.mutate([...userStocks.data.concat(stock)])
+      userStocksMut.mutate([...userStocks.data.concat({ list: userLists[selectedList], symbol: stock })])
     );
   }
 
@@ -104,7 +108,7 @@ function StockList(props: {
     startTransition(() => setResultLimit(5));
   }, [searchResult.data]);
 
-  if (!userStocks.isSuccess) { return <div className="relative h-24 -mt-12 flex"> <Loading /> </div> }
+  if (!userLists.isSuccess || !userStocks.isSuccess) { return <div className="relative h-24 -mt-12 flex"> <Loading /> </div> }
 
   return (
     <>
@@ -135,11 +139,11 @@ function StockList(props: {
               as="ol"
               className={listStyle}
             >
-              {userStocks.data.map((stock: string, i) => (
+              {userStocks.data.map((item: iUserStockListItem, i) => (
                 <Reorder.Item
-                  key={stock}
-                  value={stock}
-                  dragListener={isEditMode || stock === selectedStock}
+                  key={item.symbol}
+                  value={item.symbol}
+                  dragListener={isEditMode || item.symbol === selectedStock}
                   transition={{
                     type: "spring",
                     damping: 25,
@@ -157,13 +161,13 @@ function StockList(props: {
                     }}
                   >
                     <StockListItem
-                      key={stock}
-                      stock={stock}
+                      key={item.symbol}
+                      stock={item.symbol}
                       isEditMode={isEditMode}
-                      isAdded={userStocks.data.includes(stock)}
+                      isAdded={userStocks.data.filter((savedItem: iUserStockListItem) => item.symbol === savedItem.symbol).length > 0}
                       addStock={addStock}
                       removeStock={removeStock}
-                      selected={stock === selectedStock}
+                      selected={item.symbol === selectedStock}
                       searchIsActive={props.searchIsActive}
                     />
                   </m.div>
@@ -222,7 +226,7 @@ function StockList(props: {
                   .map((result: iSearchItem) => (
                     <StockListItem
                       key={result.symbol}
-                      isAdded={userStocks.data.includes(result.symbol)}
+                      isAdded={userStocks.data.filter((item: iUserStockListItem) => item.symbol === result.symbol).length > 0}
                       addStock={addStock}
                       removeStock={removeStock}
                       stock={result.symbol}

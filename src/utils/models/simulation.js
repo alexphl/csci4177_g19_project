@@ -20,6 +20,11 @@ const transactionSchema = Schema({
   transaction_price: Number,
 });
 
+const stockListSchema = Schema({
+  list: String,
+  symbol: String,
+});
+
 const portfolioSchema = Schema({
   last_update: {
     type: Date,
@@ -32,7 +37,8 @@ const portfolioSchema = Schema({
   },
   assets: [assetSchema],
   transaction_history: [transactionSchema],
-  stock_list: [String],
+  watchlists: [String],
+  stock_list: [stockListSchema],
 });
 
 export default models.Portfolio || model("Portfolio", portfolioSchema);
