@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useContext, memo } from "react";
 import { userContext } from "@/app/UserContext";
 import { useRouter } from "next/navigation";
+import useSessionStorage from "../useSessionStorage";
 
 // lazy load components
 const LoginOrRegister = dynamic(() => import("./LoginOrRegister"));
@@ -14,13 +15,13 @@ function Auth() {
   const { user, dispatchUser } = useContext(userContext);
   const router = useRouter();
 
-// retrieves a token if it exists
-  const userToken = JSON.parse(sessionStorage.getItem('token'))
-  if(userToken && userToken.token == "testing123"){
+  // retrieves a token if it exists
+  const userToken = useSessionStorage("token");
+  if (userToken && userToken.token == "testing123") {
     dispatchUser({
       type: "SET_USER",
-      payload: { email: userToken.email, loggedIn: true , id: userToken.id},
-    });  
+      payload: { email: userToken.email, loggedIn: true, id: userToken.id },
+    });
   }
 
   if (user.loggedIn) {
