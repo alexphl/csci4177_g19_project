@@ -1,3 +1,4 @@
+/**Author: Crystal Parker B00440168 */
 import { Button, FormGroup, TextField } from "@mui/material";
 import { useState, memo } from "react";
 
@@ -24,6 +25,20 @@ function UpdateForm() {
      * - Dispatch changes with userContext
      */
   };
+
+  const updateUser= async (id, update) =>{
+    const response = await fetch('/api/users/'+id, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(update),
+    });
+
+    const json = await response.json()
+
+    return json
+  }
 
   return (
     <form>

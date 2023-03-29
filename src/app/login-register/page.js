@@ -1,3 +1,4 @@
+/**Author: Crystal Parker B00440168 */
 "use client";
 
 import dynamic from "next/dynamic";
@@ -10,8 +11,17 @@ const LoginOrRegister = dynamic(() => import("./LoginOrRegister"));
 
 function Auth() {
   // user context - has properties: loggedIn, email
-  const { user } = useContext(userContext);
-  let router = useRouter();
+  const { user, dispatchUser } = useContext(userContext);
+  const router = useRouter();
+
+// retrieves a token if it exists
+  const userToken = JSON.parse(sessionStorage.getItem('token'))
+  if(userToken && userToken.token == "testing123"){
+    dispatchUser({
+      type: "SET_USER",
+      payload: { email: userToken.email, loggedIn: true , id: userToken.id},
+    });  
+  }
 
   if (user.loggedIn) {
     router.push("/dashboard");

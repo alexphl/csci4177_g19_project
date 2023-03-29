@@ -1,3 +1,4 @@
+/**Author: Crystal Parker B00440168 */
 "use client";
 
 import { useEffect, useState, useContext, memo } from "react";
@@ -32,9 +33,17 @@ function RegistrationForm() {
   };
 
   const isValidPassword = (val) => {
-    // https://regex101.com/r/bC2gU7/3
+    // https://stackoverflow.com/a/59317682
     let regEx = new RegExp(
-      /^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#%]*[!#%])[A-Za-z0-9!#%]{8,32}$/
+    // ^                               start anchor
+    // (?=(.*[a-z]){3,})               lowercase letters. {3,} indicates that you want 3 of this group
+    // (?=(.*[A-Z]){1,})               uppercase letters. {1,} indicates that you want 1 of this group
+    // (?=(.*[0-9]){2,})               numbers. {2,} indicates that you want 2 of this group
+    // (?=(.*[!@#$%^&*()\-__+.]){1,})  all the special characters in the [] fields. The ones used by regex are escaped by using the \ or the character itself. {1,} is redundant, but good practice, in case you change that to more than 1 in the future. Also keeps all the groups consistent
+    // {8,}                            indicates that you want 8 or more
+    // $                               end anchor
+
+      /^(?=(.*[a-z]){3,})(?=(.*[A-Z]){2,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/
     );
     return regEx.test(val);
   };
@@ -53,27 +62,51 @@ function RegistrationForm() {
     // updateError()
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let err = checkError();
     // password must be valid regex check
     // passwords must match
 
     if (err.length === 0) {
+      console.log("Registering...")
       // check with database
-      
+      const response = await registerUser({email: email,userPassword: password})
 
-      // set state
+      if(response.token){
+        console.log(response.token)
+
+        // set state
       dispatchUser({
         type: "SET_USER",
-        payload: { email: email, loggedIn: true },
+        payload: { email: email, loggedIn: true, id: response.id },
       });
 
       // store a session cookie
+      const userToken = {token:response.token, email:email, id: response.id}
+      sessionStorage.setItem('token', JSON.stringify(userToken))
+      }else{
+        console.log(response.error)
+        setError("Registration failed")
+      }
 
     } else {
       setError(err);
     }
   };
+
+  const registerUser= async (credentials) =>{
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+
+    const json = await response.json()
+
+    return json
+  }
 
   const checkError = () => {
     // error starts out as none
