@@ -33,6 +33,11 @@ function DeleteForm() {
     return json
   }
 
+  // Herman 
+  const deletePortfolio = () =>{
+    console.log("delete profile")
+  }
+
   return (
     <form>
       <FormGroup>
