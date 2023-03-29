@@ -46,7 +46,7 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
   // get variables from req
-  const { userPassword, email, name } = req.body;
+  const { userPassword, email, name, address, username, birthdate } = req.body;
 
   if(!userPassword){
     return res.status(400).json({ error: "missing userPassword" });
@@ -54,12 +54,27 @@ export const register = async (req, res) => {
   try {
     // hash received password
     const password = await bcrypt.hash(userPassword, saltRounds);
-    const user = { name, email, password };
+    const user = { username, email, password };
 
     // Store hash in database
     const response = await axios.post("http://localhost:3000/api/users/", user);
-    const id = response.data[0]._id;
+    
+    // Create a Portfolio in database
+    const portfolio = {
+      owner_id: username,
+      profit: 0,
+      assets: [],
+      transaction_history: [],
+      watchlists: [],
+      stock_list: [],
+    };
+    const create_portfolio = await axios.post('http://localhost:3000/api/simulation/new', portfolio);
 
+     // Create a customer profile in database
+    const customer = {username, name, address, birthdate, email}
+    const create_customer = await axios.post("http://localhost:3000/api/customer/new",customer);
+
+    const id = response.data[0]._id;
     if (response && response.status === 200) {
       // send token
       res.status(200).json({ token: "testing123" , id:id});

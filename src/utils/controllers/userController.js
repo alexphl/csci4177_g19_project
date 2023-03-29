@@ -5,13 +5,13 @@ import { Types } from "mongoose";
 
 // create new user
 export const createUser = async (req, res) => {
-  const { name, password, email } = req.body;
+  const { username, password, email } = req.body;
   
   
   // add to database - mongo makes an _id
   // ToDo - no duplicate emails
   try {
-    const user = await User.create({ name, password, email });
+    const user = await User.create({ username, password, email });
     return res.status(200).json(user); // return the object
   } catch (error) {
     return res.status(400).json({ error: error.message });
