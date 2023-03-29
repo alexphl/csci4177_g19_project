@@ -16,10 +16,7 @@ function RegistrationForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [address, setAddress] = useState("");
-  const [birthdate, setBirthdate] = useState("");
-  const [name,setName] = useState("");
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
   // user context - has properties: loggedIn, email
   const { dispatchUser } = useContext(userContext);
@@ -65,18 +62,6 @@ function RegistrationForm() {
     // updateError()
   };
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const handleAddressChange = (e) => {
-    setAddress(e.target.value);
-  };
-
-  const handleBirthdateChange = (e) => {
-    setBirthdate(e.target.value);
-  };
-
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
@@ -92,9 +77,6 @@ function RegistrationForm() {
         const response = await registerUser({
             email: email,
             userPassword: password,
-            username: username,
-            address: address,
-            birthdate: birthdate,
             name:name,
         });
 
@@ -177,16 +159,8 @@ function RegistrationForm() {
       <div style={{ fontSize: "10px" }}>
         <form>
           <FormGroup>
-          <TextField
-              placeholder="Username"
-              autoComplete="username"
-              label="Username"
-              focused
-              margin="normal"
-              onChange={handleUsernameChange}
-            />
             <TextField
-              placeholder="Real Name"
+              placeholder="Name"
               autoComplete="name"
               label="Name"
               focused
@@ -218,24 +192,6 @@ function RegistrationForm() {
               focused
               margin="normal"
               onChange={handleConfirmPasswordChange}
-            />
-            <TextField
-              placeholder="Address"
-              autoComplete="street-address"
-              label="Address"
-              focused
-              margin="normal"
-              onChange={handleAddressChange}
-            />
-            <TextField
-              placeholder="Birthdate"
-              autoComplete="bday"
-              label="Birthdate"
-              type="date"
-              InputLabelProps={{ shrink: true }}
-              focused
-              margin="normal"
-              onChange={handleBirthdateChange}
             />
             <Button variant="outlined" className="mt-6" onClick={handleSubmit}>
               Register!

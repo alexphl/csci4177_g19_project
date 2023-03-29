@@ -2,6 +2,7 @@
 // Two ways with async either .then or await, I used await
 import bcrypt from "bcrypt"; // https://www.npmjs.com/package/bcrypt
 import axios from "axios";
+import registerNewCustomerAndPortfolio from "../services/createPortfolioCustomer"
 const saltRounds = 10;
 
 export const login = async (req, res) => {
@@ -46,7 +47,7 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
   // get variables from req
-  const { userPassword, email, name, address, username, birthdate } = req.body;
+  const { userPassword, email, name} = req.body;
 
   if(!userPassword){
     return res.status(400).json({ error: "missing userPassword" });
@@ -54,25 +55,12 @@ export const register = async (req, res) => {
   try {
     // hash received password
     const password = await bcrypt.hash(userPassword, saltRounds);
-    const user = { username, email, password };
-
+    const user = { name, email, password };
     // Store hash in database
     const response = await axios.post("http://localhost:3000/api/users/", user);
     
-    // Create a Portfolio in database
-    const portfolio = {
-      owner_id: username,
-      profit: 0,
-      assets: [],
-      transaction_history: [],
-      watchlists: [],
-      stock_list: [],
-    };
-    const create_portfolio = await axios.post('http://localhost:3000/api/simulation/new', portfolio);
-
-     // Create a customer profile in database
-    const customer = {username, name, address, birthdate, email}
-    const create_customer = await axios.post("http://localhost:3000/api/customer/new",customer);
+    // New Customer and Portfolio 
+    const newCustomerPortfolioResponse = await registerNewCustomerAndPortfolio(email, name);
 
     const id = response.data[0]._id;
     if (response && response.status === 200) {

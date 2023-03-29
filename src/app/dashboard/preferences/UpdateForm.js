@@ -5,6 +5,11 @@ import { useState, memo } from "react";
 function UpdateForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  // Customer Profile
+  const [username, setUsername] = useState("");
+  const [address, setAddress] = useState("");
+  const [birthdate, setBirthdate] = useState("");
+  // End Customer Profile
 
   const handleNameChange = (e) => {
     e.preventDefault();
@@ -25,6 +30,20 @@ function UpdateForm() {
      * - Dispatch changes with userContext
      */
   };
+
+  // Customer Profile
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
+
+  const handleAddressChange = (e) => {
+    setAddress(e.target.value);
+  };
+
+  const handleBirthdateChange = (e) => {
+    setBirthdate(e.target.value);
+  };
+  // End Customer Profile
 
   const updateUser= async (id, update) =>{
     const response = await fetch('/api/users/'+id, {
@@ -64,6 +83,31 @@ function UpdateForm() {
           required
           autoComplete="off"
         />
+        {/* Customer Profile */}
+        <TextField
+              placeholder="Username"
+              autoComplete="username"
+              label="Username"
+              margin="normal"
+              onChange={handleUsernameChange}
+        />
+        <TextField
+              placeholder="Address"
+              autoComplete="street-address"
+              label="Address"
+              margin="normal"
+              onChange={handleAddressChange}
+        />
+        <TextField
+              placeholder="Birthdate"
+              autoComplete="bday"
+              label="Birthdate"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              margin="normal"
+              onChange={handleBirthdateChange}
+        />
+        {/* End Customer Profile */}
         <Button onClick={handleSubmit}>Submit</Button>
       </FormGroup>
     </form>
