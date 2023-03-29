@@ -5,7 +5,7 @@ import { ArrowsUpDownIcon, CheckIcon, PlusIcon } from "@heroicons/react/20/solid
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { Dispatch, SetStateAction, useContext, useTransition } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { memo, useState } from "react";
+import { memo } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { ListContext } from "./ListContext";
 import type { iUserStockList, iUserStockListItem } from "@/types/iStocks";
@@ -56,6 +56,12 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
       queryClient.setQueryData([`/api/stocks/user/lists/${userID}`], context.previousList);
       startTransition(() => setSelected((0)));
     },
+    // Remove associated stocks on success
+    onSuccess: () => {
+      userStocksMut.mutate(
+        [...userStocks.filter((item: iUserStockListItem) => item.listID !== modes[selected].id)]
+      )
+    },
     // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/stocks/user/lists/${userID}`] });
@@ -80,15 +86,11 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
   }
 
   // Deletes currently selected list and all its contents
-  function handleDelete(e: any) {
+  async function handleDelete(e: any) {
     e.preventDefault();
     e.stopPropagation();
 
     if (selected > 0) setSelected(selected - 1);
-
-    userStocksMut.mutate(
-      [...userStocks.filter((item: iUserStockListItem) => item.listID !== modes[selected].id)]
-    )
 
     userListsMut.mutate([
       ...modes.filter((item: iUserStockList) => item.id !== modes[selected].id),
