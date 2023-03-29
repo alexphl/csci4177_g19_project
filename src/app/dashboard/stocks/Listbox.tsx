@@ -22,8 +22,6 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
   const selected = listContext.state;
   const setSelected = listContext.setState;
 
-  // Function to update user stock list
-  // Implements optimistic updates
   const [userStocks, userStocksMut] = props.userStocksController;
 
   // Function to update the lists of user's stock lists
@@ -56,17 +54,55 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
       queryClient.setQueryData([`/api/stocks/user/lists/${userID}`], context.previousList);
       startTransition(() => setSelected((0)));
     },
-    // Remove associated stocks on success
-    onSuccess: () => {
-      userStocksMut.mutate(
-        [...userStocks.filter((item: iUserStockListItem) => item.listID !== modes[selected].id)]
-      )
-    },
     // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/stocks/user/lists/${userID}`] });
     },
   });
+
+  // Function to update user stock list
+  // Implements optimistic updates
+  const userStocksDelMut = useMutation({
+    mutationFn: ((newList: iUserStockListItem[]) =>
+      fetch(`/api/stocks/user/${userID}`, {
+        method: "POST",
+        body: JSON.stringify(newList),
+        headers: { "Content-Type": "application/json" },
+      })),
+    // When mutate is called:
+    onMutate: async (newList) => {
+      // Cancel any outgoing refetches
+      // (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({ queryKey: [`/api/stocks/user/${userID}`] });
+
+      // Snapshot the previous value
+      const previousList = queryClient.getQueryData([`/api/stocks/user/${userID}`]);
+
+      // Optimistically update to the new value
+      queryClient.setQueryData([`/api/stocks/user/${userID}`], () => newList);
+
+      // Return a context object with the snapshotted value
+      return { previousList };
+    },
+    // If the mutation fails,
+    // use the context returned from onMutate to roll back
+    onError: (context: { previousList: iUserStockListItem[] }) => {
+      queryClient.setQueryData([`/api/stocks/user/${userID}`], context.previousList);
+    },
+    // Remove the list on success
+    onSuccess: () => {
+      userListsMut.mutate([
+        ...modes.filter((item: iUserStockList) => item.id !== modes[selected].id),
+      ]);
+
+      if (selected === modes.length - 1) setSelected(selected - 1);
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/stocks/user/${userID}`] });
+    },
+  });
+
 
   // Creates a new list
   function handleAdd(e: any) {
@@ -90,11 +126,13 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
     e.preventDefault();
     e.stopPropagation();
 
-    if (selected > 0) setSelected(selected - 1);
+    // delete contents first
+    userStocksDelMut.mutate(
+      [...userStocks.filter((item: iUserStockListItem) => item.listID !== modes[selected].id)]
+    )
 
-    userListsMut.mutate([
-      ...modes.filter((item: iUserStockList) => item.id !== modes[selected].id),
-    ])
+    // Rest of the logic is performed inside userStocksMut -> onSuccess
+    // to avoid race conditions.
   }
 
   return (

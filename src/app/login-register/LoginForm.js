@@ -37,14 +37,14 @@ function LoginForm() {
     // https://stackoverflow.com/a/59317682
     let regEx = new RegExp(
     // ^                               start anchor
-    // (?=(.*[a-z]){3,})               lowercase letters. {3,} indicates that you want 3 of this group
-    // (?=(.*[A-Z]){1,})               uppercase letters. {2,} indicates that you want 1 of this group
-    // (?=(.*[0-9]){2,})               numbers. {2,} indicates that you want 2 of this group
+    // (?=(.*[a-z]){1,})               lowercase letters. {1,} indicates that you want 1 of this group
+    // (?=(.*[A-Z]){1,})               uppercase letters. {1,} indicates that you want 1 of this group
+    // (?=(.*[0-9]){1,})               numbers. {1,} indicates that you want 1 of this group
     // (?=(.*[!@#$%^&*()\-__+.]){1,})  all the special characters in the [] fields. The ones used by regex are escaped by using the \ or the character itself. {1,} is redundant, but good practice, in case you change that to more than 1 in the future. Also keeps all the groups consistent
     // {8,}                            indicates that you want 8 or more
     // $                               end anchor
 
-      /^(?=(.*[a-z]){3,})(?=(.*[A-Z]){2,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/
+      /^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/
     );
     return regEx.test(val);
   };
