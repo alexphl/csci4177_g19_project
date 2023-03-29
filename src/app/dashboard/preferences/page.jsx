@@ -6,6 +6,7 @@ import { UserIcon } from "@heroicons/react/24/outline";
 import { userContext } from "../../UserContext";
 import { useState, useContext, memo } from "react";
 import { Modal, Box, Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 // Lazy load components
 const DeleteForm = dynamic(() => import("./DeleteForm"));
@@ -29,6 +30,7 @@ const style = {
 
 function Preferences() {
   const { user, dispatchUser } = useContext(userContext);
+  const router = useRouter();
 
   //modals
   const [open1, setOpen1] = useState(false);
@@ -53,12 +55,24 @@ function Preferences() {
     setOpen3(true);
   };
 
+  const handleLogOut = (e) => {
+    e.preventDefault()
+    dispatchUser({
+      type: "LOGOUT_USER"
+    })
+    sessionStorage.removeItem('token')
+    router.push("/");
+  };
+
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-8 text-neutral-500">
       <button className="flex cursor-default items-center rounded-full p-5 outline-none">
         <UserIcon className="h-20 w-20" />
-        <p>{user.email}</p>
+        <p>{user.email}</p> 
       </button>
+      <Button variant="outlined" color="primary" onClick={handleLogOut}>
+        Log Out
+      </Button>
       <Button variant="outlined" color="primary" onClick={handleUpdate}>
         Update
       </Button>

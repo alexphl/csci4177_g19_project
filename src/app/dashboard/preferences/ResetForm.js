@@ -28,9 +28,24 @@ function ResetForm() {
 
     /** ToDo
      * - Update on server
+     * - update session
      * - Dispatch changes with userContext
      */
   };
+
+  const resetUserPassword= async (id, password) =>{
+    const response = await fetch('/api/users/'+id, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({password}),
+    });
+
+    const json = await response.json()
+
+    return json
+  }
 
   return (
     <form>

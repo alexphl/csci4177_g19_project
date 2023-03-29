@@ -6,10 +6,8 @@ import { Types } from "mongoose";
 // create new user
 export const createUser = async (req, res) => {
   const { name, password, email } = req.body;
-
-  // ToDo Hash password before storing in database -> done in auth and called by auth.
-  // maybe some control that it can only be called by auth? not sure how to do that.
-
+  
+  
   // add to database - mongo makes an _id
   // ToDo - no duplicate emails
   try {

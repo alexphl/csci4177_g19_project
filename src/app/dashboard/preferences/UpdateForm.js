@@ -26,6 +26,20 @@ function UpdateForm() {
      */
   };
 
+  const updateUser= async (id, update) =>{
+    const response = await fetch('/api/users/'+id, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(update),
+    });
+
+    const json = await response.json()
+
+    return json
+  }
+
   return (
     <form>
       <FormGroup>

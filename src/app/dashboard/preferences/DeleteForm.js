@@ -15,9 +15,23 @@ function DeleteForm() {
     console.log("Submit!", deleteVerify, deleteVerify === "DELETE");
     /** ToDo
      * - Delete on server
+     * - Delete session
      * - Dispatch changes with userContext -> reset to null/false
      */
   };
+
+  const deleteUser= async (id) =>{
+    const response = await fetch('/api/users/'+id, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    const json = await response.json()
+
+    return json
+  }
 
   return (
     <form>
