@@ -1,3 +1,4 @@
+/**Author: Liam Osler */
 "use strict";
 import { Schema, model, models } from "mongoose";
 
