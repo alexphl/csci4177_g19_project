@@ -138,7 +138,7 @@ export default function StockDetails({
     );
   }
 
-  if (!quote.isSuccess || !userLists.isSuccess || !userStocks.isSuccess) {
+  if (!quote.isSuccess || !userLists.isSuccess || !userStocks.isSuccess || !userLists.data[selectedList]) {
     // Loading
     return <div className="relative h-24 -mt-12 flex"> <Loading /> </div>
   }

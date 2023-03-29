@@ -94,7 +94,7 @@ function StockList(props: {
     startTransition(() => setResultLimit(5));
   }, [searchResult.data]);
 
-  if (!userLists.isSuccess || !userStocks.isSuccess) { return <div className="relative h-24 -mt-12 flex"> <Loading /> </div> }
+  if (!userLists.isSuccess || !userStocks.isSuccess || !userLists.data[selectedList]) { return <div className="relative h-24 -mt-12 flex"> <Loading /> </div> }
 
   const stockList = userStocks.data.filter((item: iUserStockListItem) => item.listID === userLists.data[selectedList].id);
 
