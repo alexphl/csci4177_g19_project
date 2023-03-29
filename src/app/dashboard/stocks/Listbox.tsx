@@ -1,24 +1,35 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 import { Listbox, Transition } from "@headlessui/react";
 import { ArrowsUpDownIcon, CheckIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import type { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext, useTransition } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { memo } from "react";
 import { queryClient } from "@/app/QueryProvider";
+import { ListContext } from "./ListContext";
+import type { iUserStockList, iUserStockListItem } from "@/types/iStocks";
 
 const userID = "user1";
 
 /**
  * Chart mode selection listbox
  **/
-function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetStateAction<number>>] }) {
+function StockListbox(props: { userStocksController: [iUserStockListItem[], any], lists: iUserStockList[], selector: [number, Dispatch<SetStateAction<number>>] }) {
+  const [_isPending, startTransition] = useTransition();
   const modes = props.lists
-  const [selected, setSelected] = props.selector;
+  const listContext = useContext(ListContext);
+  const selected = listContext.state;
+  const setSelected = listContext.setState;
 
   // Function to update user stock list
   // Implements optimistic updates
+  const [userStocks, userStocksMut] = props.userStocksController;
+
+  // Function to update the lists of user's stock lists
+  // Implements optimistic updates
   const userListsMut = useMutation({
-    mutationFn: ((newLists: string[]) =>
+    mutationFn: ((newLists: iUserStockList[]) =>
       fetch(`/api/stocks/user/lists/${userID}`, {
         method: "POST",
         body: JSON.stringify(newLists),
@@ -43,7 +54,13 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
     // use the context returned from onMutate to roll back
     onError: (context: { previousList: string[] }) => {
       queryClient.setQueryData([`/api/stocks/user/lists/${userID}`], context.previousList);
-      setSelected(0);
+      startTransition(() => setSelected((0)));
+    },
+    // Remove associated stocks on success
+    onSuccess: () => {
+      userStocksMut.mutate(
+        [...userStocks.filter((item: iUserStockListItem) => item.listID !== modes[selected].id)]
+      )
     },
     // Always refetch after error or success:
     onSettled: () => {
@@ -51,6 +68,7 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
     },
   });
 
+  // Creates a new list
   function handleAdd(e: any) {
     e.preventDefault();
     e.stopPropagation();
@@ -58,28 +76,36 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
     const name = encodeURIComponent(e.target.value.trim());
     if (!name) return;
 
-    userListsMut.mutate([...modes.concat(name)]);
-    setSelected(modes.length);
+    const newList: iUserStockList = {
+      id: (parseInt(modes[modes.length - 1].id) + 1).toString(),
+      name: name
+    }
+
+    userListsMut.mutate([...modes.concat(newList)]);
+    startTransition(() => setSelected((modes.length)));
   }
 
-  function handleDelete(e: any) {
+  // Deletes currently selected list and all its contents
+  async function handleDelete(e: any) {
     e.preventDefault();
     e.stopPropagation();
 
+    if (selected > 0) setSelected(selected - 1);
+
     userListsMut.mutate([
-      ...modes.filter((item: string) => {
-        return item !== modes[selected];
-      }),
+      ...modes.filter((item: iUserStockList) => item.id !== modes[selected].id),
     ])
-    setSelected(selected - 1);
   }
 
   return (
     <div className="w-max text-sm font-medium text-neutral-300">
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox
+        value={selected}
+        onChange={(i: number) => startTransition(() => setSelected(i))}
+      >
         <div className="relative">
           <Listbox.Button className="relative w-full border border-neutral-800 cursor-pointer backdrop-blur-md rounded-md bg-white/[0.1] py-1 pl-3 pr-9 text-left hover:bg-white/[0.15] focus:outline-none focus-visible:border-orange-200">
-            <span className="block truncate">{modes[selected]}</span>
+            <span className="block truncate">{decodeURIComponent(modes[selected].name)}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1">
               <ArrowsUpDownIcon
                 className="mr-1.5 h-3 w-3 text-neutral-500"
@@ -88,12 +114,12 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
             </span>
           </Listbox.Button>
           <Transition
-            leave="transition duration-100 ease-out"
-            leaveFrom="transform scale-100 opacity-100"
+            leave="transition duration-200 ease-out"
+            leaveFrom="transform scale-200 opacity-100"
             leaveTo="transform scale-95 opacity-0"
           >
             <Listbox.Options className="absolute z-50 mt-1 max-h-96 w-60 overflow-x-hidden overflow-y-auto border border-white/[0.2] rounded-lg bg-neutral-800/[0.2] p-2 text-sm shadow-xl backdrop-blur-2xl backdrop-saturate-200 focus:outline-none">
-              {modes.map((mode: string, i) => (
+              {modes.map((mode: iUserStockList, i) => (
                 <Listbox.Option
                   key={i}
                   className={({ active }) =>
@@ -110,7 +136,7 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
                         className={`block truncate ${selected ? "font-medium" : "font-normal"
                           }`}
                       >
-                        {mode}
+                        {decodeURIComponent(mode.name)}
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-2.5 text-orange-200">
@@ -125,25 +151,29 @@ function StockListbox(props: { lists: string[], selector: [number, Dispatch<SetS
               <hr className="border border-white/[0.2] rounded-full my-4 w-10 mx-auto" />
 
               <div
-                className="flex text-neutral-300 rounded-md relative w-full px-2 items-center hover:bg-neutral-100/[0.1]"
+                className="relative flex text-neutral-300 rounded-md relative w-full px-2 items-center hover:bg-neutral-100/[0.1] focus-within:border border-white/[0.2] focus-within:bg-neutral-100/[0.1] transition-all focus-within:py-1 focus-within:rounded-lg focus-within:mb-2"
               >
                 <PlusIcon className="w-5 flex-none" />
                 <input
-                  onBlur={(e) => handleAdd(e)}
-                  name="newlist"
+                  onKeyDown={(e: any) => {
+                    e.stopPropagation();
+                    if (e.code === "Enter") { handleAdd(e); e.target.value = ""; }
+                  }}
                   placeholder="New list"
-                  className="flex-auto outline-none bg-transparent w-10 max-w-full p-2 placeholder:text-inherit placeholder:truncate focus:placeholder:text-transparent"
+                  className="flex-auto outline-none bg-transparent w-10 max-w-full p-2 placeholder:text-inherit placeholder:truncate focus:placeholder:text-white/50"
                   type="text"
                 />
               </div>
 
-              <div
-                className="flex relative w-full px-2 rounded-md text-neutral-300 items-center hover:bg-neutral-100/[0.1] hover:text-red-300"
-                onClick={(e) => handleDelete(e)}
-              >
-                <TrashIcon className="w-4 mx-0.5 flex-none" fill="rgba(255,255,255,0.2)" />
-                <p className="flex-auto max-w-full p-2 truncate">Delete this list</p>
-              </div>
+              {(modes.length > 1) &&
+                <div
+                  className="flex relative w-full px-2 rounded-md text-neutral-300 items-center hover:bg-neutral-100/[0.1] hover:text-red-300"
+                  onClick={(e) => handleDelete(e)}
+                >
+                  <TrashIcon className="w-4 mx-0.5 flex-none" fill="rgba(255,255,255,0.2)" />
+                  <p className="flex-auto max-w-full p-2 truncate">Delete this list</p>
+                </div>
+              }
 
             </Listbox.Options>
           </Transition>

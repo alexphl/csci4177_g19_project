@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 import { Tab } from "@headlessui/react";
 import { memo, useTransition } from "react";
 import type { Dispatch, SetStateAction } from "react";

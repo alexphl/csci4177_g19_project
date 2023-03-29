@@ -1,6 +1,8 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useContext } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { BookmarkIcon, BookmarkSlashIcon, PhotoIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
@@ -8,7 +10,8 @@ import dynamic from "next/dynamic";
 import Image from "next/image"
 import { useRouter } from "next/navigation";
 import { m } from "framer-motion";
-import type { iQuote, iProfile, iCompanyNews, iUserStockListItem } from "@/types/iStocks";
+import type { iQuote, iProfile, iCompanyNews, iUserStockListItem, iUserStockList } from "@/types/iStocks";
+import { ListContext } from "../ListContext";
 import shortNum from 'number-shortener';
 
 // Lazy load
@@ -37,9 +40,13 @@ function filterNews(results: iCompanyNews[] | undefined, company: iProfile | und
 export default function StockDetails({
   params,
 }: {
-  params: { stock: string };
+  params: { stock: string, list?: string };
 }) {
   params.stock = params.stock.toUpperCase();
+
+  const listContext = useContext(ListContext);
+  const selectedList = listContext.state;
+
   const router = useRouter();
   const quote = useQuery<iQuote>({
     queryKey: [`/api/stocks/quote/`, params.stock],
@@ -56,7 +63,7 @@ export default function StockDetails({
   const userStocks = useQuery<iUserStockListItem[]>({
     queryKey: [`/api/stocks/user/${userID}`],
   });
-  const userLists = useQuery<string[]>({
+  const userLists = useQuery<iUserStockList[]>({
     queryKey: [`/api/stocks/user/lists/${userID}`],
   });
   const peerSymbols = useQuery<string[]>({
@@ -71,8 +78,6 @@ export default function StockDetails({
   });
 
   const [newsLimit, setNewsLimit] = useState(3);
-  const isAdded =
-    userStocks.isSuccess && userStocks.data.filter((savedItem: iUserStockListItem) => params.stock === savedItem.symbol).length > 0;
 
   const filteredNews = useMemo(
     () =>
@@ -120,7 +125,7 @@ export default function StockDetails({
       userStocks.isSuccess &&
       userStocksMut.mutate([
         ...userStocks.data.filter((item: iUserStockListItem) => {
-          return item.symbol !== stock;
+          return (item.symbol !== stock) || (item.listID !== userLists.data![selectedList].id);
         }),
       ])
     );
@@ -129,11 +134,11 @@ export default function StockDetails({
   function addStock(stock: string) {
     return (
       userStocks.isSuccess && userLists.isSuccess &&
-      userStocksMut.mutate([...userStocks.data.concat({ list: userLists.data[0], symbol: stock })])
+      userStocksMut.mutate([...userStocks.data.concat({ listID: userLists.data[selectedList].id, symbol: stock })])
     );
   }
 
-  if (quote.isLoading || quote.isError) {
+  if (!quote.isSuccess || !userLists.isSuccess || !userStocks.isSuccess) {
     // Loading
     return <div className="relative h-24 -mt-12 flex"> <Loading /> </div>
   }
@@ -141,6 +146,9 @@ export default function StockDetails({
   if (quote.isSuccess && quote.data.c === 0 && quote.data.d === null) {
     return <div className="relative h-24 -mt-12 flex"> <NotFound message="Sorry, this stock was not found in our records." /> </div>;
   }
+
+  const stockList = userStocks.data.filter((item: iUserStockListItem) => item.listID === userLists.data[selectedList].id);
+  const isAdded = stockList.filter((savedItem: iUserStockListItem) => params.stock === savedItem.symbol).length > 0;
 
   return (
     <>
@@ -230,7 +238,7 @@ export default function StockDetails({
               <div key={symbol} className="snap-start relative w-72 flex-none">
                 <StockListItem
                   stock={symbol}
-                  isAdded={userStocks.data.filter((savedItem: iUserStockListItem) => symbol === savedItem.symbol).length > 0}
+                  isAdded={stockList.filter((savedItem: iUserStockListItem) => symbol === savedItem.symbol).length > 0}
                   searchIsActive={true}
                   addStock={addStock}
                   removeStock={removeStock}

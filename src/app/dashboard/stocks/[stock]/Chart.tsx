@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 "use client";
 
 import { Line } from "react-chartjs-2";

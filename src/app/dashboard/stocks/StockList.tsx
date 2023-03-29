@@ -1,6 +1,8 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 "use client";
 
-import { memo, useEffect, useState, useTransition } from "react";
+import { memo, useContext, useEffect, useState, useTransition } from "react";
 import dynamic from "next/dynamic";
 import { useDebounce } from "use-debounce";
 import {
@@ -12,8 +14,9 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { m, Reorder } from "framer-motion";
 import { queryClient } from "@/app/QueryProvider";
 import { CubeTransparentIcon } from "@heroicons/react/20/solid";
-import type { iSearchItem, iUserStockListItem } from "@/types/iStocks";
+import type { iSearchItem, iUserStockList, iUserStockListItem } from "@/types/iStocks";
 import Loading from "../loading";
+import { ListContext } from "./ListContext";
 
 // Lazy-load components
 const StockListItem = dynamic(() => import("./StockListItem"));
@@ -28,8 +31,9 @@ function StockList(props: {
   searchQuery: string;
   selectedStock: string | undefined;
 }) {
-  const [selectedList, setSelectedList] = useState<number>(0);
-  const userLists = useQuery<string[]>({
+  const listContext = useContext(ListContext);
+  const [selectedList, setSelectedList] = [listContext.state, listContext.setState];
+  const userLists = useQuery<iUserStockList[]>({
     queryKey: [`/api/stocks/user/lists/${userID}`],
   });
   const [_isPending, startTransition] = useTransition();
@@ -73,24 +77,6 @@ function StockList(props: {
     },
   });
 
-  function removeStock(stock: string) {
-    return (
-      userStocks.isSuccess &&
-      userStocksMut.mutate([
-        ...userStocks.data.filter((item: iUserStockListItem) => {
-          return item.symbol !== stock;
-        }),
-      ])
-    );
-  }
-
-  function addStock(stock: string) {
-    return (
-      userStocks.isSuccess && userLists.isSuccess &&
-      userStocksMut.mutate([...userStocks.data.concat({ list: userLists.data[selectedList], symbol: stock })])
-    );
-  }
-
   // Search state with debouncing and deferred value
   const [isEditMode, setEditMode] = useState(false);
   const [debouncedQuery] = useDebounce(props.searchQuery, 600); // Debounce query with a delay
@@ -110,6 +96,33 @@ function StockList(props: {
 
   if (!userLists.isSuccess || !userStocks.isSuccess) { return <div className="relative h-24 -mt-12 flex"> <Loading /> </div> }
 
+  const stockList = userStocks.data.filter((item: iUserStockListItem) => item.listID === userLists.data[selectedList].id);
+
+  function removeStock(stock: string) {
+    return (
+      userStocks.isSuccess &&
+      userStocksMut.mutate([
+        ...userStocks.data.filter((item: iUserStockListItem) => {
+          return (item.symbol !== stock) || (item.listID !== userLists.data![selectedList].id);
+        }),
+      ])
+    );
+  }
+
+  function addStock(stock: string) {
+    return (
+      userStocks.isSuccess && userLists.isSuccess &&
+      userStocksMut.mutate([...userStocks.data.concat({ listID: userLists.data[selectedList].id, symbol: stock })])
+    );
+  }
+
+  function handleReorder(newOrder: iUserStockListItem[]) {
+    //if (!userStocks.isSuccess || userLists.isSuccess) return;
+    const formatted = userStocks.data!.filter((item: iUserStockListItem) => item.listID !== newOrder[0].listID);
+    console.log(formatted.concat(newOrder));
+    userStocksMut.mutate(formatted.concat(newOrder));
+  }
+
   return (
     <>
       {
@@ -117,7 +130,7 @@ function StockList(props: {
         !props.searchIsActive && userStocks.isSuccess && (
           <>
             <div className="w-[calc(100%) + 0.5rem] sticky top-0 z-50 -mx-4 flex flex-auto items-center rounded-2xl bg-gradient-to-b from-black to-transparent p-4">
-              <StockListbox lists={userLists.data} selector={[selectedList, setSelectedList]} />
+              <StockListbox userStocksController={[userStocks.data, userStocksMut]} lists={userLists.data} selector={[selectedList, setSelectedList]} />
               <button
                 className={
                   "ml-auto rounded-md border border-neutral-800 p-1.5 backdrop-blur-md transition " +
@@ -134,15 +147,15 @@ function StockList(props: {
 
             <Reorder.Group
               axis="y"
-              values={userStocks.data}
-              onReorder={userStocksMut.mutate}
+              values={stockList}
+              onReorder={handleReorder}
               as="ol"
               className={listStyle}
             >
-              {userStocks.data.map((item: iUserStockListItem, i) => (
+              {stockList.map((item: iUserStockListItem, i) => (
                 <Reorder.Item
                   key={item.symbol}
-                  value={item.symbol}
+                  value={item}
                   dragListener={isEditMode || item.symbol === selectedStock}
                   transition={{
                     type: "spring",
@@ -164,7 +177,7 @@ function StockList(props: {
                       key={item.symbol}
                       stock={item.symbol}
                       isEditMode={isEditMode}
-                      isAdded={userStocks.data.filter((savedItem: iUserStockListItem) => item.symbol === savedItem.symbol).length > 0}
+                      isAdded={stockList.filter((savedItem: iUserStockListItem) => item.symbol === savedItem.symbol).length > 0}
                       addStock={addStock}
                       removeStock={removeStock}
                       selected={item.symbol === selectedStock}
@@ -175,19 +188,24 @@ function StockList(props: {
               ))}
             </Reorder.Group>
 
-            {userStocks.data.length === 0 && (
-              <div className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500">
-                <div className="w-16 ">
-                  <SparklesIcon />
-                </div>
-                <div className="flex flex-col items-center">
-                  <h1 className="text-lg font-bold">Your list is empty</h1>
-                  <h2 className="text-sm font-medium">
-                    You can add stocks using search
-                  </h2>
-                </div>
-              </div>
-            )}
+            { // EMPTY LIST MESSAGE
+              stockList.length === 0 && (
+                <m.div
+                  initial={{ opacity: 0, filter: "blur(4px)" }}
+                  animate={{ opacity: 1, filter: "none" }}
+                  className="flex w-full flex-col items-center justify-center gap-4 py-20 text-lg text-neutral-500"
+                >
+                  <div className="w-16 ">
+                    <SparklesIcon />
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <h1 className="text-lg font-bold">This list is empty</h1>
+                    <h2 className="text-sm font-medium">
+                      You can add stocks here via search
+                    </h2>
+                  </div>
+                </m.div>
+              )}
           </>
         )
       }
@@ -226,7 +244,7 @@ function StockList(props: {
                   .map((result: iSearchItem) => (
                     <StockListItem
                       key={result.symbol}
-                      isAdded={userStocks.data.filter((item: iUserStockListItem) => item.symbol === result.symbol).length > 0}
+                      isAdded={stockList.filter((item: iUserStockListItem) => item.symbol === result.symbol).length > 0}
                       addStock={addStock}
                       removeStock={removeStock}
                       stock={result.symbol}

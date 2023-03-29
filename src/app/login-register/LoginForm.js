@@ -1,3 +1,4 @@
+/**Author: Crystal Parker B00440168 */
 "use client";
 
 import { memo, useEffect, useState, useContext } from "react";
@@ -10,8 +11,10 @@ import {
   Button,
 } from "@mui/material";
 
+
 // Form styled using material UI, referenced the docs : https://mui.com/material-ui/
 function LoginForm() {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -31,11 +34,19 @@ function LoginForm() {
   };
 
   const isValidPassword = (val) => {
-    // https://regex101.com/r/bC2gU7/3
+    // https://stackoverflow.com/a/59317682
     let regEx = new RegExp(
-      /^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#%]*[!#%])[A-Za-z0-9!#%]{8,32}$/
+    // ^                               start anchor
+    // (?=(.*[a-z]){3,})               lowercase letters. {3,} indicates that you want 3 of this group
+    // (?=(.*[A-Z]){1,})               uppercase letters. {2,} indicates that you want 1 of this group
+    // (?=(.*[0-9]){2,})               numbers. {2,} indicates that you want 2 of this group
+    // (?=(.*[!@#$%^&*()\-__+.]){1,})  all the special characters in the [] fields. The ones used by regex are escaped by using the \ or the character itself. {1,} is redundant, but good practice, in case you change that to more than 1 in the future. Also keeps all the groups consistent
+    // {8,}                            indicates that you want 8 or more
+    // $                               end anchor
+
+      /^(?=(.*[a-z]){3,})(?=(.*[A-Z]){2,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/
     );
-    return regEx.test(val) && val === "ABCabc123!";
+    return regEx.test(val);
   };
 
   // Input handlers
@@ -48,7 +59,7 @@ function LoginForm() {
     // updateError()
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let err = checkError();
     // password must be valid regex check
@@ -56,18 +67,42 @@ function LoginForm() {
 
     if (err.length === 0) {
       // check with database
+      const response = await loginUser({email : email, password: password})
 
-      // set state
-      dispatchUser({
-        type: "SET_USER",
-        payload: { email: email, loggedIn: true },
-      });
-
-      // store a session cookie
+      if(response.token){
+        console.log(response.token)
+        // set state
+        dispatchUser({
+          type: "SET_USER",
+          payload: { email: email, loggedIn: true, id: response.id },
+        });  
+        // This is for our session token so it remembers you when you refresh
+        // Local storage would remember longer but this is how we're doing it kiss
+        const userToken = {token:response.token, email:email, id: response.id}
+        sessionStorage.setItem('token', JSON.stringify(userToken))
+      }else{
+        console.log(response.error)
+        setError("Login failed")
+      }
     } else {
-      setError(err);
+      console.log(err)
+      setError(err)
     }
   };
+
+  const loginUser= async (credentials) =>{
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+
+    const json = await response.json()
+
+    return json
+  }
 
   const checkError = () => {
     // error starts out as none
@@ -85,6 +120,7 @@ function LoginForm() {
       err = err + " Not a valid email.";
     }
     if (!isValidPassword(password)) {
+      console.log(password)
       err = err + "Sorry Wrong Password";
     }
 
@@ -95,9 +131,10 @@ function LoginForm() {
   //     setError(checkError())
   // }
 
+  /** Work around so don't have to remember a password... who put it here?? */
   useEffect(() => {
-    setEmail("johndoe@email.com");
-    setPassword("ABCabc123!");
+    setEmail("test@dal.ca");
+    setPassword("4GSuqb5apL44h2w!");
   }, []);
 
   useEffect(() => {

@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
