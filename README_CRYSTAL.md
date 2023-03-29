@@ -2,7 +2,8 @@
 
 * *Date Created*: 25 Mar 2023
 * *Last Modification Date*: 28 Mar 2023
-* *Lab URL*: <https://group19project.netlify.app/> --ToDo: confirm?
+* *Lab URL*: <https://csci4177-group19-project-2.vercel.app> --ToDo: confirm?
+* *Stable Deploy* <https://group19project.netlify.app>
 * *GitHub URL*: <https://github.com/alexphl/csci4177_g19_project>
 * *GitLab URL*: <https://git.cs.dal.ca/cparker/csci4177_group19_project>
 
@@ -84,6 +85,10 @@ Add additional notes about how to deploy this on a live system
 * [Github](https://github.com/) - Dependency Management
 * [MaterialUI](https://mui.com/material-ui/) - Used to generate RSS Feeds
 **
+
+## Crystal's branch
+vert - Crystal's main branch
+vert2 - abandoned
 
 ## Features Developed by Crystal Parker 
 Authentication 
