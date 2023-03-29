@@ -208,8 +208,8 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
               {(modes.length > 1) &&
                 <div
                   className={
-                    "cursor-pointer transition-colors flex relative w-full px-2 rounded-md items-center text-neutral-300 hover:bg-rose-200/[0.12] hover:text-rose-300 "
-                    + (hasHitDeleteOnce ? "hover:bg-rose-200/[0.2] animate-wiggle" : "")
+                    "cursor-pointer transition-all flex relative w-full px-2 rounded-md items-center text-neutral-300 hover:bg-rose-200/[0.12] hover:text-rose-300 "
+                    + (hasHitDeleteOnce ? "hover:bg-rose-200/[0.2] animate-wiggle py-0.5" : "")
                   }
                   onClick={(e) => {
                     e.preventDefault();
