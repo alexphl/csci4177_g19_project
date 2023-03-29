@@ -66,7 +66,7 @@ export default function TransactionHistory() {
 
       <Grid container justifyContent="center" style={{ marginBottom: "20px" }}>
         <TextField
-          label="Username"
+          label="Email"
           variant="outlined"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
