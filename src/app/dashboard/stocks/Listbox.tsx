@@ -3,7 +3,7 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { ArrowsUpDownIcon, CheckIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { Dispatch, SetStateAction, useContext, useTransition } from "react";
+import { Dispatch, SetStateAction, useContext, useState, useTransition } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { memo } from "react";
 import { queryClient } from "@/app/QueryProvider";
@@ -21,8 +21,9 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
   const listContext = useContext(ListContext);
   const selected = listContext.state;
   const setSelected = listContext.setState;
+  const [hasHitDeleteOnce, setHitDeleteOnce] = useState(false);
 
-  const [userStocks, userStocksMut] = props.userStocksController;
+  const [userStocks,] = props.userStocksController;
 
   // Function to update the lists of user's stock lists
   // Implements optimistic updates
@@ -122,14 +123,13 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
   }
 
   // Deletes currently selected list and all its contents
-  async function handleDelete(e: any) {
-    e.preventDefault();
-    e.stopPropagation();
-
+  async function handleDelete(_e: any) {
     // delete contents first
     userStocksDelMut.mutate(
       [...userStocks.filter((item: iUserStockListItem) => item.listID !== modes[selected].id)]
     )
+
+    startTransition(() => setHitDeleteOnce(false));
 
     // Rest of the logic is performed inside userStocksMut -> onSuccess
     // to avoid race conditions.
@@ -142,7 +142,9 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
         onChange={(i: number) => startTransition(() => setSelected(i))}
       >
         <div className="relative">
-          <Listbox.Button className="relative w-full border border-neutral-800 cursor-pointer backdrop-blur-md rounded-md bg-white/[0.1] py-1 pl-3 pr-9 text-left hover:bg-white/[0.15] focus:outline-none focus-visible:border-orange-200">
+          <Listbox.Button
+            className="relative w-full border border-neutral-800 cursor-pointer backdrop-blur-md rounded-md bg-white/[0.1] py-1 pl-3 pr-9 text-left hover:bg-white/[0.15] focus:outline-none focus-visible:border-orange-200"
+          >
             <span className="block truncate">{decodeURIComponent(modes[selected].name)}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1">
               <ArrowsUpDownIcon
@@ -205,11 +207,24 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
 
               {(modes.length > 1) &&
                 <div
-                  className="flex relative w-full px-2 rounded-md text-neutral-300 items-center hover:bg-neutral-100/[0.1] hover:text-red-300"
-                  onClick={(e) => handleDelete(e)}
+                  className={
+                    "cursor-pointer transition-colors flex relative w-full px-2 rounded-md items-center text-neutral-300 hover:bg-rose-200/[0.12] hover:text-rose-300 "
+                    + (hasHitDeleteOnce ? "hover:bg-rose-200/[0.2] animate-wiggle" : "")
+                  }
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (hasHitDeleteOnce) handleDelete(e);
+                    !hasHitDeleteOnce && setHitDeleteOnce(true);
+                  }}
+                  onMouseLeave={() => hasHitDeleteOnce && startTransition(() => setHitDeleteOnce(false))}
                 >
                   <TrashIcon className="w-4 mx-0.5 flex-none" fill="rgba(255,255,255,0.2)" />
-                  <p className="flex-auto max-w-full p-2 truncate">Delete this list</p>
+                  <p
+                    className="flex-auto max-w-full p-2 truncate"
+                  >
+                    {hasHitDeleteOnce ? "Press again to confirm" : "Delete this list"}
+                  </p>
                 </div>
               }
 
@@ -217,7 +232,7 @@ function StockListbox(props: { userStocksController: [iUserStockListItem[], any]
           </Transition>
         </div>
       </Listbox>
-    </div>
+    </div >
   );
 }
 
