@@ -245,8 +245,8 @@ export default function StockDetails({
                 />
               </div>
             ))}
-            <div className="absolute bg-gradient-to-r from-transparent to-black w-10 p-2 h-[90%] right-0 z-50" />
           </div>
+          <div className="absolute bg-gradient-to-r from-transparent to-black w-10 p-2 h-[100%] right-0 z-50 peer-empty:hidden" />
           <h1 className="order-first text-lg font-bold peer-empty:hidden">Similar stocks</h1>
         </section>
       }

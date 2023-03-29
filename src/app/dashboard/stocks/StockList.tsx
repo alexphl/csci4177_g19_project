@@ -22,7 +22,7 @@ import { ListContext } from "./ListContext";
 const StockListItem = dynamic(() => import("./StockListItem"));
 const StockListbox = dynamic(() => import("./Listbox"));
 
-const listStyle = "flex flex-col gap-2.5 transition-transform";
+const listStyle = "flex flex-auto flex-col gap-2.5 transition-transform";
 
 const userID = "user1";
 
