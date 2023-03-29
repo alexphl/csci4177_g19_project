@@ -1,5 +1,5 @@
 // createPortfolioCustomer.js
-
+import { getApiBaseUrl } from '../utils';
 import axios from 'axios';
 
 const registerNewCustomerAndPortfolio = async (email, name) => {
@@ -18,12 +18,12 @@ const registerNewCustomerAndPortfolio = async (email, name) => {
       stock_list: [],
     };
 
-    const portfolioResponse = await axios.post('http://localhost:3000/api/simulation/new', portfolio);
+    const portfolioResponse = await axios.post(getApiBaseUrl()+'/api/simulation/new', portfolio);
     const create_portfolio = portfolioResponse.data;
 
     // Create a customer profile in database
     const customer = { username, name, address, birthdate, email }
-    const customerResponse = await axios.post('http://localhost:3000/api/customer/new', customer);
+    const customerResponse = await axios.post(getApiBaseUrl()+'/api/customer/new', customer);
     const create_customer = customerResponse.data;
 
     // Return the results
