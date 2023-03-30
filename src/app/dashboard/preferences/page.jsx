@@ -66,6 +66,7 @@ function Preferences() {
 
   useEffect(() => {
     // should refresh
+    console.log(user)
     console.log("User updated, refreshing...")
   }, [user]);
 
@@ -94,7 +95,7 @@ function Preferences() {
       <Modal open={open1} onClose={handleClose1}>
         <Box sx={style}>
           <h3>Update</h3>
-          <UpdateForm setOpen={setOpen1}/>
+          <UpdateForm setOpen={setOpen1} />
         </Box>
       </Modal>
       {/* Reset modal */}
@@ -108,7 +109,7 @@ function Preferences() {
       <Modal open={open3} onClose={handleClose3}>
         <Box sx={style}>
           <h3>Delete</h3>
-          <DeleteForm setOpen={setOpen3} />
+          <DeleteForm setOpen={setOpen3}/>
         </Box>
       </Modal>
     </div>

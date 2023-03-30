@@ -9,6 +9,7 @@ import { createContext, useReducer } from "react";
 export const userContext = createContext({ isLoggedIn: false, email: undefined });
 
 export const userReducer = (state: any, action: { type: string, payload: string }) => {
+  console.log("Dispatching...", action.payload)
   switch (action.type) {
     case "SET_USER":
       return {

@@ -13,18 +13,19 @@ export const login = async (req, res) => {
   if(!password){
     return res.status(400).json({ error: "missing password" });
   }
-
+  
   try {
     // load hash from database
     const response = await axios.get(
       getApiBaseUrl()+"/api/users/find/" + email
     );
 
-    if (response.status === 200) {
+    if (response.status === 200 && response.data.length>0) {
       // get hash from response
       const hash = response.data[0].password;
       const id = response.data[0]._id;
       const name = response.data[0].name;
+      console.log(hash,id, name)
 
       // compare password to hash
       const result = await bcrypt.compare(password, hash);
@@ -39,7 +40,7 @@ export const login = async (req, res) => {
         res.status(400).json({ error: "wrong password"});
       }
     } else {
-      return res.status(500).json({ error: "something went wrong" });
+      return res.status(500).json({ error: "No user with that email" });
     }
   } catch (e) {
     console.log(e.message);

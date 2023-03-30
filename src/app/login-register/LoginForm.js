@@ -64,7 +64,6 @@ function LoginForm() {
     let err = checkError();
     // password must be valid regex check
     // passwords must match
-
     if (err.length === 0) {
       // check with database
       const response = await loginUser({email : email, password: password})
@@ -109,10 +108,10 @@ function LoginForm() {
     let err = "";
     // inputs can't be empty
 
-    if (email.length === 0) {
+    if (!email || email.length === 0) {
       err = err + " Need email.";
     }
-    if (password.length === 0) {
+    if (!password || password.length === 0) {
       err = err + " Need password.";
     }
     // email must be valid regex check
@@ -123,6 +122,8 @@ function LoginForm() {
       console.log(password)
       err = err + "Sorry Wrong Password";
     }
+
+    console.log(err, password, email)
 
     return err;
   };

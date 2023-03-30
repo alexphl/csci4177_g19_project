@@ -12,7 +12,7 @@ const LoginOrRegister = dynamic(() => import("./LoginOrRegister"));
 
 function Auth() {
   // user context - has properties: loggedIn, email
-  const { user, dispatchUser } = useContext(userContext);
+  const { user } = useContext(userContext);
   const router = useRouter();
 
   

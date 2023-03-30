@@ -3,7 +3,7 @@
 import { Button, FormGroup, TextField } from "@mui/material";
 import { useState, useContext, memo } from "react";
 import useSessionStorage from "../../useSessionStorage";
-import { userContext } from "../../UserContext";
+import { userContext } from "@/app/UserContext";
 
 function UpdateForm(props) {
   const { user, dispatchUser } = useContext(userContext);
@@ -15,6 +15,9 @@ function UpdateForm(props) {
   const [address, setAddress] = useState("");
   const [birthdate, setBirthdate] = useState("");
   // End Customer Profile
+
+  // // update session
+  const userToken = useSessionStorage("token");
 
   const handleNameChange = (e) => {
     e.preventDefault();
@@ -36,19 +39,21 @@ function UpdateForm(props) {
       const updateUserRes = await updateUser(user.id, {email, name})
       const updatePortfolioRes = updatePortfolio({address,username, birthdate})
     
-      if(updateUserRes.status===200){
+      console.log(updateUserRes)
+      if(updateUserRes.success){
         // dispatch changes
         dispatchUser({
           type: "SET_USER",
-          payload: { email: email, loggedIn: true, id: user.id, name:name },
+          payload: { email: email, loggedIn: true, id: user.id, name: name },
         }); 
 
-        // update session
-        const userToken = useSessionStorage("token");
-        userToken.email = email
-        userToken.name = name
+        JSON.parse(userToken).email = email
+        JSON.parse(userToken).name = name
         sessionStorage.setItem('token', JSON.stringify(userToken))
+      }else{
+        console.log("Retry dispatch...")
       }
+
       props.setOpen(false)
     }
   };
@@ -85,7 +90,7 @@ function UpdateForm(props) {
     console.log("updating portfolio...")
     console.log(contents)
   }
-  // End Customer Profile
+ // End Customer Profile
 
   return (
     <form>

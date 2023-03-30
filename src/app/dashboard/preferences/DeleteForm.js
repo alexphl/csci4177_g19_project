@@ -1,23 +1,35 @@
 /**Author: Crystal Parker B00440168 */
 import { Button, FormGroup, TextField } from "@mui/material";
-import { useState, memo } from "react";
+import { useState, memo, useContext } from "react";
+import { userContext } from "@/app/UserContext";
+import { useRouter } from "next/navigation";
 
 function DeleteForm() {
   const [deleteVerify, setDeleteVerify] = useState("");
+  const { user, dispatchUser } = useContext(userContext);
+  const router = useRouter();
 
   const handleDeleteVerifyChange = (e) => {
     e.preventDefault();
     setDeleteVerify(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submit!", deleteVerify, deleteVerify === "DELETE");
-    /** ToDo
-     * - Delete on server
-     * - Delete session
-     * - Dispatch changes with userContext -> reset to null/false
-     */
+    console.log(user)
+    if(deleteVerify === "DELETE" && user.id){
+      //delete on server
+      const deleteRes = await deleteUser(user.id)
+
+      if(deleteRes.success){
+        sessionStorage.removeItem('token')
+        dispatchUser({
+          type: "LOGOUT_USER"
+        })
+        router.push("/");
+      }
+    }
   };
 
   const deleteUser= async (id) =>{
@@ -42,8 +54,8 @@ function DeleteForm() {
     <form>
       <FormGroup>
         <TextField
-          placeholder="DeleteVerify"
-          label="Delete Verify"
+          placeholder="DELETE"
+          label="Type DELETE to verify"
           color="primary"
           focused
           margin="normal"

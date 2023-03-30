@@ -6,8 +6,6 @@ import { Types } from "mongoose";
 // create new user
 export const createUser = async (req, res) => {
   const { name, password, email } = req.body;
-  
-  
   // add to database - mongo makes an _id
   // ToDo - no duplicate emails
   try {
@@ -65,16 +63,16 @@ export const deleteUser = async (req, res) => {
   const { id } = req.params;
 
   if (!Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such user" });
+    return res.status(404).json({ error: "No such user", success:false });
   }
 
   const user = await User.findOneAndDelete({ _id: id });
 
   if (!user) {
-    return res.status(400).json({ error: "No such user" });
+    return res.status(400).json({ error: "No such user", success:false });
   }
 
-  res.status(200).json(user);
+  res.status(200).json({success: true});
 };
 
 // update a user
@@ -82,7 +80,7 @@ export const updateUser = async (req, res) => {
   const { id } = req.params;
 
   if (!Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such user" });
+    return res.status(404).json({ error: "No such user" , success: false});
   }
 
   // This returns the user prior to update which is not ideal, but whatever... 
@@ -94,8 +92,8 @@ export const updateUser = async (req, res) => {
   );
 
   if (!user) {
-    return res.status(400).json({ error: "No such user" });
+    return res.status(400).json({ error: "No such user" , success: false});
   }
 
-  res.status(200).json({message: "User updated!"});
+  res.status(200).json({message: "User updated!", success: true});
 };
