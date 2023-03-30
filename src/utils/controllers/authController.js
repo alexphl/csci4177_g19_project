@@ -20,11 +20,12 @@ export const login = async (req, res) => {
       getApiBaseUrl()+"/api/users/find/" + email
     );
 
-    if (response.status === 200 && response.data.length>0) {
+    if (response.status === 200) {
+      console.log(response)
       // get hash from response
-      const hash = response.data[0].password;
-      const id = response.data[0]._id;
-      const name = response.data[0].name;
+      const hash = response.data[0].password || response.data.password;
+      const id = response.data[0]._id || response.data._id;
+      const name = response.data[0].name || response.data.name;
       console.log(hash,id, name)
 
       // compare password to hash
@@ -33,7 +34,7 @@ export const login = async (req, res) => {
       console.log(result);
 
       // send response
-      if (result) {
+      if (result.length>0) {
         // send token
         res.status(200).json({ token: "testing123", id: id, name:name }); // still need to come up with correct token
       } else {

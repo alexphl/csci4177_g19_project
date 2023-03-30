@@ -81,7 +81,7 @@ function LoginForm() {
         sessionStorage.setItem('token', JSON.stringify(userToken))
       }else{
         console.log(response.error)
-        setError("Login failed")
+        setError("User not found.")
       }
     } else {
       console.log(err)

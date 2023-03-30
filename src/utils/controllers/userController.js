@@ -49,8 +49,9 @@ export const findUser = async (req, res) => {
 
   // toDo sanitize - check if it's an email
   const user = await User.find({ email: email });
+  console.log(user)
   // if user not found
-  if (!user) {
+  if (user.length<1) {
     return res.status(404).json({ error: "No such user" });
   }
 
