@@ -19,7 +19,7 @@ import apiURL from "@/APIurl";
 import Link from "next/link";
 
 const baseURL = apiURL + "/news/";
-var userURL = apiURL + "/news/user/111";
+var userURL = apiURL + "/news/user/user1";
 
 export default function News_list() {
   const { isSuccess, isLoading, data } = useQuery({ queryKey: [userURL] });

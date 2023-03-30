@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 import LoginForm from "./login-register/page"
 
 export default function HomePage() {

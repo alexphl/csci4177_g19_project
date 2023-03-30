@@ -2,6 +2,7 @@
 // Two ways with async either .then or await, I used await
 import bcrypt from "bcrypt"; // https://www.npmjs.com/package/bcrypt
 import axios from "axios";
+import registerNewCustomerAndPortfolio from "../services/createPortfolioCustomer"
 const saltRounds = 10;
 
 export const login = async (req, res) => {
@@ -46,7 +47,7 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
   // get variables from req
-  const { userPassword, email, name } = req.body;
+  const { userPassword, email, name} = req.body;
 
   if(!userPassword){
     return res.status(400).json({ error: "missing userPassword" });
@@ -55,11 +56,13 @@ export const register = async (req, res) => {
     // hash received password
     const password = await bcrypt.hash(userPassword, saltRounds);
     const user = { name, email, password };
-
     // Store hash in database
     const response = await axios.post("http://localhost:3000/api/users/", user);
-    const id = response.data[0]._id;
+    
+    // New Customer and Portfolio 
+    const newCustomerPortfolioResponse = await registerNewCustomerAndPortfolio(email, name);
 
+    const id = response.data[0]._id;
     if (response && response.status === 200) {
       // send token
       res.status(200).json({ token: "testing123" , id:id});

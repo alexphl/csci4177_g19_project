@@ -1,7 +1,9 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 import {
   ChartPieIcon,
   ArrowTrendingUpIcon,
-  PresentationChartBarIcon,
+  AcademicCapIcon,
   UsersIcon,
   WalletIcon,
   ReceiptPercentIcon,
@@ -13,22 +15,22 @@ export const contentBrowse = [
   {
     heading: "Stocks",
     link: "/dashboard/stocks",
-    icon: <ArrowTrendingUpIcon />,
+    icon: <ArrowTrendingUpIcon fill="rgba(255,255,255,0.2)" />,
   },
   {
     heading: "Customers",
     link: "/dashboard/customers",
-    icon: <UsersIcon />,
+    icon: <UsersIcon fill="rgba(255,255,255,0.2)" />,
   },
   {
     heading: "Accounts",
     link: "/dashboard/accounts",
-    icon: <WalletIcon />,
+    icon: <WalletIcon fill="rgba(255,255,255,0.2)" />,
   },
   {
     heading: "Transactions",
     link: "/dashboard/transactions",
-    icon: <ReceiptPercentIcon />,
+    icon: <ReceiptPercentIcon fill="rgba(255,255,255,0.2)" />,
   },
 ];
 
@@ -36,17 +38,17 @@ export const contentExplore = [
   {
     heading: "News",
     link: "/dashboard/news",
-    icon: <NewspaperIcon />,
+    icon: <NewspaperIcon fill="rgba(255,255,255,0.2)" />,
   },
   {
     heading: "Analytics",
     link: "/dashboard/analytics",
-    icon: <ChartPieIcon />,
+    icon: <ChartPieIcon fill="rgba(255,255,255,0.2)" />,
   },
   {
     heading: "Simulation",
     link: "/dashboard/simulation",
-    icon: <PresentationChartBarIcon />,
+    icon: <AcademicCapIcon fill="rgba(255,255,255,0.2)" />,
   },
 ];
 
@@ -54,7 +56,7 @@ export const contentSettings = [
   {
     heading: "Preferences",
     link: "/dashboard/preferences",
-    icon: <CogIcon />,
+    icon: <CogIcon fill="rgba(255,255,255,0.2)" />,
   },
 ];
 

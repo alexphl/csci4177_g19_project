@@ -16,8 +16,8 @@ function RegistrationForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
-
   // user context - has properties: loggedIn, email
   const { dispatchUser } = useContext(userContext);
 
@@ -62,6 +62,10 @@ function RegistrationForm() {
     // updateError()
   };
 
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
   const handleSubmit = async () => {
     let err = checkError();
     // password must be valid regex check
@@ -70,7 +74,11 @@ function RegistrationForm() {
     if (err.length === 0) {
       console.log("Registering...")
       // check with database
-      const response = await registerUser({email: email,userPassword: password})
+        const response = await registerUser({
+            email: email,
+            userPassword: password,
+            name:name,
+        });
 
       if(response.token){
         console.log(response.token)
@@ -151,6 +159,14 @@ function RegistrationForm() {
       <div style={{ fontSize: "10px" }}>
         <form>
           <FormGroup>
+            <TextField
+              placeholder="Name"
+              autoComplete="name"
+              label="Name"
+              focused
+              margin="normal"
+              onChange={handleNameChange}
+            />
             <TextField
               placeholder="Email"
               autoComplete="email"

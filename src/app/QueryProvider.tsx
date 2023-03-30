@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

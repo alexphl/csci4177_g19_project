@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 export type iQuote = {
   c: number, // current price
   d: number, // change
@@ -44,4 +46,14 @@ export type iCompanyNews = {
   source: string,
   summary: string,
   url: string
+}
+
+export type iUserStockList = {
+  id: string,
+  name: string,
+}
+
+export type iUserStockListItem = {
+  listID: string,
+  symbol: string,
 }

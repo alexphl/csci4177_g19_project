@@ -1,3 +1,4 @@
+/**Author: Herman Liang B00837314 */
 "use client"
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -12,7 +13,8 @@ import {
   Grid
 } from '@mui/material';
 import { motion } from 'framer-motion';
-const Buy = () => {
+
+export default function Buy() {
   const router = useRouter();
   const [shares, setShares] = useState(0);
   const [selectedStock, setSelectedStock] = useState<any>(null);
@@ -115,7 +117,13 @@ const Buy = () => {
           console.log(`Failed to search for stocks with the symbol ${value}`);
         }
         const data = await response.json();
-        setSearchResults(data.result);
+        console.log(data);
+        // Add the filter function here
+        const filteredResults = data.filter((result: any) => {
+          return !result.symbol.includes('.') && !result.symbol.includes(':');
+        });
+        setSearchResults(filteredResults);
+        console.log(filteredResults);
       } catch (error) {
         console.error(error);
       }
@@ -132,71 +140,70 @@ const Buy = () => {
 
   return (
     <motion.div
-    variants={containerVariants}
-    initial="hidden"
-    animate="visible"
-    exit="exit"
-  >
-    <Grid justifyContent="center" style={{ textAlign: 'center' }}>
-      <Typography variant="h3"><strong className="text-4xl text-white">BUY</strong></Typography>
-      <div>
-        <FormControl sx={{ m: 1 }} variant="outlined">
-          <Autocomplete
-            options={searchResults}
-            loading={loading}
-            getOptionLabel={(option: any) => `${option.symbol} - ${option.description}`}
-            value={selectedStock}
-            onChange={(event: any, newValue: any) => setSelectedStock(newValue || null)}
-            onInputChange={handleSearchInputChange}
-            renderInput={(params: any) => (
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
+      <Grid justifyContent="center" style={{ textAlign: 'center' }}>
+        <Typography variant="h3"><strong className="text-4xl text-white">BUY</strong></Typography>
+        <div>
+          <FormControl sx={{ m: 1 }} variant="outlined">
+            <Autocomplete
+              options={searchResults}
+              loading={loading}
+              getOptionLabel={(option: any) => `${option.symbol} - ${option.description}`}
+              value={selectedStock}
+              onChange={(event: any, newValue: any) => setSelectedStock(newValue || null)}
+              onInputChange={handleSearchInputChange}
+              renderInput={(params: any) => (
 
 
-              <TextField
-                {...params}
-                label="Stock name"
-                variant="outlined"
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <>
-                      {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                      {params.InputProps.endAdornment}
-                    </>
-                  ),
-                }}
-              />
-            )}
-          />
-          <br />
-          <br />
-          <TextField
-            label="Shares"
-            type="number"
-            value={shares}
-            onChange={handleSharesChange}
-            variant="outlined"
-          />
-          <br />
-          <br />
-          <motion.div variants={buttonVariants} whileHover="hover">
-          <Button onClick={handleStockPurchase} disabled={isSubmitting}
-            color="primary"
-          >
-            Purchase
-          </Button>
-          </motion.div>
-          <Link href="/dashboard/simulation" passHref>
-            <Button
-              color="secondary"
-            >
-              BACK
-            </Button>
-          </Link>
-        </FormControl>
+                <TextField
+                  {...params}
+                  label="Stock name"
+                  variant="outlined"
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <>
+                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                        {params.InputProps.endAdornment}
+                      </>
+                    ),
+                  }}
+                />
+              )}
+            />
+            <br />
+            <br />
+            <TextField
+              label="Shares"
+              type="number"
+              value={shares}
+              onChange={handleSharesChange}
+              variant="outlined"
+            />
+            <br />
+            <br />
+            <motion.div variants={buttonVariants} whileHover="hover">
+              <Button onClick={handleStockPurchase} disabled={isSubmitting}
+                color="primary"
+              >
+                Purchase
+              </Button>
+            </motion.div>
+            <Link href="/dashboard/simulation" passHref>
+              <Button
+                color="secondary"
+              >
+                BACK
+              </Button>
+            </Link>
+          </FormControl>
 
-      </div>
-    </Grid>
+        </div>
+      </Grid>
     </motion.div>
   );
 }
-export default Buy;

@@ -33,9 +33,9 @@ function DeleteForm() {
     return json
   }
 
-  // Herman
+  // Herman 
   const deletePortfolio = () =>{
-    console.log("Deleting portfolio...")
+    console.log("delete profile")
   }
 
   return (
