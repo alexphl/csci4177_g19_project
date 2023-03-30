@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import { useContext, memo, useEffect } from "react";
 import { userContext } from "@/app/UserContext";
 import { useRouter } from "next/navigation";
-import useSessionStorage from "../useSessionStorage";
 
 // lazy load components
 const LoginOrRegister = dynamic(() => import("./LoginOrRegister"));
@@ -15,26 +14,7 @@ function Auth() {
   const { user } = useContext(userContext);
   const router = useRouter();
 
-  
-
-  // This doesn't want to work
-  // useEffect(() => {
-  //   // retrieves a token if it exists -should work but it doesn't
-  //   const userToken = useSessionStorage("token");
-  //   console.log(userToken)
-  //   if (userToken && JSON.parse(userToken).token == "testing123") {
-  //     console.log("Has token")
-  //     dispatchUser({
-  //       type: "SET_USER",
-  //       payload: { email: userToken.email, loggedIn: true, id: userToken.id },
-  //     });
-  //   }
-  //   console.log("Use Effect called")
-  //   router.push("/dashboard");
-  // },[]);
-  
-
-  if (user.loggedIn) {
+  if (user.isLoggedIn) {
     router.push("/dashboard");
   }
 

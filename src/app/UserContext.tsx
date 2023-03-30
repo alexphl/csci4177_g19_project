@@ -27,7 +27,7 @@ export const userReducer = (state: any, action: { type: string, payload: string 
 export default function UserContextProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatchUser] = useReducer(userReducer, {
     // initial state
-    user: { isLoggedIn: false, email: undefined },
+    user: tryToGetFromSession()
   });
 
   return (
@@ -35,4 +35,15 @@ export default function UserContextProvider({ children }: { children: React.Reac
       {children}
     </userContext.Provider>
   );
+}
+
+const tryToGetFromSession = () =>{
+  const token = JSON.parse(sessionStorage.getItem('token') || '{}');
+  if (token && token.token === "testing123"){
+    console.log("Loading token...")
+    return {name:token.name, id:token.id, email:token.email, isLoggedIn:true}
+  }else{
+    console.log("Couldn't find token, sorry.")
+    return { isLoggedIn: false, email: undefined }
+  }
 }
