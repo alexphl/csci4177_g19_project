@@ -5,7 +5,8 @@ export default function useSessionStorage(key: string) {
 
   useEffect(() => {
     setValue(sessionStorage.getItem(key));
-  }, [])
+    console.log("useSessionStorage")
+  }, [key])
 
   return value;
 }

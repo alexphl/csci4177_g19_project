@@ -2,7 +2,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useContext, memo } from "react";
+import { useContext, memo, useEffect } from "react";
 import { userContext } from "@/app/UserContext";
 import { useRouter } from "next/navigation";
 import useSessionStorage from "../useSessionStorage";
@@ -15,14 +15,24 @@ function Auth() {
   const { user, dispatchUser } = useContext(userContext);
   const router = useRouter();
 
-  // retrieves a token if it exists
-  const userToken = useSessionStorage("token");
-  if (userToken && userToken.token == "testing123") {
-    dispatchUser({
-      type: "SET_USER",
-      payload: { email: userToken.email, loggedIn: true, id: userToken.id },
-    });
-  }
+  
+
+  // This doesn't want to work
+  // useEffect(() => {
+  //   // retrieves a token if it exists -should work but it doesn't
+  //   const userToken = useSessionStorage("token");
+  //   console.log(userToken)
+  //   if (userToken && JSON.parse(userToken).token == "testing123") {
+  //     console.log("Has token")
+  //     dispatchUser({
+  //       type: "SET_USER",
+  //       payload: { email: userToken.email, loggedIn: true, id: userToken.id },
+  //     });
+  //   }
+  //   console.log("Use Effect called")
+  //   router.push("/dashboard");
+  // },[]);
+  
 
   if (user.loggedIn) {
     router.push("/dashboard");

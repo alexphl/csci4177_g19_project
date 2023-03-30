@@ -1,11 +1,15 @@
 /**Author: Crystal Parker B00440168 */
+"use client";
 import { Button, FormGroup, TextField } from "@mui/material";
-import { useState, memo } from "react";
+import { useState, useContext, memo } from "react";
+import useSessionStorage from "../../useSessionStorage";
+import { userContext } from "../../UserContext";
 
-function UpdateForm() {
+function UpdateForm(props) {
+  const { user, dispatchUser } = useContext(userContext);
   // fill in by default current info
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
   // Customer Profile
   const [username, setUsername] = useState("");
   const [address, setAddress] = useState("");
@@ -22,20 +26,47 @@ function UpdateForm() {
     setEmail(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submit!", name, email);
+    console.log(user)
+    console.log()
     if(name && email){
-      updateUser(user.id, {email, name})
-    }
+      // update on server
+      const updateUserRes = await updateUser(user.id, {email, name})
+      const updatePortfolioRes = updatePortfolio({address,username, birthdate})
     
+      if(updateUserRes.status===200){
+        // dispatch changes
+        dispatchUser({
+          type: "SET_USER",
+          payload: { email: email, loggedIn: true, id: user.id, name:name },
+        }); 
 
-
-    /** ToDo
-     * - Update on server
-     * - Dispatch changes with userContext
-     */
+        // update session
+        const userToken = useSessionStorage("token");
+        userToken.email = email
+        userToken.name = name
+        sessionStorage.setItem('token', JSON.stringify(userToken))
+      }
+      props.setOpen(false)
+    }
   };
+
+    // This only updates user fields, not portfolio fields
+    const updateUser= async (id, update) =>{
+      const response = await fetch('/api/users/'+id, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(update),
+      });
+  
+      const json = await response.json()
+  
+      return json
+    }
 
   // Customer Profile
   const handleUsernameChange = (e) => {
@@ -49,27 +80,12 @@ function UpdateForm() {
   const handleBirthdateChange = (e) => {
     setBirthdate(e.target.value);
   };
-  // End Customer Profile
-
-  // This only updates user fields, not portfolio fields
-  const updateUser= async (id, update) =>{
-    const response = await fetch('/api/users/'+id, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(update),
-    });
-
-    const json = await response.json()
-
-    return json
-  }
 
   const updatePortfolio = (contents) =>{
     console.log("updating portfolio...")
     console.log(contents)
   }
+  // End Customer Profile
 
   return (
     <form>

@@ -87,11 +87,11 @@ function RegistrationForm() {
         // set state
       dispatchUser({
         type: "SET_USER",
-        payload: { email: email, loggedIn: true, id: response.id },
+        payload: { email: email, loggedIn: true, id: response.id, name:response.name },
       });
 
       // store a session cookie
-      const userToken = {token:response.token, email:email, id: response.id}
+      const userToken = {token:response.token, email:email, id: response.id, name:response.name}
       sessionStorage.setItem('token', JSON.stringify(userToken))
       }else{
         console.log(response.error)

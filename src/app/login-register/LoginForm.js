@@ -74,11 +74,11 @@ function LoginForm() {
         // set state
         dispatchUser({
           type: "SET_USER",
-          payload: { email: email, loggedIn: true, id: response.id },
+          payload: { email: email, name:response.name, loggedIn: true, id: response.id },
         });  
         // This is for our session token so it remembers you when you refresh
         // Local storage would remember longer but this is how we're doing it kiss
-        const userToken = {token:response.token, email:email, id: response.id}
+        const userToken = {token:response.token, email:email, id: response.id, name:response.name}
         sessionStorage.setItem('token', JSON.stringify(userToken))
       }else{
         console.log(response.error)
@@ -132,10 +132,10 @@ function LoginForm() {
   // }
 
   /** Work around so don't have to remember a password... who put it here?? */
-  useEffect(() => {
-    setEmail("test@dal.ca");
-    setPassword("4GSuqb5apL44h2w!");
-  }, []);
+  // useEffect(() => {
+  //   setEmail("test@dal.ca");
+  //   setPassword("4GSuqb5apL44h2w!");
+  // }, []);
 
   useEffect(() => {
     //

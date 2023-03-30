@@ -24,6 +24,7 @@ export const login = async (req, res) => {
       // get hash from response
       const hash = response.data[0].password;
       const id = response.data[0]._id;
+      const name = response.data[0].name;
 
       // compare password to hash
       const result = await bcrypt.compare(password, hash);
@@ -33,7 +34,7 @@ export const login = async (req, res) => {
       // send response
       if (result) {
         // send token
-        res.status(200).json({ token: "testing123", id: id }); // still need to come up with correct token
+        res.status(200).json({ token: "testing123", id: id, name:name }); // still need to come up with correct token
       } else {
         res.status(400).json({ error: "wrong password"});
       }
@@ -72,7 +73,7 @@ export const register = async (req, res) => {
     const id = response.data._id
     if (response && response.status === 200) {
       // send token
-      res.status(200).json({ token: "testing123" , id:id});
+      res.status(200).json({ token: "testing123" , id:id, name:name});
     } else {
       res.status(400).json({ error: "registration failed" });
     }
