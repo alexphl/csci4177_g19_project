@@ -3,6 +3,7 @@ import { Button, FormGroup, TextField } from "@mui/material";
 import { useState, memo } from "react";
 
 function UpdateForm() {
+  // fill in by default current info
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   // Customer Profile
@@ -24,6 +25,11 @@ function UpdateForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submit!", name, email);
+    if(name && email){
+      updateUser(user.id, {email, name})
+    }
+    
+
 
     /** ToDo
      * - Update on server
@@ -45,6 +51,7 @@ function UpdateForm() {
   };
   // End Customer Profile
 
+  // This only updates user fields, not portfolio fields
   const updateUser= async (id, update) =>{
     const response = await fetch('/api/users/'+id, {
       method: 'PATCH',
@@ -59,6 +66,11 @@ function UpdateForm() {
     return json
   }
 
+  const updatePortfolio = (contents) =>{
+    console.log("updating portfolio...")
+    console.log(contents)
+  }
+
   return (
     <form>
       <FormGroup>
@@ -71,6 +83,7 @@ function UpdateForm() {
           onChange={handleNameChange}
           value={name}
           autoComplete="off"
+          required
         />
         <TextField
           placeholder="Email"

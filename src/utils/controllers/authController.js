@@ -52,6 +52,12 @@ export const register = async (req, res) => {
   if(!userPassword){
     return res.status(400).json({ error: "missing userPassword" });
   }
+  if(!name){
+    return res.status(400).json({error:"missing name"})
+  }
+  if(!email){
+    return res.status(400).json({error:"missing name"})
+  }
   try {
     // hash received password
     const password = await bcrypt.hash(userPassword, saltRounds);
@@ -62,7 +68,7 @@ export const register = async (req, res) => {
     // New Customer and Portfolio 
     const newCustomerPortfolioResponse = await registerNewCustomerAndPortfolio(email, name);
 
-    const id = response.data[0]._id;
+    const id = response.data._id
     if (response && response.status === 200) {
       // send token
       res.status(200).json({ token: "testing123" , id:id});

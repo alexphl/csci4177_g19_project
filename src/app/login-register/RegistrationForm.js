@@ -79,6 +79,7 @@ function RegistrationForm() {
             userPassword: password,
             name:name,
         });
+        console.log(response)
 
       if(response.token){
         console.log(response.token)
@@ -166,6 +167,7 @@ function RegistrationForm() {
               focused
               margin="normal"
               onChange={handleNameChange}
+              required
             />
             <TextField
               placeholder="Email"
@@ -174,6 +176,7 @@ function RegistrationForm() {
               focused
               margin="normal"
               onChange={handleEmailChange}
+              required
             />
             <TextField
               placeholder="Password"
@@ -183,6 +186,7 @@ function RegistrationForm() {
               focused
               margin="normal"
               onChange={handlePasswordChange}
+              required
             />
             <TextField
               placeholder="Confirm Password"
@@ -192,6 +196,7 @@ function RegistrationForm() {
               focused
               margin="normal"
               onChange={handleConfirmPasswordChange}
+              required
             />
             <Button variant="outlined" className="mt-6" onClick={handleSubmit}>
               Register!
