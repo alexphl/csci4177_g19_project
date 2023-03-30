@@ -4,6 +4,7 @@ import bcrypt from "bcrypt"; // https://www.npmjs.com/package/bcrypt
 import axios from "axios";
 import registerNewCustomerAndPortfolio from "../services/createPortfolioCustomer"
 const saltRounds = 10;
+import { getApiBaseUrl } from "../utils"; 
 
 export const login = async (req, res) => {
   // get variables from req
@@ -16,7 +17,7 @@ export const login = async (req, res) => {
   try {
     // load hash from database
     const response = await axios.get(
-      "http://localhost:3000/api/users/find/" + email
+      getApiBaseUrl()+"/api/users/find/" + email
     );
 
     if (response.status === 200) {
@@ -63,7 +64,7 @@ export const register = async (req, res) => {
     const password = await bcrypt.hash(userPassword, saltRounds);
     const user = { name, email, password };
     // Store hash in database
-    const response = await axios.post("http://localhost:3000/api/users/", user);
+    const response = await axios.post(getApiBaseUrl()+"/api/users/", user);
     
     // New Customer and Portfolio 
     const newCustomerPortfolioResponse = await registerNewCustomerAndPortfolio(email, name);
