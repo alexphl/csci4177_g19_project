@@ -1,11 +1,14 @@
 /**Author: Crystal Parker B00440168 */
-import { Button, FormGroup, TextField } from "@mui/material";
-import { useState, memo } from "react";
+import { Button, FormGroup, FormHelperText, TextField } from "@mui/material";
+import { useState, memo, useContext } from "react";
+import { userContext } from "@/app/UserContext";
 
-function ResetForm() {
+function ResetForm(props) {
   const [currPass, setCurrPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+  const { user } = useContext(userContext);
+  const [error, setError] = useState("");
 
   const handleCurrPassChange = (e) => {
     e.preventDefault();
@@ -22,15 +25,25 @@ function ResetForm() {
     setConfirmPass(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submit!", currPass, newPass, confirmPass);
 
-    /** ToDo
-     * - Update on server
-     * - update session
-     * - Dispatch changes with userContext
-     */
+    if(newPass === confirmPass){
+      console.log("Passwords match")
+      const updateUserRes = await resetUserPassword(user.id, newPass)
+      if(updateUserRes.success){
+        props.setOpen(false)
+      }else{
+        console.log("Failed")
+        setError("Failed")
+      }
+      
+    }else{
+      console.log("Passwords don't match")
+      setError("Passwords don't match")
+    }
+    
   };
 
   const resetUserPassword= async (id, password) =>{
@@ -86,6 +99,7 @@ function ResetForm() {
           autoComplete="off"
         />
         <Button onClick={handleSubmit}>Submit</Button>
+        <FormHelperText error={error.length > 0}>{error}</FormHelperText>
       </FormGroup>
     </form>
   );

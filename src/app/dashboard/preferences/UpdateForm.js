@@ -1,6 +1,6 @@
 /**Author: Crystal Parker B00440168 */
 "use client";
-import { Button, FormGroup, TextField } from "@mui/material";
+import { Button, FormGroup, FormHelperText, TextField } from "@mui/material";
 import { useState, useContext, memo } from "react";
 import useSessionStorage from "../../useSessionStorage";
 import { userContext } from "@/app/UserContext";
@@ -10,11 +10,14 @@ function UpdateForm(props) {
   // fill in by default current info
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
+  const [error, setError] = useState("");
+
   // Customer Profile
   const [username, setUsername] = useState("");
   const [address, setAddress] = useState("");
   const [birthdate, setBirthdate] = useState("");
   // End Customer Profile
+
 
   // // update session
   const userToken = useSessionStorage("token");
@@ -51,7 +54,7 @@ function UpdateForm(props) {
         JSON.parse(userToken).name = name
         sessionStorage.setItem('token', JSON.stringify(userToken))
       }else{
-        console.log("Retry dispatch...")
+        setError("Failed")
       }
 
       props.setOpen(false)
@@ -143,6 +146,7 @@ function UpdateForm(props) {
         />
         {/* End Customer Profile */}
         <Button onClick={handleSubmit}>Submit</Button>
+        <FormHelperText error={error.length > 0}>{error}</FormHelperText>
       </FormGroup>
     </form>
   );
