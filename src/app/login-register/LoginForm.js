@@ -11,10 +11,8 @@ import {
   Button,
 } from "@mui/material";
 
-
 // Form styled using material UI, referenced the docs : https://mui.com/material-ui/
 function LoginForm() {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -36,13 +34,13 @@ function LoginForm() {
   const isValidPassword = (val) => {
     // https://stackoverflow.com/a/59317682
     let regEx = new RegExp(
-    // ^                               start anchor
-    // (?=(.*[a-z]){1,})               lowercase letters. {1,} indicates that you want 1 of this group
-    // (?=(.*[A-Z]){1,})               uppercase letters. {1,} indicates that you want 1 of this group
-    // (?=(.*[0-9]){1,})               numbers. {1,} indicates that you want 1 of this group
-    // (?=(.*[!@#$%^&*()\-__+.]){1,})  all the special characters in the [] fields. The ones used by regex are escaped by using the \ or the character itself. {1,} is redundant, but good practice, in case you change that to more than 1 in the future. Also keeps all the groups consistent
-    // {8,}                            indicates that you want 8 or more
-    // $                               end anchor
+      // ^                               start anchor
+      // (?=(.*[a-z]){1,})               lowercase letters. {1,} indicates that you want 1 of this group
+      // (?=(.*[A-Z]){1,})               uppercase letters. {1,} indicates that you want 1 of this group
+      // (?=(.*[0-9]){1,})               numbers. {1,} indicates that you want 1 of this group
+      // (?=(.*[!@#$%^&*()\-__+.]){1,})  all the special characters in the [] fields. The ones used by regex are escaped by using the \ or the character itself. {1,} is redundant, but good practice, in case you change that to more than 1 in the future. Also keeps all the groups consistent
+      // {8,}                            indicates that you want 8 or more
+      // $                               end anchor
 
       /^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/
     );
@@ -66,42 +64,52 @@ function LoginForm() {
     // passwords must match
     if (err.length === 0) {
       // check with database
-      const response = await loginUser({email : email, password: password})
+      const response = await loginUser({ email: email, password: password });
 
-      if(response.token){
-        console.log(response.token)
+      if (response.token) {
+        console.log(response.token);
         // set state
         dispatchUser({
           type: "SET_USER",
-          payload: { email: email, name:response.name, isLoggedIn: true, id: response.id },
-        });  
+          payload: {
+            email: email,
+            name: response.name,
+            loggedIn: true,
+            id: response.id,
+          },
+        });
         // This is for our session token so it remembers you when you refresh
         // Local storage would remember longer but this is how we're doing it kiss
-        const userToken = {token:response.token, email:email, id: response.id, name:response.name}
-        sessionStorage.setItem('token', JSON.stringify(userToken))
-      }else{
-        console.log(response.error)
+        const userToken = {
+          token: response.token,
+          email: email,
+          id: response.id,
+          name: response.name,
+        };
+        sessionStorage.setItem("token", userToken);
+      } else {
+        console.log(response.error);
         setError("User or password incorrect.")
       }
     } else {
-      console.log(err)
-      setError(err)
+      console.log(err);
+      setError(err);
     }
   };
 
-  const loginUser= async (credentials) =>{
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
+  const loginUser = async (credentials) => {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(credentials),
     });
 
-    const json = await response.json()
+    const json = await response.json();
 
-    return json
-  }
+    return json;
+  };
 
   const checkError = () => {
     // error starts out as none
@@ -119,11 +127,11 @@ function LoginForm() {
       err = err + " Not a valid email.";
     }
     if (!isValidPassword(password)) {
-      console.log(password)
+      console.log(password);
       err = err + "Sorry Wrong Password";
     }
 
-    console.log(err, password, email)
+    console.log(err, password, email);
 
     return err;
   };
