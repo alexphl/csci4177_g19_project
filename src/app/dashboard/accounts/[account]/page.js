@@ -1,6 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+
 
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -101,7 +103,9 @@ export default function Account({ params }) {
                       </Typography>
                     </CardContent>
                     <CardActions>
+                    <Link href={"dashboard/stocks/" + symbol} passHref>
                       <Button size="small">View Stock</Button>
+                    </Link>
                     </CardActions>
                   </Card>
                 </Grid>
@@ -161,7 +165,7 @@ export default function Account({ params }) {
                         <TableCell align="right">
                           {Number(row.total).toFixed(2)}
                         </TableCell>
-                        <TableCell align="right">{row.date}</TableCell>
+                        <TableCell align="right">{row.date.substring(0, 10)}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
