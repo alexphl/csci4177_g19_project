@@ -19,7 +19,7 @@ export default function UIWrap() {
 
   // the effect forces router to only run on client - necessary for build to work
   // useEffect(() => {
-  //   if (!user.loggedIn) {
+  //   if (!user.isLoggedIn) {
   //     router.replace("/");
   //   }
   // }, []);
