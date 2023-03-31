@@ -17,7 +17,7 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // user context - has properties: loggedIn, email
+  // user context - has properties: isLoggedIn, email
   const { user, dispatchUser } = useContext(userContext);
 
   // input validation functions
@@ -71,7 +71,7 @@ function LoginForm() {
         // set state
         dispatchUser({
           type: "SET_USER",
-          payload: { email: email, name:response.name, loggedIn: true, id: response.id },
+          payload: { email: email, name:response.name, isLoggedIn: true, id: response.id },
         });  
         // This is for our session token so it remembers you when you refresh
         // Local storage would remember longer but this is how we're doing it kiss

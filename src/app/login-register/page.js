@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 const LoginOrRegister = dynamic(() => import("./LoginOrRegister"));
 
 function Auth() {
-  // user context - has properties: loggedIn, email
+  // user context - has properties: isLoggedIn, email
   const { user } = useContext(userContext);
   const router = useRouter();
   console.log("Status of user",user)

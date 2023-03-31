@@ -18,7 +18,7 @@ function RegistrationForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState("");
-  // user context - has properties: loggedIn, email
+  // user context - has properties: isLoggedIn, email
   const { dispatchUser } = useContext(userContext);
 
   // input validation functions
@@ -87,7 +87,7 @@ function RegistrationForm() {
         // set state
       dispatchUser({
         type: "SET_USER",
-        payload: { email: email, loggedIn: true, id: response.id, name:response.name },
+        payload: { email: email, isLoggedIn: true, id: response.id, name:response.name },
       });
 
       // store a session cookie
