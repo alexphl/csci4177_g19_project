@@ -17,15 +17,22 @@ import TableRow from "@mui/material/TableRow";
 
 import apiURL from "@/APIurl";
 const accountBaseURL = apiURL + "/account/account_id/";
-const tranasctionsBaseURL = apiURL + "/transaction/account_id/";
+const transactionsBaseURL = apiURL + "/transaction/account_id/";
+const symbolsBaseURL = apiURL + "/transaction/account_id/symbols/";
+
 
 export default function Account({ params }) {
   const account_id = params.account;
 
   const account = useQuery({ queryKey: [accountBaseURL, account_id] });
   const transactions = useQuery({
-    queryKey: [tranasctionsBaseURL, account_id],
+    queryKey: [transactionsBaseURL, account_id],
   });
+  const symbols = useQuery({
+    queryKey: [symbolsBaseURL, account_id],
+  });
+
+  console.log(transactions.data);
 
   return (
     <Container style={{ minHeight: "100vh" }}>
@@ -70,6 +77,38 @@ export default function Account({ params }) {
           )}
         </div>
       </Paper>
+
+      <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
+        <div color="primary">
+          {symbols.isSuccess && (
+            <div>
+              <Typography variant="h5" component="div">
+                Account Holdings:
+                {symbols.data.map((symbol) => (
+                  <div key={symbol}>
+                    <Typography sx={{ fontSize: 14 }} color="text.secondary">
+                      {symbol}
+                    </Typography>
+                  </div> 
+                ))}
+              </Typography>
+            </div>
+          )}
+          {symbols.isLoading && (
+            <Grid
+              container
+              spacing={0}
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <CircularProgress color="success" />
+            </Grid>
+          )}
+        </div>
+      </Paper>
+
+
       <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
         <div color="primary">
           {transactions.isSuccess && (
@@ -89,7 +128,7 @@ export default function Account({ params }) {
                   <TableBody>
                     {transactions.data.transactions.map((row) => (
                       <TableRow
-                        key={row.name}
+                        key={row._id}
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                         }}
