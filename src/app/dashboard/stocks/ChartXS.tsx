@@ -21,7 +21,7 @@ function StockChartXS(props: { symbol: string; quote: iQuote }) {
 
   const lineColor = props.quote.d > 0 ? "rgba(74, 222, 128, 1)" : "rgba(248, 113, 113, 1)";
 
-  let dataPoints = Array<{ x: number, y: number }>(points.data.c.length);
+  const dataPoints = Array<{ x: number, y: number }>(points.data.c.length);
 
   for (let i = 0; i < points.data.c.length; i++) {
     dataPoints[i] = { x: points.data.t[i], y: points.data.c[i] }

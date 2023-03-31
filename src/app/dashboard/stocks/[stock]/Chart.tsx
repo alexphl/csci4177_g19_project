@@ -15,7 +15,7 @@ const chartTimeframes = ["1D", "1W", "1M", "6M", "1Y"];
 
 function formatPoints(points: iCandle | undefined) {
   if (!points) return;
-  let dataPoints = points && Array<{ x: any, y: number }>(points.c.length);
+  const dataPoints = points && Array<{ x: any, y: number }>(points.c.length);
 
   for (let i = 0; i < points.c.length; i++) {
     dataPoints[i] = { x: points.t[i] * 1000, y: points.c[i] }
