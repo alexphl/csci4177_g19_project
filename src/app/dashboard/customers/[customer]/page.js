@@ -9,40 +9,48 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
 import Paper from "@mui/material/Paper";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 
 import apiURL from "@/APIurl";
 const baseURL = apiURL + "/customer/username/";
+const customerBaseURL = apiURL + "/customer/username/";
+const symbolsBaseURL = apiURL + "/customer/username/symbols/";
+
 
 export default function Customer({ params }) {
   const username = params.customer;
 
-  const { isSuccess, isLoading, data } = useQuery({
-    queryKey: [baseURL, username],
+  const customer = useQuery({ queryKey: [customerBaseURL, username] });
+
+  const symbols = useQuery({
+    queryKey: [symbolsBaseURL, username],
   });
 
   return (
     <Container style={{ minHeight: "100vh" }}>
       <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
         <div color="primary">
-          {isSuccess && (
+          {customer.isSuccess && (
             <div>
               <Typography color="text.secondary" gutterBottom>
-                {data.username}
+                {customer.data.username}
               </Typography>
               <Typography variant="h5" component="div">
-                {data.name}
+                {customer.data.name}
               </Typography>
               <Link href="mailto: {customer.email}">
                 <Typography sx={{ mb: 1.5, textDecoration: "underline" }}>
-                  {data.email}
+                  {customer.data.email}
                 </Typography>
               </Link>
-              <Typography variant="body2">{data.address}</Typography>
+              <Typography variant="body2">{customer.data.address}</Typography>
             </div>
           )}
-          {isLoading && (
+          {customer.isLoading && (
             <Grid
               container
               spacing={0}
@@ -56,16 +64,59 @@ export default function Customer({ params }) {
         </div>
       </Paper>
       <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
+        <div color="primary">
+          {symbols.isSuccess && (
+            <div>
+              <Typography variant="h5" component="div" sx={{mb: 2 }}>
+                Customer Holdings:
+              </Typography>
+              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              {symbols.data.map((symbol) => (
+                <Grid item xs={6} sm={4} md={4} key={symbol}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h3">
+                        {symbol.toUpperCase()}
+                        <br />
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                    <Link href={"dashboard/stocks/" + symbol} passHref>
+                      <Button size="small">View Stock</Button>
+                    </Link>
+                    </CardActions>
+                  </Card>
+                </Grid>
+                ))}
+              </Grid>
+            </div>
+          )}
+          {symbols.isLoading && (
+            <Grid
+              container
+              spacing={0}
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <CircularProgress color="success" />
+            </Grid>
+          )}
+        </div>
+      </Paper>
+
+
+      <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
         <Typography variant="h5" component="div">
           Accounts
         </Typography>
         <div color="primary">
-          {isSuccess && (
+          {customer.isSuccess && (
             <Stack
               direction={{ xs: "column", sm: "row" }}
               spacing={{ xs: 1, sm: 2, md: 4 }}
             >
-              {data.accounts.map((account) => (
+              {customer.data.accounts.map((account) => (
                 <Link href={"/dashboard/accounts/" + account} key={account}>
                   <Button variant="outline" color="dark">
                     {account}
@@ -74,7 +125,7 @@ export default function Customer({ params }) {
               ))}
             </Stack>
           )}
-          {isLoading && (
+          {customer.isLoading && (
             <Grid
               container
               spacing={0}
