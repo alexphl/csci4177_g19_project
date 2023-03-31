@@ -17,7 +17,7 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // user context - has properties: isLoggedIn, email
+  // user context - has properties: loggedIn, email
   const { user, dispatchUser } = useContext(userContext);
 
   // input validation functions
@@ -71,25 +71,15 @@ function LoginForm() {
         // set state
         dispatchUser({
           type: "SET_USER",
-          payload: {
-            email: email,
-            name: response.name,
-            loggedIn: true,
-            id: response.id,
-          },
-        });
+          payload: { email: email, name:response.name, loggedIn: true, id: response.id },
+        });  
         // This is for our session token so it remembers you when you refresh
         // Local storage would remember longer but this is how we're doing it kiss
-        const userToken = {
-          token: response.token,
-          email: email,
-          id: response.id,
-          name: response.name,
-        };
-        sessionStorage.setItem("token", userToken);
-      } else {
-        console.log(response.error);
-        setError("User or password incorrect.")
+        const userToken = {token:response.token, email:email, id: response.id, name:response.name}
+        sessionStorage.setItem('token', JSON.stringify(userToken))
+      }else{
+        console.log(response.error)
+        setError("User not found.")
       }
     } else {
       console.log(err);
