@@ -8,7 +8,7 @@ import { createContext, useReducer, useEffect } from "react";
 
 export const userContext = createContext({ isLoggedIn: false, email: undefined });
 
-export const userReducer = (state: any, action: { type: string, payload: string }) => {
+export const userReducer = (state: any, action: { type: string, payload: any }) => {
   console.log("Dispatching...", action.payload)
   switch (action.type) {
     case "SET_USER":
@@ -25,31 +25,30 @@ export const userReducer = (state: any, action: { type: string, payload: string 
 }
 
 export default function UserContextProvider({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    const tryToGetFromSession = () =>{
-        const token = JSON.parse(sessionStorage.getItem('token') || '{}');
-        if (token && token.token === "testing123"){
-          console.log("Loading token...")
-          return JSON.stringify({name:token.name, id:token.id, email:token.email, isLoggedIn:true})
-        }else{
-          console.log("Couldn't find token, sorry.")
-          return JSON.stringify({ isLoggedIn: false, email: undefined })
-        }
-     }
-
-      dispatchUser({type:"SET_USER", payload: tryToGetFromSession() })
-    
-  }, [])
-
   const [state, dispatchUser] = useReducer(userReducer, {
     // initial state
     user: { isLoggedIn: false, email: undefined }
   });
+  
+  useEffect(() => {
+      dispatchUser({type:"SET_USER", payload: tryToGetFromSession() })
+  }, [])
 
   return (
     <userContext.Provider value={{ ...state, dispatchUser }}>
       {children}
     </userContext.Provider>
   );
+}
+
+const tryToGetFromSession = () =>{
+  const token = JSON.parse(sessionStorage.getItem('token') || '{}');
+  if (token && token.token === "testing123"){
+    console.log("Loading token...")
+    return {name:token.name, id:token.id, email:token.email, isLoggedIn:true}
+  }else{
+    console.log("Couldn't find token, sorry.")
+    return { isLoggedIn: false, email: undefined }
+  }
 }
 
