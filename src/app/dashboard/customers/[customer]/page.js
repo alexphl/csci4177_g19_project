@@ -55,7 +55,7 @@ export default function Customer({ params }) {
           )}
         </div>
       </Paper>
-      {/* <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
+      <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
         <Typography variant="h5" component="div">
           Accounts
         </Typography>
@@ -86,7 +86,7 @@ export default function Customer({ params }) {
             </Grid>
           )}
         </div>
-      </Paper> */}
+      </Paper>
     </Container>
   );
 }
