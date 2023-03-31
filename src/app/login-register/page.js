@@ -1,7 +1,8 @@
+/**Author: Crystal Parker B00440168 */
 "use client";
 
 import dynamic from "next/dynamic";
-import { useContext, memo } from "react";
+import { useContext, memo, useEffect } from "react";
 import { userContext } from "@/app/UserContext";
 import { useRouter } from "next/navigation";
 
@@ -11,9 +12,9 @@ const LoginOrRegister = dynamic(() => import("./LoginOrRegister"));
 function Auth() {
   // user context - has properties: loggedIn, email
   const { user } = useContext(userContext);
-  let router = useRouter();
+  const router = useRouter();
 
-  if (user.loggedIn) {
+  if (user.isLoggedIn) {
     router.push("/dashboard");
   }
 

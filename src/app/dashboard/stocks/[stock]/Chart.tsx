@@ -1,3 +1,5 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 "use client";
 
 import { Line } from "react-chartjs-2";
@@ -5,28 +7,21 @@ import { memo, useState } from "react";
 import dynamic from "next/dynamic";
 import type { iCandle, iQuote } from "@/types/iStocks";
 import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
+import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
 
 const Tabs = dynamic(() => import("./Tabs"));
 
 const chartTimeframes = ["1D", "1W", "1M", "6M", "1Y"];
 
-function formatLabels(labels: number[], timeframe: number) {
-  if (!labels) return [];
-  switch (timeframe) {
-    case 0:
-      return labels.map((timestamp) => {
-        return dayjs(timestamp * 1000).format("ddd HH:mm");
-      })
-    case 1:
-      return labels.map((timestamp) => {
-        return dayjs(timestamp * 1000).format("ddd D, HH:mm");
-      })
-    default:
-      return labels.map((timestamp) => {
-        return dayjs(timestamp * 1000).format("D MMM YY");
-      })
+function formatPoints(points: iCandle | undefined) {
+  if (!points) return;
+  const dataPoints = points && Array<{ x: any, y: number }>(points.c.length);
+
+  for (let i = 0; i < points.c.length; i++) {
+    dataPoints[i] = { x: points.t[i] * 1000, y: points.c[i] }
   }
+
+  return dataPoints;
 }
 
 function StockChart(props: { symbol: string; quote: iQuote }) {
@@ -35,8 +30,10 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
   const points = useQuery<iCandle>({
     queryKey: ["/api/stocks/hist/", `${chartTimeframes[selectedTimeframe]}/`, props.symbol],
     retry: true,
+    retryDelay: 1000,
     placeholderData: { c: [], d: [], o: [], t: [], s: "no_data" },
   });
+
 
   if (!points.data || (!points.isFetching && points.data.s !== "ok")) { return (<> </>) }
 
@@ -49,8 +46,7 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
     <>
       <div
         className={
-          `relative z-10 h-56 w-full transition-all rounded-xl border border-neutral-800 bg-gradient-to-bl p-1 shadow-2xl md:h-64 lg:h-72 2xl:h-80 2xl:p-2 `
-          + (points.isLoading ? " saturate-0 " : "")
+          `relative z-10 h-56 w-full rounded-xl border border-neutral-800 bg-gradient-to-bl p-1 shadow-2xl md:h-64 lg:h-72 2xl:h-80 2xl:p-2 `
           + (selectedTimeframe === 0
             ? (props.quote.d > 0
               ? "from-green-300/[0.2] via-green-100/[0.09] to-green-100/[0.09] shadow-green-300/[0.17] "
@@ -63,21 +59,23 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
       >
         <Line
           data={{
-            labels: formatLabels(points.data.t, selectedTimeframe),
             datasets: [
               {
                 label: "Price",
-                data: points.data.c,
+                data: formatPoints(points.data),
                 borderColor: lineColor,
                 borderWidth: 3,
-                spanGaps: true,
                 normalized: true,
-                tension: 0.1,
+                tension: 0.05,
+                indexAxis: 'x',
               },
             ],
           }}
           options={{
+            spanGaps: true, // 2 days
+            responsive: true,
             maintainAspectRatio: false,
+            parsing: false,
             interaction: {
               mode: "nearest",
               axis: "x",
@@ -98,6 +96,9 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
                 display: false,
               },
               annotation: {
+                common: {
+                  drawTime: "beforeDatasetsDraw",
+                },
                 annotations: {
                   line1: {
                     type: "line",
@@ -112,11 +113,11 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
             },
             scales: {
               y: {
-                display: true,
-                beginAtZero: false,
                 ticks: {
                   display: true,
                   padding: 8,
+                  maxRotation: 0,
+                  autoSkip: true,
                   maxTicksLimit: 5,
                   color: "rgba(255,255,255,0.6)",
                   font: {
@@ -130,13 +131,14 @@ function StockChart(props: { symbol: string; quote: iQuote }) {
                 },
               },
               x: {
-                display: true,
+                type: "timeseries",
                 offset: true,
                 ticks: {
                   display: true,
                   maxTicksLimit: 6,
                   maxRotation: 0,
                   padding: 6,
+                  autoSkip: true,
                   //labelOffset: 24,
                   color: "rgba(255,255,255,0.3)",
                   font: {

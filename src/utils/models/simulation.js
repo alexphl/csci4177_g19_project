@@ -1,3 +1,6 @@
+/**Author: Herman Liang B00837314 */
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 "use strict";
 import { Schema, model, models } from "mongoose";
 
@@ -20,6 +23,11 @@ const transactionSchema = Schema({
   transaction_price: Number,
 });
 
+const stockListSchema = Schema({
+  listID: String,
+  symbol: String,
+});
+
 const portfolioSchema = Schema({
   last_update: {
     type: Date,
@@ -32,7 +40,8 @@ const portfolioSchema = Schema({
   },
   assets: [assetSchema],
   transaction_history: [transactionSchema],
-  stock_list: [String],
+  watchlists: [{ id: String, name: String }],
+  stock_list: [stockListSchema],
 });
 
 export default models.Portfolio || model("Portfolio", portfolioSchema);

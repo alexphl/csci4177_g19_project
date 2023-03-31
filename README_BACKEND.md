@@ -1,4 +1,5 @@
 <!-- Crystal's readme for the backend -->
+Mostly turned into notes
 
 # References
 (MERN stack youtube tutorial) [https://youtube.com/playlist?list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE]

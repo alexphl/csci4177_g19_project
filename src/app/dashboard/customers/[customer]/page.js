@@ -1,9 +1,9 @@
+/**Author: Liam Osler */
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -17,11 +17,11 @@ import apiURL from "@/APIurl";
 const baseURL = apiURL + "/customer/username/";
 
 export default function Customer({ params }) {
-  const router = useSearchParams();
   const username = params.customer;
-  const page = params.customer;
 
-  const { isSuccess, isLoading, data } = useQuery({ queryKey: [baseURL, username] });
+  const { isSuccess, isLoading, data } = useQuery({
+    queryKey: [baseURL, username],
+  });
 
   return (
     <Container style={{ minHeight: "100vh" }}>
@@ -56,7 +56,7 @@ export default function Customer({ params }) {
           )}
         </div>
       </Paper>
-      <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
+      {/* <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
         <Typography variant="h5" component="div">
           Accounts
         </Typography>
@@ -87,7 +87,7 @@ export default function Customer({ params }) {
             </Grid>
           )}
         </div>
-      </Paper>
+      </Paper> */}
     </Container>
   );
 }

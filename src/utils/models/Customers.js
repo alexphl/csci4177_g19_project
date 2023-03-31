@@ -1,3 +1,4 @@
+/**Author: Liam Osler */
 "use strict";
 import { Schema, model, models } from "mongoose";
 
@@ -8,14 +9,6 @@ const Customers = Schema(
     address: String,
     birthdate: Date,
     email: String,
-    active: Boolean,
-    accounts: [Number],
-    tier_and_details: {
-      tier: String,
-      id: String,
-      active: Boolean,
-      benefits: [String],
-    },
   },
   { strict: true }
 );

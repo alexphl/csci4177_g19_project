@@ -1,6 +1,9 @@
+/**Author: Olexiy Prokhvatylo B00847680 */
+
 "use client";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { LazyMotion, domAnimation } from "framer-motion";
 
 const themeMUI = createTheme({
   palette: {
@@ -61,5 +64,9 @@ const themeMUI = createTheme({
 });
 
 export default function ThemeContextProvider({ children }: { children: React.ReactNode }) {
-  return <ThemeProvider theme={themeMUI}>{children}</ThemeProvider>;
+  return (
+    <LazyMotion features={domAnimation}>
+      <ThemeProvider theme={themeMUI}>{children}</ThemeProvider>
+    </LazyMotion>
+  );
 }

@@ -1,3 +1,4 @@
+/**Author: Herman Liang B00837314 */
 import { Router } from "express";
 import Model from "../models/simulation";
 //import Portfolio from '../schemas/simulation';
@@ -7,6 +8,15 @@ router.get("/", function (_req, res, _next) {
   res.render("index", { title: "Express" });
 });
 
+router.post('/new', async (req, res) => {
+  try {
+    const newPortfolio = new Model(req.body);
+    const result = await newPortfolio.save();
+    res.status(201).send(result);
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+});
 router.post("/buy", async (req, res) => {
   const { owner_id, asset_name, asset_type, ticker, quantity, purchase_price } =
     req.body;
@@ -22,9 +32,12 @@ router.post("/buy", async (req, res) => {
         assets: [],
         transaction_history:[],
         stock_list:[],
+        watch_list:[],
       });
     }
-
+    if (quantity === 0) {
+      return res.status(400).json({ message: "Quantity cannot be zero" });
+    }
     const newAsset = {
       asset_name,
       asset_type,
