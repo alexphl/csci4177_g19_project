@@ -8,6 +8,7 @@ import Model from '../models/simulation';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import type { iSearchItem } from "@/types/iStocks";
+import axios from "axios";
 dayjs.extend(utc)
 
 const cache = new LRU({
@@ -110,6 +111,37 @@ router.get("/quote/:symbol", async function(req, _res, next) {
 
   cachedFetch(`https://finnhub.io/api/v1/quote?symbol=${req.params.symbol}`, _res, req.url, next);
 });
+
+async function getStockPrice(symbol: any) {
+  const response = await axios.get(
+    `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.FINNHUB_API_KEY}`
+  );
+  return response.data;
+}
+// Get prices for a stock
+router.post('/stock-prices', async (req, res) => {
+  const stockSymbols = req.body.stocks;
+  console.log(stockSymbols);
+  const stockPrices: { [key: string]: number } = {};
+
+  if (!stockSymbols || !Array.isArray(stockSymbols)) {
+    return res.status(400).json({ error: 'Invalid stocks input.' });
+  }
+
+  const promises = stockSymbols.map(async (symbol) => {
+    try {
+      const priceData = await getStockPrice(symbol);
+      stockPrices[symbol] = priceData.c;
+    } catch (error) {
+      return res.status(500).json({ error: 'Error in fetching.' });
+    }
+  });
+
+  await Promise.all(promises);
+
+  res.json(stockPrices);
+});
+
 
 // Get company description for a stock
 router.get("/profile/:symbol", async function(req, _res, next) {
