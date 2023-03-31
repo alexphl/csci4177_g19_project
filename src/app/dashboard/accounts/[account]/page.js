@@ -3,6 +3,11 @@
 import { useQuery } from "@tanstack/react-query";
 
 import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from '@mui/material/Button';
+
 import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
 import Paper from "@mui/material/Paper";
@@ -82,16 +87,26 @@ export default function Account({ params }) {
         <div color="primary">
           {symbols.isSuccess && (
             <div>
-              <Typography variant="h5" component="div">
+              <Typography variant="h5" component="div" sx={{mb: 2 }}>
                 Account Holdings:
-                {symbols.data.map((symbol) => (
-                  <div key={symbol}>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary">
-                      {symbol}
-                    </Typography>
-                  </div> 
-                ))}
               </Typography>
+              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              {symbols.data.map((symbol) => (
+                <Grid item xs={6} sm={4} md={4} key={symbol}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h3">
+                        {symbol.toUpperCase()}
+                        <br />
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small">View Stock</Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+                ))}
+              </Grid>
             </div>
           )}
           {symbols.isLoading && (
