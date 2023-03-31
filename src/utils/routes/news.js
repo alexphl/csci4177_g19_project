@@ -2,11 +2,10 @@
 
 import { Router } from "express";
 import { getnew, getnews_list } from "../controllers/newsController";
-import { stock_symbol } from "./stock_functions";
 const router = Router();
 import Model from "../models/simulation";
 
-//Data retrieval routes:
+//If the interest shoot down:
 const newsexample = [
   {
     source: {
@@ -58,8 +57,12 @@ router.get("/user/:id", async function (req, res) {
   try {
     const subscribes = await Model.findOne({ owner_id: req.params.id });
     var list = subscribes.stock_list;
+    let symbol_list = [];
+    list.forEach((element) => {
+      symbol_list.push(element.symbol);
+    });
 
-    await getnews_list(list.slice(0, 4))
+    await getnews_list(symbol_list.slice(0, 4))
       .then((docs) => {
         var subscription = docs;
         for (var i = 0; i < subscription.length; i++) {
