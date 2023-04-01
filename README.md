@@ -2,56 +2,52 @@
 
 * *Date Created*: 25 Mar 2023
 * *Last Modification Date*: 31 Mar 2023
-* *Lab URL*: <http://csci4177-group19-project-2.vercel.app>
-* *GitHub URL*: <https://github.com/alexphl/csci4177_g19_project>
-* *GitLab URL*: <http://example.com/>
+* *Lab URL*: http://csci4177-group19-project-2.vercel.app
+* *Gitlab URL*: https://git.cs.dal.ca/cparker/csci4177_group19_project
 
 ## Authors
 
+* [Liam Osler](osler@cs.dal.ca)
 * [Olexiy Prokhvatylo](alexey@dal.ca) - Full Stack Developer
-* [Name](email@dal.ca) - *(Role)*
-* [Name](email@dal.ca) - *(Role)*
-* [Name](email@dal.ca) - *(Role)*
-* [Name](email@dal.ca) - *(Role)*
+* 
+## Running the Project Locally:
+Check that you have Node.js installed on your machine. If not, you can download it from https://nodejs.org/en/download/.
 
-
-## Getting Started
-
-**[Optional]** If needing to provide the marker with a copy of the project that should run on their local machine for development, testing and/or marking purposes. Please include the following sections.
-
-See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-To be run locally, this application requires [Node.js](https://nodejs.org/en) 18.x or newer to be installed.
-
-PLease follow the official [Node installation instructions](https://nodejs.org/en/download) for downloads and setup.
-
-### Installing dependencies
-
-In order to install the necessary dependencies, navigate to the project's root directory (one with package.json) in your terminal and run:
-
+Ensure that you have Node 14.6.0 or later installed:
+```bash
+node -v
 ```
+
+Clone the repository:
+```bash
+git clone https://git.cs.dal.ca/cparker/csci4177_group19_project.git
+```
+
+Navigate to the csci4177_group19_project directory:
+```bash
+cd csci4177_group19_project
+```
+
+Create a `.env` file in the root of the project folder to store the environment variables like the database username and password and third-party API keys. The `.env` file should look like this:
+```
+DB_USER=""
+DB_USER_PASSWORD=""
+DB_URL=""
+FINNHUB_API_KEY=""
+Newsapikey=
+```
+
+Install the required dependencies:
+```bash
 npm install
 ```
-Once the installation completes, you can run or build the app.
 
-
-### Running the development server
-
-You can preview the app locally by running:
-
-```
+Start the server:
+```bash
 npm run dev
 ```
 
-The server will run on localhost, and the target port will be communicated in the console output. If successful, you should be able to see the StockVision login page when you navigate to the localhost URL in your browser.
-
-
-Tip: the development server lets you instantly preview any changes to the app, without having to be restarted between them.
-
-End with an example of getting some data out of the system or using it for a little demo. You may also include a quick example of what the marker should see if the installation of all required software / libraries / plug-ins was successful.
-
+Wait for the project to build, then open your browser and navigate to http://localhost:3000 or the port specified in the console when prompted.
 
 ## Running tests
 
