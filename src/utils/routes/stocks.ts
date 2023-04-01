@@ -120,6 +120,7 @@ async function getStockPrice(symbol: any) {
 }
 // Get prices for a stock
 router.post('/stock-prices', async (req, res) => {
+  // console.log(req.body);
   const stockSymbols = req.body.stocks;
   console.log(stockSymbols);
   const stockPrices: { [key: string]: number } = {};
@@ -141,6 +142,37 @@ router.post('/stock-prices', async (req, res) => {
 
   res.json(stockPrices);
 });
+
+//Retrieve stock prices for a list of stocks from a GET request
+//Format: /api/stocks/prices/list/:<comma separated list of stock symbols>
+//Ex: http://localhost:3000/api/stocks/prices/list/AMD,INTC
+//Returns: {"AMD": 32.67, "INTC": 98.01}
+//Modified by: Liam Osler
+router.get('/prices/list/:list', async (req, res) => {
+  // console.log(req.body);
+  console.log(req.params.list);
+  const stockSymbols = req.params.list.split(',');
+  console.log(stockSymbols);
+  const stockPrices: { [key: string]: number } = {};
+
+  if (!stockSymbols || !Array.isArray(stockSymbols)) {
+    return res.status(400).json({ error: 'Invalid stocks input.' });
+  }
+
+  const promises = stockSymbols.map(async (symbol) => {
+    try {
+      const priceData = await getStockPrice(symbol);
+      stockPrices[symbol] = priceData.c;
+    } catch (error) {
+      return res.status(500).json({ error: 'Error in fetching.' });
+    }
+  });
+
+  await Promise.all(promises);
+
+  res.json(stockPrices);
+});
+
 
 
 // Get company description for a stock
