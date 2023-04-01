@@ -68,7 +68,7 @@ export default function Customer({ params }) {
           {symbols.isSuccess && (
             <div>
               <Typography variant="h5" component="div" sx={{mb: 2 }}>
-                Customer Holdings:
+                Customer Holdings
               </Typography>
               <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
               {symbols.data.map((symbol) => (
