@@ -26,8 +26,8 @@ export default function UIWrap() {
 
   return (
     <>
-      <NavDesktop overlayController={[isOverlayOpen, setOverlayOpen]} />
-      <NavMobile overlayController={[isOverlayOpen, setOverlayOpen]} />
+      <NavDesktop overlayController={[isOverlayOpen, setOverlayOpen]} user={user} />
+      <NavMobile overlayController={[isOverlayOpen, setOverlayOpen]} user={user} />
       <AnimatePresence>
         {isOverlayOpen && <PreferencesOverlay setOpen={setOverlayOpen} />}
       </AnimatePresence>
