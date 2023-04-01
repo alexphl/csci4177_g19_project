@@ -2,9 +2,11 @@
 
 * *Date Created*: 25 Mar 2023
 * *Last Modification Date*: 28 Mar 2023
-* *Lab URL*: <https://4177-g19-mirror.vercel.app/> 
+* Main Deploy* <https://csci4177-group19-project-2.vercel.app/>
+* *Old Mirror*: <https://4177-g19-mirror.vercel.app/dashboard>
+* *Old Stable Deploy* <https://group19project.netlify.app>
 * *GitHub URL*: <https://github.com/alexphl/csci4177_g19_project>
-* *GitLab URL*: <https://git.cs.dal.ca/cparker/csci4177_group19_project>
+* *GitLab URL*: <https://git.cs.dal.ca/cparker/csci4177_group19_project> 
 
 ## Authors
 
@@ -53,7 +55,7 @@ node, NPM
 **
 
 ## Crystal's branch
-vert - Crystal's main branch
+vert - Crystal's main branch (vert short for my nickname vertfromage)
 vert2 - abandoned
 
 ## Features Developed by Crystal Parker 
