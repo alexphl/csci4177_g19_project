@@ -1,10 +1,12 @@
+/**Author: Crystal Parker B00440168 */
 "use client";
 
 import dynamic from "next/dynamic";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { userContext } from "../../UserContext";
-import { useState, useContext, memo } from "react";
+import { useState, useContext, memo, useEffect } from "react";
 import { Modal, Box, Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 // Lazy load components
 const DeleteForm = dynamic(() => import("./DeleteForm"));
@@ -28,6 +30,7 @@ const style = {
 
 function Preferences() {
   const { user, dispatchUser } = useContext(userContext);
+  const router = useRouter();
 
   //modals
   const [open1, setOpen1] = useState(false);
@@ -52,12 +55,30 @@ function Preferences() {
     setOpen3(true);
   };
 
+  const handleLogOut = (e) => {
+    e.preventDefault();
+    dispatchUser({
+      type: "LOGOUT_USER",
+    });
+    sessionStorage.removeItem("token");
+    router.push("/");
+  };
+
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-8 text-neutral-500">
       <button className="flex cursor-default items-center rounded-full p-5 outline-none">
         <UserIcon className="h-20 w-20" />
-        <p>{user.email}</p>
+        {user && user.name ? (
+          <p>
+            {user.name} {user.email}
+          </p>
+        ) : (
+          <p>{user.email}</p>
+        )}
       </button>
+      <Button variant="outlined" color="primary" onClick={handleLogOut}>
+        Log Out
+      </Button>
       <Button variant="outlined" color="primary" onClick={handleUpdate}>
         Update
       </Button>
@@ -74,21 +95,21 @@ function Preferences() {
       <Modal open={open1} onClose={handleClose1}>
         <Box sx={style}>
           <h3>Update</h3>
-          <UpdateForm />
+          <UpdateForm setOpen={setOpen1} />
         </Box>
       </Modal>
       {/* Reset modal */}
       <Modal open={open2} onClose={handleClose2}>
         <Box sx={style}>
           <h3>Reset</h3>
-          <ResetForm />
+          <ResetForm setOpen={setOpen2} />
         </Box>
       </Modal>
       {/* Delete modal */}
       <Modal open={open3} onClose={handleClose3}>
         <Box sx={style}>
           <h3>Delete</h3>
-          <DeleteForm />
+          <DeleteForm setOpen={setOpen3} />
         </Box>
       </Modal>
     </div>

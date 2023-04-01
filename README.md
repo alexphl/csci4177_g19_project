@@ -1,14 +1,14 @@
 # StockVision
 
 * *Date Created*: 25 Mar 2023
-* *Last Modification Date*: 25 Mar 2023
-* *Lab URL*: <http://example.com/>
+* *Last Modification Date*: 31 Mar 2023
+* *Lab URL*: <http://csci4177-group19-project-2.vercel.app>
 * *GitHub URL*: <https://github.com/alexphl/csci4177_g19_project>
 * *GitLab URL*: <http://example.com/>
 
 ## Authors
 
-* [Name](email@dal.ca) - *(Role)*
+* [Olexiy Prokhvatylo](alexey@dal.ca) - Full Stack Developer
 * [Name](email@dal.ca) - *(Role)*
 * [Name](email@dal.ca) - *(Role)*
 * [Name](email@dal.ca) - *(Role)*
@@ -23,47 +23,41 @@ See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-To have a local copy of this lab / assingnment / project up and running on your local machine, you will first need to install the following software / libraries / plug-ins
+To be run locally, this application requires [Node.js](https://nodejs.org/en) 18.x or newer to be installed.
+
+PLease follow the official [Node installation instructions](https://nodejs.org/en/download) for downloads and setup.
+
+### Installing dependencies
+
+In order to install the necessary dependencies, navigate to the project's root directory (one with package.json) in your terminal and run:
 
 ```
-Give examples or provide a list of the required software / libraries / plug-ins
+npm install
+```
+Once the installation completes, you can run or build the app.
+
+
+### Running the development server
+
+You can preview the app locally by running:
 
 ```
-
-See the following section for detailed step-by-step instructions on how to install this software / libraries / plug-ins
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be, assume the marker just acquired a computer
-
-```
-Give the example
+npm run dev
 ```
 
-And repeat
+The server will run on localhost, and the target port will be communicated in the console output. If successful, you should be able to see the StockVision login page when you navigate to the localhost URL in your browser.
 
-```
-until finished
-```
+
+Tip: the development server lets you instantly preview any changes to the app, without having to be restarted between them.
 
 End with an example of getting some data out of the system or using it for a little demo. You may also include a quick example of what the marker should see if the installation of all required software / libraries / plug-ins was successful.
 
 
-## Running the tests
+## Running tests
 
-If needing to run automated tests, then explain how to run the automated tests for this system. If this section is not needed, ** you may delete **.
+### Coding style tests
 
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
+You can run
 
 Explain what these tests test and why
 
