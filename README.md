@@ -1,38 +1,49 @@
 # CSCI4177 - Assignment 3
+
 **Author**:[Liam Osler](mailto:osler@cs.dal.ca)
+
 **Last Modification Date**: 31 MAR 2023
 
 ## Repository URLS:
+
 **Main Git Repository**: https://git.cs.dal.ca/cparker/csci4177_group19_project/
+
 **Author Branch**: https://git.cs.dal.ca/cparker/csci4177_group19_project/-/tree/osler
 
 ## Remote Deployment URLs:
+
 **Vercel**: https://4177-g19-mirror.vercel.app/
 
 ## Running the Project Locally:
+
 Check that you have Node.js installed on your machine. If not, you can download it from https://nodejs.org/en/download/.
 
 Ensure that you have Node 14.6.0 or later installed:
+
 ```bash
 node -v
 ```
 
 Clone the repository:
+
 ```bash
 git clone https://git.cs.dal.ca/cparker/csci4177_group19_project.git
 ```
 
 Navigate to the csci4177_group19_project directory:
+
 ```bash
 cd csci4177_group19_project
 ```
 
 Checkout the author branch (osler):
+
 ```bash
 git checkout osler
 ```
 
 Create a `.env` file in the root of the project folder to store the environment variables like the database username and password and third-party API keys. The `.env` file should look like this:
+
 ```
 DB_USER="admin"
 DB_USER_PASSWORD="pdGtt15zG252Iayf"
@@ -42,17 +53,18 @@ Newsapikey=e0db6158b82c4b33bbae734d6db29a34
 ```
 
 Install the required dependencies:
+
 ```bash
 npm install
 ```
 
 Start the server:
+
 ```bash
 npm run dev
 ```
 
 Wait for the project to build, then open your browser and navigate to http://localhost:3000 or the port specified in the console when prompted.
-
 
 #### Dependencies:
 - [Node.js](https://nodejs.org/en/)
@@ -320,9 +332,3 @@ Example: https://4177-g19-mirror.vercel.app/api/transaction/
 Get transactions by account_id:
 Base URL: **/api/transaction/account_id/:id**
 Example: http://localhost:3000/transaction/account_id/557378
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
