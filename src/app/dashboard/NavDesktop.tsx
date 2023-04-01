@@ -16,7 +16,7 @@ import { contentBrowse, contentExplore } from "./NavSchema";
 
 const linkStyle = "active:brightness-125 active:saturate-200";
 
-export default function NavDesktop(props: { overlayController: [boolean, Dispatch<SetStateAction<boolean>>] }) {
+export default function NavDesktop(props: { overlayController: [boolean, Dispatch<SetStateAction<boolean>>], user: any }) {
   const segment = useSelectedLayoutSegment();
   const [isOverlayOpen, setOverlayOpen] = props.overlayController;
 
@@ -32,10 +32,8 @@ export default function NavDesktop(props: { overlayController: [boolean, Dispatc
           <UserIcon className="w-6" fill="rgba(255,255,255,0.2)" />
         </div>
         <div className="flex hidden items-start flex-col group-hover:block overflow-hidden whitespace-nowrap w-[60%]">
-          <p className="font-bold w-fit text-md">John Doe</p>
-          <p className="text-xs text-neutral-400 w-fit">johndoe@email.com</p>
-          {/* <p className="font-bold w-fit text-md">{ email && email.split('@')[0]}</p>
-          <p className="text-xs text-neutral-400 w-fit">{email}</p> */}
+          <p className="font-bold w-fit text-md">{props.user ? props.user.name : "John Doe"}</p>
+          <p className="text-xs text-neutral-400 w-fit">{props.user ? props.user.email : "johndoe@email.com"}</p>
         </div>
       </div>
 
