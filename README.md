@@ -1,6 +1,6 @@
 # CSCI4177 - Assignment 3
 
-**Author**:[Liam Osler](mailto:osler@cs.dal.ca)
+**Author**: [Liam Osler](mailto:osler@cs.dal.ca)
 
 **Last Modification Date**: 31 MAR 2023
 
