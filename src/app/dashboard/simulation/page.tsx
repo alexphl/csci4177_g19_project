@@ -145,6 +145,43 @@ export default function Portfolio() {
     setNetProfitLoss(net);
   };
 
+  // Handle Purchase_date Change
+  const handleDateChange = async (stock: any, newDate: string) => {
+    console.log("dateChange");
+    // Fetch historical price for the given date
+    
+    const unixTimestamp = Math.floor(new Date(newDate).getTime() / 1000)+4*60*60;
+    
+    const response =  await fetch(`/api/stocks/stock/${stock.symbol}/price/${unixTimestamp}`);
+    const msUnixTimeStamp =  (Math.floor(new Date(newDate).getTime() / 1000)+4*60*60)*1000;
+    if (response.ok) {
+      // Update the purchase price for the stock
+      const historicalPrice = await response.json();
+     
+      const newresponse = await fetch('/api/simulation/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          owner_id: owner_id,
+          asset_id: stock.id,
+          newPurchaseDate: msUnixTimeStamp,
+          newPurchasePrice: historicalPrice.price,
+        }),
+      });
+        if (newresponse.ok) {
+          const updatedStockData = await newresponse.json();
+          console.log('Stock updated:', updatedStockData);
+          refetchPurchasedStocks(); // Refetch the stocks after the update
+        } else {
+          console.error('Error updating the stock');
+        }
+    } else {
+      console.error("Error fetching historical price for the new date");
+    }
+  };
+
   // [Function] Sell a stock
   const handleStockSell = async (stockToSell: any, sharesToSell: any) => {
     if (!stockToSell || !sharesToSell) {
@@ -186,13 +223,13 @@ export default function Portfolio() {
       <motion.div initial={{ y: -20 }} animate={{ y: 0 }} transition={{ duration: 0.5 }}>
         <Container style={{ padding: 20 }}>
           <div>
-            <Typography variant="h3">
+            {/* <Typography variant="h3">
               <strong className="text-4xl text-white">
                 Profit: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>
                   ${isNaN(pastProfitLoss) ? '0.00' : pastProfitLoss.toFixed(2)}
                 </span>
               </strong>
-            </Typography>
+            </Typography> */}
           </div>
           <div>
             <Typography variant="h4" ><strong className="text-4xl text-white">Unrealized: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></strong></Typography>
@@ -204,13 +241,13 @@ export default function Portfolio() {
       <motion.div variants={tableVariants} initial="initial" animate="animate" exit="exit">
 
       <Grid container justifyContent="space-between" style={{ marginBottom: '20px' }}>
-        <Link href="/dashboard/simulation/transhistory" passHref>
+        {/* <Link href="/dashboard/simulation/transhistory" passHref>
           <motion.div whileHover={{ scale: 1.05 }}>
             <Button color="secondary" sx={{ position: 'relative' }}>
               View Transaction History
             </Button>
           </motion.div>
-        </Link>
+        </Link> */}
         <Link href="/dashboard/simulation/buy" passHref>
           <motion.div whileHover={{ scale: 1.05 }}>
             <Button color="secondary" sx={{ position: 'relative' }}>
@@ -259,7 +296,7 @@ export default function Portfolio() {
               const stockPrice = stockPrices && typeof stock.symbol === 'string' ? stockPrices[stock.symbol] : undefined;
               const stockWithCurrentPrice = { ...stock, currentPrice: stockPrice };
               return (
-                <motion.tr key={stock.symbol} variants={rowVariants}>
+                <motion.tr key={stock._id} variants={rowVariants}>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
                     {stock.id.slice(-3)}
                   </TableCell>
@@ -274,7 +311,16 @@ export default function Portfolio() {
                       ? `$${((Number(stockPrice) - Number(stock.purchasePrice)) * Number(stock.shares)).toFixed(2)}`
                       : 'N/A'}
                   </TableCell>
-                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.purchaseDate}</TableCell>
+                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.purchaseDate}
+                  <TextField
+                      type="date"
+                      value={stock.purchaseDate}
+                      onChange={(e) =>
+                        handleDateChange(stock, e.target.value)
+                      }
+                      fullWidth
+                    />
+                  </TableCell>
                   <TableCell sx={{ display: {xs: 'none', sm:'table-cell'} }}>
                     <TextField
                       type="number"
