@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { userContext } from "@/app/UserContext";
 import Image from "next/image";
 import {
   Grid,
@@ -18,15 +19,11 @@ import styles from "@/styles/header.module.css";
 import apiURL from "@/APIurl";
 import Link from "next/link";
 
-
-
-
 export default function News_list() {
+  const { user } = useContext(userContext);
   var owner_id = "user1";
-  if (sessionStorage.getItem("token") !== undefined) {
-    let token = JSON.parse(sessionStorage.getItem("token"));
-    owner_id = token.email;
-  }
+  owner_id = user.email;
+
   var userURL = apiURL + "/news/user/" + owner_id;
   const { isSuccess, isLoading, data } = useQuery({ queryKey: [userURL] });
   const [open, setOpen] = useState(false);
