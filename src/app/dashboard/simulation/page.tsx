@@ -411,7 +411,7 @@ export default function Portfolio() {
                   </TableCell>
                   <TableCell >{stock.symbol}</TableCell>
                   <TableCell >{stock.shares}</TableCell>
-                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>${stock.purchasePrice}</TableCell>
+                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>${stock.purchasePrice.toFixed(2)}</TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
                     {stockPrice ? `$${stockPrice}` : 'N/A'}
                   </TableCell>
