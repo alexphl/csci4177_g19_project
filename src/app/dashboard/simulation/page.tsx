@@ -5,9 +5,13 @@ import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { useContext } from "react"; 
+import { userContext } from "@/app/UserContext";
 import {
   Table,
   TableBody,
+  Select,
+  MenuItem,
   TableCell,
   TableRow,
   TextField,
@@ -20,7 +24,11 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 // [To Do] Replaced by a real user ID
+const {user} = useContext<any>(userContext); 
+
 const owner_id = "user1";
+const owner_email = "";
+
 // Main style of table
 const stylePane =
   "bg-black sm:border border-neutral-800 flex-auto sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-32 transition-all";
@@ -32,6 +40,10 @@ export default function Portfolio() {
   const [sharesToSell, setSharesToSell] = useState<any>({});
   const [intervalMs, setIntervalMs] = useState(1000);
   const [searchResults, setSearchResults] = useState([]);
+  const [selectedAccount, setSelectedAccount] = useState('');
+  
+
+
   // Framer motions
   const tableVariants = {
     initial: { opacity: 0 },
@@ -101,7 +113,25 @@ export default function Portfolio() {
     isLoading: isLoadingPurchasedStocks,
     isError: isErrorPurchasedStocks,
     refetch: refetchPurchasedStocks,
-  } = useQuery(["purhcasedStocks"], fetchUserPortfolio, {
+  } = useQuery(["purchasedStocks"], fetchUserPortfolio, {
+    initialData: [],
+    refetchOnWindowFocus: false,
+  });
+
+  // [Function] Fetch accounts
+  const fetchAccounts = async () => {
+    const response = await fetch(`/api/simulation/accounts?email=${owner_email}`);
+    const data = await response.json();
+    const accounts = data.accounts;
+    return accounts;
+  };
+  // [useQuery] Retrieve the data to accounts
+  const {
+    data: accounts,
+    isLoading: isLoadingAccounts,
+    isError: isErrorAccounts,
+    refetch: refetchAccounts,
+  } = useQuery(["accounts"], fetchAccounts, {
     initialData: [],
     refetchOnWindowFocus: false,
   });
@@ -164,7 +194,7 @@ export default function Portfolio() {
     });
     setNetProfitLoss(net);
   };
-
+  
   // Handle Purchase_date Change
   const handleDateChange = async (stock: any, newDate: string) => {
     console.log("dateChange");
@@ -201,7 +231,25 @@ export default function Portfolio() {
       console.error("Error fetching historical price for the new date");
     }
   };
-
+  // [Function] Accounts on click
+  const handleAccountClick = async () => {
+    console.log(`Clicked on account: ${selectedAccount}`);
+    const response1 = await fetch(`/api/simulation/stocks/${owner_email}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response1.ok) {
+      throw new Error('Error fetching accounts');
+    }
+    const response = await fetch(`/api/simulation/holdingsync/${selectedAccount}/${owner_email}`);
+    if (!response.ok) {
+      throw new Error('Error fetching accounts');
+    }
+    return response.json();
+    // Add your desired onClick functionality here
+  };
   // [Function] Sell a stock
   const handleStockSell = async (stockToSell: any, sharesToSell: any) => {
     if (!stockToSell || !sharesToSell) {
@@ -240,22 +288,22 @@ export default function Portfolio() {
   return (
     <div className="container max-w-5xl sm:px-8 mx-auto flex-auto">
       <Grid justifyContent="center" style={{ textAlign: 'center' }}>
-      <motion.div initial={{ y: -20 }} animate={{ y: 0 }} transition={{ duration: 0.5 }}>
-        <Container style={{ padding: 20 }}>
-          <div>
-            {/* <Typography variant="h3">
-              <strong className="text-4xl text-white">
-                Profit: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>
-                  ${isNaN(pastProfitLoss) ? '0.00' : pastProfitLoss.toFixed(2)}
-                </span>
-              </strong>
-            </Typography> */}
-          </div>
-          <div>
-            <Typography variant="h4" ><strong className="text-4xl text-white">Unrealized: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></strong></Typography>
-          </div>
-        </Container>
-      </motion.div>
+        <motion.div initial={{ y: -20 }} animate={{ y: 0 }} transition={{ duration: 0.5 }}>
+          <Container style={{ padding: 20 }}>
+            <div>
+              {/* <Typography variant="h3">
+                <strong className="text-4xl text-white">
+                  Profit: <span style={{ color: pastProfitLoss > 0 ? 'green' : pastProfitLoss < 0 ? 'red' : '' }}>
+                    ${isNaN(pastProfitLoss) ? '0.00' : pastProfitLoss.toFixed(2)}
+                  </span>
+                </strong>
+              </Typography> */}
+            </div>
+            <div>
+              <Typography variant="h4" ><strong className="text-4xl text-white">Unrealized: <span style={{ color: netProfitLoss > 0 ? 'green' : netProfitLoss < 0 ? 'red' : '' }}>${netProfitLoss.toFixed(2)}</span></strong></Typography>
+            </div>
+          </Container>
+        </motion.div>
       </Grid>
       
       <motion.div variants={tableVariants} initial="initial" animate="animate" exit="exit">
@@ -268,6 +316,27 @@ export default function Portfolio() {
             </Button>
           </motion.div>
         </Link> */}
+        <Grid>
+        <Select
+          value={selectedAccount}
+          onChange={(event) => setSelectedAccount(event.target.value as string)}
+          displayEmpty
+          inputProps={{ 'aria-label': 'Select an option' }}
+          sx={{ width: 200 }} 
+        >
+          {accounts?.map((account: any, index: number) => (
+            <MenuItem key={index} value={account}>
+              {account}
+            </MenuItem>
+          ))}
+        </Select>
+        <Button
+          color="primary"
+          onClick={handleAccountClick}
+        >
+          Sync
+        </Button>
+        </Grid>
         <Link href="/dashboard/simulation/buy" passHref>
           <motion.div whileHover={{ scale: 1.05 }}>
             <Button color="secondary" sx={{ position: 'relative' }}>

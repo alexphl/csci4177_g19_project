@@ -2,6 +2,7 @@
 import { Router } from "express";
 import Model from "../models/simulation";
 import Transactions from "../models/Transactions";
+import customersModel from '../models/Customers';
 //import Portfolio from '../schemas/simulation';
 const router = Router();
 //Post Method
@@ -13,7 +14,6 @@ import bcrypt from "bcrypt"; // https://www.npmjs.com/package/bcrypt
 import axios from "axios";
 import { getApiBaseUrl } from "../utils"; 
   
- // hash received password
 // hash received password
 router.get("/addNewUser/:name/:email", async function (req, res) {
   const email = req.params.email;
@@ -29,7 +29,22 @@ router.get("/addNewUser/:name/:email", async function (req, res) {
     res.status(500).json({ message: 'Error while adding user', error: error.message });
   }
 });
-
+// get accounts info
+router.get('/accounts', async (req, res) => {
+  const { email } = req.query;
+  try {
+    const customer = await customersModel.findOne({ email });
+    console.log(customer);
+    if (customer) {
+      res.status(200).json({ accounts: customer.accounts });
+    } else {
+      res.status(404).json({ message: 'Customer not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error occurred', error });
+  }
+});
+// Sync account to portfolio
 router.get("/holdingsync/:account_id/:owner_id", async (req, res) => {
   try {
     const { account_id, owner_id } = req.params;
