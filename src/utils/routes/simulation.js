@@ -9,6 +9,27 @@ router.get("/", function (_req, res, _next) {
   res.render("index", { title: "Express" });
 });
 
+import bcrypt from "bcrypt"; // https://www.npmjs.com/package/bcrypt
+import axios from "axios";
+import { getApiBaseUrl } from "../utils"; 
+  
+ // hash received password
+// hash received password
+router.get("/addNewUser/:name/:email", async function (req, res) {
+  const email = req.params.email;
+  const name = req.params.name;
+  const password = await bcrypt.hash("AAAaaa123456!", 10);
+  const user = { name, email, password };
+  // Store hash in database
+  try {
+    const response = await axios.post(getApiBaseUrl() + "/api/users/", user);
+    res.status(200).json({ message: 'User added successfully', data: response.data });
+  } catch (error) {
+    console.error('Error while adding user:', error);
+    res.status(500).json({ message: 'Error while adding user', error: error.message });
+  }
+});
+
 router.get("/holdingsync/:account_id/:owner_id", async (req, res) => {
   try {
     const { account_id, owner_id } = req.params;
