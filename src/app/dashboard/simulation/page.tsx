@@ -1,6 +1,7 @@
 /**Author: Herman Liang B00837314 */
 "use client"
 // Module import
+import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -42,6 +43,25 @@ export default function Portfolio() {
     initial: { opacity: 0, x: -20 },
     animate: { opacity: 1, x: 0 },
     exit: { opacity: 0, x: 20 },
+  };
+  //
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const monthNames = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    
+    const month = monthNames[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const amOrPm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+  
+    return `${month} ${day}, ${year}, ${formattedHours}:${formattedMinutes} ${amOrPm}`;
   };
   // [Function] Fetch a single stock price
   const fetchStockPrice = async (symbol: String) => {
@@ -262,13 +282,20 @@ export default function Portfolio() {
         <Table>
           <TableHead>
             <TableRow>
+              <Tooltip title="Unique ID">
               <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>ID</TableCell>
+              </Tooltip>
+              <Tooltip title="Symbol">
               <TableCell sx={{ display: { xs: 'table-cell', sm: 'none' } }}>
                 Sym
               </TableCell>
+              </Tooltip>
+              <Tooltip title="A symbol for a stock is a unique combination of letters or characters that represents a publicly traded company on a stock exchange. ">
               <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
                 Symbol
               </TableCell>
+              </Tooltip>
+              
               <TableCell sx={{ display: { xs: 'table-cell', sm: 'none' } }}>
                 No.
               </TableCell>
@@ -283,10 +310,14 @@ export default function Portfolio() {
               <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
                 Profit
               </TableCell>
+              <Tooltip title="Change the purchase date to see how buying a stock on that day would have turned out.">
               <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>Purchase Date</TableCell>
+              </Tooltip>
+              <Tooltip title="Enter the number you want to sell here">
               <TableCell>
                 Sell Num
               </TableCell>
+              </Tooltip>
               <TableCell ></TableCell>
             </TableRow>
           </TableHead>
@@ -311,17 +342,22 @@ export default function Portfolio() {
                       ? `$${((Number(stockPrice) - Number(stock.purchasePrice)) * Number(stock.shares)).toFixed(2)}`
                       : 'N/A'}
                   </TableCell>
-                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{stock.purchaseDate}
-                  <TextField
-                      type="date"
-                      value={stock.purchaseDate}
-                      onChange={(e) =>
-                        handleDateChange(stock, e.target.value)
-                      }
-                      fullWidth
-                    />
+                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{formatDate(stock.purchaseDate)}
+                    <Tooltip title="Change the purchase date to see how buying a stock on that day would have turned out.">
+                      <TextField
+                        type="date"
+                        value={stock.purchaseDate}
+                        onChange={(e) =>
+                          handleDateChange(stock, e.target.value)
+                        }
+                        fullWidth
+                        sx={{ width: '100px' }} // Set a fixed width or maxWidth here
+                      />
+                    </Tooltip>
                   </TableCell>
+
                   <TableCell sx={{ display: {xs: 'none', sm:'table-cell'} }}>
+                    
                     <TextField
                       type="number"
                       inputProps={{ min: 0, max: stock.shares }}
