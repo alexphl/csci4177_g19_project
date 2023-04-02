@@ -337,12 +337,14 @@ export default function Portfolio() {
             </MenuItem>
           ))}
         </Select>
-        <Button
-          color="primary"
-          onClick={handleAccountClick}
-        >
-          Sync
-        </Button>
+        <Tooltip style={{ backgroundColor: 'red', color: 'white' }} title="This action will synchronize the selected account number with the simulation account. It will erase any existing data in the simulation account, and this action cannot be undone. Please be aware of this before proceeding.">
+          <Button
+            color="primary"
+            onClick={handleAccountClick}
+          >
+            Sync
+          </Button>
+        </Tooltip>
         </Grid>
         <Link href="/dashboard/simulation/buy" passHref>
           <motion.div whileHover={{ scale: 1.05 }}>
