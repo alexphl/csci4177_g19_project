@@ -24,16 +24,20 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 // [To Do] Replaced by a real user ID
-const {user} = useContext<any>(userContext); 
 
-const owner_id = "user1";
-const owner_email = "";
+
+
 
 // Main style of table
 const stylePane =
   "bg-black sm:border border-neutral-800 flex-auto sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-32 transition-all";
 // Main Code of Portfolio Component
 export default function Portfolio() {
+  const {user} = useContext<any>(userContext); 
+  const owner_id = user.email;
+  const owner_email = user.email;
+  console.log(owner_email);
+  console.log(owner_id);
   // UseStates
   const [isSellPopupOpen, setIsSellPopupOpen] = useState(false);
   const [netProfitLoss, setNetProfitLoss] = useState(0);
@@ -247,7 +251,10 @@ export default function Portfolio() {
     if (!response.ok) {
       throw new Error('Error fetching accounts');
     }
+
+    refetchPurchasedStocks();
     return response.json();
+
     // Add your desired onClick functionality here
   };
   // [Function] Sell a stock
