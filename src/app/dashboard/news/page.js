@@ -18,10 +18,16 @@ import styles from "@/styles/header.module.css";
 import apiURL from "@/APIurl";
 import Link from "next/link";
 
-const baseURL = apiURL + "/news/";
-var userURL = apiURL + "/news/user/user1";
+
+
 
 export default function News_list() {
+  var owner_id = "user1";
+  if (sessionStorage.getItem("token") !== undefined) {
+    let token = JSON.parse(sessionStorage.getItem("token"));
+    owner_id = token.email;
+  }
+  var userURL = apiURL + "/news/user/" + owner_id;
   const { isSuccess, isLoading, data } = useQuery({ queryKey: [userURL] });
   const [open, setOpen] = useState(false);
   const [select, setSelect] = useState(null);
