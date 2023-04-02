@@ -9,6 +9,7 @@ const Customers = Schema(
     address: String,
     birthdate: Date,
     email: String,
+    accounts: [Number],
   },
   { strict: true }
 );
