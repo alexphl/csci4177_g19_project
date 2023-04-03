@@ -65,6 +65,70 @@ router.get("/username/:username", async function (req, res) {
     });
 });
 
+//Get all of the transactions for a specific customer
+router.get("/username/transactions/:username", async function (req, res) {
+  await Customers.aggregate(
+    [
+      {
+        $lookup: {
+          from: "transactions",
+          localField: "accounts",
+          foreignField: "account_id",
+          as: "transactions"
+        }
+      },
+      { $match: { username: req.params.username } }
+    ]
+    )
+    .then((docs) => {
+      res.send(docs);
+    })
+    .catch(() => {
+      //
+    });
+});
+
+router.get("/username/symbols/:username", async function (req, res) {
+  await Customers.aggregate([
+    {
+      $lookup: {
+        from: "transactions",
+        localField: "accounts",
+        foreignField: "account_id",
+        as: "transactions"
+      }
+    },
+    { $match: { username: req.params.username } },
+    { $unwind: { path: "$transactions"} },
+    {
+      $group: {
+        _id: { account_id: "$accounts" },
+        symbols: { $addToSet: "$transactions.transactions.symbol" }
+      }
+    }, 
+    {
+      $project: {
+          _id: 0,
+          symbols: { $setUnion: "$symbols" }
+      }
+    },
+    ])
+    .then((docs) => {
+      let uniqueSymbols = []
+      let flattened = docs[0].symbols.flat();
+      for (let i = 0; i < flattened.length; i++) {
+        if(!uniqueSymbols.includes(flattened[i])){
+          uniqueSymbols.push(flattened[i]);
+        } 
+      }
+      res.send(uniqueSymbols);
+    })
+    .catch(() => {
+      //
+    });
+});
+
+
 //Route to get customer usernames
 router.get("/email/", async function (_req, res) {
   await Customers.find({})

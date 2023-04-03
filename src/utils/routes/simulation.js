@@ -1,12 +1,128 @@
 /**Author: Herman Liang B00837314 */
 import { Router } from "express";
 import Model from "../models/simulation";
+import Transactions from "../models/Transactions";
+import customersModel from '../models/Customers';
 //import Portfolio from '../schemas/simulation';
 const router = Router();
 //Post Method
 router.get("/", function (_req, res, _next) {
   res.render("index", { title: "Express" });
 });
+
+import bcrypt from "bcrypt"; // https://www.npmjs.com/package/bcrypt
+import axios from "axios";
+import { getApiBaseUrl } from "../utils"; 
+  
+// hash received password
+router.get("/addNewUser/:name/:email", async function (req, res) {
+  const email = req.params.email;
+  const name = req.params.name;
+  const password = await bcrypt.hash("AAAaaa123456!", 10);
+  const user = { name, email, password };
+  // Store hash in database
+  try {
+    const response = await axios.post(getApiBaseUrl() + "/api/users/", user);
+    res.status(200).json({ message: 'User added successfully', data: response.data });
+  } catch (error) {
+    console.error('Error while adding user:', error);
+    res.status(500).json({ message: 'Error while adding user', error: error.message });
+  }
+});
+// get accounts info
+router.get('/accounts', async (req, res) => {
+  const { email } = req.query;
+  try {
+    const customer = await customersModel.findOne({ email });
+    console.log(customer);
+    if (customer) {
+      res.status(200).json({ accounts: customer.accounts });
+    } else {
+      res.status(404).json({ message: 'Customer not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error occurred', error });
+  }
+});
+// Sync account to portfolio
+router.get("/holdingsync/:account_id/:owner_id", async (req, res) => {
+  try {
+    const { account_id, owner_id } = req.params;
+    const transactions = await Transactions.find({ account_id });
+    
+    // Calculate holdings and average purchase price for each stock
+    const holdings = {};
+    transactions.forEach((transaction) => {
+      console.log(transaction);
+      transaction.transactions.forEach((trx) => {
+        const { symbol, amount, price } = trx;
+        if (!holdings[symbol]) {
+          holdings[symbol] = { quantity: 0, totalCost: 0 };
+        }
+        holdings[symbol].quantity += amount;
+        holdings[symbol].totalCost += amount * parseFloat(price);
+        holdings[symbol].avgPurchasePrice = holdings[symbol].totalCost / holdings[symbol].quantity;
+      });
+    });
+
+    // Save the holdings to assets using owner_id
+    const assets = Object.entries(holdings).map(([symbol, holding]) => {
+      return {
+        asset_name: symbol,
+        asset_type: "stock",
+        ticker: symbol,
+        quantity: holding.quantity,
+        purchase_date: new Date(),
+        purchase_price: holding.avgPurchasePrice,
+      };
+    });
+
+    const updatedPortfolio = await Model.findOneAndUpdate(
+      { owner_id },
+      { $push: { assets: { $each: assets } } },
+      { new: true, upsert: true }
+    );
+
+    res.status(200).json({ message: "Holdings and average purchase price calculated successfully", updatedPortfolio });
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while processing your request" });
+  }
+});
+
+router.put('/update', async (req, res) => {
+  const { owner_id, asset_id, newPurchaseDate, newPurchasePrice } = req.body;
+  try {
+    const portfolio = await Model.findOne({ owner_id });
+
+  if (!portfolio) {
+    throw new Error('User not found');
+  }
+
+  const assetToUpdate = portfolio.assets.find((asset) => asset._id.toString() === asset_id);
+
+  if (!assetToUpdate) {
+    throw new Error('Asset not found');
+  }
+  const parsedDate = new Date(Number(newPurchaseDate));
+  if (isNaN(parsedDate)) {
+    throw new Error('Invalid purchase date');
+  } else {
+    assetToUpdate.purchase_date = parsedDate;
+  }
+  assetToUpdate.purchase_price = parseFloat(newPurchasePrice);
+
+  await portfolio.save();
+
+  
+  res.status(200).json(assetToUpdate);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while updating the stock' });
+  }
+
+});
+
+
 
 router.post('/new', async (req, res) => {
   try {

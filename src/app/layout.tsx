@@ -36,17 +36,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <UserContextProvider>
-      <QueryProvider>
-        <ThemeContextProvider>
+
+    <QueryProvider>
+      <ThemeContextProvider>
+        <UserContextProvider>
           <html
             lang="en"
             className={`${displayFont.variable} ${bodyFont.variable} bg-neutral-900 font-sans`}
           >
             <body className="font-sans text-neutral-100">{children}</body>
           </html>
-        </ThemeContextProvider>
-      </QueryProvider>
-    </UserContextProvider>
+        </UserContextProvider>
+      </ThemeContextProvider>
+    </QueryProvider>
+
   );
 }

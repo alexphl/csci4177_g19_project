@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const registerNewCustomerAndPortfolio = async (email, name) => {
   const address = "";
-  const username = "";
+  const username = email.split('@')[0];
   const birthdate = "";
 
   try {
@@ -24,7 +24,8 @@ const registerNewCustomerAndPortfolio = async (email, name) => {
     const create_portfolio = portfolioResponse.data;
 
     // Create a customer profile in database
-    const customer = { username, name, address, birthdate, email }
+
+    const customer = { username, name, address, birthdate, email, accounts:[] }
     const customerResponse = await axios.post(getApiBaseUrl()+'/api/customer/new', customer);
     const create_customer = customerResponse.data;
 

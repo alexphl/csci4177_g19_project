@@ -55,7 +55,11 @@ router.get("/", async function (req, res) {
 //Route to get user subscribed news list
 router.get("/user/:id", async function (req, res) {
   try {
-    const subscribes = await Model.findOne({ owner_id: req.params.id });
+    var subscribes = await Model.findOne({ owner_id: req.params.id });
+    var list = subscribes.stock_list;
+    if (list.length < 1) {
+      subscribes = await Model.findOne({ owner_id: "user1" });
+    }
     var list = subscribes.stock_list;
     let symbol_list = [];
     list.forEach((element) => {

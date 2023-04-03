@@ -40,7 +40,10 @@ const portfolioSchema = Schema({
   },
   assets: [assetSchema],
   transaction_history: [transactionSchema],
-  watchlists: [{ id: String, name: String }],
+  watchlists: {
+    type: [{ id: String, name: String }],
+    default: [{ id: "1", name: "Watchlist" }],
+  },
   stock_list: [stockListSchema],
 });
 
