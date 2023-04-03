@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 function CustomerCard(customer) {
-  const customerURL = "/dashboard/customers/" + customer.content.username;
+  const customerURL = "/dashboard/customers/username/" + customer.content.username;
   return (
     <Card
       style={{
