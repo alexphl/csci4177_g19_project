@@ -45,11 +45,7 @@ git checkout osler
 Create a `.env` file in the root of the project folder to store the environment variables like the database username and password and third-party API keys. The `.env` file should look like this:
 
 ```
-DB_USER="admin"
-DB_USER_PASSWORD="pdGtt15zG252Iayf"
-DB_URL="cluster0.zvtktko.mongodb.net/sample_analytics?retryWrites=true&w=majority"
-FINNHUB_API_KEY=cg1bco1r01qpqqs2jcrgcg1bco1r01qpqqs2jcs0
-Newsapikey=e0db6158b82c4b33bbae734d6db29a34
+
 ```
 
 Install the required dependencies:
