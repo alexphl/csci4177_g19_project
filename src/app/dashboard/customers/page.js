@@ -135,7 +135,7 @@ export default function CustomerTable() {
               filteredData.map((customer) => (
                 <Grid
                   item
-                  key={customer}
+                  key={customer._id}
                   xs={12}
                   sm={12}
                   md={6}
