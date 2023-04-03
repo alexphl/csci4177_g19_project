@@ -13,20 +13,18 @@ function Auth() {
   // user context - has properties: isLoggedIn, email
   const { user } = useContext(userContext);
   const router = useRouter();
-  console.log("Status of user",user)
+  console.log("Status of user", user);
 
   if (user.isLoggedIn) {
-    console.log("Should be pushing to dashboard...")
+    console.log("Should be pushing to dashboard...");
     router.push("/dashboard");
-
-    return (<div>Loading...</div>)
   }
 
   return (
     <div
       className={
         "container my-10 max-w-md rounded-xl border border-neutral-800 bg-black p-2 pt-1 shadow-lg transition-all " +
-        (user.loggedIn &&
+        (user.isLoggedIn &&
           " pointer-events-none animate-pulse contrast-50 saturate-0")
       }
       aria-label="Login or Register"
