@@ -8,5 +8,5 @@ export default function useSessionStorage(key: string) {
     console.log("useSessionStorage")
   }, [])
 
-  return value;
+  return JSON.parse(value || '{}');
 }

@@ -1,7 +1,7 @@
 /**Author: Crystal Parker B00440168 */
 'use client'
 
-import { createContext, useReducer, useEffect } from "react";
+import { createContext, useEffect, useReducer } from "react";
 
 // This context is going to hold information about the user in a json format
 // Should be logged in : bool , userkey: hash, email : email, preferences : object
@@ -30,9 +30,11 @@ export default function UserContextProvider({ children }: { children: React.Reac
     user: { isLoggedIn: false, email: undefined, initial: true }
   });
 
-  useEffect(() => {
-    dispatchUser({ type: "SET_USER", payload: tryToGetFromSession() })
-  }, [])
+  if (typeof window !== 'undefined') {
+    if (!state.user.isLoggedIn && state.user.initial) {
+      dispatchUser({ type: "SET_USER", payload: tryToGetFromSession() });
+    }
+  }
 
   return (
     <userContext.Provider value={{ ...state, dispatchUser }}>
