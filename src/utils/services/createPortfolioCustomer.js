@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const registerNewCustomerAndPortfolio = async (email, name) => {
   const address = "";
-  const username = "";
+  const username = email.split('@')[0];
   const birthdate = "";
 
   try {
