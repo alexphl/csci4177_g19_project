@@ -6,6 +6,9 @@ import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+
+import Link from "next/link";
 
 import CustomerCard from "../CustomerCard";
 
@@ -41,6 +44,7 @@ export default function CustomerTable() {
       );
     }
   }, [isSuccess, data, usernameFilter, nameFilter, emailFilter, addressFilter]);
+ 
   return (
     <Grid container>
       <Grid
@@ -63,7 +67,6 @@ export default function CustomerTable() {
         <h1 className="mt-4 mb-2 text-2xl leading-relaxed text-neutral-400">
           Filter:
         </h1>
-
         <Grid container sx={{ mb: 4 }}>
           <Grid item xs={12} sm={12} md={12} lg={8}>
             <Grid item>
@@ -112,7 +115,12 @@ export default function CustomerTable() {
             />
           </Grid>
         </Grid>
+
+        <Link href="/dashboard/customers/new" passHref>
+          <Button size="large">New Customer</Button>
+        </Link>
       </Grid>
+      
 
       <Grid item sm={6} md={7}>
         <Box sx={{ height: "100vh" }}>
