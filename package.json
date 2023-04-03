@@ -25,7 +25,6 @@
     "cookie-parser": "^1.4.6",
     "dayjs": "^1.11.7",
     "express": "^4.18.2",
-    "focus-trap-react": "^10.1.1",
     "framer-motion": "^10.9.1",
     "fuse.js": "^6.6.2",
     "lru-cache": "^8.0.4",

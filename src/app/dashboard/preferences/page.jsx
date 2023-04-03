@@ -4,7 +4,7 @@
 import dynamic from "next/dynamic";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { userContext } from "../../UserContext";
-import { useState, useContext, memo, useEffect } from "react";
+import { useState, useContext, memo } from "react";
 import { Modal, Box, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 
@@ -65,31 +65,33 @@ function Preferences() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-8 text-neutral-500">
-      <button className="flex cursor-default items-center rounded-full p-5 outline-none">
-        <UserIcon className="h-20 w-20" />
-        {user && user.name ? (
-          <p>
-            {user.name} {user.email}
-          </p>
-        ) : (
-          <p>{user.email}</p>
+    <div className="flex h-full w-full flex-col items-center justify-center gap-8">
+      <div className="mb-6 flex cursor-default flex-col items-center gap-4 rounded-full px-6 outline-none">
+        <UserIcon
+          className="m-4 h-20 w-20 rounded-full border-2 border-neutral-800 p-4 text-neutral-400"
+          fill="rgba(255,255,255,0.2)"
+        />
+        {user && (
+          <section className="text-center">
+            <h2 className="font-medium">{user.name}</h2>
+            <p className="text-sm text-neutral-400">{user.email}</p>
+          </section>
         )}
-      </button>
-      <Button variant="outlined" color="primary" onClick={handleLogOut}>
-        Log Out
-      </Button>
-      <Button variant="outlined" color="primary" onClick={handleUpdate}>
-        Update
-      </Button>
-      <Button variant="outlined" color="primary" onClick={handleReset}>
-        Reset Password
-      </Button>
-      <Button variant="outlined" color="error" onClick={handleDelete}>
-        DELETE ACCOUNT!
-      </Button>
-
-      <p className="text-lg">User Preferences Pane</p>
+      </div>
+      <div className="flex flex-col gap-4">
+        <Button variant="outlined" color="primary" onClick={handleLogOut}>
+          Sign Out
+        </Button>
+        <Button variant="outlined" color="primary" onClick={handleUpdate}>
+          Update Profile
+        </Button>
+        <Button variant="outlined" color="primary" onClick={handleReset}>
+          Reset Password
+        </Button>
+        <Button variant="outlined" color="error" onClick={handleDelete}>
+          Delete Account
+        </Button>
+      </div>
 
       {/* Update modal */}
       <Modal open={open1} onClose={handleClose1}>
