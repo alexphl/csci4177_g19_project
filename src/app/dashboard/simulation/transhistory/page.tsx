@@ -15,10 +15,12 @@ import Link from "next/link";
 import { motion } from 'framer-motion';
 const stylePane =
   "bg-black sm:border border-neutral-800 sm:rounded-2xl h-screen shadow-xl p-4 overflow-auto scrollbar-hide pb-48 sm:pb-40 transition-all overscroll-contain";
-
+  import { useContext } from "react"; 
+  import { userContext } from "@/app/UserContext";
 export default function TransactionHistory() {
   const [transactions, setTransactions] = useState<any[]>([]);
-  const owner_id = 'user1';
+  const {user} = useContext<any>(userContext); 
+  const owner_id = user.email; //="user1";
   // Framer motions
   const tableVariants = {
     initial: { opacity: 0 },
@@ -90,8 +92,9 @@ export default function TransactionHistory() {
               </TableRow>
             </TableHead>
             <motion.tbody variants={tableVariants}>
-              {transactions.map((transaction) => (
-                <motion.tr key={transaction._id} variants={rowVariants}>
+  {transactions.length > 0 ? (
+    transactions.map((transaction) => (
+      <motion.tr key={transaction._id} variants={rowVariants}>
                   <TableCell sx={{ display: { xs: 'table-cell', sm: 'none' } }}>{transaction.transaction_type.charAt(0)}</TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{transaction.transaction_type}</TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
@@ -108,9 +111,16 @@ export default function TransactionHistory() {
                       : ''}
                   </TableCell>
 
-                </motion.tr>
-              ))}
-            </motion.tbody>
+                  </motion.tr>
+    ))
+  ) : (
+    <TableRow>
+      <TableCell colSpan={8} align="center">
+        No transactions available.
+      </TableCell>
+    </TableRow>
+  )}
+</motion.tbody>
           </Table>
         </motion.div>
       </div>

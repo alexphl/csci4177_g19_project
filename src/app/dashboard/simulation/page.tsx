@@ -316,13 +316,13 @@ export default function Portfolio() {
       <motion.div variants={tableVariants} initial="initial" animate="animate" exit="exit">
 
       <Grid container justifyContent="space-between" style={{ marginBottom: '20px' }}>
-        {/* <Link href="/dashboard/simulation/transhistory" passHref>
+        <Link href="/dashboard/simulation/transhistory" passHref>
           <motion.div whileHover={{ scale: 1.05 }}>
             <Button color="secondary" sx={{ position: 'relative' }}>
               View Transaction History
             </Button>
           </motion.div>
-        </Link> */}
+        </Link>
         <Grid>
         <Select
           value={selectedAccount}
