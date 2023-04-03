@@ -9,13 +9,15 @@ import { memo } from "react";
 import { queryClient } from "@/app/QueryProvider";
 import { ListContext } from "./ListContext";
 import type { iUserStockList, iUserStockListItem } from "@/types/iStocks";
-
-const userID = "user1";
+import { userContext } from "@/app/UserContext";
 
 /**
  * Chart mode selection listbox
  **/
 function StockListbox(props: { userStocksController: [iUserStockListItem[], any], lists: iUserStockList[], selector: [number, Dispatch<SetStateAction<number>>] }) {
+  const { user } = useContext<any>(userContext);
+  const userID = user.email;
+
   const [_isPending, startTransition] = useTransition();
   const modes = props.lists
   const listContext = useContext(ListContext);

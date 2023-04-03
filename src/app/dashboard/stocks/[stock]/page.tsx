@@ -13,14 +13,13 @@ import { m } from "framer-motion";
 import type { iQuote, iProfile, iCompanyNews, iUserStockListItem, iUserStockList } from "@/types/iStocks";
 import { ListContext } from "../ListContext";
 import shortNum from 'number-shortener';
+import { userContext } from "@/app/UserContext";
 
 // Lazy load
 const Chart = dynamic(() => import("./Chart"));
 const NotFound = dynamic(() => import("../../[404]/NotFound"));
 const StockListItem = dynamic(() => import("../StockListItem"));
 const Loading = dynamic(() => import("../../loading"));
-
-const userID = "user1";
 
 // Filters search results to hide stock subvariants
 // This logic will likely be moved to backend
@@ -43,6 +42,9 @@ export default function StockDetails({
   params: { stock: string, list?: string };
 }) {
   params.stock = params.stock.toUpperCase();
+
+  const { user } = useContext<any>(userContext);
+  const userID = user.email;
 
   const listContext = useContext(ListContext);
   const selectedList = listContext.state;

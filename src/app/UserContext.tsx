@@ -6,7 +6,7 @@ import { createContext, useReducer, useEffect } from "react";
 // This context is going to hold information about the user in a json format
 // Should be logged in : bool , userkey: hash, email : email, preferences : object
 
-export const userContext = createContext({ isLoggedIn: false, email: undefined });
+export const userContext = createContext({ isLoggedIn: false, email: undefined, initial: true });
 
 export const userReducer = (state: any, action: { type: string, payload: any }) => {
   console.log("Dispatching...", action.payload)
@@ -27,11 +27,11 @@ export const userReducer = (state: any, action: { type: string, payload: any }) 
 export default function UserContextProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatchUser] = useReducer(userReducer, {
     // initial state
-    user: { isLoggedIn: false, email: undefined }
+    user: { isLoggedIn: false, email: undefined, initial: true }
   });
-  
+
   useEffect(() => {
-      dispatchUser({type:"SET_USER", payload: tryToGetFromSession() })
+    dispatchUser({ type: "SET_USER", payload: tryToGetFromSession() })
   }, [])
 
   return (
@@ -41,14 +41,13 @@ export default function UserContextProvider({ children }: { children: React.Reac
   );
 }
 
-const tryToGetFromSession = () =>{
+const tryToGetFromSession = () => {
   const token = JSON.parse(sessionStorage.getItem('token') || '{}');
-  if (token && token.token === "testing123"){
+  if (token && token.token === "testing123") {
     console.log("Loading token...")
-    return {name:token.name, id:token.id, email:token.email, isLoggedIn:true}
-  }else{
+    return { name: token.name, id: token.id, email: token.email, isLoggedIn: true }
+  } else {
     console.log("Couldn't find token, sorry.")
     return { isLoggedIn: false, email: undefined }
   }
 }
-
