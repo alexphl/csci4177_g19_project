@@ -9,6 +9,8 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import type { iSearchItem } from "@/types/iStocks";
 import axios from "axios";
+import axios from "axios";
+import Portfolio from "../models/simulation";
 dayjs.extend(utc)
 
 const cache = new LRU({
@@ -49,6 +51,31 @@ router.post("/user/:id", async function(req, res) {
   }
 
   return res.sendStatus(200);
+});
+// Get historical price
+router.get('/stock/:symbol/price/:timestamp', async (req, res) => {
+  const { symbol, timestamp } = req.params;
+
+  try {
+      const response = await axios.get(`https://finnhub.io/api/v1/stock/candle`, {
+          params: {
+              symbol,
+              resolution: 'D',
+              from: parseInt(timestamp),
+              to: parseInt(timestamp) + 86400, // Add one day in seconds
+              token: process.env.FINNHUB_API_KEY, 
+          },
+      });
+
+      if (response.data && response.data.c && response.data.c.length > 0) {
+          res.json({ price: response.data.c[0] });
+      } else {
+          res.status(404).json({ error: 'Stock price not found' });
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to fetch stock price' });
+  }
 });
 
 // Get user stock watchlists

@@ -1,3 +1,4 @@
+/**Author: Crystal Parker B00440168 */
 // get the model
 import User from "../models/userModel";
 import { Types } from "mongoose";
@@ -5,10 +6,6 @@ import { Types } from "mongoose";
 // create new user
 export const createUser = async (req, res) => {
   const { name, password, email } = req.body;
-
-  // ToDo Hash password before storing in database -> done in auth and called by auth.
-  // maybe some control that it can only be called by auth? not sure how to do that.
-
   // add to database - mongo makes an _id
   // ToDo - no duplicate emails
   try {
@@ -52,8 +49,9 @@ export const findUser = async (req, res) => {
 
   // toDo sanitize - check if it's an email
   const user = await User.find({ email: email });
+  console.log(user)
   // if user not found
-  if (!user) {
+  if (user.length<1) {
     return res.status(404).json({ error: "No such user" });
   }
 
@@ -66,16 +64,16 @@ export const deleteUser = async (req, res) => {
   const { id } = req.params;
 
   if (!Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such user" });
+    return res.status(404).json({ error: "No such user", success:false });
   }
 
   const user = await User.findOneAndDelete({ _id: id });
 
   if (!user) {
-    return res.status(400).json({ error: "No such user" });
+    return res.status(400).json({ error: "No such user", success:false });
   }
 
-  res.status(200).json(user);
+  res.status(200).json({success: true});
 };
 
 // update a user
@@ -83,9 +81,10 @@ export const updateUser = async (req, res) => {
   const { id } = req.params;
 
   if (!Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such user" });
+    return res.status(404).json({ error: "No such user" , success: false});
   }
 
+  // This returns the user prior to update which is not ideal, but whatever... 
   const user = await User.findOneAndUpdate(
     { _id: id },
     {
@@ -94,8 +93,8 @@ export const updateUser = async (req, res) => {
   );
 
   if (!user) {
-    return res.status(400).json({ error: "No such user" });
+    return res.status(400).json({ error: "No such user" , success: false});
   }
 
-  res.status(200).json(user);
+  res.status(200).json({message: "User updated!", success: true});
 };

@@ -1,3 +1,5 @@
+/**Author: Liam Osler */
+/**Author: Herman Liang B00837314 */
 "use client";
 import { useState, useEffect } from "react";
 import {
@@ -18,7 +20,7 @@ const stylePane =
 
 export default function TransactionHistory() {
   const [transactions, setTransactions] = useState([]);
-  const [username, setUsername] = useState("user1");
+  const [username, setUsername] = useState("user1"); 
   const owner_id = username;
   // Framer motions
   const tableVariants = {
@@ -64,7 +66,7 @@ export default function TransactionHistory() {
 
       <Grid container justifyContent="center" style={{ marginBottom: "20px" }}>
         <TextField
-          label="Username"
+          label="Email"
           variant="outlined"
           value={username}
           onChange={(e) => setUsername(e.target.value)}

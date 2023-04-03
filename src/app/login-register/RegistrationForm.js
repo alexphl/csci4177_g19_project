@@ -1,3 +1,4 @@
+/**Author: Crystal Parker B00440168 */
 "use client";
 
 import { useEffect, useState, useContext, memo } from "react";
@@ -15,9 +16,9 @@ function RegistrationForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
-
-  // user context - has properties: loggedIn, email
+  // user context - has properties: isLoggedIn, email
   const { dispatchUser } = useContext(userContext);
 
   // input validation functions
@@ -32,9 +33,17 @@ function RegistrationForm() {
   };
 
   const isValidPassword = (val) => {
-    // https://regex101.com/r/bC2gU7/3
+    // https://stackoverflow.com/a/59317682
     let regEx = new RegExp(
-      /^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#%]*[!#%])[A-Za-z0-9!#%]{8,32}$/
+    // ^                               start anchor
+    // (?=(.*[a-z]){1,})               lowercase letters. {1,} indicates that you want 1 of this group
+    // (?=(.*[A-Z]){1,})               uppercase letters. {1,} indicates that you want 1 of this group
+    // (?=(.*[0-9]){1,})               numbers. {1,} indicates that you want 1 of this group
+    // (?=(.*[!@#$%^&*()\-__+.]){1,})  all the special characters in the [] fields. The ones used by regex are escaped by using the \ or the character itself. {1,} is redundant, but good practice, in case you change that to more than 1 in the future. Also keeps all the groups consistent
+    // {8,}                            indicates that you want 8 or more
+    // $                               end anchor
+
+      /^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/
     );
     return regEx.test(val);
   };
@@ -53,27 +62,60 @@ function RegistrationForm() {
     // updateError()
   };
 
-  const handleSubmit = () => {
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleSubmit = async () => {
     let err = checkError();
     // password must be valid regex check
     // passwords must match
 
     if (err.length === 0) {
+      console.log("Registering...")
       // check with database
-      
+        const response = await registerUser({
+            email: email,
+            userPassword: password,
+            name:name,
+        });
+        console.log(response)
 
-      // set state
+      if(response.token){
+        console.log(response.token)
+
+        // set state
       dispatchUser({
         type: "SET_USER",
-        payload: { email: email, loggedIn: true },
+        payload: { email: email, isLoggedIn: true, id: response.id, name:response.name },
       });
 
       // store a session cookie
+      const userToken = {token:response.token, email:email, id: response.id, name:response.name}
+      sessionStorage.setItem('token', JSON.stringify(userToken))
+      }else{
+        console.log(response.error)
+        setError("Registration failed")
+      }
 
     } else {
       setError(err);
     }
   };
+
+  const registerUser= async (credentials) =>{
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+
+    const json = await response.json()
+
+    return json
+  }
 
   const checkError = () => {
     // error starts out as none
@@ -119,12 +161,22 @@ function RegistrationForm() {
         <form>
           <FormGroup>
             <TextField
+              placeholder="Name"
+              autoComplete="name"
+              label="Name"
+              focused
+              margin="normal"
+              onChange={handleNameChange}
+              required
+            />
+            <TextField
               placeholder="Email"
               autoComplete="email"
               label="Email"
               focused
               margin="normal"
               onChange={handleEmailChange}
+              required
             />
             <TextField
               placeholder="Password"
@@ -134,6 +186,7 @@ function RegistrationForm() {
               focused
               margin="normal"
               onChange={handlePasswordChange}
+              required
             />
             <TextField
               placeholder="Confirm Password"
@@ -143,6 +196,7 @@ function RegistrationForm() {
               focused
               margin="normal"
               onChange={handleConfirmPasswordChange}
+              required
             />
             <Button variant="outlined" className="mt-6" onClick={handleSubmit}>
               Register!

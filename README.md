@@ -2,11 +2,19 @@
 
 **Author**: [Liam Osler](mailto:osler@cs.dal.ca)
 
-**Last Modification Date**: 31 MAR 2023
+* *Date Created*: 25 Mar 2023
+* *Last Modification Date*: 25 Mar 2023
+* *Lab URL*: <http://example.com/>
+* *GitHub URL*: <https://github.com/alexphl/csci4177_g19_project>
+* *GitLab URL*: <http://example.com/>
 
 ## Repository URLS:
 
-**Main Git Repository**: https://git.cs.dal.ca/cparker/csci4177_group19_project/
+* [Name](email@dal.ca) - *(Role)*
+* [Name](email@dal.ca) - *(Role)*
+* [Name](email@dal.ca) - *(Role)*
+* [Name](email@dal.ca) - *(Role)*
+* [Name](email@dal.ca) - *(Role)*
 
 **Author Branch**: https://git.cs.dal.ca/cparker/csci4177_group19_project/-/tree/osler
 
@@ -18,43 +26,50 @@
 
 Check that you have Node.js installed on your machine. If not, you can download it from https://nodejs.org/en/download/.
 
-Ensure that you have Node 14.6.0 or later installed:
+To have a local copy of this lab / assingnment / project up and running on your local machine, you will first need to install the following software / libraries / plug-ins
 
 ```bash
 node -v
 ```
-
-Clone the repository:
-
-```bash
-git clone https://git.cs.dal.ca/cparker/csci4177_group19_project.git
-```
-
-Navigate to the csci4177_group19_project directory:
-
-```bash
-cd csci4177_group19_project
-```
-
-Checkout the author branch (osler):
-
-```bash
-git checkout osler
-```
-
-Create a `.env` file in the root of the project folder to store the environment variables like the database username and password and third-party API keys. The `.env` file should look like this:
+Give examples or provide a list of the required software / libraries / plug-ins
 
 ```
+Once the installation completes, you can run or build the app.
 
+See the following section for detailed step-by-step instructions on how to install this software / libraries / plug-ins
+
+### Installing
+
+A step by step series of examples that tell you how to get a development env running
+
+Say what the step will be, assume the marker just acquired a computer
+
+```
+Give the example
+```
+
+And repeat
+
+```
+until finished
 ```
 
 Install the required dependencies:
 
-```bash
-npm install
+
+## Running the tests
+
+If needing to run automated tests, then explain how to run the automated tests for this system. If this section is not needed, ** you may delete **.
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
 ```
 
-Start the server:
+### And coding style tests
 
 ```bash
 npm run dev

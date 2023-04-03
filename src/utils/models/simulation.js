@@ -1,4 +1,4 @@
-/**Author: Yiqun Liang */
+/**Author: Herman Liang B00837314 */
 /**Author: Olexiy Prokhvatylo B00847680 */
 
 "use strict";

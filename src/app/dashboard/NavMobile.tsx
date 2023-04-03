@@ -13,7 +13,7 @@ import { useState } from "react";
 
 const linkStyle = "active:brightness-125";
 
-export default function NavMobile(props: { overlayController: [boolean, Dispatch<SetStateAction<boolean>>] }) {
+export default function NavMobile(props: { overlayController: [boolean, Dispatch<SetStateAction<boolean>>], user: any }) {
   const segment = useSelectedLayoutSegment();
   const [isExpanded, setExpanded] = useState(false);
   const [isOverlayOpen, setOverlayOpen] = props.overlayController;
@@ -72,8 +72,8 @@ export default function NavMobile(props: { overlayController: [boolean, Dispatch
                       <UserIcon className="w-6" fill="rgba(255,255,255,0.2)" />
                     </div>
                     <div className="flex items-start flex-col">
-                      <p className="font-bold">John Doe</p>
-                      <p className="text-xs text-neutral-400">johndoe@email.com</p>
+                      <p className="font-bold">{props.user ? props.user.name : "John Doe"}</p>
+                      <p className="text-xs text-neutral-400">{props.user ? props.user.email : "johndoe@email.com"}</p>
                     </div>
                   </section>
 

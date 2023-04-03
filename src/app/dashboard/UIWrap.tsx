@@ -17,17 +17,17 @@ export default function UIWrap() {
   const router = useRouter();
   const { user } = useContext<any>(userContext);
 
-  // the effect forces router to only run on client - necessary for build to work
-  // useEffect(() => {
-  //   if (!user.loggedIn) {
-  //     router.replace("/");
-  //   }
-  // }, []);
+  //the effect forces router to only run on client - necessary for build to work
+  useEffect(() => {
+    if (!user.isLoggedIn) {
+      router.replace("/");
+    }
+  }, []);
 
   return (
     <>
-      <NavDesktop overlayController={[isOverlayOpen, setOverlayOpen]} />
-      <NavMobile overlayController={[isOverlayOpen, setOverlayOpen]} />
+      <NavDesktop overlayController={[isOverlayOpen, setOverlayOpen]} user={user} />
+      <NavMobile overlayController={[isOverlayOpen, setOverlayOpen]} user={user} />
       <AnimatePresence>
         {isOverlayOpen && <PreferencesOverlay setOpen={setOverlayOpen} />}
       </AnimatePresence>

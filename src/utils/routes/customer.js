@@ -1,10 +1,22 @@
+/**Author: Liam Osler */
+/**Author: Herman Liang B00837314 */
 "use strict";
 
 import { Router } from "express";
 import Customers from "../models/Customers";
 const router = Router();
 
-//Data retrieval routes:
+// Route to create a new customer
+router.post("/new", async function (req,res){
+  try {
+    const customer = new Customers(req.body);
+    await customer.save();
+
+    res.status(201).json({ success: true, data: customer });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+});
 
 //Route to get all customers
 router.get("/", async function (_req, res) {

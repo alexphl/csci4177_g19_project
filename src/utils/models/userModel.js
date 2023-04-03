@@ -1,3 +1,4 @@
+/**Author: Crystal Parker B00440168 */
 import { Schema, model, models } from "mongoose";
 //mongoose.set('debug', true);
 
@@ -10,6 +11,7 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: true,
+      unique: true
     },
     password: {
       type: String,
