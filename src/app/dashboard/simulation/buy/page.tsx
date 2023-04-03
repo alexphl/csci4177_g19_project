@@ -13,8 +13,12 @@ import {
   Grid
 } from '@mui/material';
 import { motion } from 'framer-motion';
+import { useContext } from "react"; 
+import { userContext } from "@/app/UserContext";
 
 export default function Buy() {
+  const {user} = useContext<any>(userContext); 
+  const owner_id = user.email;
   const router = useRouter();
   const [shares, setShares] = useState(0);
   const [selectedStock, setSelectedStock] = useState<any>(null);
@@ -22,7 +26,6 @@ export default function Buy() {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const owner_id = "user1";
   // Framer Motion
   const containerVariants = {
     hidden: { opacity: 0 },

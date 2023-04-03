@@ -79,7 +79,10 @@ router.get("/holdingsync/:account_id/:owner_id", async (req, res) => {
 
     const updatedPortfolio = await Model.findOneAndUpdate(
       { owner_id },
-      { $push: { assets: { $each: assets } } },
+      { 
+        $push: { assets: { $each: assets } },
+        $set: { profit: 0 } 
+      },
       { new: true, upsert: true }
     );
 
