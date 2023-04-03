@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import type { iSearchItem } from "@/types/iStocks";
 import axios from "axios";
-import axios from "axios";
 import Portfolio from "../models/simulation";
 dayjs.extend(utc)
 
