@@ -74,9 +74,7 @@ export default function Customer({ params }) {
               margin="dense"
             />
           </Grid>
-          <Link href="/dashboard/customers/new" passHref>
-          <Button size="large">New Customer</Button>
-        </Link>
+            <Button size="large">New Customer</Button>
         </Grid>
       </Paper>
     </Container>
