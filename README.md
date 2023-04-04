@@ -1,58 +1,52 @@
 
 * *Date Created*: 25 Mar 2023
-* *Last Modification Date*: 25 Mar 2023
-* *Lab URL*: <http://example.com/>
-* *GitHub URL*: <https://github.com/alexphl/csci4177_g19_project>
-* *GitLab URL*: <http://example.com/>
+* *Last Modification Date*: 31 Mar 2023
+* *Lab URL*: http://csci4177-group19-project-2.vercel.app
+* *Gitlab URL*: https://git.cs.dal.ca/cparker/csci4177_group19_project
 
 ## Repository URLS:
 
-* [Name](email@dal.ca) - *(Role)*
-* [Name](email@dal.ca) - *(Role)*
-* [Name](email@dal.ca) - *(Role)*
-* [Name](email@dal.ca) - *(Role)*
-* [Name](email@dal.ca) - *(Role)*
-
-**Author Branch**: https://git.cs.dal.ca/cparker/csci4177_group19_project/-/tree/osler
-
-## Remote Deployment URLs:
-
-**Vercel**: https://4177-g19-mirror.vercel.app/
-
+* [Liam Osler](osler@cs.dal.ca)
+* [Olexiy Prokhvatylo](alexey@dal.ca) - Full Stack Developer
+* 
 ## Running the Project Locally:
-
 Check that you have Node.js installed on your machine. If not, you can download it from https://nodejs.org/en/download/.
 
-To have a local copy of this lab / assingnment / project up and running on your local machine, you will first need to install the following software / libraries / plug-ins
-
+Ensure that you have Node 14.6.0 or later installed:
 ```bash
 node -v
 ```
-Give examples or provide a list of the required software / libraries / plug-ins
 
-```
-Once the installation completes, you can run or build the app.
-
-See the following section for detailed step-by-step instructions on how to install this software / libraries / plug-ins
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be, assume the marker just acquired a computer
-
-```
-Give the example
+Clone the repository:
+```bash
+git clone https://git.cs.dal.ca/cparker/csci4177_group19_project.git
 ```
 
-And repeat
-
+Navigate to the csci4177_group19_project directory:
+```bash
+cd csci4177_group19_project
 ```
-until finished
+
+Create a `.env` file in the root of the project folder to store the environment variables like the database username and password and third-party API keys. The `.env` file should look like this:
+```
+DB_USER=""
+DB_USER_PASSWORD=""
+DB_URL=""
+FINNHUB_API_KEY=""
+Newsapikey=
 ```
 
 Install the required dependencies:
+```bash
+npm install
+```
 
+Start the server:
+```bash
+npm run dev
+```
+
+Wait for the project to build, then open your browser and navigate to http://localhost:3000 or the port specified in the console when prompted.
 
 ## Running the tests
 
