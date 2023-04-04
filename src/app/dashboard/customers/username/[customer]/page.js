@@ -31,6 +31,9 @@ export default function Customer({ params }) {
     queryKey: [symbolsBaseURL, username],
   });
 
+  console.log(customer);
+  
+
   return (
     <Container style={{ minHeight: "100vh" }}>
       <Paper sx={{ p: 2, margin: 2, flexGrow: 1 }}>
@@ -69,11 +72,11 @@ export default function Customer({ params }) {
           {symbols.isSuccess && (
             <div>
               <Typography variant="h5" component="div" sx={{mb: 2 }}>
-                Customer Holdings:
+                Customer Holdings
               </Typography>
               <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-              {symbols.data.map((symbol) => (
-                <Grid item xs={6} sm={4} md={4} key={symbol}>
+              {symbols.data.map((symbol, index) => (
+                <Grid item xs={6} sm={4} md={4} key={index}>
                   <Card>
                     <CardContent>
                       <Typography variant="h3">
@@ -117,8 +120,8 @@ export default function Customer({ params }) {
               direction={{ xs: "column", sm: "row" }}
               spacing={{ xs: 1, sm: 2, md: 4 }}
             >
-              {customer.data.accounts.map((account) => (
-                <Link href={"/dashboard/accounts/" + account} key={account}>
+              {customer.data.accounts.map((account, index) => (
+                <Link href={"/dashboard/accounts/" + account} key={index}>
                   <Button variant="outline" color="dark">
                     {account}
                   </Button>

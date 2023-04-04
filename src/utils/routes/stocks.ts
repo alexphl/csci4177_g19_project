@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import type { iSearchItem } from "@/types/iStocks";
 import axios from "axios";
+import Portfolio from "../models/simulation";
 dayjs.extend(utc)
 
 const cache = new LRU({
@@ -49,6 +50,31 @@ router.post("/user/:id", async function(req, res) {
   }
 
   return res.sendStatus(200);
+});
+// Get historical price
+router.get('/stock/:symbol/price/:timestamp', async (req, res) => {
+  const { symbol, timestamp } = req.params;
+
+  try {
+      const response = await axios.get(`https://finnhub.io/api/v1/stock/candle`, {
+          params: {
+              symbol,
+              resolution: 'D',
+              from: parseInt(timestamp),
+              to: parseInt(timestamp) + 86400, // Add one day in seconds
+              token: process.env.FINNHUB_API_KEY, 
+          },
+      });
+
+      if (response.data && response.data.c && response.data.c.length > 0) {
+          res.json({ price: response.data.c[0] });
+      } else {
+          res.status(404).json({ error: 'Stock price not found' });
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to fetch stock price' });
+  }
 });
 
 // Get user stock watchlists
@@ -120,6 +146,7 @@ async function getStockPrice(symbol: any) {
 }
 // Get prices for a stock
 router.post('/stock-prices', async (req, res) => {
+  // console.log(req.body);
   const stockSymbols = req.body.stocks;
   console.log(stockSymbols);
   const stockPrices: { [key: string]: number } = {};
@@ -141,6 +168,37 @@ router.post('/stock-prices', async (req, res) => {
 
   res.json(stockPrices);
 });
+
+//Retrieve stock prices for a list of stocks from a GET request
+//Format: /api/stocks/prices/list/:<comma separated list of stock symbols>
+//Ex: http://localhost:3000/api/stocks/prices/list/AMD,INTC
+//Returns: {"AMD": 32.67, "INTC": 98.01}
+//Modified by: Liam Osler
+router.get('/prices/list/:list', async (req, res) => {
+  // console.log(req.body);
+  console.log(req.params.list);
+  const stockSymbols = req.params.list.split(',');
+  console.log(stockSymbols);
+  const stockPrices: { [key: string]: number } = {};
+
+  if (!stockSymbols || !Array.isArray(stockSymbols)) {
+    return res.status(400).json({ error: 'Invalid stocks input.' });
+  }
+
+  const promises = stockSymbols.map(async (symbol) => {
+    try {
+      const priceData = await getStockPrice(symbol);
+      stockPrices[symbol] = priceData.c;
+    } catch (error) {
+      return res.status(500).json({ error: 'Error in fetching.' });
+    }
+  });
+
+  await Promise.all(promises);
+
+  res.json(stockPrices);
+});
+
 
 
 // Get company description for a stock

@@ -4,6 +4,7 @@
 
 import { memo, useContext, useEffect, useState, useTransition } from "react";
 import dynamic from "next/dynamic";
+import { userContext } from "@/app/UserContext";
 import { useDebounce } from "use-debounce";
 import {
   FaceFrownIcon,
@@ -24,13 +25,14 @@ const StockListbox = dynamic(() => import("./Listbox"));
 
 const listStyle = "flex flex-auto flex-col gap-2.5 transition-transform";
 
-const userID = "user1";
-
 function StockList(props: {
   searchIsActive: boolean;
   searchQuery: string;
   selectedStock: string | undefined;
 }) {
+  const { user } = useContext<any>(userContext);
+  const userID = user.email;
+
   const listContext = useContext(ListContext);
   const [selectedList, setSelectedList] = [listContext.state, listContext.setState];
   const userLists = useQuery<iUserStockList[]>({
@@ -93,6 +95,23 @@ function StockList(props: {
   useEffect(() => {
     startTransition(() => setResultLimit(5));
   }, [searchResult.data]);
+
+
+  // Create default list for new users or if things go south
+  if (userLists.isSuccess && selectedList === 0 && !userLists.data[selectedList]) {
+    const newList: iUserStockList = {
+      id: "1",
+      name: "Watchlist"
+    }
+
+    fetch(`/api/stocks/user/lists/${userID}`, {
+      method: "POST",
+      body: JSON.stringify([newList]),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    queryClient.setQueryData([`/api/stocks/user/lists/${userID}`], () => [newList]);
+  }
 
   if (!userLists.isSuccess || !userStocks.isSuccess || !userLists.data[selectedList]) { return <div className="relative h-24 -mt-12 flex"> <Loading /> </div> }
 
